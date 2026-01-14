@@ -2,7 +2,7 @@
 #ifndef ASSET_PIPELINE_H
 #define ASSET_PIPELINE_H
 
-#include "include/common.h"
+#include <common.h>
 
 // Types of assets we handle
 typedef enum {

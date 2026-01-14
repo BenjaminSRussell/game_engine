@@ -1,7 +1,7 @@
 #ifndef NAV_MESH_H
 #define NAV_MESH_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/vec3.h"
 
 // Max neighbors in a 3D grid (26) or simplified (6)

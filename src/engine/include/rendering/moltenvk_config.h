@@ -4,7 +4,7 @@
 #ifndef MOLTENVK_CONFIG_H
 #define MOLTENVK_CONFIG_H
 
-#include "include/common.h"
+#include <common.h>
 
 #ifdef VULKAN_BUILD
 

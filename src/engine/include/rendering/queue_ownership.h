@@ -4,7 +4,7 @@
 #ifndef QUEUE_OWNERSHIP_H
 #define QUEUE_OWNERSHIP_H
 
-#include "include/common.h"
+#include <common.h>
 
 #ifdef VULKAN_BUILD
 

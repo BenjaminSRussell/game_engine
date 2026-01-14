@@ -11,7 +11,7 @@
 //  COMPLETED: Add camera control documentation system.
 #include <rendering/camera.h>
 #include <include/platform/input/controls.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 // Handle mouse input for camera
 void camera_handle_mouse(Camera *camera, f32 delta_x, f32 delta_y, f32 sensitivity) {

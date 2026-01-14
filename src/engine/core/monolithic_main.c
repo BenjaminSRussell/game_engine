@@ -14,7 +14,7 @@
 #ifndef _WIN32
 #include <unistd.h>
 #endif
-#include "engine/include/common.h"
+#include <common.h>
 #include "engine/include/core/logger.h"
 #include <audio/audio_system.h>
 #include <block/block.h>
@@ -71,7 +71,7 @@
 #include <world/water_physics.h>
 #include <world/water_system.h>
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 #include <ecs/components/transform.h>
 

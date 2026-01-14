@@ -2,7 +2,7 @@
 #ifndef ANIM_MONTAGE_H
 #define ANIM_MONTAGE_H
 
-#include "include/common.h"
+#include <common.h>
 #import <Foundation/Foundation.h>
 
 #define MAX_MONTAGE_SECTIONS 32

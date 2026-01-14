@@ -28,7 +28,7 @@
 
 #include "cluster_builder.h"
 #include "../../include/common.h"
-#include "../../include/math/math.h"
+#include "../../include/math/math_all.h"
 #include <simd/simd.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -106,9 +106,10 @@ static int compare_tri_sort(const void *a, const void *b) {
              : (ta->morton_code > tb->morton_code);
 }
 
-static void compute_bounds(const vertex_t *vertices, const uint32_t *indices,
-                           uint32_t index_offset, uint32_t index_count,
-                           simd_float3 *out_center, simd_float3 *out_extent) {
+static void compute_bounds(const geometry_vertex_t *vertices,
+                           const uint32_t *indices, uint32_t index_offset,
+                           uint32_t index_count, simd_float3 *out_center,
+                           simd_float3 *out_extent) {
   simd_float3 min_b = {MAXFLOAT, MAXFLOAT, MAXFLOAT};
   simd_float3 max_b = {-MAXFLOAT, -MAXFLOAT, -MAXFLOAT};
 
@@ -128,7 +129,7 @@ static void compute_bounds(const vertex_t *vertices, const uint32_t *indices,
 // Calculate geometric error metric for a cluster
 // Heuristic: Max distance from cluster center to any vertex (radius) / triangle
 // density This approximates how "flat" or "detailed" the cluster is.
-static float compute_cluster_error(const vertex_t *vertices,
+static float compute_cluster_error(const geometry_vertex_t *vertices,
                                    const uint32_t *indices,
                                    uint32_t index_offset, uint32_t count,
                                    simd_float3 center) {
@@ -158,8 +159,8 @@ static bool hzb_test_occlusion(simd_float3 center, float radius,
     return false;
   }
 
-  simd_float3 ndc = (simd_float3){clip.x / clip.w, clip.y / clip.w,
-                                  clip.z / clip.w};
+  simd_float3 ndc =
+      (simd_float3){clip.x / clip.w, clip.y / clip.w, clip.z / clip.w};
   if (ndc.x < -1.0f || ndc.x > 1.0f || ndc.y < -1.0f || ndc.y > 1.0f) {
     return false;
   }
@@ -191,7 +192,7 @@ static void build_meshlet_payloads(const mesh_cluster_t *clusters,
 }
 
 cluster_mesh_t *cluster_mesh_build(id<MTLDevice> device,
-                                   const vertex_t *vertices,
+                                   const geometry_vertex_t *vertices,
                                    uint32_t vertex_count,
                                    const uint32_t *indices,
                                    uint32_t index_count) {
@@ -364,7 +365,7 @@ cluster_mesh_t *cluster_mesh_build(id<MTLDevice> device,
 
   mesh->vertex_buffer =
       [device newBufferWithBytes:vertices
-                          length:vertex_count * sizeof(vertex_t)
+                          length:vertex_count * sizeof(geometry_vertex_t)
                          options:MTLResourceStorageModeShared];
   mesh->index_buffer = [device newBufferWithBytes:sorted_indices
                                            length:index_count * sizeof(uint32_t)
@@ -399,15 +400,23 @@ void cluster_mesh_free(cluster_mesh_t *mesh) {
     [mesh->index_buffer release];
     [mesh->cluster_buffer release];
     [mesh->meshlet_buffer release];
-    if (mesh->quantized_vertex_buffer) [mesh->quantized_vertex_buffer release];
-    if (mesh->bvh_buffer) [mesh->bvh_buffer release];
-    if (mesh->lru_cache_buffer) [mesh->lru_cache_buffer release];
-    if (mesh->visibility_history_buffer) [mesh->visibility_history_buffer release];
-    if (mesh->blas_buffer) [mesh->blas_buffer release];
-    if (mesh->animation_buffer) [mesh->animation_buffer release];
+    if (mesh->quantized_vertex_buffer)
+      [mesh->quantized_vertex_buffer release];
+    if (mesh->bvh_buffer)
+      [mesh->bvh_buffer release];
+    if (mesh->lru_cache_buffer)
+      [mesh->lru_cache_buffer release];
+    if (mesh->visibility_history_buffer)
+      [mesh->visibility_history_buffer release];
+    if (mesh->blas_buffer)
+      [mesh->blas_buffer release];
+    if (mesh->animation_buffer)
+      [mesh->animation_buffer release];
     for (uint32_t i = 0; i < VSM_CASCADE_COUNT; i++) {
-        if (mesh->vsm.depth_textures[i]) [mesh->vsm.depth_textures[i] release];
-        if (mesh->vsm.variance_textures[i]) [mesh->vsm.variance_textures[i] release];
+      if (mesh->vsm.depth_textures[i])
+        [mesh->vsm.depth_textures[i] release];
+      if (mesh->vsm.variance_textures[i])
+        [mesh->vsm.variance_textures[i] release];
     }
     free(mesh);
   }
@@ -567,13 +576,13 @@ void cluster_mesh_cull_hzb_two_pass(
     }
 
     float radius = simd_length(c->bounds_extent);
-    if (prev_hzb && hzb_test_occlusion(c->bounds_center, radius, view_proj,
-                                       prev_hzb)) {
+    if (prev_hzb &&
+        hzb_test_occlusion(c->bounds_center, radius, view_proj, prev_hzb)) {
       continue;
     }
 
-    if (current_hzb && hzb_test_occlusion(c->bounds_center, radius, view_proj,
-                                          current_hzb)) {
+    if (current_hzb &&
+        hzb_test_occlusion(c->bounds_center, radius, view_proj, current_hzb)) {
       continue;
     }
 
@@ -590,552 +599,663 @@ void cluster_mesh_cull_hzb_two_pass(
   *visible_count = count;
 }
 // Virtual Shadow Map implementation
-void cluster_mesh_init_virtual_shadow_maps(cluster_mesh_t *mesh, id<MTLDevice> device, uint32_t resolution) {
-    if (!mesh || !device) return;
-    
-    mesh->vsm.resolution = resolution;
-    
-    // Create depth and variance textures for each cascade
-    for (uint32_t i = 0; i < VSM_CASCADE_COUNT; i++) {
-        // Depth texture
-        MTLTextureDescriptor *depthDesc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatDepth32Float
-                                                                                         width:resolution
-                                                                                        height:resolution
-                                                                                     mipmapped:NO];
-        depthDesc.usage = MTLTextureUsageRenderTarget | MTLTextureUsageShaderRead;
-        depthDesc.storageMode = MTLStorageModePrivate;
-        mesh->vsm.depth_textures[i] = [device newTextureWithDescriptor:depthDesc];
-        
-        // Variance texture (RG32F for moments)
-        MTLTextureDescriptor *varianceDesc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatRG32Float
-                                                                                             width:resolution
-                                                                                            height:resolution
-                                                                                        mipmapped:NO];
-        varianceDesc.usage = MTLTextureUsageRenderTarget | MTLTextureUsageShaderRead;
-        varianceDesc.storageMode = MTLStorageModePrivate;
-        mesh->vsm.variance_textures[i] = [device newTextureWithDescriptor:varianceDesc];
-    }
-    
-    // Initialize cascade splits (logarithmic distribution)
-    float near_plane = 0.1f;
-    float far_plane = 1000.0f;
-    float lambda = 0.5f; // Blend between linear and logarithmic
-    
-    for (uint32_t i = 0; i < VSM_CASCADE_COUNT; i++) {
-        float linear_mix = (float)(i + 1) / (float)VSM_CASCADE_COUNT;
-        float log_mix = powf((float)(i + 1) / (float)VSM_CASCADE_COUNT, 2.0f);
-        mesh->vsm.cascade_splits[i] = near_plane * powf(far_plane / near_plane, lambda * log_mix + (1.0f - lambda) * linear_mix);
-    }
-    
-    mesh->use_virtual_shadow_maps = true;
+void cluster_mesh_init_virtual_shadow_maps(cluster_mesh_t *mesh,
+                                           id<MTLDevice> device,
+                                           uint32_t resolution) {
+  if (!mesh || !device)
+    return;
+
+  mesh->vsm.resolution = resolution;
+
+  // Create depth and variance textures for each cascade
+  for (uint32_t i = 0; i < VSM_CASCADE_COUNT; i++) {
+    // Depth texture
+    MTLTextureDescriptor *depthDesc = [MTLTextureDescriptor
+        texture2DDescriptorWithPixelFormat:MTLPixelFormatDepth32Float
+                                     width:resolution
+                                    height:resolution
+                                 mipmapped:NO];
+    depthDesc.usage = MTLTextureUsageRenderTarget | MTLTextureUsageShaderRead;
+    depthDesc.storageMode = MTLStorageModePrivate;
+    mesh->vsm.depth_textures[i] = [device newTextureWithDescriptor:depthDesc];
+
+    // Variance texture (RG32F for moments)
+    MTLTextureDescriptor *varianceDesc = [MTLTextureDescriptor
+        texture2DDescriptorWithPixelFormat:MTLPixelFormatRG32Float
+                                     width:resolution
+                                    height:resolution
+                                 mipmapped:NO];
+    varianceDesc.usage =
+        MTLTextureUsageRenderTarget | MTLTextureUsageShaderRead;
+    varianceDesc.storageMode = MTLStorageModePrivate;
+    mesh->vsm.variance_textures[i] =
+        [device newTextureWithDescriptor:varianceDesc];
+  }
+
+  // Initialize cascade splits (logarithmic distribution)
+  float near_plane = 0.1f;
+  float far_plane = 1000.0f;
+  float lambda = 0.5f; // Blend between linear and logarithmic
+
+  for (uint32_t i = 0; i < VSM_CASCADE_COUNT; i++) {
+    float linear_mix = (float)(i + 1) / (float)VSM_CASCADE_COUNT;
+    float log_mix = powf((float)(i + 1) / (float)VSM_CASCADE_COUNT, 2.0f);
+    mesh->vsm.cascade_splits[i] =
+        near_plane * powf(far_plane / near_plane,
+                          lambda * log_mix + (1.0f - lambda) * linear_mix);
+  }
+
+  mesh->use_virtual_shadow_maps = true;
 }
 
-void cluster_mesh_update_virtual_shadow_maps(cluster_mesh_t *mesh, id<MTLCommandBuffer> cmd, const simd_float4x4 *light_view_proj) {
-    if (!mesh || !cmd || !light_view_proj || !mesh->use_virtual_shadow_maps) return;
-    
-    mesh->vsm.view_proj = *light_view_proj;
-    
-    // Update shadow matrices for each cascade
-    for (uint32_t i = 0; i < VSM_CASCADE_COUNT; i++) {
-        // Create cascade-specific view-projection matrix
-        // This would normally include light direction and cascade bounds
-        mesh->vsm.shadow_matrix = *light_view_proj;
-    }
+void cluster_mesh_update_virtual_shadow_maps(
+    cluster_mesh_t *mesh, id<MTLCommandBuffer> cmd,
+    const simd_float4x4 *light_view_proj) {
+  if (!mesh || !cmd || !light_view_proj || !mesh->use_virtual_shadow_maps)
+    return;
+
+  mesh->vsm.view_proj = *light_view_proj;
+
+  // Update shadow matrices for each cascade
+  for (uint32_t i = 0; i < VSM_CASCADE_COUNT; i++) {
+    // Create cascade-specific view-projection matrix
+    // This would normally include light direction and cascade bounds
+    mesh->vsm.shadow_matrix = *light_view_proj;
+  }
 }
 
-void cluster_mesh_render_shadow_cascades(cluster_mesh_t *mesh, id<MTLRenderCommandEncoder> encoder, uint32_t cascade_index) {
-    if (!mesh || !encoder || cascade_index >= VSM_CASCADE_COUNT || !mesh->use_virtual_shadow_maps) return;
-    
-    // Set shadow rendering state
-    [encoder setDepthStencilTexture:mesh->vsm.depth_textures[cascade_index] atIndex:0];
-    [encoder setFragmentTexture:mesh->vsm.variance_textures[cascade_index] atIndex:0];
-    
-    // Set cascade-specific constants
-    [encoder setVertexBytes:&mesh->vsm.shadow_matrix length:sizeof(simd_float4x4) atIndex:4];
-    [encoder setFragmentBytes:&cascade_index length:sizeof(uint32_t) atIndex:1];
+void cluster_mesh_render_shadow_cascades(cluster_mesh_t *mesh,
+                                         id<MTLRenderCommandEncoder> encoder,
+                                         uint32_t cascade_index) {
+  if (!mesh || !encoder || cascade_index >= VSM_CASCADE_COUNT ||
+      !mesh->use_virtual_shadow_maps)
+    return;
+
+  // Set shadow rendering state
+  [encoder setDepthStencilTexture:mesh->vsm.depth_textures[cascade_index]
+                          atIndex:0];
+  [encoder setFragmentTexture:mesh->vsm.variance_textures[cascade_index]
+                      atIndex:0];
+
+  // Set cascade-specific constants
+  [encoder setVertexBytes:&mesh->vsm.shadow_matrix
+                   length:sizeof(simd_float4x4)
+                  atIndex:4];
+  [encoder setFragmentBytes:&cascade_index length:sizeof(uint32_t) atIndex:1];
 }
 
 // Vertex quantization implementation
-void cluster_mesh_quantize_vertices(cluster_mesh_t *mesh, const vertex_t *vertices, uint32_t vertex_count) {
-    if (!mesh || !vertices || vertex_count == 0) return;
-    
-    // Calculate bounds for quantization
-    simd_float3 min_bound = {MAXFLOAT, MAXFLOAT, MAXFLOAT};
-    simd_float3 max_bound = {-MAXFLOAT, -MAXFLOAT, -MAXFLOAT};
-    
-    for (uint32_t i = 0; i < vertex_count; i++) {
-        simd_float3 pos = (simd_float3){vertices[i].position.x, vertices[i].position.y, vertices[i].position.z};
-        min_bound = simd_min(min_bound, pos);
-        max_bound = simd_max(max_bound, pos);
-    }
-    
-    simd_float3 range = max_bound - min_bound;
-    simd_float3 inv_range = 1.0f / (range + 1e-6f);
-    
-    // Allocate quantized vertex buffer
-    quantized_vertex_t *quantized_vertices = (quantized_vertex_t *)malloc(vertex_count * sizeof(quantized_vertex_t));
-    
-    for (uint32_t i = 0; i < vertex_count; i++) {
-        quantized_vertex_t *qv = &quantized_vertices[i];
-        const vertex_t *v = &vertices[i];
-        
-        // Quantize position (16-bit)
-        simd_float3 norm_pos = ((simd_float3){v->position.x, v->position.y, v->position.z} - min_bound) * inv_range;
-        qv->position[0] = (int16_t)(norm_pos.x * 65535.0f);
-        qv->position[1] = (int16_t)(norm_pos.y * 65535.0f);
-        qv->position[2] = (int16_t)(norm_pos.z * 65535.0f);
-        
-        // Quantize normal (octahedral encoding)
-        simd_float3 normal = simd_normalize((simd_float3){v->normal.x, v->normal.y, v->normal.z});
-        float oct_x = normal.x / (fabsf(normal.x) + fabsf(normal.y) + fabsf(normal.z));
-        float oct_y = normal.y / (fabsf(normal.x) + fabsf(normal.y) + fabsf(normal.z));
-        qv->normal = (uint16_t)(((oct_x * 0.5f + 0.5f) * 255.0f) << 8) | (uint16_t)((oct_y * 0.5f + 0.5f) * 255.0f);
-        
-        // Quantize texture coordinates
-        qv->texcoord[0] = (uint16_t)(fmodf(v->texcoord.x, 1.0f) * 65535.0f);
-        qv->texcoord[1] = (uint16_t)(fmodf(v->texcoord.y, 1.0f) * 65535.0f);
-        
-        // Material ID (assuming it's stored in vertex color or similar)
-        qv->material_id = 0; // Default material
-    }
-    
-    // Create GPU buffer
-    mesh->quantized_vertex_buffer = [mesh->vertex_buffer.device newBufferWithBytes:quantized_vertices
-                                                                           length:vertex_count * sizeof(quantized_vertex_t)
-                                                                          options:MTLResourceStorageModeShared];
-    mesh->quantized_vertex_count = vertex_count;
-    
-    free(quantized_vertices);
+void cluster_mesh_quantize_vertices(cluster_mesh_t *mesh,
+                                    const geometry_vertex_t *vertices,
+                                    uint32_t vertex_count) {
+  if (!mesh || !vertices || vertex_count == 0)
+    return;
+
+  // Calculate bounds for quantization
+  simd_float3 min_bound = {MAXFLOAT, MAXFLOAT, MAXFLOAT};
+  simd_float3 max_bound = {-MAXFLOAT, -MAXFLOAT, -MAXFLOAT};
+
+  for (uint32_t i = 0; i < vertex_count; i++) {
+    simd_float3 pos = (simd_float3){
+        vertices[i].position.x, vertices[i].position.y, vertices[i].position.z};
+    min_bound = simd_min(min_bound, pos);
+    max_bound = simd_max(max_bound, pos);
+  }
+
+  simd_float3 range = max_bound - min_bound;
+  simd_float3 inv_range = 1.0f / (range + 1e-6f);
+
+  // Allocate quantized vertex buffer
+  quantized_vertex_t *quantized_vertices =
+      (quantized_vertex_t *)malloc(vertex_count * sizeof(quantized_vertex_t));
+
+  for (uint32_t i = 0; i < vertex_count; i++) {
+    quantized_vertex_t *qv = &quantized_vertices[i];
+    const geometry_vertex_t *v = &vertices[i];
+
+    // Quantize position (16-bit)
+    simd_float3 norm_pos =
+        ((simd_float3){v->position.x, v->position.y, v->position.z} -
+         min_bound) *
+        inv_range;
+    qv->position[0] = (int16_t)(norm_pos.x * 65535.0f);
+    qv->position[1] = (int16_t)(norm_pos.y * 65535.0f);
+    qv->position[2] = (int16_t)(norm_pos.z * 65535.0f);
+
+    // Quantize normal (octahedral encoding)
+    simd_float3 normal =
+        simd_normalize((simd_float3){v->normal.x, v->normal.y, v->normal.z});
+    float oct_x =
+        normal.x / (fabsf(normal.x) + fabsf(normal.y) + fabsf(normal.z));
+    float oct_y =
+        normal.y / (fabsf(normal.x) + fabsf(normal.y) + fabsf(normal.z));
+    qv->normal = (uint16_t)(((uint32_t)((oct_x * 0.5f + 0.5f) * 255.0f)) << 8) |
+                 (uint16_t)((oct_y * 0.5f + 0.5f) * 255.0f);
+
+    // Quantize texture coordinates
+    qv->texcoord[0] = (uint16_t)(fmodf(v->texcoord.x, 1.0f) * 65535.0f);
+    qv->texcoord[1] = (uint16_t)(fmodf(v->texcoord.y, 1.0f) * 65535.0f);
+
+    // Material ID (assuming it's stored in vertex color or similar)
+    qv->material_id = 0; // Default material
+  }
+
+  // Create GPU buffer
+  mesh->quantized_vertex_buffer = [mesh->vertex_buffer.device
+      newBufferWithBytes:quantized_vertices
+                  length:vertex_count * sizeof(quantized_vertex_t)
+                 options:MTLResourceStorageModeShared];
+  mesh->quantized_vertex_count = vertex_count;
+
+  free(quantized_vertices);
 }
 
-void cluster_mesh_dequantize_vertices(const cluster_mesh_t *mesh, vertex_t *out_vertices, uint32_t start_index, uint32_t count) {
-    if (!mesh || !out_vertices || !mesh->quantized_vertex_buffer) return;
-    
-    quantized_vertex_t *quantized = (quantized_vertex_t *)[mesh->quantized_vertex_buffer contents];
-    
-    for (uint32_t i = 0; i < count && (start_index + i) < mesh->quantized_vertex_count; i++) {
-        const quantized_vertex_t *qv = &quantized[start_index + i];
-        vertex_t *v = &out_vertices[i];
-        
-        // Dequantize position
-        v->position.x = (float)qv->position[0] / 65535.0f;
-        v->position.y = (float)qv->position[1] / 65535.0f;
-        v->position.z = (float)qv->position[2] / 65535.0f;
-        
-        // Dequantize normal (octahedral decoding)
-        uint8_t oct_x = (qv->normal >> 8) & 0xFF;
-        uint8_t oct_y = qv->normal & 0xFF;
-        float nx = (oct_x / 255.0f) * 2.0f - 1.0f;
-        float ny = (oct_y / 255.0f) * 2.0f - 1.0f;
-        float nz = 1.0f - fabsf(nx) - fabsf(ny);
-        if (nz < 0.0f) {
-            nx = copysignf(1.0f - fabsf(ny), nx);
-            ny = copysignf(1.0f - fabsf(nx), ny);
-        }
-        v->normal.x = nx;
-        v->normal.y = ny;
-        v->normal.z = nz;
-        
-        // Dequantize texture coordinates
-        v->texcoord.x = (float)qv->texcoord[0] / 65535.0f;
-        v->texcoord.y = (float)qv->texcoord[1] / 65535.0f;
+void cluster_mesh_dequantize_vertices(const cluster_mesh_t *mesh,
+                                      geometry_vertex_t *out_vertices,
+                                      uint32_t start_index, uint32_t count) {
+  if (!mesh || !out_vertices || !mesh->quantized_vertex_buffer)
+    return;
+
+  quantized_vertex_t *quantized =
+      (quantized_vertex_t *)[mesh->quantized_vertex_buffer contents];
+
+  for (uint32_t i = 0;
+       i < count && (start_index + i) < mesh->quantized_vertex_count; i++) {
+    const quantized_vertex_t *qv = &quantized[start_index + i];
+    geometry_vertex_t *v = &out_vertices[i];
+
+    // Dequantize position
+    v->position.x = (float)qv->position[0] / 65535.0f;
+    v->position.y = (float)qv->position[1] / 65535.0f;
+    v->position.z = (float)qv->position[2] / 65535.0f;
+
+    // Dequantize normal (octahedral decoding)
+    uint8_t oct_x = (qv->normal >> 8) & 0xFF;
+    uint8_t oct_y = qv->normal & 0xFF;
+    float nx = (oct_x / 255.0f) * 2.0f - 1.0f;
+    float ny = (oct_y / 255.0f) * 2.0f - 1.0f;
+    float nz = 1.0f - fabsf(nx) - fabsf(ny);
+    if (nz < 0.0f) {
+      nx = copysignf(1.0f - fabsf(ny), nx);
+      ny = copysignf(1.0f - fabsf(nx), ny);
     }
+    v->normal.x = nx;
+    v->normal.y = ny;
+    v->normal.z = nz;
+
+    // Dequantize texture coordinates
+    v->texcoord.x = (float)qv->texcoord[0] / 65535.0f;
+    v->texcoord.y = (float)qv->texcoord[1] / 65535.0f;
+  }
 }
 
 // BVH construction implementation
 void cluster_mesh_build_bvh(cluster_mesh_t *mesh) {
-    if (!mesh || mesh->cluster_count == 0) return;
-    
-    mesh_cluster_t *clusters = (mesh_cluster_t *)[mesh->cluster_buffer contents];
-    
-    // Calculate required BVH nodes (2 * cluster_count - 1 for binary tree)
-    uint32_t max_nodes = mesh->cluster_count * 2;
-    bvh_node_t *bvh_nodes = (bvh_node_t *)calloc(max_nodes, sizeof(bvh_node_t));
-    
-    // Build leaf nodes first
-    uint32_t node_count = 0;
-    for (uint32_t i = 0; i < mesh->cluster_count; i++) {
-        bvh_node_t *node = &bvh_nodes[node_count++];
-        mesh_cluster_t *cluster = &clusters[i];
-        
-        node->bounds_min = cluster->bounds_center - cluster->bounds_extent;
-        node->bounds_max = cluster->bounds_center + cluster->bounds_extent;
-        node->cluster_start = i;
-        node->cluster_count = 1;
-        node->is_leaf = 1;
-        node->left_child = node->right_child = 0xFFFFFFFF;
-        
-        cluster->bvh_node_index = i;
-    }
-    
-    // Build internal nodes using SAH (Surface Area Heuristic)
-    uint32_t leaf_start = 0;
-    uint32_t internal_start = node_count;
-    
-    while (node_count < max_nodes && (node_count - internal_start) < (internal_start - leaf_start) - 1) {
-        // Find best pair of nodes to merge
-        uint32_t best_a = 0, best_b = 0;
-        float best_cost = MAXFLOAT;
-        
-        for (uint32_t a = leaf_start; a < node_count; a++) {
-            if (bvh_nodes[a].is_leaf == 0) continue; // Only consider leaf nodes for now
-            
-            for (uint32_t b = a + 1; b < node_count; b++) {
-                if (bvh_nodes[b].is_leaf == 0) continue;
-                
-                // Calculate merged bounds
-                simd_float3 merged_min = simd_min(bvh_nodes[a].bounds_min, bvh_nodes[b].bounds_min);
-                simd_float3 merged_max = simd_max(bvh_nodes[a].bounds_max, bvh_nodes[b].bounds_max);
-                simd_float3 merged_size = merged_max - merged_min;
-                float merged_surface_area = 2.0f * (merged_size.x * merged_size.y + merged_size.y * merged_size.z + merged_size.z * merged_size.x);
-                
-                if (merged_surface_area < best_cost) {
-                    best_cost = merged_surface_area;
-                    best_a = a;
-                    best_b = b;
-                }
-            }
+  if (!mesh || mesh->cluster_count == 0)
+    return;
+
+  mesh_cluster_t *clusters = (mesh_cluster_t *)[mesh->cluster_buffer contents];
+
+  // Calculate required BVH nodes (2 * cluster_count - 1 for binary tree)
+  uint32_t max_nodes = mesh->cluster_count * 2;
+  bvh_node_t *bvh_nodes = (bvh_node_t *)calloc(max_nodes, sizeof(bvh_node_t));
+
+  // Build leaf nodes first
+  uint32_t node_count = 0;
+  for (uint32_t i = 0; i < mesh->cluster_count; i++) {
+    bvh_node_t *node = &bvh_nodes[node_count++];
+    mesh_cluster_t *cluster = &clusters[i];
+
+    node->bounds_min = cluster->bounds_center - cluster->bounds_extent;
+    node->bounds_max = cluster->bounds_center + cluster->bounds_extent;
+    node->cluster_start = i;
+    node->cluster_count = 1;
+    node->is_leaf = 1;
+    node->left_child = node->right_child = 0xFFFFFFFF;
+
+    cluster->bvh_node_index = i;
+  }
+
+  // Build internal nodes using SAH (Surface Area Heuristic)
+  uint32_t leaf_start = 0;
+  uint32_t internal_start = node_count;
+
+  while (node_count < max_nodes &&
+         (node_count - internal_start) < (internal_start - leaf_start) - 1) {
+    // Find best pair of nodes to merge
+    uint32_t best_a = 0, best_b = 0;
+    float best_cost = MAXFLOAT;
+
+    for (uint32_t a = leaf_start; a < node_count; a++) {
+      if (bvh_nodes[a].is_leaf == 0)
+        continue; // Only consider leaf nodes for now
+
+      for (uint32_t b = a + 1; b < node_count; b++) {
+        if (bvh_nodes[b].is_leaf == 0)
+          continue;
+
+        // Calculate merged bounds
+        simd_float3 merged_min =
+            simd_min(bvh_nodes[a].bounds_min, bvh_nodes[b].bounds_min);
+        simd_float3 merged_max =
+            simd_max(bvh_nodes[a].bounds_max, bvh_nodes[b].bounds_max);
+        simd_float3 merged_size = merged_max - merged_min;
+        float merged_surface_area = 2.0f * (merged_size.x * merged_size.y +
+                                            merged_size.y * merged_size.z +
+                                            merged_size.z * merged_size.x);
+
+        if (merged_surface_area < best_cost) {
+          best_cost = merged_surface_area;
+          best_a = a;
+          best_b = b;
         }
-        
-        if (best_a == best_b) break; // No more merges possible
-        
-        // Create internal node
-        bvh_node_t *parent = &bvh_nodes[node_count++];
-        parent->bounds_min = simd_min(bvh_nodes[best_a].bounds_min, bvh_nodes[best_b].bounds_min);
-        parent->bounds_max = simd_max(bvh_nodes[best_a].bounds_max, bvh_nodes[best_b].bounds_max);
-        parent->left_child = best_a;
-        parent->right_child = best_b;
-        parent->is_leaf = 0;
-        parent->cluster_start = bvh_nodes[best_a].cluster_start;
-        parent->cluster_count = bvh_nodes[best_a].cluster_count + bvh_nodes[best_b].cluster_count;
-        
-        // Mark children as non-leaf
-        bvh_nodes[best_a].is_leaf = 0;
-        bvh_nodes[best_b].is_leaf = 0;
+      }
     }
-    
-    // Create GPU buffer
-    mesh->bvh_buffer = [mesh->vertex_buffer.device newBufferWithBytes:bvh_nodes
-                                                               length:node_count * sizeof(bvh_node_t)
-                                                              options:MTLResourceStorageModeShared];
-    mesh->bvh_node_count = node_count;
-    
-    free(bvh_nodes);
+
+    if (best_a == best_b)
+      break; // No more merges possible
+
+    // Create internal node
+    bvh_node_t *parent = &bvh_nodes[node_count++];
+    parent->bounds_min =
+        simd_min(bvh_nodes[best_a].bounds_min, bvh_nodes[best_b].bounds_min);
+    parent->bounds_max =
+        simd_max(bvh_nodes[best_a].bounds_max, bvh_nodes[best_b].bounds_max);
+    parent->left_child = best_a;
+    parent->right_child = best_b;
+    parent->is_leaf = 0;
+    parent->cluster_start = bvh_nodes[best_a].cluster_start;
+    parent->cluster_count =
+        bvh_nodes[best_a].cluster_count + bvh_nodes[best_b].cluster_count;
+
+    // Mark children as non-leaf
+    bvh_nodes[best_a].is_leaf = 0;
+    bvh_nodes[best_b].is_leaf = 0;
+  }
+
+  // Create GPU buffer
+  mesh->bvh_buffer = [mesh->vertex_buffer.device
+      newBufferWithBytes:bvh_nodes
+                  length:node_count * sizeof(bvh_node_t)
+                 options:MTLResourceStorageModeShared];
+  mesh->bvh_node_count = node_count;
+
+  free(bvh_nodes);
 }
 
-void cluster_mesh_cull_bvh_gpu(cluster_mesh_t *mesh, id<MTLCommandBuffer> cmd, const simd_float4x4 *view_proj, const simd_float3 *camera_pos) {
-    if (!mesh || !cmd || !view_proj || !camera_pos || !mesh->bvh_buffer) return;
-    
-    // This would dispatch a compute shader for GPU-based BVH traversal
-    // For now, we'll use CPU fallback
-    // TODO: Implement GPU compute shader for BVH culling
+void cluster_mesh_cull_bvh_gpu(cluster_mesh_t *mesh, id<MTLCommandBuffer> cmd,
+                               const simd_float4x4 *view_proj,
+                               const simd_float3 *camera_pos) {
+  if (!mesh || !cmd || !view_proj || !camera_pos || !mesh->bvh_buffer)
+    return;
+
+  // This would dispatch a compute shader for GPU-based BVH traversal
+  // For now, we'll use CPU fallback
+  // TODO: Implement GPU compute shader for BVH culling
 }
 
 // LRU streaming implementation
-void cluster_mesh_init_lru_cache(cluster_mesh_t *mesh, uint32_t cache_size, float memory_budget_mb) {
-    if (!mesh) return;
-    
-    mesh->lru_cache_size = cache_size;
-    mesh->memory_budget_mb = memory_budget_mb;
-    mesh->current_frame = 0;
-    mesh->resident_cluster_count = 0;
-    
-    // Initialize LRU cache entries
-    lru_cache_entry_t *cache_entries = (lru_cache_entry_t *)calloc(cache_size, sizeof(lru_cache_entry_t));
-    for (uint32_t i = 0; i < cache_size; i++) {
-        cache_entries[i].cluster_id = 0xFFFFFFFF;
-        cache_entries[i].last_accessed_frame = 0;
-        cache_entries[i].access_count = 0;
-        cache_entries[i].is_resident = false;
-        cache_entries[i].priority = 0;
-    }
-    
-    mesh->lru_cache_buffer = [mesh->vertex_buffer.device newBufferWithBytes:cache_entries
-                                                                       length:cache_size * sizeof(lru_cache_entry_t)
-                                                                      options:MTLResourceStorageModeShared];
-    free(cache_entries);
+void cluster_mesh_init_lru_cache(cluster_mesh_t *mesh, uint32_t cache_size,
+                                 float memory_budget_mb) {
+  if (!mesh)
+    return;
+
+  mesh->lru_cache_size = cache_size;
+  mesh->memory_budget_mb = memory_budget_mb;
+  mesh->current_frame = 0;
+  mesh->resident_cluster_count = 0;
+
+  // Initialize LRU cache entries
+  lru_cache_entry_t *cache_entries =
+      (lru_cache_entry_t *)calloc(cache_size, sizeof(lru_cache_entry_t));
+  for (uint32_t i = 0; i < cache_size; i++) {
+    cache_entries[i].cluster_id = 0xFFFFFFFF;
+    cache_entries[i].last_accessed_frame = 0;
+    cache_entries[i].access_count = 0;
+    cache_entries[i].is_resident = false;
+    cache_entries[i].priority = 0;
+  }
+
+  mesh->lru_cache_buffer = [mesh->vertex_buffer.device
+      newBufferWithBytes:cache_entries
+                  length:cache_size * sizeof(lru_cache_entry_t)
+                 options:MTLResourceStorageModeShared];
+  free(cache_entries);
 }
 
 void cluster_mesh_update_lru_cache(cluster_mesh_t *mesh, uint32_t frame) {
-    if (!mesh || !mesh->lru_cache_buffer) return;
-    
-    mesh->current_frame = frame;
-    lru_cache_entry_t *cache = (lru_cache_entry_t *)[mesh->lru_cache_buffer contents];
-    
-    // Update resident count and check for eviction
-    uint32_t resident_count = 0;
-    uint32_t oldest_frame = frame;
-    uint32_t oldest_index = 0;
-    
-    for (uint32_t i = 0; i < mesh->lru_cache_size; i++) {
-        if (cache[i].is_resident) {
-            resident_count++;
-            if (cache[i].last_accessed_frame < oldest_frame) {
-                oldest_frame = cache[i].last_accessed_frame;
-                oldest_index = i;
-            }
-        }
+  if (!mesh || !mesh->lru_cache_buffer)
+    return;
+
+  mesh->current_frame = frame;
+  lru_cache_entry_t *cache =
+      (lru_cache_entry_t *)[mesh->lru_cache_buffer contents];
+
+  // Update resident count and check for eviction
+  uint32_t resident_count = 0;
+  uint32_t oldest_frame = frame;
+  uint32_t oldest_index = 0;
+
+  for (uint32_t i = 0; i < mesh->lru_cache_size; i++) {
+    if (cache[i].is_resident) {
+      resident_count++;
+      if (cache[i].last_accessed_frame < oldest_frame) {
+        oldest_frame = cache[i].last_accessed_frame;
+        oldest_index = i;
+      }
     }
-    
-    mesh->resident_cluster_count = resident_count;
-    
-    // Simple eviction if over budget
-    if (resident_count > mesh->lru_cache_size * 0.8f) {
-        cache[oldest_index].is_resident = false;
-        mesh->resident_cluster_count--;
-    }
+  }
+
+  mesh->resident_cluster_count = resident_count;
+
+  // Simple eviction if over budget
+  if (resident_count > mesh->lru_cache_size * 0.8f) {
+    cache[oldest_index].is_resident = false;
+    mesh->resident_cluster_count--;
+  }
 }
 
-bool cluster_mesh_is_cluster_resident(cluster_mesh_t *mesh, uint32_t cluster_id) {
-    if (!mesh || !mesh->lru_cache_buffer) return false;
-    
-    lru_cache_entry_t *cache = (lru_cache_entry_t *)[mesh->lru_cache_buffer contents];
-    for (uint32_t i = 0; i < mesh->lru_cache_size; i++) {
-        if (cache[i].cluster_id == cluster_id && cache[i].is_resident) {
-            return true;
-        }
-    }
+bool cluster_mesh_is_cluster_resident(cluster_mesh_t *mesh,
+                                      uint32_t cluster_id) {
+  if (!mesh || !mesh->lru_cache_buffer)
     return false;
+
+  lru_cache_entry_t *cache =
+      (lru_cache_entry_t *)[mesh->lru_cache_buffer contents];
+  for (uint32_t i = 0; i < mesh->lru_cache_size; i++) {
+    if (cache[i].cluster_id == cluster_id && cache[i].is_resident) {
+      return true;
+    }
+  }
+  return false;
 }
 
-void cluster_mesh_mark_cluster_accessed(cluster_mesh_t *mesh, uint32_t cluster_id, uint32_t frame, uint8_t priority) {
-    if (!mesh || !mesh->lru_cache_buffer) return;
-    
-    lru_cache_entry_t *cache = (lru_cache_entry_t *)[mesh->lru_cache_buffer contents];
-    
-    // Find existing entry or create new one
-    for (uint32_t i = 0; i < mesh->lru_cache_size; i++) {
-        if (cache[i].cluster_id == cluster_id || cache[i].cluster_id == 0xFFFFFFFF) {
-            cache[i].cluster_id = cluster_id;
-            cache[i].last_accessed_frame = frame;
-            cache[i].access_count++;
-            cache[i].is_resident = true;
-            cache[i].priority = priority;
-            return;
-        }
+void cluster_mesh_mark_cluster_accessed(cluster_mesh_t *mesh,
+                                        uint32_t cluster_id, uint32_t frame,
+                                        uint8_t priority) {
+  if (!mesh || !mesh->lru_cache_buffer)
+    return;
+
+  lru_cache_entry_t *cache =
+      (lru_cache_entry_t *)[mesh->lru_cache_buffer contents];
+
+  // Find existing entry or create new one
+  for (uint32_t i = 0; i < mesh->lru_cache_size; i++) {
+    if (cache[i].cluster_id == cluster_id ||
+        cache[i].cluster_id == 0xFFFFFFFF) {
+      cache[i].cluster_id = cluster_id;
+      cache[i].last_accessed_frame = frame;
+      cache[i].access_count++;
+      cache[i].is_resident = true;
+      cache[i].priority = priority;
+      return;
     }
+  }
 }
 
 // Material quantization implementation
-void cluster_mesh_quantize_materials(cluster_mesh_t *mesh, const uint32_t *material_ids, uint32_t material_count) {
-    if (!mesh || !material_ids || material_count == 0) return;
-    
-    mesh_cluster_t *clusters = (mesh_cluster_t *)[mesh->cluster_buffer contents];
-    
-    // Count unique materials per cluster
-    for (uint32_t i = 0; i < mesh->cluster_count; i++) {
-        mesh_cluster_t *cluster = &clusters[i];
-        
-        // Count unique materials in this cluster
-        uint32_t unique_materials = 0;
-        uint16_t material_list[MAX_MATERIAL_IDS] = {0};
-        
-        for (uint32_t j = 0; j < cluster->triangle_count * 3; j++) {
-            uint32_t vertex_idx = cluster->index_offset + j;
-            if (vertex_idx < material_count) {
-                uint32_t mat_id = material_ids[vertex_idx];
-                if (mat_id < MAX_MATERIAL_IDS) {
-                    bool found = false;
-                    for (uint32_t k = 0; k < unique_materials; k++) {
-                        if (material_list[k] == mat_id) {
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (!found && unique_materials < MAX_MATERIAL_IDS) {
-                        material_list[unique_materials++] = (uint16_t)mat_id;
-                    }
-                }
+void cluster_mesh_quantize_materials(cluster_mesh_t *mesh,
+                                     const uint32_t *material_ids,
+                                     uint32_t material_count) {
+  if (!mesh || !material_ids || material_count == 0)
+    return;
+
+  mesh_cluster_t *clusters = (mesh_cluster_t *)[mesh->cluster_buffer contents];
+
+  // Count unique materials per cluster
+  for (uint32_t i = 0; i < mesh->cluster_count; i++) {
+    mesh_cluster_t *cluster = &clusters[i];
+
+    // Count unique materials in this cluster
+    uint32_t unique_materials = 0;
+    uint16_t material_list[MAX_MATERIAL_IDS] = {0};
+
+    for (uint32_t j = 0; j < cluster->triangle_count * 3; j++) {
+      uint32_t vertex_idx = cluster->index_offset + j;
+      if (vertex_idx < material_count) {
+        uint32_t mat_id = material_ids[vertex_idx];
+        if (mat_id < MAX_MATERIAL_IDS) {
+          bool found = false;
+          for (uint32_t k = 0; k < unique_materials; k++) {
+            if (material_list[k] == mat_id) {
+              found = true;
+              break;
             }
+          }
+          if (!found && unique_materials < MAX_MATERIAL_IDS) {
+            material_list[unique_materials++] = (uint16_t)mat_id;
+          }
         }
-        
-        // Store material info
-        cluster->material_info.material_count = (uint8_t)unique_materials;
-        if (unique_materials > 0) {
-            cluster->material_info.material_id = material_list[0]; // Primary material
-        }
+      }
     }
+
+    // Store material info
+    cluster->material_info.material_count = (uint8_t)unique_materials;
+    if (unique_materials > 0) {
+      cluster->material_info.material_id = material_list[0]; // Primary material
+    }
+  }
 }
 
 // Visibility tracking implementation
 void cluster_mesh_init_visibility_history(cluster_mesh_t *mesh) {
-    if (!mesh) return;
-    
-    mesh->visibility_history_count = mesh->cluster_count;
-    visibility_history_t *history = (visibility_history_t *)calloc(mesh->cluster_count, sizeof(visibility_history_t));
-    
-    for (uint32_t i = 0; i < mesh->cluster_count; i++) {
-        history[i].cluster_id = i;
-        history[i].visibility_score = 0;
-        history[i].last_distance = 0.0f;
-        history[i].frame_counter = 0;
-        for (uint32_t j = 0; j < VISIBILITY_HISTORY_FRAMES; j++) {
-            history[i].visible_history[j] = false;
-        }
+  if (!mesh)
+    return;
+
+  mesh->visibility_history_count = mesh->cluster_count;
+  visibility_history_t *history = (visibility_history_t *)calloc(
+      mesh->cluster_count, sizeof(visibility_history_t));
+
+  for (uint32_t i = 0; i < mesh->cluster_count; i++) {
+    history[i].cluster_id = i;
+    history[i].visibility_score = 0;
+    history[i].last_distance = 0.0f;
+    history[i].frame_counter = 0;
+    for (uint32_t j = 0; j < VISIBILITY_HISTORY_FRAMES; j++) {
+      history[i].visible_history[j] = false;
     }
-    
-    mesh->visibility_history_buffer = [mesh->vertex_buffer.device newBufferWithBytes:history
-                                                                              length:mesh->cluster_count * sizeof(visibility_history_t)
-                                                                             options:MTLResourceStorageModeShared];
-    free(history);
+  }
+
+  mesh->visibility_history_buffer = [mesh->vertex_buffer.device
+      newBufferWithBytes:history
+                  length:mesh->cluster_count * sizeof(visibility_history_t)
+                 options:MTLResourceStorageModeShared];
+  free(history);
 }
 
-void cluster_mesh_update_visibility_history(cluster_mesh_t *mesh, const uint32_t *visible_clusters, uint32_t visible_count, uint32_t frame) {
-    if (!mesh || !visible_clusters || !mesh->visibility_history_buffer) return;
-    
-    visibility_history_t *history = (visibility_history_t *)[mesh->visibility_history_buffer contents];
-    
-    // Reset all visibility for this frame
-    for (uint32_t i = 0; i < mesh->cluster_count; i++) {
-        if (history[i].frame_counter != frame) {
-            uint32_t history_index = frame % VISIBILITY_HISTORY_FRAMES;
-            history[i].visible_history[history_index] = false;
-            history[i].frame_counter = frame;
-        }
+void cluster_mesh_update_visibility_history(cluster_mesh_t *mesh,
+                                            const uint32_t *visible_clusters,
+                                            uint32_t visible_count,
+                                            uint32_t frame) {
+  if (!mesh || !visible_clusters || !mesh->visibility_history_buffer)
+    return;
+
+  visibility_history_t *history =
+      (visibility_history_t *)[mesh->visibility_history_buffer contents];
+
+  // Reset all visibility for this frame
+  for (uint32_t i = 0; i < mesh->cluster_count; i++) {
+    if (history[i].frame_counter != frame) {
+      uint32_t history_index = frame % VISIBILITY_HISTORY_FRAMES;
+      history[i].visible_history[history_index] = false;
+      history[i].frame_counter = frame;
     }
-    
-    // Mark visible clusters
-    for (uint32_t i = 0; i < visible_count; i++) {
-        uint32_t cluster_id = visible_clusters[i];
-        if (cluster_id < mesh->cluster_count) {
-            uint32_t history_index = frame % VISIBILITY_HISTORY_FRAMES;
-            history[cluster_id].visible_history[history_index] = true;
-            history[cluster_id].visibility_score++;
-        }
+  }
+
+  // Mark visible clusters
+  for (uint32_t i = 0; i < visible_count; i++) {
+    uint32_t cluster_id = visible_clusters[i];
+    if (cluster_id < mesh->cluster_count) {
+      uint32_t history_index = frame % VISIBILITY_HISTORY_FRAMES;
+      history[cluster_id].visible_history[history_index] = true;
+      history[cluster_id].visibility_score++;
     }
+  }
 }
 
-bool cluster_mesh_should_cull_temporal(cluster_mesh_t *mesh, uint32_t cluster_id, uint32_t frame) {
-    if (!mesh || !mesh->visibility_history_buffer || cluster_id >= mesh->cluster_count) return false;
-    
-    visibility_history_t *history = (visibility_history_t *)[mesh->visibility_history_buffer contents];
-    visibility_history_t *cluster_hist = &history[cluster_id];
-    
-    // Check if cluster was visible in recent frames
-    uint32_t visible_count = 0;
-    for (uint32_t i = 0; i < VISIBILITY_HISTORY_FRAMES; i++) {
-        if (cluster_hist->visible_history[i]) visible_count++;
-    }
-    
-    // Cull if rarely visible (less than 25% of recent frames)
-    return visible_count < (VISIBILITY_HISTORY_FRAMES / 4);
+bool cluster_mesh_should_cull_temporal(cluster_mesh_t *mesh,
+                                       uint32_t cluster_id, uint32_t frame) {
+  if (!mesh || !mesh->visibility_history_buffer ||
+      cluster_id >= mesh->cluster_count)
+    return false;
+
+  visibility_history_t *history =
+      (visibility_history_t *)[mesh->visibility_history_buffer contents];
+  visibility_history_t *cluster_hist = &history[cluster_id];
+
+  // Check if cluster was visible in recent frames
+  uint32_t visible_count = 0;
+  for (uint32_t i = 0; i < VISIBILITY_HISTORY_FRAMES; i++) {
+    if (cluster_hist->visible_history[i])
+      visible_count++;
+  }
+
+  // Cull if rarely visible (less than 25% of recent frames)
+  return visible_count < (VISIBILITY_HISTORY_FRAMES / 4);
 }
 
 // Ray tracing BLAS implementation
 void cluster_mesh_build_blas(cluster_mesh_t *mesh, id<MTLDevice> device) {
-    if (!mesh || !device) return;
-    
-    // This would build acceleration structures for ray tracing
-    // For now, allocate placeholder buffers
-    cluster_blas_t *blas_data = (cluster_blas_t *)calloc(mesh->cluster_count, sizeof(cluster_blas_t));
-    
-    for (uint32_t i = 0; i < mesh->cluster_count; i++) {
-        blas_data[i].triangle_count = 128; // Max triangles per cluster
-        blas_data[i].cluster_offset = i;
-        // Actual BLAS creation would require Metal 2.4+ ray tracing support
-    }
-    
-    mesh->blas_buffer = [device newBufferWithBytes:blas_data
-                                              length:mesh->cluster_count * sizeof(cluster_blas_t)
-                                             options:MTLResourceStorageModeShared];
-    mesh->blas_count = mesh->cluster_count;
-    
-    free(blas_data);
+  if (!mesh || !device)
+    return;
+
+  // This would build acceleration structures for ray tracing
+  // For now, allocate placeholder buffers
+  cluster_blas_t *blas_data =
+      (cluster_blas_t *)calloc(mesh->cluster_count, sizeof(cluster_blas_t));
+
+  for (uint32_t i = 0; i < mesh->cluster_count; i++) {
+    blas_data[i].triangle_count = 128; // Max triangles per cluster
+    blas_data[i].cluster_offset = i;
+    // Actual BLAS creation would require Metal 2.4+ ray tracing support
+  }
+
+  mesh->blas_buffer =
+      [device newBufferWithBytes:blas_data
+                          length:mesh->cluster_count * sizeof(cluster_blas_t)
+                         options:MTLResourceStorageModeShared];
+  mesh->blas_count = mesh->cluster_count;
+
+  free(blas_data);
 }
 
 void cluster_mesh_update_blas(cluster_mesh_t *mesh, id<MTLCommandBuffer> cmd) {
-    if (!mesh || !cmd || !mesh->blas_buffer) return;
-    
-    // Update BLAS for animated clusters
-    // TODO: Implement actual BLAS updates with Metal ray tracing
+  if (!mesh || !cmd || !mesh->blas_buffer)
+    return;
+
+  // Update BLAS for animated clusters
+  // TODO: Implement actual BLAS updates with Metal ray tracing
 }
 
 // Animation support (D-Nanite)
 void cluster_mesh_init_animation_data(cluster_mesh_t *mesh) {
-    if (!mesh) return;
-    
-    cluster_animation_data_t *anim_data = (cluster_animation_data_t *)calloc(mesh->cluster_count, sizeof(cluster_animation_data_t));
-    
-    for (uint32_t i = 0; i < mesh->cluster_count; i++) {
-        anim_data[i].bone_count = 0;
-        anim_data[i].vertex_offset = 0;
-        anim_data[i].vertex_count = 256; // Max vertices per cluster
-    }
-    
-    mesh->animation_buffer = [mesh->vertex_buffer.device newBufferWithBytes:anim_data
-                                                                     length:mesh->cluster_count * sizeof(cluster_animation_data_t)
-                                                                    options:MTLResourceStorageModeShared];
-    mesh->animation_data_count = mesh->cluster_count;
-    
-    free(anim_data);
+  if (!mesh)
+    return;
+
+  cluster_animation_data_t *anim_data = (cluster_animation_data_t *)calloc(
+      mesh->cluster_count, sizeof(cluster_animation_data_t));
+
+  for (uint32_t i = 0; i < mesh->cluster_count; i++) {
+    anim_data[i].bone_count = 0;
+    anim_data[i].vertex_offset = 0;
+    anim_data[i].vertex_count = 256; // Max vertices per cluster
+  }
+
+  mesh->animation_buffer = [mesh->vertex_buffer.device
+      newBufferWithBytes:anim_data
+                  length:mesh->cluster_count * sizeof(cluster_animation_data_t)
+                 options:MTLResourceStorageModeShared];
+  mesh->animation_data_count = mesh->cluster_count;
+
+  free(anim_data);
 }
 
-void cluster_mesh_update_animation(cluster_mesh_t *mesh, const cluster_animation_data_t *animation_data, uint32_t cluster_id) {
-    if (!mesh || !animation_data || !mesh->animation_buffer || cluster_id >= mesh->cluster_count) return;
-    
-    cluster_animation_data_t *anim_buffer = (cluster_animation_data_t *)[mesh->animation_buffer contents];
-    anim_buffer[cluster_id] = *animation_data;
-    
-    mesh_cluster_t *clusters = (mesh_cluster_t *)[mesh->cluster_buffer contents];
-    clusters[cluster_id].is_animated = true;
-    clusters[cluster_id].animation_data_index = cluster_id;
+void cluster_mesh_update_animation(
+    cluster_mesh_t *mesh, const cluster_animation_data_t *animation_data,
+    uint32_t cluster_id) {
+  if (!mesh || !animation_data || !mesh->animation_buffer ||
+      cluster_id >= mesh->cluster_count)
+    return;
+
+  cluster_animation_data_t *anim_buffer =
+      (cluster_animation_data_t *)[mesh->animation_buffer contents];
+  anim_buffer[cluster_id] = *animation_data;
+
+  mesh_cluster_t *clusters = (mesh_cluster_t *)[mesh->cluster_buffer contents];
+  clusters[cluster_id].is_animated = true;
+  clusters[cluster_id].animation_data_index = cluster_id;
 }
 
 // Displacement and tessellation
-void cluster_mesh_enable_displacement(cluster_mesh_t *mesh, uint32_t cluster_id, bool enable) {
-    if (!mesh || cluster_id >= mesh->cluster_count) return;
-    
-    mesh_cluster_t *clusters = (mesh_cluster_t *)[mesh->cluster_buffer contents];
-    clusters[cluster_id].has_displacement = enable;
+void cluster_mesh_enable_displacement(cluster_mesh_t *mesh, uint32_t cluster_id,
+                                      bool enable) {
+  if (!mesh || cluster_id >= mesh->cluster_count)
+    return;
+
+  mesh_cluster_t *clusters = (mesh_cluster_t *)[mesh->cluster_buffer contents];
+  clusters[cluster_id].has_displacement = enable;
 }
 
-void cluster_mesh_update_displacement(cluster_mesh_t *mesh, id<MTLTexture> heightmap, float strength) {
-    if (!mesh || !heightmap) return;
-    
-    // Update displacement for all clusters with displacement enabled
-    mesh_cluster_t *clusters = (mesh_cluster_t *)[mesh->cluster_buffer contents];
-    for (uint32_t i = 0; i < mesh->cluster_count; i++) {
-        if (clusters[i].has_displacement) {
-            // Apply displacement mapping
-            // TODO: Implement actual displacement in vertex shader
-        }
+void cluster_mesh_update_displacement(cluster_mesh_t *mesh,
+                                      id<MTLTexture> heightmap,
+                                      float strength) {
+  if (!mesh || !heightmap)
+    return;
+
+  // Update displacement for all clusters with displacement enabled
+  mesh_cluster_t *clusters = (mesh_cluster_t *)[mesh->cluster_buffer contents];
+  for (uint32_t i = 0; i < mesh->cluster_count; i++) {
+    if (clusters[i].has_displacement) {
+      // Apply displacement mapping
+      // TODO: Implement actual displacement in vertex shader
     }
+  }
 }
 
 // Geometry simplification for parent clusters
-void cluster_mesh_simplify_parent_geometry(cluster_mesh_t *mesh, uint32_t parent_cluster_id, uint32_t target_triangle_count) {
-    if (!mesh || parent_cluster_id >= mesh->cluster_count) return;
-    
-    mesh_cluster_t *clusters = (mesh_cluster_t *)[mesh->cluster_buffer contents];
-    mesh_cluster_t *parent = &clusters[parent_cluster_id];
-    
-    // Simplify geometry using edge collapse or vertex clustering
-    // For now, just reduce triangle count
-    if (parent->triangle_count > target_triangle_count) {
-        parent->triangle_count = target_triangle_count;
-        parent->lod_error += simd_length(parent->bounds_extent) * 0.05f; // Increase error
-    }
+void cluster_mesh_simplify_parent_geometry(cluster_mesh_t *mesh,
+                                           uint32_t parent_cluster_id,
+                                           uint32_t target_triangle_count) {
+  if (!mesh || parent_cluster_id >= mesh->cluster_count)
+    return;
+
+  mesh_cluster_t *clusters = (mesh_cluster_t *)[mesh->cluster_buffer contents];
+  mesh_cluster_t *parent = &clusters[parent_cluster_id];
+
+  // Simplify geometry using edge collapse or vertex clustering
+  // For now, just reduce triangle count
+  if (parent->triangle_count > target_triangle_count) {
+    parent->triangle_count = target_triangle_count;
+    parent->lod_error +=
+        simd_length(parent->bounds_extent) * 0.05f; // Increase error
+  }
 }
 
 // Enhanced LOD selection
-void cluster_mesh_select_lod_clusters(cluster_mesh_t *mesh, const simd_float3 *camera_pos, float screen_error_threshold, uint32_t *visible_clusters, uint32_t *visible_count) {
-    if (!mesh || !camera_pos || !visible_clusters || !visible_count) return;
-    
-    uint32_t count = 0;
-    mesh_cluster_t *clusters = (mesh_cluster_t *)[mesh->cluster_buffer contents];
-    
-    for (uint32_t i = 0; i < mesh->cluster_count; i++) {
-        mesh_cluster_t *cluster = &clusters[i];
-        
-        // Calculate distance-based LOD
-        float distance = simd_distance(cluster->bounds_center, *camera_pos);
-        float screen_error = (cluster->lod_error * screen_error_threshold) / distance;
-        
-        // Select cluster if error is acceptable
-        if (screen_error <= 1.0f || cluster->child_count == 0) {
-            visible_clusters[count++] = i;
-        }
+void cluster_mesh_select_lod_clusters(cluster_mesh_t *mesh,
+                                      const simd_float3 *camera_pos,
+                                      float screen_error_threshold,
+                                      uint32_t *visible_clusters,
+                                      uint32_t *visible_count) {
+  if (!mesh || !camera_pos || !visible_clusters || !visible_count)
+    return;
+
+  uint32_t count = 0;
+  mesh_cluster_t *clusters = (mesh_cluster_t *)[mesh->cluster_buffer contents];
+
+  for (uint32_t i = 0; i < mesh->cluster_count; i++) {
+    mesh_cluster_t *cluster = &clusters[i];
+
+    // Calculate distance-based LOD
+    float distance = simd_distance(cluster->bounds_center, *camera_pos);
+    float screen_error =
+        (cluster->lod_error * screen_error_threshold) / distance;
+
+    // Select cluster if error is acceptable
+    if (screen_error <= 1.0f || cluster->child_count == 0) {
+      visible_clusters[count++] = i;
     }
-    
-    *visible_count = count;
+  }
+
+  *visible_count = count;
 }

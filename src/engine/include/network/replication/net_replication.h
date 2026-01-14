@@ -3,7 +3,7 @@
 #ifndef NET_REPLICATION_H
 #define NET_REPLICATION_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/vec3.h"
 
 #define NET_MAX_REPLICATED_OBJECTS 10000

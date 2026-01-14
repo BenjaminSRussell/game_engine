@@ -6,7 +6,7 @@
  */
 
 #include "core/simd/simd_math.h"
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <string.h>
 
 // Only compile if no SIMD available

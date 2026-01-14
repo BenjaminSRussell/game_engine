@@ -2,7 +2,7 @@
 #ifndef WORLD_PARTITION_H
 #define WORLD_PARTITION_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/bounds.h"
 #include "math/vec3.h"
 

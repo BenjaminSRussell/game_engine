@@ -4,7 +4,7 @@
  * A* Pathfinding on NavMesh
  */
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <stdbool.h>
 #include <stdlib.h>
 

@@ -11,7 +11,7 @@
 #define UI_LABEL_H
 
 #include "widget.h"
-#include "include/math/math.h"
+#include "include/math/math_all.h"
 #include <stdbool.h>
 
 #ifdef __cplusplus

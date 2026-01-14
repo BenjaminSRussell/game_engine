@@ -3,7 +3,7 @@
 // Purpose: Advanced pathfinding caching and optimization system
 // Provides hierarchical caching, path prediction, and dynamic optimization
 
-#include <ai/pathfinding/pathfinding_cache_advanced.h>
+#include "pathfinding_cache_advanced.h"
 #include <core/logger.h>
 #include <core/memory.h>
 #include <float.h>
@@ -140,8 +140,7 @@ static u32 find_or_create_region(vec3 position) {
     region->radius = 10.0f; // Default region radius
     region->path_count = 0;
     region->path_capacity = 32;
-    region->path_indices = allocator_alloc(g_persistent_allocator,
-                                           region->path_capacity * sizeof(u32));
+    region->path_indices = memory_alloc(region->path_capacity * sizeof(u32));
     region->last_access_time = g_advanced_cache->current_time;
 
     return region_idx;
@@ -168,8 +167,7 @@ static u32 find_or_create_region(vec3 position) {
   region->radius = 10.0f;
   region->path_count = 0;
   region->path_capacity = 32;
-  region->path_indices = allocator_alloc(g_persistent_allocator,
-                                         region->path_capacity * sizeof(u32));
+  region->path_indices = memory_alloc(region->path_capacity * sizeof(u32));
   region->last_access_time = g_advanced_cache->current_time;
 
   return lru_idx;
@@ -210,7 +208,7 @@ bool pathfinding_cache_advanced_initialize(u32 max_paths, u32 max_regions) {
     return true;
   }
 
-  g_advanced_cache = MALLOC_PERSISTENT(sizeof(AdvancedPathCache));
+  g_advanced_cache = memory_alloc(sizeof(AdvancedPathCache));
   if (!g_advanced_cache) {
     LOG_ERROR(LOG_CAT_AI, "Failed to allocate advanced path cache");
     return false;
@@ -375,8 +373,7 @@ void pathfinding_cache_advanced_store(vec3 start, vec3 goal,
   // Add to start region
   if (start_region->path_count >= start_region->path_capacity) {
     start_region->path_capacity *= 2;
-    start_region->path_indices = REALLOC_PERSISTENT(
-        start_region->path_indices, start_region->path_capacity * sizeof(u32));
+    start_region->path_indices = memory_alloc(start_region->path_capacity * sizeof(u32));
   }
   start_region->path_indices[start_region->path_count++] = path_index;
 
@@ -384,8 +381,8 @@ void pathfinding_cache_advanced_store(vec3 start, vec3 goal,
   if (path->region_goal != path->region_start) {
     if (goal_region->path_count >= goal_region->path_capacity) {
       goal_region->path_capacity *= 2;
-      goal_region->path_indices = REALLOC_PERSISTENT(
-          goal_region->path_indices, goal_region->path_capacity * sizeof(u32));
+      goal_region->path_indices = memory_realloc(
+        goal_region->path_indices, goal_region->path_capacity * sizeof(u32));
     }
     goal_region->path_indices[goal_region->path_count++] = path_index;
   }

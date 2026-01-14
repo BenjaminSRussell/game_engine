@@ -15,8 +15,8 @@
  * Provides configuration management with file monitoring and hot-reload
  */
 
-#include "../include/core/config_system.h"
-#include "../include/core/logger.h"
+#include "engine/include/core/config_system.h"
+#include "engine/include/core/logger.h"
 #include <stdlib.h>
 #include <string.h>
 

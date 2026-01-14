@@ -2,7 +2,7 @@
 #include "profiling/gpu_profiling_metal.h"
 #include <core/logger.h>
 #include <math/vec3.h>
-#include <math/math.h>
+#include <math/math_all.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

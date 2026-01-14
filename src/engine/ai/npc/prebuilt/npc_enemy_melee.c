@@ -8,7 +8,7 @@
  * =================================================================================================
  */
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <ai/npc/prebuilt/npc_enemy_melee.h>
 #include <stdlib.h>
 

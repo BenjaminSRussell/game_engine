@@ -3,7 +3,7 @@
  * Deep Implementation - Node-based Animation
  */
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <stdlib.h>
 
 typedef struct AnimState AnimState;

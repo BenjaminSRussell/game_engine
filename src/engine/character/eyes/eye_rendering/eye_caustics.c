@@ -1,5 +1,5 @@
 #include <character/eyes/eye_rendering/eye_rendering.h>
-#include "engine/include/common.h"
+#include <common.h>
 #include <math/vec3.h>
 
 // Simulated corno-iris interface refraction/caustics facade
@@ -16,4 +16,4 @@ vec3_t calculate_cornea_caustics(vec3_t L, vec3_t N, float pupil_dilation) {
   return vec3(caustic * 1.0f, caustic * 0.9f, caustic * 0.5f);
 }
 // Disabled for build fix
-#include "include/common.h"
+#include <common.h>

@@ -1,6 +1,6 @@
 // Particle rendering implementation
 #include "engine/include/core/logger.h"
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <rendering/particle_renderer.h>
 #include <stdlib.h>
 #include <string.h>

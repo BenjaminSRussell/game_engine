@@ -31,7 +31,7 @@
 #ifndef MESH_OPTIMIZER_H
 #define MESH_OPTIMIZER_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <include/rendering/mesh.h>
 #include <math/mat4.h>
 #include <math/vec3.h>

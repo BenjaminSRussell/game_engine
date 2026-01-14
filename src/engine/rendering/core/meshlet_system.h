@@ -19,7 +19,7 @@
 #ifndef MESHLET_SYSTEM_H
 #define MESHLET_SYSTEM_H
 
-#include "include/common.h"
+#include <common.h>
 #include "include/math/vec3.h"
 #include "include/math/vec4.h"
 #include "rendering/vulkan.h"

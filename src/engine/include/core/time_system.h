@@ -5,7 +5,7 @@
 #ifndef TIME_SYSTEM_H
 #define TIME_SYSTEM_H
 
-#include "include/common.h"
+#include <common.h>
 
 // Time system state
 typedef struct {

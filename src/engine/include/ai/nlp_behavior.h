@@ -24,7 +24,7 @@
 #ifndef NLP_BEHAVIOR_H
 #define NLP_BEHAVIOR_H
 
-#include "include/common.h"
+#include <common.h>
 #include "include/ai/ml/ml_core.h"
 #include "include/ai/blackboard.h"
 #include <stdbool.h>

@@ -14,7 +14,7 @@
 #define GPU_PARTICLES_H
 
 #include "include/rendering/vulkan.h"
-#include "engine/include/common.h"
+#include <common.h>
 #include <math/mat4.h>
 #include <math/vec3.h>
 #include <math/vec4.h>

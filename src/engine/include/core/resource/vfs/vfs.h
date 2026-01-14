@@ -47,7 +47,7 @@
 #ifndef VFS_H
 #define VFS_H
 
-#include "engine/include/common.h"
+#include <common.h>
 
 #ifndef PLATFORM_WEB
 #include <pthread.h>

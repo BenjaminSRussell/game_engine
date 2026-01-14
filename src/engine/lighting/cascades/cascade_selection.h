@@ -10,7 +10,7 @@
 #define LIGHTING_CASCADE_SELECTION_H
 
 #include <stdint.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 #ifdef __cplusplus
 extern "C" {

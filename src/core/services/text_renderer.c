@@ -14,7 +14,7 @@
 // TEXT-SYSTEM-010: Add text rendering optimization suggestions.
 #include "engine/include/core/logger.h"
 #include <ctype.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <rendering/text_renderer.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,6 +1,6 @@
 // Physics Demo: Fluid Simulation - Particle-based fluid dynamics
 #include "physics_demo_framework.c"
-#include "engine/include/math/math.h"
+#include "engine/include/math/math_all.h"
 #include <stdlib.h>
 
 #define MAX_PARTICLES 500

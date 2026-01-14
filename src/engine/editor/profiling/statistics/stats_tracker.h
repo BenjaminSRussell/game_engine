@@ -1,7 +1,7 @@
 #ifndef RENDERING_STATS_TRACKER_H
 #define RENDERING_STATS_TRACKER_H
 
-#include "include/common.h"
+#include <common.h>
 
 #define MAX_STATS 64
 #define STAT_HISTORY_SIZE 128

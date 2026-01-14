@@ -42,7 +42,7 @@ typedef vec2 Vec2;
 typedef Vec2 vec2_t;
 
 INLINE Vec2 vec2_create(f32 x, f32 y) {
-  Vec2 v = {x, y};
+  Vec2 v = {{x, y}};
   return v;
 }
 
@@ -67,5 +67,7 @@ INLINE f32 vec2_dot(Vec2 a, Vec2 b) { return a.x * b.x + a.y * b.y; }
 INLINE f32 vec2_length_sq(Vec2 v) { return vec2_dot(v, v); }
 
 INLINE f32 vec2_length(Vec2 v) { return sqrtf(vec2_length_sq(v)); }
+
+INLINE f32 vec2_distance(Vec2 a, Vec2 b) { return vec2_length(vec2_sub(a, b)); }
 
 #endif // VEC2_H

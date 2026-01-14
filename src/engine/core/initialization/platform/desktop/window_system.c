@@ -10,8 +10,8 @@ bool platform_desktop_create_window(const WindowConfig *config) {
   if (!config)
     return false;
 
-  LOG_INFO(LOG_CAT_PLATFORM, "Creating Window: %s (%dx%d)", config->title,
-           config->width, config->height);
+  LOG_INFO_CAT(LOG_CAT_PLATFORM, "Creating Window: %s (%dx%d)", config->title,
+               config->width, config->height);
 
   glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
   glfwWindowHint(GLFW_RESIZABLE, config->resizable ? GLFW_TRUE : GLFW_FALSE);
@@ -21,7 +21,7 @@ bool platform_desktop_create_window(const WindowConfig *config) {
       config->fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
 
   if (!g_window) {
-    LOG_FATAL(LOG_CAT_PLATFORM, "Failed to create GLFW window");
+    LOG_FATAL_CAT(LOG_CAT_PLATFORM, "Failed to create GLFW window");
     return false;
   }
 

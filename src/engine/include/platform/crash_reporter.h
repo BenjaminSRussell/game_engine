@@ -2,7 +2,7 @@
 #ifndef CRASH_REPORTER_H
 #define CRASH_REPORTER_H
 
-#include "include/common.h"
+#include <common.h>
 
 typedef struct {
   char app_version[32];

@@ -10,7 +10,7 @@
  */
 
 #include "character/animation/skeletal/skeleton_data.h"
-#include "include/common.h"
+#include <common.h>
 #include "include/math/mat4.h"
 #include "include/math/quat.h"
 #include "include/math/vec3.h"

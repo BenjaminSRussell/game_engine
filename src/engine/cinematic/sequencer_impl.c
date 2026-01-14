@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "include/common.h"
+#include <common.h>
 
 typedef enum {
     SEQUENCER_TRACK_CAMERA,

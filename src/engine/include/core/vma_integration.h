@@ -11,7 +11,7 @@
 #ifndef VMA_INTEGRATION_H
 #define VMA_INTEGRATION_H
 
-#include "include/common.h"
+#include <common.h>
 
 #ifdef VULKAN_BUILD
 

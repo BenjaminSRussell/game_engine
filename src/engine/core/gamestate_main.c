@@ -21,7 +21,7 @@
 #include <chunk/chunk_buffers.h>
 #include <combat/combat.h>
 #include <combat/combat_animations.h>
-#include "engine/include/common.h"
+#include <common.h>
 #include <config/config.h>
 #include <core/memory/pool.h>
 #include <core/resource/vfs/vfs.h>
@@ -72,7 +72,7 @@
 #include <world/water_physics.h>
 #include <world/water_system.h>
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 #include <ecs/components/transform.h>
 

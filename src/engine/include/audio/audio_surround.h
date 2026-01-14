@@ -1,8 +1,8 @@
 #ifndef AUDIO_SURROUND_H
 #define AUDIO_SURROUND_H
 
-#include "engine/include/common.h"
-#include "engine/include/math/math.h"
+#include <common.h>
+#include "engine/include/math/math_all.h"
 
 // -------------------------------------------------------------------------------------------------
 // 7.1.2 SURROUND SOUND CONFIGURATION

@@ -1,4 +1,5 @@
 #include "weather_system.h"
+#include "unified_memory_allocator.h"
 
 #include <math.h>
 #include <stdio.h>
@@ -707,13 +708,13 @@ void weather_manager_shutdown(WeatherManager *manager) {
     return;
   }
 
-  free(manager->lightning.bolts);
+  UNIFIED_FREE(manager->lightning.bolts);
   manager->lightning.bolts = NULL;
   manager->lightning.bolt_count = 0u;
   manager->lightning.max_bolts = 0u;
 
   if (manager->zones) {
-    free(manager->zones);
+    UNIFIED_FREE(manager->zones);
     manager->zones = NULL;
     manager->zone_count = 0u;
   }

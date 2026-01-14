@@ -12,8 +12,8 @@
 #ifndef ITEM_DATABASE_H
 #define ITEM_DATABASE_H
 
-#include "include/gameplay/inventory/item.h"
-#include "engine/include/common.h"
+#include <common.h>
+#include <gameplay/inventory/item.h>
 
 // ============================================================================
 // DATABASE MANAGEMENT

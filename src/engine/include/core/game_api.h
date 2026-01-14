@@ -18,7 +18,7 @@
 #ifndef GAME_API_H
 #define GAME_API_H
 
-#include "include/common.h"
+#include <common.h>
 #include "include/core/scene.h"
 #include <core/engine_core.h>
 #include <math/vec2.h>

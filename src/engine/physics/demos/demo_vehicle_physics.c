@@ -1,6 +1,6 @@
 // Physics Demo: Vehicle Physics - Car simulation with wheels and suspension
 #include "physics_demo_framework.c"
-#include "engine/include/math/math.h"
+#include "engine/include/math/math_all.h"
 #include <stdlib.h>
 
 static RigidBody* car_body;

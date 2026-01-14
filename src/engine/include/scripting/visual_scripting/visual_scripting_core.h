@@ -1,7 +1,7 @@
 #ifndef ENGINE_VISUAL_SCRIPTING_CORE_H
 #define ENGINE_VISUAL_SCRIPTING_CORE_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include "engine/include/core/logger.h"
 #include <stdbool.h>
 

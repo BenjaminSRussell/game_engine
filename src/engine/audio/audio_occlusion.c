@@ -18,7 +18,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 static BlockID audio_occlusion_get_block(ChunkManager *chunks, i32 x, i32 y,
                                          i32 z) {

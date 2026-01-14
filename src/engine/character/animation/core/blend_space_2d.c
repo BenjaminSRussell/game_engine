@@ -10,7 +10,7 @@
 
 #include "character/animation/blending/blend_space_2d.h"
 #include "include/animation/animation_system.h" // For Pose, pose_blend
-#include "include/math/math.h"
+#include "include/math/math_all.h"
 
 // =================================================================================================
 //                                      STRUCTS

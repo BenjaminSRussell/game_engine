@@ -1,8 +1,8 @@
 #ifndef SPATIAL_DISTANCE_ATTENUATION_H
 #define SPATIAL_DISTANCE_ATTENUATION_H
 
-#include "engine/include/common.h"
-#include "engine/include/math/math.h"
+#include <common.h>
+#include "engine/include/math/math_all.h"
 
 // -------------------------------------------------------------------------------------------------
 // DISTANCE ATTENUATION TYPES

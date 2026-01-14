@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/include/common.h"
+#include <common.h>
 
 // Forward declarations
 typedef struct GuardData GuardData;

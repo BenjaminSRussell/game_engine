@@ -2,7 +2,7 @@
 #ifndef GAMEPLAY_ABILITIES_H
 #define GAMEPLAY_ABILITIES_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/vec3.h"
 
 #define MAX_ATTRIBUTES 32

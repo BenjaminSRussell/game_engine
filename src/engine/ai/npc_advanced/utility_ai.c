@@ -2,7 +2,7 @@
 #include "engine/include/core/logger.h"
 #include "engine/include/core/memory.h"
 #include <float.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <string.h>
 
 /**

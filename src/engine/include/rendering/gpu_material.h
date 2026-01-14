@@ -11,7 +11,7 @@
 #include "include/rendering/texture_system.h"
 #include "platform/vulkan/vk_instance.h"
 #include <vulkan/vulkan.h>
-#include "engine/include/common.h"
+#include <common.h>
 
 // Maximum descriptor sets per material
 #define MAX_MATERIAL_DESCRIPTORS 256

@@ -1,7 +1,7 @@
 #ifndef RUNTIME_VIRTUAL_TEXTURE_H
 #define RUNTIME_VIRTUAL_TEXTURE_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/vec3.h"
 
 #define RVT_MAX_VOLUMES 16

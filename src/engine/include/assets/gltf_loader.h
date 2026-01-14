@@ -4,7 +4,7 @@
 #ifndef GLTF_LOADER_H
 #define GLTF_LOADER_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <include/rendering/mesh.h>
 #include <math/vec2.h>
 #include <math/vec3.h>

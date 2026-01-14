@@ -24,7 +24,7 @@
 #ifndef GI_DENOISER_H
 #define GI_DENOISER_H
 
-#include "include/common.h"
+#include <common.h>
 #include "include/ai/ml/ml_core.h"
 #include <stdbool.h>
 #include <stdint.h>

@@ -6,7 +6,7 @@
 #ifndef PARTICLE_SYSTEM_UNIFIED_H
 #define PARTICLE_SYSTEM_UNIFIED_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include "math/vec3.h"
 #include "math/vec4.h"
 #include "rendering/vulkan.h"

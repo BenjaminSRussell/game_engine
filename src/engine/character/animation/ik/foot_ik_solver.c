@@ -1,8 +1,8 @@
 #include "core/core.h"
 #include "include/animation/animation_system.h"
-#include "include/common.h"
+#include <common.h>
 #include "include/math/mat4.h"
-#include "include/math/math.h"
+#include "include/math/math_all.h"
 #include "include/math/quat.h"
 #include "include/math/vec3.h"
 #include "include/physics/physics.h"

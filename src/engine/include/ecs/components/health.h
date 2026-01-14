@@ -24,7 +24,7 @@
 #ifndef HEALTH_COMPONENT_H
 #define HEALTH_COMPONENT_H
 
-#include "engine/include/common.h"
+#include <common.h>
 
 typedef struct {
   f32 health;

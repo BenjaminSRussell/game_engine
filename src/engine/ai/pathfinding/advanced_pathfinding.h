@@ -4,7 +4,7 @@
 #ifndef ADVANCED_PATHFINDING_H
 #define ADVANCED_PATHFINDING_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/vec3.h"
 #include "math/vec2.h"
 #include "ai/nav/nav_mesh.h"

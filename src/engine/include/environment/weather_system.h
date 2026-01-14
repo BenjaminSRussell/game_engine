@@ -2,7 +2,7 @@
 #ifndef WEATHER_SYSTEM_H
 #define WEATHER_SYSTEM_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/vec3.h"
 #import <Metal/Metal.h>
 

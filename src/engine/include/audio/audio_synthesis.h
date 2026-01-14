@@ -1,8 +1,8 @@
 #ifndef AUDIO_SYNTHESIS_H
 #define AUDIO_SYNTHESIS_H
 
-#include "engine/include/common.h"
-#include "engine/include/math/math.h"
+#include <common.h>
+#include "engine/include/math/math_all.h"
 
 // -------------------------------------------------------------------------------------------------
 // WAVEFORM GENERATORS

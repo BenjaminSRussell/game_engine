@@ -2,7 +2,7 @@
 #ifndef SOUND_ATTENUATION_H
 #define SOUND_ATTENUATION_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/vec3.h"
 
 // Distance attenuation shapes

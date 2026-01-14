@@ -4,7 +4,7 @@
  */
 
 #include <stdbool.h>
-#include "include/common.h"
+#include <common.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>

@@ -7,7 +7,7 @@
 #ifndef GPU_MEMORY_H
 #define GPU_MEMORY_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <time.h>
 
 #include <include/rendering/vulkan.h>

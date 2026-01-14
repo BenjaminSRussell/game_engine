@@ -3,7 +3,7 @@
  * Dolly, Crane, Rail Cameras
  */
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 typedef enum {
   CAM_DOLLY,   // Linear track

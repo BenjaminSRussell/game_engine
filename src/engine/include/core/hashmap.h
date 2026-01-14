@@ -1,7 +1,7 @@
 #ifndef CORE_HASHMAP_H
 #define CORE_HASHMAP_H
 
-#include "include/common.h"
+#include <common.h>
 
 typedef struct {
   const void *key;

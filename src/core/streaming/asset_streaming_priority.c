@@ -3,7 +3,7 @@
 #include "engine/include/core/memory.h"
 #include <stdlib.h>
 #include <string.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 // Helper function to swap two asset requests
 static void swap_requests(AssetRequest* a, AssetRequest* b) {

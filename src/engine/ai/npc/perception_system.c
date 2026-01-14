@@ -1,12 +1,12 @@
 #include <ai/npc/perception_system.h>
 #include <ai/npc_advanced/memory_system.h>
-#include "engine/include/common.h"
+#include <common.h>
 #include "engine/include/core/memory.h"
 #include <core/multithreading.h>
 #include <core/threading/mutex.h>
 #include <core/time_system.h>
 #include <ecs/ecs.h>
-#include "engine/include/math/math.h"
+#include "engine/include/math/math_all.h"
 #include <math/vec3.h>
 #include <physics/physics.h>
 

@@ -9,7 +9,7 @@
 
 #include "include/animation/core/skeleton_manager.h"
 #include "include/animation/animation_system.h"
-#include "include/math/math.h"
+#include "include/math/math_all.h"
 #include <string.h>
 
 // =================================================================================================

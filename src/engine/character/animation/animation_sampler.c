@@ -1,5 +1,5 @@
 #include "character/animation/animation_sampler.h"
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 static void get_prev_and_next_keyframes(const bone_track_t* track, float time, 
                                       const keyframe_t** prev, const keyframe_t** next, float* factor) {

@@ -6,7 +6,7 @@
 #ifndef AI_PIPELINE_H
 #define AI_PIPELINE_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include "include/ai/ai_asset_generator.h"
 
 // Pipeline stage

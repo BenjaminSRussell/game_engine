@@ -16,7 +16,7 @@
  */
 
 #include "engine/include/core/logger.h"
-#include <core/game_loop.h>
+#include "engine/include/core/game_loop.h"
 #include <string.h>
 
 #ifdef _WIN32

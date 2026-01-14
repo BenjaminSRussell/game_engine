@@ -85,7 +85,6 @@ static void apply_nutrients(uint32_t player_id, const food_item_t* food);
 static void update_nutrition_status(uint32_t player_id, float delta_time);
 static float calculate_nutrition_bonus(const character_nutrition_t* nutrition);
 static float calculate_calories(const food_item_t* food);
-static uint32_t get_current_time_ms(void);
 static void register_furnace_recipe(food_item_t* food);
 
 bool food_system_init(void) {
@@ -572,8 +571,3 @@ static float calculate_calories(const food_item_t* food) {
     return calories;
 }
 
-static uint32_t get_current_time_ms(void) {
-    // Placeholder - would typically use platform-specific time function
-    static uint32_t counter = 0;
-    return counter += 16;  // Simulate 60 FPS
-}

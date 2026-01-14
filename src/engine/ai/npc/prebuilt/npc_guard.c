@@ -15,7 +15,7 @@
 #include <ai/npc/prebuilt/npc_guard.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <physics/physics.h>
 #include <physics/physics.h>
 

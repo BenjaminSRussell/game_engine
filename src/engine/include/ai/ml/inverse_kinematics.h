@@ -7,7 +7,7 @@
 #ifndef INVERSE_KINEMATICS_H
 #define INVERSE_KINEMATICS_H
 
-#include "include/common.h"
+#include <common.h>
 #include "include/ai/ml/ml_core.h"
 #include "math/vec3.h"
 #include <stdbool.h>

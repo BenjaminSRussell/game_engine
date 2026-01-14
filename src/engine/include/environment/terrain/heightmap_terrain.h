@@ -3,7 +3,7 @@
 #ifndef HEIGHTMAP_TERRAIN_H
 #define HEIGHTMAP_TERRAIN_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/vec3.h"
 #include "math/vec2.h"
 #include <Metal/Metal.h>

@@ -1,5 +1,5 @@
 #include "character/skin/skin_rendering.h"
-#include "include/common.h"
+#include <common.h>
 #include <math.h>
 
 // Placeholder for skin translucency implementation

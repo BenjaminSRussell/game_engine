@@ -4,7 +4,7 @@
 #include <combat/combat.h>
 #include <combat/combat_animations.h>
 #include <combat/equipment.h>
-#include "engine/include/common.h"
+#include <common.h>
 #include <math.h>
 #include <physics/physics.h>
 #include <stdbool.h>

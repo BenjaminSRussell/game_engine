@@ -11,6 +11,7 @@
  */
 
 #include "weather_system.h"
+#include "unified_memory_allocator.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

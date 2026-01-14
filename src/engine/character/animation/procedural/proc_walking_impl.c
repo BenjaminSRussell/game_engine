@@ -1,5 +1,5 @@
-#include "include/common.h"
-#include "include/math/math.h"
+#include <common.h>
+#include "include/math/math_all.h"
 
 typedef struct {
   float pos[3];

@@ -24,7 +24,7 @@
 #ifndef FRAME_INTERPOLATION_H
 #define FRAME_INTERPOLATION_H
 
-#include "include/common.h"
+#include <common.h>
 #include <ai/ml/ml_core.h>
 #include "engine/include/core/logger.h"
 #include <stdbool.h>

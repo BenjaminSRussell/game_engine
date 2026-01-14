@@ -10,7 +10,7 @@
 //  COMPLETED: Add camera cinematic mode with predefined paths.
 //  COMPLETED: Implement camera screenshot system with high-res capture.
 //  COMPLETED: Add camera statistics tracking system.
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <rendering/vulkan.h>
 
 void camera_init(Camera *camera, Vec3 position, f32 yaw, f32 pitch) {

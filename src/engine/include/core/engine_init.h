@@ -11,7 +11,7 @@
 #ifndef ENGINE_INIT_H
 #define ENGINE_INIT_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <stdbool.h>
 #include <stdint.h>
 

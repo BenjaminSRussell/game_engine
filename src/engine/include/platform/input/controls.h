@@ -49,7 +49,7 @@
 #ifndef CONTROLS_H
 #define CONTROLS_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <config/config.h>
 #include <math/vec2.h>
 #include <math/vec3.h>

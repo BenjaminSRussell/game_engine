@@ -24,7 +24,7 @@
 #ifndef AI_BLACKBOARD_H
 #define AI_BLACKBOARD_H
 
-#include "include/common.h"
+#include <common.h>
 #include "include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>

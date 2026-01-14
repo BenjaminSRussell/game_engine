@@ -7,7 +7,7 @@
 #include <audio/underwater_filter.h>
 #include <core/common.h>
 #include <core/logger.h>
-#include <math/math.h>
+#include <math/math_all.h>
 #include <math/vec3.h>
 #include <physics/block_physics.h>
 #include <stdio.h>

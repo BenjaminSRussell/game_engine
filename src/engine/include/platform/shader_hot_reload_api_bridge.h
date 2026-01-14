@@ -4,7 +4,7 @@
 #ifndef SHADER_HOT_RELOAD_API_BRIDGE_H
 #define SHADER_HOT_RELOAD_API_BRIDGE_H
 
-#include "include/common.h"
+#include <common.h>
 #include <stdbool.h>
 #include <stdint.h>
 

@@ -499,8 +499,3 @@ static void blend_ik_results(ik_chain_t* chain, float blend_weight) {
     // based on the blend weight
 }
 
-uint32_t get_current_time_ms(void) {
-    // Placeholder - would typically use platform-specific time function
-    static uint32_t counter = 0;
-    return counter += 16;  // Simulate 60 FPS
-}

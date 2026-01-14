@@ -4,7 +4,7 @@
 #ifndef STATUS_EFFECT_API_BRIDGE_H
 #define STATUS_EFFECT_API_BRIDGE_H
 
-#include "include/common.h"
+#include <common.h>
 #include <stdbool.h>
 #include <stdint.h>
 

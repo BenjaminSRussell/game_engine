@@ -3,7 +3,7 @@
  * Additional system for completeness
  */
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <stdlib.h>
 #include <string.h>
 

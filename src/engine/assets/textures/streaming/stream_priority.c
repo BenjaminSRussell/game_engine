@@ -5,7 +5,7 @@
 
 #include "assets/textures/streaming/stream_priority.h"
 #include "assets/textures/streaming/texture_streamer.h"
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <stdlib.h>
 
 /* ============================================================================

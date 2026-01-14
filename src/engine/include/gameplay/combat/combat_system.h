@@ -6,9 +6,9 @@
 #ifndef COMBAT_SYSTEM_H
 #define COMBAT_SYSTEM_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <ecs/ecs.h>
-#include "engine/include/math/math.h"
+#include "engine/include/math/math_all.h"
 
 // ============================================================================
 // SYSTEM LIFECYCLE

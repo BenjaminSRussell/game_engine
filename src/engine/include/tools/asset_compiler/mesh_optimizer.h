@@ -26,7 +26,7 @@
 #ifndef MESH_OPTIMIZER_ASSET_COMPILER_H
 #define MESH_OPTIMIZER_ASSET_COMPILER_H
 
-#include "include/common.h"
+#include <common.h>
 #include <math/vec3.h>
 #include <math/vec2.h>
 #include <include/rendering/mesh.h>

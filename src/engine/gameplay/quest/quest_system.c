@@ -677,8 +677,3 @@ static void give_quest_rewards(uint32_t player_id, const quest_t* quest) {
     }
 }
 
-uint32_t get_current_time_ms(void) {
-    // Placeholder - would typically use platform-specific time function
-    static uint32_t counter = 0;
-    return counter += 16;  // Simulate 60 FPS
-}

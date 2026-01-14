@@ -4,7 +4,7 @@
  * All ~50 AGENT_AUDIO advanced TODOs
  */
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <stdlib.h>
 #include <string.h>
 

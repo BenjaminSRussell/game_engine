@@ -3,7 +3,7 @@
  * All ~22 AGENT_ANIM_1 skeletal animation tasks completed
  */
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <stdlib.h>
 #include <string.h>
 

@@ -15,6 +15,7 @@
 #include "../../../rendering/material_system.h"
 #include "../../../rendering/gpu_texture.h"
 #include "../../../rendering/shader_compiler.h"
+#include "unified_memory_allocator.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -255,15 +256,15 @@ void weather_rendering_generate_noise_textures(void) {
             }
         }
         gpu_texture_update_3d(g_weather_rendering.noise_texture_3d, noise_data);
-        free(noise_data);
+        UNIFIED_FREE(noise_data);
     }
     
     // Generate blue noise for temporal AA
-    uint8_t* blue_noise = malloc(512 * 512 * 4);
+    uint8_t* blue_noise = UNIFIED_ALLOC(512 * 512 * 4, MEMORY_STRATEGY_DEFAULT, MEMORY_FLAG_TRACK);
     if (blue_noise) {
         generate_blue_noise(blue_noise, 512, 512);
         gpu_texture_update_2d(g_weather_rendering.blue_noise_texture, blue_noise);
-        free(blue_noise);
+        UNIFIED_FREE(blue_noise);
     }
 }
 

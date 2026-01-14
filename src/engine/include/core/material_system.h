@@ -7,7 +7,7 @@
 #ifndef MATERIAL_SYSTEM_H
 #define MATERIAL_SYSTEM_H
 
-#include "include/common.h"
+#include <common.h>
 #include "include/core/big_int.h"
 
 // Material ID - unique identifier for each material

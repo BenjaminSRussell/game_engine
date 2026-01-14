@@ -1,5 +1,5 @@
 // Disabled for build fix
-#include "engine/include/common.h"
+#include <common.h>
 #include <math/vec3.h>
 #include <stdlib.h>
 #include <string.h>
@@ -75,4 +75,4 @@ void hair_sim_shutdown(void) {
     free(g_hair_sim.velocities);
   memset(&g_hair_sim, 0, sizeof(g_hair_sim));
 }
-#include "include/common.h"
+#include <common.h>

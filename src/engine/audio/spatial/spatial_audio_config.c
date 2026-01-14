@@ -7,7 +7,7 @@
 #include "audio/spatial/spatial_audio_config.h"
 #include <stdlib.h>
 #include <string.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 void spatial_audio_config_init(SpatialAudioConfig *config) {
     memset(config, 0, sizeof(SpatialAudioConfig));

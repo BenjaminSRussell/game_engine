@@ -34,7 +34,7 @@
 #ifndef REAL_TIME_OPTIMIZATION_H
 #define REAL_TIME_OPTIMIZATION_H
 
-#include "include/common.h"
+#include <common.h>
 #include "include/core/performance.h"
 #include <stdbool.h>
 

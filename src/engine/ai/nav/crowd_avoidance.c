@@ -7,7 +7,7 @@
 #include "ai/nav/crowd_avoidance.h"
 #include <stdlib.h>
 #include <string.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 void crowd_avoidance_init(CrowdAvoidance *crowd) {
     crowd->agents = NULL;

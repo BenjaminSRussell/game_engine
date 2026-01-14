@@ -14,7 +14,7 @@
 #ifndef LOD_GENERATOR_H
 #define LOD_GENERATOR_H
 
-#include "include/common.h"
+#include <common.h>
 #include <include/rendering/mesh.h>
 
 // Generate multiple LOD levels from a source mesh

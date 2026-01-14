@@ -54,7 +54,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 Profiler g_profiler = {0};
 FrameStats g_frame_stats = {0};

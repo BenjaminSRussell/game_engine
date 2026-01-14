@@ -34,7 +34,7 @@
 #ifndef VISUAL_SCRIPTING_H
 #define VISUAL_SCRIPTING_H
 
-#include "include/common.h"
+#include <common.h>
 #include "include/core/performance.h"
 #include "include/ecs/ecs.h"
 #include <stdbool.h>

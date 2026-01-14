@@ -21,7 +21,7 @@
 #ifndef CAMERA_CONTROLLER_H
 #define CAMERA_CONTROLLER_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <math/vec3.h>
 #include <math/mat4.h>
 #include "include/rendering/camera.h"

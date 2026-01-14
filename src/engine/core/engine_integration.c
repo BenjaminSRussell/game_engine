@@ -25,7 +25,7 @@
 // TODO: Research and implement AI-driven performance optimization (Dynamic
 // Budgeting).
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <stdlib.h>
 #include <string.h>
 

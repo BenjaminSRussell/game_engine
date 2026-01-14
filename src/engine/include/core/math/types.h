@@ -725,54 +725,8 @@ static INLINE quat quat_make(f32 x, f32 y, f32 z, f32 w) {
   return q;
 }
 
-// SIMD vector operations (when available)
-#if !defined(VEC3_H)
-#if defined(UNIFIED_SIMD_SSE) || defined(UNIFIED_SIMD_NEON)
-static INLINE vec3 vec3_add(vec3 a, vec3 b) {
-  vec3 result;
-#if defined(UNIFIED_SIMD_SSE)
-  result.simd = _mm_add_ps(a.simd, b.simd);
-#elif defined(UNIFIED_SIMD_NEON)
-  result.simd = vaddq_f32(a.simd, b.simd);
-#endif
-  return result;
-}
-#endif
-#endif
-
-#if !defined(VEC3_H)
-#if defined(UNIFIED_SIMD_SSE) || defined(UNIFIED_SIMD_NEON)
-static INLINE vec3 vec3_sub(vec3 a, vec3 b) {
-  vec3 result;
-#if defined(UNIFIED_SIMD_SSE)
-  result.simd = _mm_sub_ps(a.simd, b.simd);
-#elif defined(UNIFIED_SIMD_NEON)
-  result.simd = vsubq_f32(a.simd, b.simd);
-#endif
-  return result;
-}
-#endif
-#endif
-
-#if !defined(VEC3_H)
-static INLINE f32 vec3_dot(vec3 a, vec3 b) {
-#if defined(UNIFIED_SIMD_SSE)
-  __m128 mul = _mm_mul_ps(a.simd, b.simd);
-  __m128 shuf = _mm_movehdup_ps(mul);
-  __m128 sums = _mm_add_ps(mul, shuf);
-  shuf = _mm_movehl_ps(shuf, sums);
-  sums = _mm_add_ss(sums, shuf);
-  return _mm_cvtss_f32(sums);
-#elif defined(UNIFIED_SIMD_NEON)
-  float32x4_t mul = vmulq_f32(a.simd, b.simd);
-  float32x2_t sum = vadd_f32(vget_low_f32(mul), vget_high_f32(mul));
-  sum = vpadd_f32(sum, sum);
-  return vget_lane_f32(sum, 0);
-#else
-  return a.x * b.x + a.y * b.y + a.z * b.z;
-#endif
-}
-#endif
+// SIMD vector operations (moved to specialized headers math/vec3.h etc. to
+// avoid conflicts)
 
 // Get available SIMD features at runtime
 SimdFeature simd_get_available_features(void);

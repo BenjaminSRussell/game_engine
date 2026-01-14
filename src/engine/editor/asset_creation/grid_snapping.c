@@ -5,7 +5,7 @@
  */
 
 #include <editor/asset_creation/grid_snapping.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <stdio.h>
 
 static GridSettings g_grid_settings = {

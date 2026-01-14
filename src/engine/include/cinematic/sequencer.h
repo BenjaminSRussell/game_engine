@@ -1,7 +1,7 @@
 #ifndef SEQUENCER_H
 #define SEQUENCER_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/quat.h"
 #include "math/vec3.h"
 

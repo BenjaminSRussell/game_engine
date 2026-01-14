@@ -4,7 +4,7 @@
 #include <audio/audio_system.h>
 #include <string.h>
 #include <stdlib.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 //  COMPLETED: TTS Bridge with ElevenLabs/Azure/Coqui integration and async streaming
 //  COMPLETED: Implement Lip Sync with phoneme extraction and blend shape mapping

@@ -13,7 +13,7 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#include "engine/include/common.h"
+#include <common.h>
 
 // Item categories
 typedef enum {
@@ -62,7 +62,8 @@ typedef struct {
 
   u32 max_stack_size; // Max items per stack (1 for non-stackable)
   f32 weight;         // Weight per item
-  u32 value;          // Base gold value
+  u32 sell_value;     // Base gold value
+  u32 max_durability; // Base durability for equippables
 
   // Type-specific data
   union {
@@ -90,6 +91,7 @@ typedef struct {
 typedef struct {
   u32 item_id;      // Item definition ID
   u32 quantity;     // Stack size (1 to max_stack_size)
+  u32 max_quantity; // Maximum stack size allowed
   u32 durability;   // Current durability (for equipment)
   const Item *item; // Optional cached pointer to item template
 

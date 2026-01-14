@@ -3,7 +3,7 @@
 #include <OpenGL/gl3.h>
 #include "engine/include/core/logger.h"
 #include <math/mat4.h>
-#include "engine/include/math/math.h"
+#include "engine/include/math/math_all.h"
 #include <math/vec3.h>
 #include <math/vec4.h>
 #include <stdio.h>
@@ -22,7 +22,7 @@ static u64 get_current_time_ns(void) {
   return (u64)(ts.tv_sec * 1000000000LL + ts.tv_nsec);
 }
 
-static u64 get_current_time_ms(void) { return get_current_time_ns() / 1000000; }
+
 
 static float min_f(float a, float b) { return a < b ? a : b; }
 static float max_f(float a, float b) { return a > b ? a : b; }

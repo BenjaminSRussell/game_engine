@@ -3,7 +3,7 @@
 #ifndef CHAOS_DESTRUCTION_H
 #define CHAOS_DESTRUCTION_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/vec3.h"
 #include <Metal/Metal.h>
 

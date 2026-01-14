@@ -2,7 +2,7 @@
 #ifndef DLC_SYSTEM_H
 #define DLC_SYSTEM_H
 
-#include "include/common.h"
+#include <common.h>
 
 typedef struct {
   char id[32];

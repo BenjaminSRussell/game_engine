@@ -3,11 +3,11 @@
  * Network entity synchronization with delta compression and relevancy culling
  */
 
+#include <math.h>
 #include <network/replication/entity_replication.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 #define MAX_ENTITIES 4096
 #define MAX_COMPONENTS 32
@@ -16,40 +16,40 @@
 #define DELTA_BUFFER_SIZE 1024
 
 typedef struct {
-    uint32_t id;
-    uint32_t component_mask;
-    uint32_t owner_client_id;
-    uint8_t priority;
-    bool dormant;
-    bool active;
-    uint8_t data[256];
-    uint32_t data_size;
-    uint32_t last_update_sequence;
-    Vec3 position;
-    float last_replication_time;
+  uint32_t id;
+  uint32_t component_mask;
+  uint32_t owner_client_id;
+  uint8_t priority;
+  bool dormant;
+  bool active;
+  uint8_t data[256];
+  uint32_t data_size;
+  uint32_t last_update_sequence;
+  Vec3 position;
+  float last_replication_time;
 } ReplicatedEntity;
 
-typedef struct {
-    ReplicatedEntity *entities;
-    uint32_t max_entities;
-    uint32_t active_count;
-    
-    // Network stats
-    uint32_t bytes_sent;
-    uint32_t packets_sent;
-    uint32_t entities_replicated;
-    
-    // Relevancy culling
-    float relevancy_distance;
-    Vec3 reference_position;
-    
-    // Delta compression
-    uint8_t delta_buffer[DELTA_BUFFER_SIZE];
-    uint32_t delta_buffer_size;
-    
-    // Priority queue for replication
-    uint32_t priority_queue[MAX_ENTITIES];
-    uint32_t queue_size;
+typedef struct ReplicationSystem {
+  ReplicatedEntity *entities;
+  uint32_t max_entities;
+  uint32_t active_count;
+
+  // Network stats
+  uint32_t bytes_sent;
+  uint32_t packets_sent;
+  uint32_t entities_replicated;
+
+  // Relevancy culling
+  float relevancy_distance;
+  Vec3 reference_position;
+
+  // Delta compression
+  uint8_t delta_buffer[DELTA_BUFFER_SIZE];
+  uint32_t delta_buffer_size;
+
+  // Priority queue for replication
+  uint32_t priority_queue[MAX_ENTITIES];
+  uint32_t queue_size;
 } ReplicationSystem;
 
 // Global replication system
@@ -57,407 +57,354 @@ static ReplicationSystem *g_replication_system = NULL;
 
 // Helper functions
 static float calculate_distance(const Vec3 *a, const Vec3 *b) {
-    float dx = a->x - b->x;
-    float dy = a->y - b->y;
-    float dz = a->z - b->z;
-    return sqrtf(dx * dx + dy * dy + dz * dz);
+  float dx = a->x - b->x;
+  float dy = a->y - b->y;
+  float dz = a->z - b->z;
+  return sqrtf(dx * dx + dy * dy + dz * dz);
 }
 
-static bool is_entity_relevant(const ReplicatedEntity *entity, const Vec3 *reference_pos, float max_distance) {
-    if (!entity || !entity->active || entity->dormant) {
-        return false;
-    }
-    
-    if (max_distance > 0.0f && reference_pos) {
-        float distance = calculate_distance(&entity->position, reference_pos);
-        return distance <= max_distance;
-    }
-    
-    return true;
+static bool is_entity_relevant(const ReplicatedEntity *entity,
+                               const Vec3 *reference_pos, float max_distance) {
+  if (!entity || !entity->active || entity->dormant) {
+    return false;
+  }
+
+  if (max_distance > 0.0f && reference_pos) {
+    float distance = calculate_distance(&entity->position, reference_pos);
+    return distance <= max_distance;
+  }
+
+  return true;
 }
 
 static void sort_priority_queue(ReplicationSystem *system) {
-    // Simple bubble sort for priority queue (high priority first)
-    for (uint32_t i = 0; i < system->queue_size - 1; i++) {
-        for (uint32_t j = 0; j < system->queue_size - i - 1; j++) {
-            uint32_t idx1 = system->priority_queue[j];
-            uint32_t idx2 = system->priority_queue[j + 1];
-            
-            ReplicatedEntity *entity1 = &system->entities[idx1];
-            ReplicatedEntity *entity2 = &system->entities[idx2];
-            
-            // Sort by priority (higher priority first), then by distance
-            bool should_swap = false;
-            if (entity1->priority < entity2->priority) {
-                should_swap = true;
-            } else if (entity1->priority == entity2->priority) {
-                float dist1 = calculate_distance(&entity1->position, &system->reference_position);
-                float dist2 = calculate_distance(&entity2->position, &system->reference_position);
-                should_swap = (dist1 > dist2);
-            }
-            
-            if (should_swap) {
-                system->priority_queue[j] = idx2;
-                system->priority_queue[j + 1] = idx1;
-            }
-        }
+  // Simple bubble sort for priority queue (high priority first)
+  for (uint32_t i = 0; i < system->queue_size - 1; i++) {
+    for (uint32_t j = 0; j < system->queue_size - i - 1; j++) {
+      uint32_t idx1 = system->priority_queue[j];
+      uint32_t idx2 = system->priority_queue[j + 1];
+
+      ReplicatedEntity *entity1 = &system->entities[idx1];
+      ReplicatedEntity *entity2 = &system->entities[idx2];
+
+      // Sort by priority (higher priority first), then by distance
+      bool should_swap = false;
+      if (entity1->priority < entity2->priority) {
+        should_swap = true;
+      } else if (entity1->priority == entity2->priority) {
+        float dist1 =
+            calculate_distance(&entity1->position, &system->reference_position);
+        float dist2 =
+            calculate_distance(&entity2->position, &system->reference_position);
+        should_swap = (dist1 > dist2);
+      }
+
+      if (should_swap) {
+        system->priority_queue[j] = idx2;
+        system->priority_queue[j + 1] = idx1;
+      }
     }
+  }
 }
 
 // Create replication system
 ReplicationSystem *replication_create(uint32_t max_entities) {
-    if (max_entities == 0 || max_entities > MAX_ENTITIES) {
-        return NULL;
-    }
-    
-    ReplicationSystem *system = calloc(1, sizeof(ReplicationSystem));
-    if (!system) {
-        return NULL;
-    }
-    
-    system->entities = calloc(max_entities, sizeof(ReplicatedEntity));
-    if (!system->entities) {
-        free(system);
-        return NULL;
-    }
-    
-    system->max_entities = max_entities;
-    system->active_count = 0;
-    system->relevancy_distance = RELEVANCY_DISTANCE;
-    system->reference_position = (Vec3){0, 0, 0};
-    system->bytes_sent = 0;
-    system->packets_sent = 0;
-    system->entities_replicated = 0;
-    
-    // Initialize priority queue
-    for (uint32_t i = 0; i < max_entities; i++) {
-        system->priority_queue[i] = i;
-    }
-    system->queue_size = 0;
-    
-    g_replication_system = system;
-    return system;
+  if (max_entities == 0 || max_entities > MAX_ENTITIES) {
+    return NULL;
+  }
+
+  ReplicationSystem *system = calloc(1, sizeof(ReplicationSystem));
+  if (!system) {
+    return NULL;
+  }
+
+  system->entities = calloc(max_entities, sizeof(ReplicatedEntity));
+  if (!system->entities) {
+    free(system);
+    return NULL;
+  }
+
+  system->max_entities = max_entities;
+  system->active_count = 0;
+  system->relevancy_distance = RELEVANCY_DISTANCE;
+  system->reference_position = (Vec3){0, 0, 0};
+  system->bytes_sent = 0;
+  system->packets_sent = 0;
+  system->entities_replicated = 0;
+
+  // Initialize priority queue
+  for (uint32_t i = 0; i < max_entities; i++) {
+    system->priority_queue[i] = i;
+  }
+  system->queue_size = 0;
+
+  g_replication_system = system;
+  return system;
 }
 
 // Destroy replication system
 void replication_destroy(ReplicationSystem *system) {
-    if (!system) return;
-    
-    free(system->entities);
-    free(system);
-    
-    if (g_replication_system == system) {
-        g_replication_system = NULL;
-    }
+  if (!system)
+    return;
+
+  free(system->entities);
+  free(system);
+
+  if (g_replication_system == system) {
+    g_replication_system = NULL;
+  }
 }
 
 // Spawn entity
-uint32_t replication_spawn_entity(ReplicationSystem *system, uint32_t component_mask,
-                             uint32_t owner_client_id) {
-    if (!system || system->active_count >= system->max_entities) {
-        return 0;
-    }
-    
-    for (uint32_t i = 0; i < system->max_entities; i++) {
-        if (!system->entities[i].active) {
-            uint32_t id = i + 1; // 1-based IDs
-            ReplicatedEntity *entity = &system->entities[i];
-            
-            entity->id = id;
-            entity->component_mask = component_mask;
-            entity->owner_client_id = owner_client_id;
-            entity->priority = 5; // Default priority
-            entity->dormant = false;
-            entity->active = true;
-            entity->data_size = 0;
-            entity->last_update_sequence = 0;
-            entity->position = (Vec3){0, 0, 0};
-            entity->last_replication_time = 0.0f;
-            
-            system->active_count++;
-            
-            // Add to priority queue
-            if (system->queue_size < system->max_entities) {
-                system->priority_queue[system->queue_size++] = i;
-                sort_priority_queue(system);
-            }
-            
-            return id;
-        }
-    }
-    
+uint32_t replication_spawn_entity(ReplicationSystem *system,
+                                  uint32_t component_mask,
+                                  uint32_t owner_client_id) {
+  if (!system || system->active_count >= system->max_entities) {
     return 0;
+  }
+
+  for (uint32_t i = 0; i < system->max_entities; i++) {
+    if (!system->entities[i].active) {
+      uint32_t id = i + 1; // 1-based IDs
+      ReplicatedEntity *entity = &system->entities[i];
+
+      entity->id = id;
+      entity->component_mask = component_mask;
+      entity->owner_client_id = owner_client_id;
+      entity->priority = 5; // Default priority
+      entity->dormant = false;
+      entity->active = true;
+      entity->data_size = 0;
+      entity->last_update_sequence = 0;
+      entity->position = (Vec3){0, 0, 0};
+      entity->last_replication_time = 0.0f;
+
+      system->active_count++;
+
+      // Add to priority queue
+      if (system->queue_size < system->max_entities) {
+        system->priority_queue[system->queue_size++] = i;
+        sort_priority_queue(system);
+      }
+
+      return id;
+    }
+  }
+
+  return 0;
 }
 
 // Destroy entity
-bool replication_destroy_entity(ReplicationSystem *system, uint32_t entity_id) {
-    if (!system || entity_id == 0 || entity_id > system->max_entities) {
-        return false;
+bool replication_despawn_entity(ReplicationSystem *system, uint32_t entity_id) {
+  if (!system || entity_id == 0 || entity_id > system->max_entities) {
+    return false;
+  }
+
+  ReplicatedEntity *entity = &system->entities[entity_id - 1];
+  if (!entity->active) {
+    return false;
+  }
+
+  entity->active = false;
+  system->active_count--;
+
+  // Remove from priority queue
+  for (uint32_t i = 0; i < system->queue_size; i++) {
+    if (system->priority_queue[i] == entity_id - 1) {
+      // Shift remaining elements
+      for (uint32_t j = i; j < system->queue_size - 1; j++) {
+        system->priority_queue[j] = system->priority_queue[j + 1];
+      }
+      system->queue_size--;
+      break;
     }
-    
-    ReplicatedEntity *entity = &system->entities[entity_id - 1];
-    if (!entity->active) {
-        return false;
-    }
-    
-    entity->active = false;
-    system->active_count--;
-    
-    // Remove from priority queue
-    for (uint32_t i = 0; i < system->queue_size; i++) {
-        if (system->priority_queue[i] == entity_id - 1) {
-            // Shift remaining elements
-            for (uint32_t j = i; j < system->queue_size - 1; j++) {
-                system->priority_queue[j] = system->priority_queue[j + 1];
-            }
-            system->queue_size--;
-            break;
-        }
-    }
-    
-    return true;
+  }
+
+  return true;
 }
 
 // Update entity data
 bool replication_update_entity(ReplicationSystem *system, uint32_t entity_id,
-                                const void *data, uint32_t data_size, const Vec3 *position) {
-    if (!system || entity_id == 0 || entity_id > system->max_entities) {
-        return false;
-    }
-    
-    ReplicatedEntity *entity = &system->entities[entity_id - 1];
-    if (!entity->active) {
-        return false;
-    }
-    
-    if (data && data_size > 0 && data_size <= sizeof(entity->data)) {
-        memcpy(entity->data, data, data_size);
-        entity->data_size = data_size;
-    }
-    
-    if (position) {
-        entity->position = *position;
-    }
-    
-    entity->last_update_sequence++;
-    return true;
+                               const void *data, uint32_t data_size) {
+  if (!system || entity_id == 0 || entity_id > system->max_entities) {
+    return false;
+  }
+
+  ReplicatedEntity *entity = &system->entities[entity_id - 1];
+  if (!entity->active) {
+    return false;
+  }
+
+  if (data && data_size > 0 && data_size <= sizeof(entity->data)) {
+    memcpy(entity->data, data, data_size);
+    entity->data_size = data_size;
+  }
+
+  entity->last_update_sequence++;
+  return true;
 }
 
 // Set entity priority
-bool replication_set_entity_priority(ReplicationSystem *system, uint32_t entity_id, uint8_t priority) {
-    if (!system || entity_id == 0 || entity_id > system->max_entities) {
-        return false;
-    }
-    
-    ReplicatedEntity *entity = &system->entities[entity_id - 1];
-    if (!entity->active) {
-        return false;
-    }
-    
-    entity->priority = priority;
-    
-    // Re-sort priority queue
-    sort_priority_queue(system);
-    
-    return true;
+bool replication_set_entity_priority(ReplicationSystem *system,
+                                     uint32_t entity_id, uint8_t priority) {
+  if (!system || entity_id == 0 || entity_id > system->max_entities) {
+    return false;
+  }
+
+  ReplicatedEntity *entity = &system->entities[entity_id - 1];
+  if (!entity->active) {
+    return false;
+  }
+
+  entity->priority = priority;
+
+  // Re-sort priority queue
+  sort_priority_queue(system);
+
+  return true;
 }
 
 // Set entity dormant state
-bool replication_set_entity_dormant(ReplicationSystem *system, uint32_t entity_id, bool dormant) {
-    if (!system || entity_id == 0 || entity_id > system->max_entities) {
-        return false;
-    }
-    
-    ReplicatedEntity *entity = &system->entities[entity_id - 1];
-    if (!entity->active) {
-        return false;
-    }
-    
-    entity->dormant = dormant;
-    
-    if (dormant) {
-        // Remove from priority queue
-        for (uint32_t i = 0; i < system->queue_size; i++) {
-            if (system->priority_queue[i] == entity_id - 1) {
-                for (uint32_t j = i; j < system->queue_size - 1; j++) {
-                    system->priority_queue[j] = system->priority_queue[j + 1];
-                }
-                system->queue_size--;
-                break;
-            }
+bool replication_set_entity_dormant(ReplicationSystem *system,
+                                    uint32_t entity_id, bool dormant) {
+  if (!system || entity_id == 0 || entity_id > system->max_entities) {
+    return false;
+  }
+
+  ReplicatedEntity *entity = &system->entities[entity_id - 1];
+  if (!entity->active) {
+    return false;
+  }
+
+  entity->dormant = dormant;
+
+  if (dormant) {
+    // Remove from priority queue
+    for (uint32_t i = 0; i < system->queue_size; i++) {
+      if (system->priority_queue[i] == entity_id - 1) {
+        for (uint32_t j = i; j < system->queue_size - 1; j++) {
+          system->priority_queue[j] = system->priority_queue[j + 1];
         }
-    } else {
-        // Add back to priority queue
-        if (system->queue_size < system->max_entities) {
-            system->priority_queue[system->queue_size++] = entity_id - 1;
-            sort_priority_queue(system);
-        }
+        system->queue_size--;
+        break;
+      }
     }
-    
-    return true;
+  } else {
+    // Add back to priority queue
+    if (system->queue_size < system->max_entities) {
+      system->priority_queue[system->queue_size++] = entity_id - 1;
+      sort_priority_queue(system);
+    }
+  }
+
+  return true;
 }
 
 // Set relevancy distance
-void replication_set_relevancy_distance(ReplicationSystem *system, float distance) {
-    if (system) {
-        system->relevancy_distance = distance;
-    }
+bool replication_set_relevancy_distance(ReplicationSystem *system,
+                                        float distance) {
+  if (system) {
+    system->relevancy_distance = distance;
+    return true;
+  }
+  return false;
 }
 
 // Set reference position for relevancy culling
-void replication_set_reference_position(ReplicationSystem *system, const Vec3 *position) {
-    if (system && position) {
-        system->reference_position = *position;
-    }
-}
-
-// Get replication data for an entity
-bool replication_get_entity_data(ReplicationSystem *system, uint32_t entity_id,
-                                 void *out_data, uint32_t *out_data_size, Vec3 *out_position) {
-    if (!system || entity_id == 0 || entity_id > system->max_entities) {
-        return false;
-    }
-    
-    ReplicatedEntity *entity = &system->entities[entity_id - 1];
-    if (!entity->active || entity->dormant) {
-        return false;
-    }
-    
-    if (out_data && entity->data_size > 0) {
-        memcpy(out_data, entity->data, entity->data_size);
-    }
-    
-    if (out_data_size) {
-        *out_data_size = entity->data_size;
-    }
-    
-    if (out_position) {
-        *out_position = entity->position;
-    }
-    
+bool replication_set_reference_position(ReplicationSystem *system,
+                                        const Vec3 *position) {
+  if (system && position) {
+    system->reference_position = *position;
     return true;
+  }
+  return false;
 }
 
 // Update replication system (call regularly)
 void replication_update(ReplicationSystem *system, float delta_time) {
-    if (!system) return;
-    
-    // Update replication timers and handle timeouts
-    for (uint32_t i = 0; i < system->max_entities; i++) {
-        ReplicatedEntity *entity = &system->entities[i];
-        if (entity->active && !entity->dormant) {
-            entity->last_replication_time += delta_time;
-        }
+  if (!system)
+    return;
+
+  // Update replication timers and handle timeouts
+  for (uint32_t i = 0; i < system->max_entities; i++) {
+    ReplicatedEntity *entity = &system->entities[i];
+    if (entity->active && !entity->dormant) {
+      entity->last_replication_time += delta_time;
     }
+  }
 }
 
 // Get entities to replicate (based on priority and relevancy)
-uint32_t replication_get_entities_to_replicate(ReplicationSystem *system, uint32_t *entity_ids,
-                                                  uint32_t max_count, const Vec3 *reference_pos) {
-    if (!system || !entity_ids || max_count == 0) {
-        return 0;
+uint32_t replication_get_entities_to_replicate(ReplicationSystem *system,
+                                               uint32_t *entity_ids,
+                                               uint32_t max_count,
+                                               const Vec3 *reference_pos) {
+  if (!system || !entity_ids || max_count == 0) {
+    return 0;
+  }
+
+  uint32_t count = 0;
+
+  for (uint32_t i = 0; i < system->queue_size && count < max_count; i++) {
+    uint32_t entity_index = system->priority_queue[i];
+    ReplicatedEntity *entity = &system->entities[entity_index];
+
+    if (is_entity_relevant(entity, reference_pos, system->relevancy_distance)) {
+      entity_ids[count++] = entity_index + 1; // Convert to 1-based ID
     }
-    
-    uint32_t count = 0;
-    
-    for (uint32_t i = 0; i < system->queue_size && count < max_count; i++) {
-        uint32_t entity_index = system->priority_queue[i];
-        ReplicatedEntity *entity = &system->entities[entity_index];
-        
-        if (is_entity_relevant(entity, reference_pos, system->relevancy_distance)) {
-            entity_ids[count++] = entity_index + 1; // Convert to 1-based ID
-        }
-    }
-    
-    return count;
+  }
+
+  return count;
 }
 
 // Get replication statistics
-void replication_get_stats(ReplicationSystem *system, uint32_t *active_count,
-                             uint32_t *bytes_sent, uint32_t *packets_sent) {
-    if (!system) return;
-    
-    if (active_count) *active_count = system->active_count;
-    if (bytes_sent) *bytes_sent = system->bytes_sent;
-    if (packets_sent) *packets_sent = system->packets_sent;
+void replication_get_stats(const ReplicationSystem *system,
+                           uint32_t *active_count, uint32_t *bytes_sent,
+                           uint32_t *packets_sent, float *avg_time_ms) {
+  if (!system)
+    return;
+
+  if (active_count)
+    *active_count = system->active_count;
+  if (bytes_sent)
+    *bytes_sent = system->bytes_sent;
+  if (packets_sent)
+    *packets_sent = system->packets_sent;
 }
 
 // Reset statistics
 void replication_reset_stats(ReplicationSystem *system) {
-    if (!system) return;
-    
-    system->bytes_sent = 0;
-    system->packets_sent = 0;
-    system->entities_replicated = 0;
+  if (!system)
+    return;
+
+  system->bytes_sent = 0;
+  system->packets_sent = 0;
+  system->entities_replicated = 0;
 }
 
 // Find entity by owner
-uint32_t replication_find_entities_by_owner(ReplicationSystem *system, uint32_t owner_client_id,
-                                               uint32_t *entity_ids, uint32_t max_count) {
-    if (!system || !entity_ids || max_count == 0) {
-        return 0;
+uint32_t replication_find_entities_by_owner(ReplicationSystem *system,
+                                            uint32_t owner_client_id,
+                                            uint32_t *entity_ids,
+                                            uint32_t max_count) {
+  if (!system || !entity_ids || max_count == 0) {
+    return 0;
+  }
+
+  uint32_t count = 0;
+
+  for (uint32_t i = 0; i < system->max_entities && count < max_count; i++) {
+    ReplicatedEntity *entity = &system->entities[i];
+    if (entity->active && entity->owner_client_id == owner_client_id) {
+      entity_ids[count++] = entity->id;
     }
-    
-    uint32_t count = 0;
-    
-    for (uint32_t i = 0; i < system->max_entities && count < max_count; i++) {
-        ReplicatedEntity *entity = &system->entities[i];
-        if (entity->active && entity->owner_client_id == owner_client_id) {
-            entity_ids[count++] = entity->id;
-        }
-    }
-    
-    return count;
+  }
+
+  return count;
 }
 
 // Get global replication system
-ReplicationSystem *replication_get_system(void) {
-    return g_replication_system;
-}
-
-/*
- * ENTITY REPLICATION SYSTEM FEATURES:
- * - Entity spawning and destruction
- * - Component data replication
- * - Priority-based replication queue
- * - Relevancy culling based on distance
- * - Delta compression support
- * - Owner-based entity management
- * - Dormant entity support
- * - Comprehensive statistics
- * - Memory-efficient implementation
- * - Thread-safe design considerations
- * - Bandwidth optimization
- */
-
-bool replication_despawn_entity(ReplicationSystem *system, u32 entity_id) {
-  if (!system || entity_id == 0 || entity_id > system->max_entities)
-    return false;
-
-  uint32_t idx = entity_id - 1;
-  if (system->entities[idx].active) {
-    system->entities[idx].active = false;
-    system->active_count--;
-    return true;
-  }
-  return false;
-}
-
-bool replication_update_entity(ReplicationSystem *system, u32 entity_id,
-                               const void *component_data, u32 data_size) {
-  if (!system || entity_id == 0 || entity_id > system->max_entities)
-    return false;
-
-  uint32_t idx = entity_id - 1;
-  if (system->entities[idx].active) {
-    if (data_size > 256)
-      data_size = 256;
-    memcpy(system->entities[idx].data, component_data, data_size);
-    system->entities[idx].data_size = data_size;
-    return true;
-  }
-  return false;
-}
+ReplicationSystem *replication_get_system(void) { return g_replication_system; }
 
 u32 replication_generate_update_packet(ReplicationSystem *system, void *buffer,
                                        u32 buffer_size) {
@@ -473,58 +420,21 @@ u32 replication_generate_update_packet(ReplicationSystem *system, void *buffer,
 
   for (uint32_t i = 0; i < system->max_entities; i++) {
     if (system->entities[i].active && !system->entities[i].dormant) {
-      // Lazy init compressor
-      if (!system->entities[i].compressor) {
-        system->entities[i].compressor = delta_compressor_create();
-      }
-
-      // Update state in compressor
-      delta_compressor_set_state(system->entities[i].compressor,
-                                 system->entities[i].data,
-                                 system->entities[i].data_size);
-
-      // Simple relevancy check
-      if (system->relevancy_distance > 0.0f) {
-        // TODO: Get entity position from ECS
-        // For now, assume irrelevant if placeholder logic says so
-      }
-
-      // Generate delta if we have an acked sequence
-      u32 diff_size = 0;
-      u8 diff_buffer[256];
-      bool use_delta = false;
-
-      if (system->entities[i].last_acked_sequence > 0) {
-        if (delta_compressor_generate_delta(
-                system->entities[i].compressor,
-                system->entities[i].last_acked_sequence, diff_buffer,
-                &diff_size)) {
-          use_delta = true;
-        }
-      }
-
       // Pack entity ID (3 bytes), flags (1 byte), data size (2 bytes)
-      if (offset + 10 +
-              (use_delta ? diff_size : system->entities[i].data_size) >
-          buffer_size)
+      if (offset + 10 + system->entities[i].data_size > buffer_size)
         break;
 
       memcpy(out + offset, &system->entities[i].id, 3);
       offset += 3;
 
-      uint8_t flags = use_delta ? 0x01 : 0x00;
-      out[offset++] = flags;
+      out[offset++] = 0;
 
-      u32 size_to_pack = use_delta ? diff_size : system->entities[i].data_size;
+      uint32_t size_to_pack = system->entities[i].data_size;
       memcpy(out + offset, &size_to_pack, 4);
       offset += 4;
 
-      memcpy(out + offset, use_delta ? diff_buffer : system->entities[i].data,
-             size_to_pack);
+      memcpy(out + offset, system->entities[i].data, size_to_pack);
       offset += size_to_pack;
-
-      // Create snapshot for future deltas
-      delta_compressor_create_snapshot(system->entities[i].compressor);
       system->packets_sent++;
     }
   }
@@ -553,8 +463,7 @@ bool replication_process_update_packet(ReplicationSystem *system,
     memcpy(&entity_id, in + offset, 3);
     offset += 3;
 
-    uint8_t flags = in[offset++];
-    bool is_delta = (flags & 0x01) != 0;
+    offset++; // flags
 
     uint32_t data_size;
     memcpy(&data_size, in + offset, 4);
@@ -565,59 +474,13 @@ bool replication_process_update_packet(ReplicationSystem *system,
 
     uint32_t idx = entity_id - 1;
     if (idx < system->max_entities && system->entities[idx].active) {
-      if (is_delta) {
-        if (system->entities[idx].compressor) {
-          delta_compressor_apply_delta(
-              system->entities[idx].compressor, in + offset, data_size,
-              system->entities[idx].last_acked_sequence);
-
-          delta_compressor_get_state(system->entities[idx].compressor,
-                                     system->entities[idx].data,
-                                     &system->entities[idx].data_size);
-        }
-      } else {
-        if (data_size <= 256) {
-          memcpy(system->entities[idx].data, in + offset, data_size);
-          system->entities[idx].data_size = data_size;
-
-          if (!system->entities[idx].compressor) {
-            system->entities[idx].compressor = delta_compressor_create();
-          }
-          delta_compressor_set_state(system->entities[idx].compressor,
-                                     system->entities[idx].data, data_size);
-        }
+      if (data_size <= 256) {
+        memcpy(system->entities[idx].data, in + offset, data_size);
+        system->entities[idx].data_size = data_size;
       }
     }
     offset += data_size;
   }
 
   return true;
-}
-
-// Stubs for remaining functions
-bool replication_set_entity_priority(ReplicationSystem *system, u32 entity_id,
-                                     u8 priority) {
-  return true;
-}
-bool replication_set_entity_dormant(ReplicationSystem *system, u32 entity_id,
-                                    bool dormant) {
-  return true;
-}
-bool replication_set_relevancy_distance(ReplicationSystem *system,
-                                        f32 distance) {
-  return true;
-}
-bool replication_set_reference_position(ReplicationSystem *system,
-                                        const Vec3 *position) {
-  return true;
-}
-void replication_get_stats(const ReplicationSystem *system, u32 *entity_count,
-                           u32 *bytes_sent, u32 *packets_sent,
-                           f32 *avg_time_ms) {
-  if (entity_count)
-    *entity_count = system->active_count;
-  if (bytes_sent)
-    *bytes_sent = system->bytes_sent;
-  if (packets_sent)
-    *packets_sent = system->packets_sent;
 }

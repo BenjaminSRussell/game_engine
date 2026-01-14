@@ -4,7 +4,7 @@
 #ifndef OUTLINE_RENDERING_API_BRIDGE_H
 #define OUTLINE_RENDERING_API_BRIDGE_H
 
-#include "include/common.h"
+#include <common.h>
 #include <stdbool.h>
 #include <stdint.h>
 

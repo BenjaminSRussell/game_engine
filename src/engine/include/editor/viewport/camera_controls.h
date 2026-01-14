@@ -6,8 +6,8 @@
 #ifndef EDITOR_VIEWPORT_CAMERA_CONTROLS_H
 #define EDITOR_VIEWPORT_CAMERA_CONTROLS_H
 
-#include "include/common.h"
-#include "engine/include/math/math.h"
+#include <common.h>
+#include "engine/include/math/math_all.h"
 #include "include/platform/input/input.h"
 
 // Forward declarations

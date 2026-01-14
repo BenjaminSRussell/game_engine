@@ -4,7 +4,7 @@
 #ifndef LOD_API_BRIDGE_H
 #define LOD_API_BRIDGE_H
 
-#include "include/common.h"
+#include <common.h>
 #include <stdbool.h>
 #include <stdint.h>
 

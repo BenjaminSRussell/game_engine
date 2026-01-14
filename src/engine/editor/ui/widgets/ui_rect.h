@@ -9,7 +9,7 @@
 #ifndef UI_RENDERING_UI_RECT_H
 #define UI_RENDERING_UI_RECT_H
 
-#include "engine/include/math/math.h"
+#include "engine/include/math/math_all.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>

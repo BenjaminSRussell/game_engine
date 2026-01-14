@@ -4,7 +4,7 @@
 #ifndef GRID_SETTINGS_H
 #define GRID_SETTINGS_H
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <stdbool.h>
 
 typedef struct GridSettings {

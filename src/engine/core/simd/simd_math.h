@@ -11,7 +11,7 @@
 #define SIMD_MATH_H
 
 #include "core/simd/simd_types.h"
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 #ifdef __cplusplus
 extern "C" {

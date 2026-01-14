@@ -7,7 +7,7 @@
 #include "rendering/core/renderer.h"
 #include "rendering/core/texture.h"
 #include "rendering/core/buffer.h"
-#include "engine/include/math/math.h"
+#include "engine/include/math/math_all.h"
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>

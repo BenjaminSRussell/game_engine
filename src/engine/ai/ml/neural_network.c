@@ -3,7 +3,7 @@
  * Lightweight NN runtime for game AI and asset generation
  */
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <stdlib.h>
 #include <string.h>
 

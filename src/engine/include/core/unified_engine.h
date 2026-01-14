@@ -7,7 +7,7 @@
 #ifndef UNIFIED_ENGINE_H
 #define UNIFIED_ENGINE_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <core/config_system.h>
 #include <core/gpu_acceleration.h>
 #include <core/time_system.h>

@@ -75,22 +75,22 @@ mesh_t *mesh_create_cube(f32 size) {
     // Vertices
     mesh->vertices[v_ptr + 0].position = p[f->v_idx[0]];
     mesh->vertices[v_ptr + 0].normal = normal;
-    mesh->vertices[v_ptr + 0].uv = (Vec2){0, 0};
+    mesh->vertices[v_ptr + 0].texcoord = (Vec2){0, 0};
     mesh->vertices[v_ptr + 0].tangent = tangent;
 
     mesh->vertices[v_ptr + 1].position = p[f->v_idx[1]];
     mesh->vertices[v_ptr + 1].normal = normal;
-    mesh->vertices[v_ptr + 1].uv = (Vec2){1, 0};
+    mesh->vertices[v_ptr + 1].texcoord = (Vec2){1, 0};
     mesh->vertices[v_ptr + 1].tangent = tangent;
 
     mesh->vertices[v_ptr + 2].position = p[f->v_idx[2]];
     mesh->vertices[v_ptr + 2].normal = normal;
-    mesh->vertices[v_ptr + 2].uv = (Vec2){1, 1};
+    mesh->vertices[v_ptr + 2].texcoord = (Vec2){1, 1};
     mesh->vertices[v_ptr + 2].tangent = tangent;
 
     mesh->vertices[v_ptr + 3].position = p[f->v_idx[3]];
     mesh->vertices[v_ptr + 3].normal = normal;
-    mesh->vertices[v_ptr + 3].uv = (Vec2){0, 1};
+    mesh->vertices[v_ptr + 3].texcoord = (Vec2){0, 1};
     mesh->vertices[v_ptr + 3].tangent = tangent;
 
     // Indices (Two triangles)
@@ -141,7 +141,7 @@ mesh_t *mesh_create_sphere(f32 radius, u32 segments) {
       
       mesh->vertices[v_idx].position = (Vec3){x * radius, y * radius, z * radius};
       mesh->vertices[v_idx].normal = (Vec3){x, y, z};
-      mesh->vertices[v_idx].uv = (Vec2){s * S, r * R};
+      mesh->vertices[v_idx].texcoord = (Vec2){s * S, r * R};
       
       // Calculate tangent (for sphere, tangent is perpendicular to normal)
       Vec3 tangent = {-z, 0, x};
@@ -210,14 +210,14 @@ mesh_t *mesh_create_cylinder(f32 radius, f32 height, u32 segments) {
     // Bottom vertex
     mesh->vertices[v_idx].position = (Vec3){x, -half_height, z};
     mesh->vertices[v_idx].normal = (Vec3){x / radius, 0.0f, z / radius};
-    mesh->vertices[v_idx].uv = (Vec2){(f32)i / (f32)segments, 0.0f};
+    mesh->vertices[v_idx].texcoord = (Vec2){(f32)i / (f32)segments, 0.0f};
     mesh->vertices[v_idx].tangent = (Vec4){-z / radius, 0.0f, x / radius, 1.0f};
     v_idx++;
     
     // Top vertex
     mesh->vertices[v_idx].position = (Vec3){x, half_height, z};
     mesh->vertices[v_idx].normal = (Vec3){x / radius, 0.0f, z / radius};
-    mesh->vertices[v_idx].uv = (Vec2){(f32)i / (f32)segments, 1.0f};
+    mesh->vertices[v_idx].texcoord = (Vec2){(f32)i / (f32)segments, 1.0f};
     mesh->vertices[v_idx].tangent = (Vec4){-z / radius, 0.0f, x / radius, 1.0f};
     v_idx++;
   }
@@ -225,14 +225,14 @@ mesh_t *mesh_create_cylinder(f32 radius, f32 height, u32 segments) {
   // Bottom center vertex
   mesh->vertices[v_idx].position = (Vec3){0, -half_height, 0};
   mesh->vertices[v_idx].normal = (Vec3){0, -1.0f, 0};
-  mesh->vertices[v_idx].uv = (Vec2){0.5f, 0.5f};
+  mesh->vertices[v_idx].texcoord = (Vec2){0.5f, 0.5f};
   mesh->vertices[v_idx].tangent = (Vec4){1, 0, 0, 1.0f};
   u32 bottom_center_idx = v_idx++;
   
   // Top center vertex
   mesh->vertices[v_idx].position = (Vec3){0, half_height, 0};
   mesh->vertices[v_idx].normal = (Vec3){0, 1.0f, 0};
-  mesh->vertices[v_idx].uv = (Vec2){0.5f, 0.5f};
+  mesh->vertices[v_idx].texcoord = (Vec2){0.5f, 0.5f};
   mesh->vertices[v_idx].tangent = (Vec4){1, 0, 0, 1.0f};
   u32 top_center_idx = v_idx++;
   
@@ -309,7 +309,7 @@ mesh_t *mesh_create_plane(f32 width, f32 depth, u32 subdivisions) {
       
       mesh->vertices[v_idx].position = (Vec3){px, 0.0f, pz};
       mesh->vertices[v_idx].normal = (Vec3){0, 1.0f, 0};
-      mesh->vertices[v_idx].uv = (Vec2){(f32)x / (f32)subdivisions, (f32)z / (f32)subdivisions};
+      mesh->vertices[v_idx].texcoord = (Vec2){(f32)x / (f32)subdivisions, (f32)z / (f32)subdivisions};
       mesh->vertices[v_idx].tangent = (Vec4){1, 0, 0, 1.0f};
       v_idx++;
     }
@@ -363,7 +363,7 @@ mesh_t *mesh_create_cone(f32 radius, f32 height, u32 segments) {
     
     mesh->vertices[v_idx].position = (Vec3){x, 0.0f, z};
     mesh->vertices[v_idx].normal = (Vec3){x, radius, z}; // Will be normalized later
-    mesh->vertices[v_idx].uv = (Vec2){(f32)i / (f32)segments, 0.0f};
+    mesh->vertices[v_idx].texcoord = (Vec2){(f32)i / (f32)segments, 0.0f};
     mesh->vertices[v_idx].tangent = (Vec4){-z, 0.0f, x, 1.0f};
     v_idx++;
   }
@@ -371,14 +371,14 @@ mesh_t *mesh_create_cone(f32 radius, f32 height, u32 segments) {
   // Tip vertex
   mesh->vertices[v_idx].position = (Vec3){0, height, 0};
   mesh->vertices[v_idx].normal = (Vec3){0, 1.0f, 0};
-  mesh->vertices[v_idx].uv = (Vec2){0.5f, 1.0f};
+  mesh->vertices[v_idx].texcoord = (Vec2){0.5f, 1.0f};
   mesh->vertices[v_idx].tangent = (Vec4){1, 0, 0, 1.0f};
   u32 tip_idx = v_idx++;
   
   // Base center vertex
   mesh->vertices[v_idx].position = (Vec3){0, 0.0f, 0};
   mesh->vertices[v_idx].normal = (Vec3){0, -1.0f, 0};
-  mesh->vertices[v_idx].uv = (Vec2){0.5f, 0.5f};
+  mesh->vertices[v_idx].texcoord = (Vec2){0.5f, 0.5f};
   mesh->vertices[v_idx].tangent = (Vec4){1, 0, 0, 1.0f};
   u32 base_center_idx = v_idx++;
   
@@ -464,7 +464,7 @@ mesh_t *mesh_create_torus(f32 major_radius, f32 minor_radius,
         mesh->vertices[v_idx].normal = (Vec3){1, 0, 0};
       }
       
-      mesh->vertices[v_idx].uv = (Vec2){(f32)i / (f32)major_segments, (f32)j / (f32)minor_segments};
+      mesh->vertices[v_idx].texcoord = (Vec2){(f32)i / (f32)major_segments, (f32)j / (f32)minor_segments};
       
       // Calculate tangent (along major circle)
       Vec3 tangent = {-sin_u, 0, cos_u};

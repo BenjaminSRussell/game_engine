@@ -1,7 +1,7 @@
 #ifndef CORE_MEMORY_ALLOCATOR_STACK_H
 #define CORE_MEMORY_ALLOCATOR_STACK_H
 
-#include "include/common.h"
+#include <common.h>
 
 typedef struct StackAllocator {
     void *start;

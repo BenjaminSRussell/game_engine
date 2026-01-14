@@ -10,7 +10,7 @@
 #ifdef SIMD_NEON
 
 #include <arm_neon.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 // ========================================
 // Single Vector Operations

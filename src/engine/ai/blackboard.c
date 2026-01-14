@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <time.h>
 
 #include "performance_profiling.h"

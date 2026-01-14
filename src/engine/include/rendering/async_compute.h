@@ -4,7 +4,7 @@
 #ifndef ASYNC_COMPUTE_H
 #define ASYNC_COMPUTE_H
 
-#include "include/common.h"
+#include <common.h>
 
 #ifdef VULKAN_BUILD
 

@@ -10,7 +10,7 @@
 // Debug markers: IMPLEMENTED (GPU debugging labels).
 // Synchronization optimization: IMPLEMENTED (reduce barriers).
 // Device lost handling: IMPLEMENTED (recovery system).
-#include "engine/include/common.h"
+#include <common.h>
 #include "engine/include/core/logger.h"
 #include <rendering/ray_tracing.h>
 #include <rendering/texture_loader.h>

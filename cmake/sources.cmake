@@ -75,10 +75,13 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # "src/engine/core/game_stubs.c"  # Disabled due to duplicate symbols
     
     # Math impl - RE-ENABLED (needed for game functionality)
-    "src/engine/math/mat4.c"
-    "src/engine/math/quat.c"
-    # "src/engine/math/vec3.c"  # Use inline implementations from header instead
+    "src/engine/math/linear_algebra/matrices/mat4/mat4_core.c"
+    "src/engine/math/linear_algebra/matrices/mat4/mat4_transform.c"
+    "src/engine/math/linear_algebra/matrices/mat4/mat4_projection.c"
+    "src/engine/math/linear_algebra/quaternions/quat/quat_core.c"
+    "src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.c"
     "src/engine/math/math_common.c"
+
     # Exclude math stubs since we have real implementations
     # "src/engine/math/mat4_stubs.c"
     

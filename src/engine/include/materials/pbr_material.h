@@ -3,7 +3,7 @@
 #ifndef PBR_MATERIAL_H
 #define PBR_MATERIAL_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/vec3.h"
 #include "math/vec4.h"
 #import <Metal/Metal.h>

@@ -36,7 +36,7 @@
 #ifndef MASSIVE_NETWORKING_H
 #define MASSIVE_NETWORKING_H
 
-#include "include/common.h"
+#include <common.h>
 #include "include/core/performance.h"
 #include "include/ecs/ecs.h"
 #include <stdbool.h>

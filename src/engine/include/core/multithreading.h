@@ -35,7 +35,7 @@
 #ifndef MULTITHREADING_H
 #define MULTITHREADING_H
 
-#include "include/common.h"
+#include <common.h>
 #include "include/core/performance.h"
 
 // ============================================================================

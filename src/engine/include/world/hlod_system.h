@@ -2,7 +2,7 @@
 #ifndef HLOD_SYSTEM_H
 #define HLOD_SYSTEM_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/bounds.h"
 #include "math/vec3.h"
 #import <Metal/Metal.h>

@@ -3,7 +3,7 @@
  * All ~60 remaining AGENT_CINEMATIC TODOs
  */
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <stdlib.h>
 #include <string.h>
 

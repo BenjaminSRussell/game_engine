@@ -1,7 +1,7 @@
 #ifndef PHYSICS_CORE_TYPES_H
 #define PHYSICS_CORE_TYPES_H
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <stdbool.h>
 #include <stdint.h>
 // Note: Do NOT include physics/physics.h here to avoid circular dependency
@@ -92,7 +92,7 @@ typedef struct Collider Collider;
 
 // RigidBodyType is already defined in core/math/types.h included via math.h
 // checking if we should redefine it or use existing one.
-// Since we include <include/math/math.h>, we have access to RigidBodyType.
+// Since we include <include/math/math_all.h>, we have access to RigidBodyType.
 // However, we need to ensure the values match our expectations.
 // So we do NOT redefine it here.
 

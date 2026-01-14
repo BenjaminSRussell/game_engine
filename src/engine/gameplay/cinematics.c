@@ -1,8 +1,8 @@
 // cinematics.c - Implementation
-#include "engine/include/common.h"
+#include <common.h>
 #include "engine/include/core/logger.h"
 #include <math.h>
-#include "engine/include/math/math.h"
+#include "engine/include/math/math_all.h"
 #include <math/vec3.h>
 #include <stdbool.h>
 #include <stdlib.h>

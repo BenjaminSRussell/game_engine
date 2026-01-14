@@ -1,5 +1,5 @@
 #include "audio/dtx_surround.h"
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -3,7 +3,7 @@
 #ifndef USD_IMPORTER_H
 #define USD_IMPORTER_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/vec3.h"
 #include <Metal/Metal.h>
 

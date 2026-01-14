@@ -3,11 +3,11 @@
 #ifndef NANITE_CLUSTER_H
 #define NANITE_CLUSTER_H
 
-#include "engine/include/common.h"
 #include "math/bounds.h"
 #include "math/mat4.h"
 #include "math/vec2.h"
 #include "math/vec3.h"
+#include <common.h>
 
 #define NANITE_CLUSTER_SIZE 128 // Triangles per cluster
 #define NANITE_MAX_LOD_LEVELS 16
@@ -28,6 +28,7 @@ typedef struct {
   u32 lod_level;
   f32 lod_error; // Screen space error threshold
   u32 parent_cluster_id;
+  u32 material_id;
 } NaniteCluster;
 
 // Cluster group: LOD hierarchy node

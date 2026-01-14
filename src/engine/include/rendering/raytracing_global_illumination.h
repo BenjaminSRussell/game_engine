@@ -6,7 +6,7 @@
 #ifndef RAYTRACING_GLOBAL_ILLUMINATION_H
 #define RAYTRACING_GLOBAL_ILLUMINATION_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include "include/rendering/vulkan.h"
 #include <math/mat4.h>
 

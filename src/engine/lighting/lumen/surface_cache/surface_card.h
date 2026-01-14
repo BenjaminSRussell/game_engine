@@ -26,7 +26,7 @@ typedef float __m128[4];
 extern "C" {
 #endif
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include "lighting/lumen/surface_cache/surface_atlas.h"
 #include "lighting/lumen/tracing_lumen/trace_cache.h"
 #include "include/math/mat4.h"

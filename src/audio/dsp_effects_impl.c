@@ -4,7 +4,7 @@
  * Reverb, Delay, EQ, and Compression
  */
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 // Delay Line
 typedef struct {

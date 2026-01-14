@@ -5,11 +5,11 @@
  * @date 2026-01-13
  */
 
-#include "../include/core/memory.h"
-#include "../include/ecs/components/pcg_component.h"
-#include "../include/ecs/components/transform.h"
-#include "../include/ecs/ecs.h"
-#include "../include/pcg/pcg_graph.h"
+#include "engine/include/core/memory.h"
+#include "engine/include/ecs/components/pcg_component.h"
+#include "engine/include/ecs/components/transform.h"
+#include "engine/include/ecs/ecs.h"
+#include "engine/include/pcg/pcg_graph.h"
 #include <stdio.h>
 #include <stdlib.h>
 

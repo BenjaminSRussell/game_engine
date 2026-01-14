@@ -12,7 +12,7 @@
 #define INVENTORY_H
 
 #include "include/gameplay/inventory/item.h"
-#include "engine/include/common.h"
+#include <common.h>
 #include <ecs/ecs.h>
 
 // Container for items (inventory, chest, etc.)

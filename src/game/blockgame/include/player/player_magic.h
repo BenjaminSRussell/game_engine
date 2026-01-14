@@ -81,6 +81,36 @@ typedef struct {
     u32 total_spells_cast;
     f32 total_mana_consumed;
     u32 spell_counts[SPELL_COUNT];
+    
+    // Enhanced statistics
+    f32 total_damage_dealt;
+    f32 total_healing_done;
+    u32 critical_hits;
+    u32 failed_casts;           // Failed due to cooldown/mana
+    u32 interrupts;             // Spells interrupted during casting
+    f32 total_cast_time;        // Time spent casting
+    f32 average_cast_time;      // Average time per successful cast
+    u32 combos_completed;       // Spell combinations completed
+    u32 highest_combo;          // Highest combo achieved
+    f32 longest_combo_time;     // Longest combo duration
+    
+    // Per-spell detailed stats
+    struct {
+        f32 damage_dealt;
+        f32 healing_done;
+        f32 mana_consumed;
+        f32 cast_time;
+        u32 critical_hits;
+        u32 interrupts;
+        f32 last_used_time;
+        f32 total_use_time;
+    } spell_details[SPELL_COUNT];
+    
+    // Session statistics
+    f32 session_start_time;
+    u32 session_spells_cast;
+    f32 session_mana_consumed;
+    f32 session_efficiency;     // Damage per mana point
 } SpellStats;
 
 // Player magic component
@@ -114,5 +144,21 @@ bool player_has_mana(PlayerMagicComponent *magic, f32 amount);
 // Spell upgrades
 void player_magic_add_spell_points(PlayerMagicComponent *magic, u32 points);
 bool player_magic_upgrade_spell(PlayerMagicComponent *magic, SpellType spell);
+
+// Enhanced statistics tracking
+void player_magic_record_cast_attempt(PlayerMagicComponent *magic, SpellType spell, bool success);
+void player_magic_record_damage_dealt(PlayerMagicComponent *magic, SpellType spell, f32 damage, bool critical);
+void player_magic_record_healing_done(PlayerMagicComponent *magic, SpellType spell, f32 healing);
+void player_magic_record_interrupt(PlayerMagicComponent *magic, SpellType spell);
+void player_magic_record_combo(PlayerMagicComponent *magic, u32 combo_count, f32 combo_time);
+void player_magic_update_session_stats(PlayerMagicComponent *magic);
+void player_magic_reset_session_stats(PlayerMagicComponent *magic);
+
+// Statistics queries
+const SpellStats* player_magic_get_stats(PlayerMagicComponent *magic);
+f32 player_magic_get_spell_efficiency(PlayerMagicComponent *magic, SpellType spell);
+f32 player_magic_get_cast_frequency(PlayerMagicComponent *magic, SpellType spell);
+u32 player_magic_get_most_used_spell(PlayerMagicComponent *magic);
+f32 player_magic_get_average_damage_per_cast(PlayerMagicComponent *magic);
 
 #endif // PLAYER_MAGIC_H

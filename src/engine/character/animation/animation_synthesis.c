@@ -1,8 +1,8 @@
 #include "character/animation/animation_synthesis.h"
 #include "engine/include/core/logger.h"
 #include "include/core/time_system.h"
-#include "include/math/math.h"
-#include <include/math/math.h>
+#include "include/math/math_all.h"
+#include <include/math/math_all.h>
 #include <stdlib.h>
 #include <string.h>
 

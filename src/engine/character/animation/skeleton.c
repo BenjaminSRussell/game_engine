@@ -3,7 +3,7 @@
  * Full skeletal animation with blending, state machines, and IK
  */
 
-#include "include/math/math.h"
+#include "include/math/math_all.h"
 #include <math.h>
 #include <stdbool.h>
 #include <stdlib.h>

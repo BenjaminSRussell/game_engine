@@ -3,7 +3,7 @@
  * Acoustics Simulation
  */
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 typedef struct {
   float origin[3];

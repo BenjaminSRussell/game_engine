@@ -12,7 +12,7 @@
 
 #include <float.h>
 #include <limits.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <stdlib.h>
 
 #include "vendor/lua/lua.h"

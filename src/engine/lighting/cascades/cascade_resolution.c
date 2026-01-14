@@ -7,7 +7,7 @@
  */
 
 #include "lighting/cascades/cascade_resolution.h"
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <string.h>
 
 #define MIN_CASCADE_RESOLUTION 256

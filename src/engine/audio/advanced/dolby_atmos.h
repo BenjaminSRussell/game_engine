@@ -6,7 +6,7 @@
 #include "include/math/quat.h"
 #include <stdint.h>
 #include <stdbool.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 // -------------------------------------------------------------------------------------------------
 // DOLBY ATMOS CONSTANTS AND CONFIGURATION

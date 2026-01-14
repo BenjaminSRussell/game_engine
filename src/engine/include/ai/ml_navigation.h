@@ -24,7 +24,7 @@
 #ifndef ML_NAVIGATION_H
 #define ML_NAVIGATION_H
 
-#include "include/common.h"
+#include <common.h>
 #include "include/ai/ml/ml_core.h"
 #include "math/vec3.h"
 #include <stdbool.h>

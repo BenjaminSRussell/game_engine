@@ -35,7 +35,7 @@
 #ifndef CROSS_PLATFORM_DEPLOYMENT_H
 #define CROSS_PLATFORM_DEPLOYMENT_H
 
-#include "include/common.h"
+#include <common.h>
 #include "include/core/performance.h"
 #include <stdbool.h>
 

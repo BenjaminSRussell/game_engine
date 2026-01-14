@@ -48,7 +48,7 @@ typedef enum {
 // Packet header structure
 typedef struct {
     uint32_t packet_id;
-    uint16_t packet_type;
+    uint16_t type;
     uint32_t timestamp;
     uint16_t data_size;
 } PacketHeader;
@@ -396,7 +396,7 @@ static int send_packet(int socket_fd, const struct sockaddr_in* addr, PacketType
     PacketHeader* header = (PacketHeader*)packet_buffer;
     
     header->packet_id = generate_client_id();
-    header->packet_type = type;
+    header->type = type;
     header->timestamp = (uint32_t)time(NULL);
     header->data_size = data_size;
     
@@ -488,7 +488,7 @@ static void update_server(float delta_time) {
             if (received >= 0) {
                 g_server.clients[i].last_heartbeat = current_time;
                 g_server.clients[i].packets_received++;
-                handle_client_packet(i, header.packet_type, data, received);
+                handle_client_packet(i, header.type, data, received);
             }
         }
     }
@@ -518,7 +518,7 @@ static void update_client(float delta_time) {
     if (received >= 0) {
         g_client.last_heartbeat = current_time;
         g_client.retry_count = 0;
-        handle_server_packet(header.packet_type, data, received);
+        handle_server_packet(header.type, data, received);
     }
     
     // Handle connection timeout

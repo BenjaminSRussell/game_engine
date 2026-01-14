@@ -71,6 +71,10 @@ MetalIntegratedRenderer *metal_integrated_create(id<MTLDevice> device,
            renderer->render_width, renderer->render_height, output_width,
            output_height, quality);
 
+  // Initialize Nanite
+  id<MTLLibrary> default_lib = [device newDefaultLibrary];
+  renderer->nanite = nanite_renderer_create(device, default_lib);
+
   return renderer;
 }
 
@@ -106,7 +110,8 @@ void metal_integrated_render_frame(MetalIntegratedRenderer *renderer,
   for (u32 i = 0; i < mesh_count; i++) {
     if (meshes[i]) {
       // Actual Nanite rendering implementation
-      nanite_render_mesh(encoder, meshes[i], view_proj);
+      nanite_render_mesh(renderer->nanite, encoder, cmd, meshes[i], view_proj,
+                         camera_pos);
     }
   }
 
@@ -121,23 +126,28 @@ void metal_integrated_render_frame(MetalIntegratedRenderer *renderer,
 
   // 3. Lighting + compositing pass - Combine geometry + GI
   if (renderer->gi_output && renderer->color_buffer) {
-    MTLRenderPassDescriptor *lightingPass = [MTLRenderPassDescriptor renderPassDescriptor];
-    MTLRenderPassColorAttachmentDescriptor *colorAttachment = lightingPass.colorAttachments[0];
-    
+    MTLRenderPassDescriptor *lightingPass =
+        [MTLRenderPassDescriptor renderPassDescriptor];
+    MTLRenderPassColorAttachmentDescriptor *colorAttachment =
+        lightingPass.colorAttachments[0];
+
     colorAttachment.texture = renderer->color_buffer;
     colorAttachment.loadAction = MTLLoadActionLoad;
     colorAttachment.storeAction = MTLStoreActionStore;
-    
-    id<MTLRenderCommandEncoder> lightingEncoder = [cmd renderCommandEncoderWithDescriptor:lightingPass];
-    
+
+    id<MTLRenderCommandEncoder> lightingEncoder =
+        [cmd renderCommandEncoderWithDescriptor:lightingPass];
+
     // Set textures for lighting shader
     [lightingEncoder setFragmentTexture:renderer->albedo atIndex:0];
     [lightingEncoder setFragmentTexture:renderer->normals atIndex:1];
     [lightingEncoder setFragmentTexture:renderer->gi_output atIndex:2];
     [lightingEncoder setFragmentTexture:renderer->depth_buffer atIndex:3];
-    
+
     // Draw full-screen quad to combine lighting
-    [lightingEncoder drawPrimitives:MTLPrimitiveTypeTriangle vertexStart:0 vertexCount:3];
+    [lightingEncoder drawPrimitives:MTLPrimitiveTypeTriangle
+                        vertexStart:0
+                        vertexCount:3];
     [lightingEncoder endEncoding];
   }
 

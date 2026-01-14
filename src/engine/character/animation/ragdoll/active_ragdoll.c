@@ -638,8 +638,3 @@ static void wake_up_ragdoll(ragdoll_instance_t* ragdoll) {
     }
 }
 
-uint32_t get_current_time_ms(void) {
-    // Placeholder - would typically use platform-specific time function
-    static uint32_t counter = 0;
-    return counter += 16;  // Simulate 60 FPS
-}

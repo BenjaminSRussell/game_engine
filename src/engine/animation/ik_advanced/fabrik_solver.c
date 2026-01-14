@@ -1,5 +1,5 @@
 #include "../../character/animation/ik/fabrik_solver.h"
-#include "include/math/math.h"
+#include "include/math/math_all.h"
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>

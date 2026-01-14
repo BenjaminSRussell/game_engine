@@ -1,9 +1,9 @@
 // Thread pool job system implementation.
 #include "engine/include/core/logger.h"
+#include <core/threading/job.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
-#include <core/threading/job.h>
 
 #if PLATFORM_WEB
 #if defined(__EMSCRIPTEN__) && __has_include(<emscripten.h>)
@@ -303,7 +303,7 @@ bool thread_pool_init(ThreadPool *pool, u32 thread_count) {
     pthread_t *thread = (pthread_t *)&pool->threads[i];
     int result = pthread_create(thread, NULL, worker_loop, pool);
     if (result != 0) {
-      LOG_ERROR(LOG_CAT_GENERAL, "pthread_create failed: %s (%d)", strerror(result), result);
+      LOG_ERROR("pthread_create failed: %s (%d)", strerror(result), result);
 
       // If we couldn't create any threads at all, fail as before.
       if (i == 0) {
@@ -319,11 +319,11 @@ bool thread_pool_init(ThreadPool *pool, u32 thread_count) {
       // active thread count to the number created so far.
 #ifdef EAGAIN
       if (result == EAGAIN) {
-        LOG_WARN(LOG_CAT_GENERAL,
+        LOG_WARN(
             "pthread_create reached system limit; continuing with %u threads",
             i);
       } else {
-        LOG_WARN(LOG_CAT_GENERAL,
+        LOG_WARN(
             "pthread_create failed for one thread; continuing with %u threads",
             i);
       }
@@ -432,56 +432,60 @@ static ThreadPool g_GlobalCompatPool;
 static bool g_GlobalCompatPoolInit = false;
 
 static void ensure_compat_pool(void) {
-    if (!g_GlobalCompatPoolInit) {
-        thread_pool_init(&g_GlobalCompatPool, 4); // Default 4 threads
-        g_GlobalCompatPoolInit = true;
-    }
+  if (!g_GlobalCompatPoolInit) {
+    thread_pool_init(&g_GlobalCompatPool, 4); // Default 4 threads
+    g_GlobalCompatPoolInit = true;
+  }
 }
 
 typedef struct {
-    void (*func)(void*);
-    void* data;
-    atomic_int* counter;
+  void (*func)(void *);
+  void *data;
+  atomic_int *counter;
 } CompatJobWrapper;
 
-static void compat_job_entry(void* arg) {
-    CompatJobWrapper* wrapper = (CompatJobWrapper*)arg;
-    if (wrapper->func) {
-        wrapper->func(wrapper->data);
-    }
-    if (wrapper->counter) {
-        atomic_fetch_sub(wrapper->counter, 1);
-    }
-    free(wrapper);
+static void compat_job_entry(void *arg) {
+  CompatJobWrapper *wrapper = (CompatJobWrapper *)arg;
+  if (wrapper->func) {
+    wrapper->func(wrapper->data);
+  }
+  if (wrapper->counter) {
+    atomic_fetch_sub(wrapper->counter, 1);
+  }
+  free(wrapper);
 }
 
-void job_scheduler_submit_with_counter(void (*func)(void*), void* data, atomic_int* counter) {
-    ensure_compat_pool();
-    
-    if (counter) {
-        atomic_fetch_add(counter, 1);
-    }
-    
-    CompatJobWrapper* wrapper = (CompatJobWrapper*)malloc(sizeof(CompatJobWrapper));
-    if (!wrapper) return; // OOM check
-    
-    wrapper->func = func;
-    wrapper->data = data;
-    wrapper->counter = counter;
-    
-    thread_pool_submit(&g_GlobalCompatPool, compat_job_entry, wrapper, 1);
+void job_scheduler_submit_with_counter(void (*func)(void *), void *data,
+                                       atomic_int *counter) {
+  ensure_compat_pool();
+
+  if (counter) {
+    atomic_fetch_add(counter, 1);
+  }
+
+  CompatJobWrapper *wrapper =
+      (CompatJobWrapper *)malloc(sizeof(CompatJobWrapper));
+  if (!wrapper)
+    return; // OOM check
+
+  wrapper->func = func;
+  wrapper->data = data;
+  wrapper->counter = counter;
+
+  thread_pool_submit(&g_GlobalCompatPool, compat_job_entry, wrapper, 1);
 }
 
-void job_scheduler_wait_for_counter(atomic_int* counter) {
-    if (!counter) return;
-    
-    ensure_compat_pool();
-    
-    // Simple busy-wait because our thread_pool doesn't support helping yet
-    // and we don't want to block main thread if jobs are there.
-    // In a real system, we would steal jobs here.
-    while (atomic_load(counter) > 0) {
-        // Spin
-        // Ideally: sched_yield();
-    }
+void job_scheduler_wait_for_counter(atomic_int *counter) {
+  if (!counter)
+    return;
+
+  ensure_compat_pool();
+
+  // Simple busy-wait because our thread_pool doesn't support helping yet
+  // and we don't want to block main thread if jobs are there.
+  // In a real system, we would steal jobs here.
+  while (atomic_load(counter) > 0) {
+    // Spin
+    // Ideally: sched_yield();
+  }
 }

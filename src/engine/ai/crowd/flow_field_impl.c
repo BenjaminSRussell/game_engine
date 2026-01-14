@@ -3,7 +3,7 @@
  * Dense Crowd Simulation (10,000+ Units)
  */
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <stdlib.h>
 
 #define GRID_SIZE 128

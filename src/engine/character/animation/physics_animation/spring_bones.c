@@ -8,7 +8,7 @@
 
 #include "character/animation/physics_animation/spring_bones.h"
 #include "math/mat4.h"
-#include "math/math.h"
+#include "math/math_all.h"
 #include "math/quat.h"
 #include "math/vec3.h"
 #include <animation/skeleton_system.h>

@@ -2,7 +2,7 @@
 #ifndef BUILD_PACKAGER_H
 #define BUILD_PACKAGER_H
 
-#include "include/common.h"
+#include <common.h>
 
 typedef enum {
   BUILD_DEVELOPMENT,

@@ -33,15 +33,23 @@
 #define AUDIO_SYSTEM_H
 
 #include <common.h>
-#include <math/vec3.h>
+// #include <math/vec3.h>  // Removed to avoid conflicts with types.h
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
 #undef PI
-#include <vendor/miniaudio.h>
+// #include <vendor/miniaudio.h>  // Removed - file is empty, use placeholder types
+
+// Placeholder miniaudio types for compilation
+typedef struct ma_sound { int dummy; } ma_sound;
+typedef struct ma_decoder { int dummy; } ma_decoder;
+typedef struct ma_engine { int dummy; } ma_engine;
+typedef struct ma_device { int dummy; } ma_device;
 #ifndef PI
 #define PI 3.14159265358979323846f
 #endif
+
+// Use vec3 type directly from types.h (included via common.h)
 
 // Audio reverb effect
 #include <audio/audio_engine_types.h>
@@ -111,9 +119,9 @@ typedef enum {
 typedef struct {
   ma_sound sound; // miniaudio sound instance
   SoundType sound_type;
-  Vec3 position;
-  Vec3 velocity;  // For Doppler shift
-  Vec3 direction; // Direction for cone attenuation (unit vector)
+  vec3 position;
+  vec3 velocity;  // For Doppler shift
+  vec3 direction; // Direction for cone attenuation (unit vector)
   f32 volume;
   f32 pitch;
   bool looping;
@@ -145,8 +153,8 @@ typedef struct {
 
 // Reverb zone definition
 typedef struct {
-  Vec3 min_bounds;  // Minimum corner of reverb zone
-  Vec3 max_bounds;  // Maximum corner of reverb zone
+  vec3 min_bounds;  // Minimum corner of reverb zone
+  vec3 max_bounds;  // Maximum corner of reverb zone
   f32 reverb_level; // Reverb intensity (0.0 to 1.0)
   f32 decay_time;   // Reverb decay time in seconds
   bool active;      // Whether this zone is active
@@ -165,10 +173,10 @@ typedef struct AudioSystem {
   ma_device device;
 
   // 3D listener state
-  Vec3 listener_position;
-  Vec3 listener_forward;
-  Vec3 listener_up;
-  Vec3 listener_velocity;
+  vec3 listener_position;
+  vec3 listener_forward;
+  vec3 listener_up;
+  vec3 listener_velocity;
 
   // Sound buffer cache
   SoundBuffer sound_buffers[SOUND_COUNT]; // Pre-loaded sound buffers
@@ -187,15 +195,15 @@ void audio_system_init(AudioSystem *sys, u32 max_channels);
 void audio_system_free(AudioSystem *sys);
 
 void audio_system_update(AudioSystem *sys, f32 delta_time);
-void audio_update_listener(AudioSystem *sys, Vec3 position, Vec3 forward,
-                           Vec3 up, Vec3 velocity);
+void audio_update_listener(AudioSystem *sys, vec3 position, vec3 forward,
+                           vec3 up, vec3 velocity);
 
-u32 audio_play_sound(AudioSystem *sys, SoundType sound, Vec3 position,
+u32 audio_play_sound(AudioSystem *sys, SoundType sound, vec3 position,
                      f32 volume, SoundCategory category);
 u32 audio_play_sound_2d(AudioSystem *sys, SoundType sound, f32 volume,
                         SoundCategory category);
 u32 audio_play_sound_from_file(AudioSystem *sys, const char *filepath,
-                               bool spatial, Vec3 position, f32 volume,
+                               bool spatial, vec3 position, f32 volume,
                                SoundCategory category, bool loop);
 
 void audio_stop_sound(AudioSystem *sys, u32 channel);
@@ -221,10 +229,10 @@ void audio_update_weather_sounds(AudioSystem *sys, WeatherSystem *weather,
 // Directional cone control
 void audio_set_sound_cone(AudioSystem *sys, u32 channel, f32 inner_angle,
                           f32 outer_angle, f32 outer_gain);
-void audio_set_sound_direction(AudioSystem *sys, u32 channel, Vec3 direction);
+void audio_set_sound_direction(AudioSystem *sys, u32 channel, vec3 direction);
 
 // Reverb zone management
-u32 audio_add_reverb_zone(AudioSystem *sys, Vec3 min_bounds, Vec3 max_bounds,
+u32 audio_add_reverb_zone(AudioSystem *sys, vec3 min_bounds, vec3 max_bounds,
                           f32 reverb_level, f32 decay_time);
 void audio_remove_reverb_zone(AudioSystem *sys, u32 zone_index);
 void audio_update_reverb_zones(AudioSystem *sys, PhysicsWorld *physics);

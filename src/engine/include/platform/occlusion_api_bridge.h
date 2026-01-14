@@ -4,7 +4,7 @@
 #ifndef OCCLUSION_API_BRIDGE_H
 #define OCCLUSION_API_BRIDGE_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <stdbool.h>
 #include <stdint.h>
 

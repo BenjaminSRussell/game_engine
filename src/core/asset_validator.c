@@ -15,7 +15,7 @@
  * Provides format validation, hash computation, and asset integrity checking
  */
 
-#include <core/asset_validator.h>
+#include "engine/include/core/asset_validator.h"
 #include "engine/include/core/logger.h"
 #include <stdio.h>
 #include <stdlib.h>

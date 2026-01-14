@@ -7,7 +7,7 @@
 #ifndef GPU_LIGHTING_H
 #define GPU_LIGHTING_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include "include/rendering/lighting.h"
 #include "include/rendering/vulkan.h"
 #include <math/vec3.h>

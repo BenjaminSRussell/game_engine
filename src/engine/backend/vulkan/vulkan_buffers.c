@@ -1,6 +1,6 @@
 // Vulkan buffer helpers for mesh data uploads.
 // Roadmap: docs/VULKAN_BUFFERS_ROADMAP.md.
-#include "engine/include/common.h"
+#include <common.h>
 #include "engine/include/core/logger.h"
 #include <rendering/mesh.h>
 #include <rendering/vulkan.h>

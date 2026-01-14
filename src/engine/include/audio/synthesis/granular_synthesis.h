@@ -1,8 +1,8 @@
 #ifndef AUDIO_SYNTHESIS_GRANULAR_H
 #define AUDIO_SYNTHESIS_GRANULAR_H
 
-#include "include/common.h"
-#include "engine/include/math/math.h"
+#include <common.h>
+#include "engine/include/math/math_all.h"
 
 #define MAX_GRAINS 256
 #define MAX_SOURCE_LENGTH 1048576  // 1M samples

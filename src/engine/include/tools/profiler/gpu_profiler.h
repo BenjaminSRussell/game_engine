@@ -3,7 +3,7 @@
 #ifndef GPU_PROFILER_H
 #define GPU_PROFILER_H
 
-#include "include/common.h"
+#include <common.h>
 #include <Metal/Metal.h>
 
 #define GPU_PROFILER_MAX_MARKERS 256

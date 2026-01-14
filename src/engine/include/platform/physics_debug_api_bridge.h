@@ -4,7 +4,7 @@
 #ifndef PHYSICS_DEBUG_API_BRIDGE_H
 #define PHYSICS_DEBUG_API_BRIDGE_H
 
-#include "include/common.h"
+#include <common.h>
 #include <stdbool.h>
 #include <stdint.h>
 

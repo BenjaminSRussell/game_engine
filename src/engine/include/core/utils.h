@@ -145,6 +145,7 @@ typedef struct {
 } StopWatch;
 
 u64 get_time_ns(void);
+u64 get_current_time_ms(void);
 f64 get_time(void);
 StopWatch stopwatch_start(void);
 u64 stopwatch_stop(StopWatch *watch);

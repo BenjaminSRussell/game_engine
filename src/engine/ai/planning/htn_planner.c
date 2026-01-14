@@ -1,8 +1,8 @@
 #include "ai/planning/htn_planner.h"
-#include "include/common.h"
+#include <common.h>
 #include <stdlib.h>
 #include <string.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 // Forward declaration for recursive function
 static bool htn_recursive_decompose(HtnPlanner* planner, AIEntityID entity_id);

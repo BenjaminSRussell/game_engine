@@ -36,7 +36,7 @@
 #define PROGRESSION_H
 
 
-#include "engine/include/common.h"
+#include <common.h>
 
 // Phase 18: Gameplay/Progression System
 typedef struct {

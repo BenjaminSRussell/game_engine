@@ -5,7 +5,7 @@
 #ifndef ENGINE_WINDOW_H
 #define ENGINE_WINDOW_H
 
-#include "engine/include/common.h"
+#include <common.h>
 
 typedef struct GLFWwindow GLFWwindow;
 

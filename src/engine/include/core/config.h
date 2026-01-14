@@ -1,7 +1,7 @@
 #ifndef CORE_CONFIG_H
 #define CORE_CONFIG_H
 
-#include "engine/include/common.h"
+#include <common.h>
 
 // Configuration settings for the game
 typedef struct GameConfig {

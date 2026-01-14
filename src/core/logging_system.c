@@ -10,7 +10,7 @@
 // Purpose: Unified logging system for the engine core
 // Provides multiple output channels and severity levels
 
-#include <core/logging_system.h>
+#include "engine/include/core/logging_system.h"
 #include <core/memory_allocator.h>
 #include <stdio.h>
 #include <stdlib.h>

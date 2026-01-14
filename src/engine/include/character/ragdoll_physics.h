@@ -87,6 +87,6 @@ void ragdoll_set_gravity(float gravity);
 void ragdoll_get_statistics(uint32_t* active_ragdolls, uint32_t* sleeping_ragdolls, float* average_bones);
 
 // Utility function to get current time (placeholder)
-uint32_t get_current_time_ms(void);
+#include "core/utils.h"
 
 #endif // RAGDOLL_PHYSICS_H

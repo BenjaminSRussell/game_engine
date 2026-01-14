@@ -5,7 +5,7 @@
 #ifndef ENGINE_SHADER_H
 #define ENGINE_SHADER_H
 
-#include "include/common.h"
+#include <common.h>
 
 typedef enum {
   SHADER_TYPE_VERTEX,

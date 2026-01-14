@@ -1,7 +1,7 @@
 #ifndef RENDERING_GPU_TIMER_H
 #define RENDERING_GPU_TIMER_H
 
-#include "include/common.h"
+#include <common.h>
 
 typedef struct gpu_timer {
     u32 query_start;

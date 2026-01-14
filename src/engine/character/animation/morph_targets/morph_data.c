@@ -391,11 +391,6 @@ static animation_morph_data_context_t g_morph_data_ctx = {0};
  * HELPER FUNCTIONS
  * ============================================================================ */
 
-static uint64_t get_current_time_ms(void) {
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    return (uint64_t)(tv.tv_sec) * 1000 + (uint64_t)(tv.tv_usec) / 1000;
-}
 
 static float rand_float_range(float min, float max) {
     return min + ((float)rand() / RAND_MAX) * (max - min);

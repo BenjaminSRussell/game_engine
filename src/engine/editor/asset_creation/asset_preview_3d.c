@@ -5,7 +5,7 @@
  */
 
 #include "editor/asset_creation/asset_preview_3d.h"
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <stdio.h>
 #include <string.h>
 

@@ -3,7 +3,7 @@
 #ifndef POST_PROCESS_H
 #define POST_PROCESS_H
 
-#include "include/common.h"
+#include <common.h>
 #import <Metal/Metal.h>
 
 // Post-process effects

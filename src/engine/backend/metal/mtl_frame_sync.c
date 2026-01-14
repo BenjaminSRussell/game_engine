@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <mach/mach_time.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 // ============================================================================
 // Internal Structures

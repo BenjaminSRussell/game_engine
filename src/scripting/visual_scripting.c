@@ -1,4 +1,4 @@
-#include "../include/scripting/visual_scripting.h"
+#include "engine/include/scripting/visual_scripting/visual_scripting.h"
 #include "../include/core/memory.h"
 #include <stdio.h>
 #include <stdlib.h>

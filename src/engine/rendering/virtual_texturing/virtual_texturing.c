@@ -14,13 +14,24 @@
 #include <pthread.h>
 
 extern uint64_t get_time_nanos(void);
-void virtual_texture_destroy(void *vt);
+// Forward declaration
+typedef struct VirtualTexture VirtualTexture;
+void virtual_texture_destroy(VirtualTexture *vt);
 
 // ============================================================================
 // Virtual Texturing Types
 // ============================================================================
 
 typedef struct {
+  uint32_t tile_x, tile_y, tile_z;
+  uint32_t physical_index;
+  float last_access_time;
+  uint32_t access_count;
+  bool is_loaded;
+  bool is_dirty;
+} VirtualTile;
+
+struct VirtualTexture {
   uint32_t tile_size;    // Size of each virtual tile (e.g., 128x128)
   uint32_t tile_count_x; // Number of tiles in X direction
   uint32_t tile_count_y; // Number of tiles in Y direction
@@ -32,7 +43,7 @@ typedef struct {
   uint32_t virtual_depth;
 
   // Physical texture cache
-  void *tile_cache;
+  VirtualTile *tile_cache;
   uint32_t cache_size;
   uint32_t max_cached_tiles;
 
@@ -56,19 +67,13 @@ typedef struct {
   uint32_t tile_count; // Total tiles
   Vec3 world_origin;
   float streaming_distance_threshold;
+  float streaming_priority;
 
   char name[256];
   bool initialized;
-} VirtualTexture;
+};
 
-typedef struct {
-  uint32_t tile_x, tile_y, tile_z;
-  uint32_t physical_index;
-  float last_access_time;
-  uint32_t access_count;
-  bool is_loaded;
-  bool is_dirty;
-} VirtualTile;
+// VirtualTile moved to top
 
 typedef struct {
   VirtualTexture *textures[256];
@@ -86,6 +91,7 @@ typedef struct {
   uint64_t used_memory;
   uint32_t total_tiles_loaded;
   uint32_t total_tiles_evicted;
+  uint32_t cache_hits;
 
   // Thread safety
   pthread_mutex_t vt_mutex;
@@ -145,9 +151,9 @@ static void initialize_page_table(VirtualTexture *vt) {
     vt->page_table[i] = UINT32_MAX;
   }
 
-  LOG_DEBUG(LOG_CAT_RENDERER,
-            "Initialized page table for virtual texture '%s': %u entries",
-            vt->name, table_size);
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER,
+                "Initialized page table for virtual texture '%s': %u entries",
+                vt->name, table_size);
 }
 
 static void load_tile(VirtualTexture *vt, uint32_t tile_x, uint32_t tile_y,
@@ -159,9 +165,9 @@ static void load_tile(VirtualTexture *vt, uint32_t tile_x, uint32_t tile_y,
       (tile_z * vt->tile_count_y + tile_y) * vt->tile_count_x + tile_x;
 
   if (tile_index >= vt->tile_count) {
-    LOG_ERROR(LOG_CAT_RENDERER, "Tile index out of range: %u (max: %u)",
-              tile_index,
-              vt->tile_count_x * vt->tile_count_y * vt->tile_count_z);
+    LOG_ERROR_CAT(LOG_CAT_RENDERER, "Tile index out of range: %u (max: %u)",
+                  tile_index,
+                  vt->tile_count_x * vt->tile_count_y * vt->tile_count_z);
     return;
   }
 
@@ -188,10 +194,11 @@ static void load_tile(VirtualTexture *vt, uint32_t tile_x, uint32_t tile_y,
         // upload_tile_to_gpu(tile->physical_index, tile_data, vt->tile_size,
         // vt->tile_size);
         free(tile_data);
-        LOG_DEBUG(LOG_CAT_RENDERER, "Loaded tile data from storage: %s",
-                  tile_path);
+        LOG_DEBUG_CAT(LOG_CAT_RENDERER, "Loaded tile data from storage: %s",
+                      tile_path);
       } else {
-        LOG_ERROR(LOG_CAT_RENDERER, "Failed to read tile data: %s", tile_path);
+        LOG_ERROR_CAT(LOG_CAT_RENDERER, "Failed to read tile data: %s",
+                      tile_path);
         if (tile_data)
           free(tile_data);
       }
@@ -199,8 +206,8 @@ static void load_tile(VirtualTexture *vt, uint32_t tile_x, uint32_t tile_y,
     } else {
       // Generate procedural tile if file doesn't exist
       // generate_procedural_tile(vt, tile_x, tile_y, tile_z);
-      LOG_WARN(LOG_CAT_RENDERER,
-               "Tile file not found, generating procedural: %s", tile_path);
+      LOG_WARN_CAT(LOG_CAT_RENDERER,
+                   "Tile file not found, generating procedural: %s", tile_path);
     }
 
     uint64_t end_time = get_time_nanos();
@@ -219,8 +226,8 @@ static void load_tile(VirtualTexture *vt, uint32_t tile_x, uint32_t tile_y,
         vt->tile_size * vt->tile_size * 4; // Assume RGBA8 format
     vt->streaming_time_ms += (float)(end_time - start_time) / 1000000.0f;
 
-    LOG_DEBUG(LOG_CAT_RENDERER, "Loaded tile (%u, %u, %u): %.2f ms", tile_x,
-              tile_y, tile_z, vt->streaming_time_ms);
+    LOG_DEBUG_CAT(LOG_CAT_RENDERER, "Loaded tile (%u, %u, %u): %.2f ms", tile_x,
+                  tile_y, tile_z, vt->streaming_time_ms);
   } else {
     tile->last_access_time = (float)get_time_nanos() / 1000000.0f;
     tile->access_count++;
@@ -245,8 +252,9 @@ static void evict_tile(VirtualTexture *vt, uint32_t tile_index) {
     // release_gpu_texture(tile->physical_index);
     tile->physical_index = UINT32_MAX;
     vt->total_memory_usage -= vt->tile_size * vt->tile_size * 4; // RGBA8 format
-    LOG_DEBUG(LOG_CAT_RENDERER, "Unloaded tile from GPU memory: (%u, %u, %u)",
-              tile->tile_x, tile->tile_y, tile->tile_z);
+    LOG_DEBUG_CAT(LOG_CAT_RENDERER,
+                  "Unloaded tile from GPU memory: (%u, %u, %u)", tile->tile_x,
+                  tile->tile_y, tile->tile_z);
   }
 
   tile->is_loaded = false;
@@ -254,8 +262,8 @@ static void evict_tile(VirtualTexture *vt, uint32_t tile_index) {
   vt->tiles_evicted++;
   // vt->total_tiles_evicted++;
 
-  LOG_DEBUG(LOG_CAT_RENDERER, "Evicted tile (%u, %u, %u)", tile->tile_x,
-            tile->tile_y, tile->tile_z);
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER, "Evicted tile (%u, %u, %u)", tile->tile_x,
+                tile->tile_y, tile->tile_z);
 }
 
 static void update_streaming_queue(VirtualTexture *vt,
@@ -295,8 +303,8 @@ static void update_streaming_queue(VirtualTexture *vt,
     }
   }
 
-  LOG_DEBUG(LOG_CAT_RENDERER, "Updated streaming queue: %u tiles",
-            vt->stream_queue_size);
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER, "Updated streaming queue: %u tiles",
+                vt->stream_queue_size);
 }
 
 static void process_streaming_queue(VirtualTexture *vt) {
@@ -320,8 +328,9 @@ static void process_streaming_queue(VirtualTexture *vt) {
 
   vt->stream_queue_size = 0;
 
-  LOG_DEBUG(LOG_CAT_RENDERER, "Processed streaming queue: %u tiles in %.2f ms",
-            vt->streaming_time_ms);
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER,
+                "Processed streaming queue: %u tiles in %.2f ms",
+                vt->streaming_time_ms);
 }
 
 // ============================================================================
@@ -333,7 +342,8 @@ bool virtual_texture_system_init(uint32_t max_textures,
                                  uint32_t cache_size, float streaming_distance,
                                  float streaming_priority) {
   if (g_vt_system.initialized) {
-    LOG_WARN(LOG_CAT_RENDERER, "Virtual texture system already initialized");
+    LOG_WARN_CAT(LOG_CAT_RENDERER,
+                 "Virtual texture system already initialized");
     return true;
   }
 
@@ -354,18 +364,20 @@ bool virtual_texture_system_init(uint32_t max_textures,
   // if (!g_vt_system.textures) { ... }
 
   if (pthread_mutex_init(&g_vt_system.vt_mutex, NULL) != 0) {
-    LOG_ERROR(LOG_CAT_RENDERER, "Failed to initialize virtual texture mutex");
+    LOG_ERROR_CAT(LOG_CAT_RENDERER,
+                  "Failed to initialize virtual texture mutex");
     // free(g_vt_system.textures); // This was incorrect, g_vt_system.textures
     // is a static array free(g_vt_system.textures); // Duplicate free
     return false;
   }
 
   g_vt_system.initialized = true;
-  LOG_INFO(LOG_CAT_RENDERER,
-           "Virtual texture system initialized (max textures: %u, tile size: "
-           "%u, cache: %u, distance: %.1f, priority: %.1f)",
-           max_textures, default_tile_size, cache_size, streaming_distance,
-           streaming_priority);
+  LOG_INFO_CAT(
+      LOG_CAT_RENDERER,
+      "Virtual texture system initialized (max textures: %u, tile size: "
+      "%u, cache: %u, distance: %.1f, priority: %.1f)",
+      max_textures, default_tile_size, cache_size, streaming_distance,
+      streaming_priority);
   return true;
 }
 
@@ -373,7 +385,7 @@ void virtual_texture_system_shutdown(void) {
   if (!g_vt_system.initialized)
     return;
 
-  LOG_INFO(LOG_CAT_RENDERER, "Shutting down virtual texture system");
+  LOG_INFO_CAT(LOG_CAT_RENDERER, "Shutting down virtual texture system");
 
   // Destroy all virtual textures
   for (uint32_t i = 0; i < g_vt_system.texture_count; i++) {
@@ -390,7 +402,7 @@ void virtual_texture_system_shutdown(void) {
 
   memset(&g_vt_system, 0, sizeof(VirtualTextureSystem));
 
-  LOG_INFO(LOG_CAT_RENDERER, "Virtual texture system shutdown complete");
+  LOG_INFO_CAT(LOG_CAT_RENDERER, "Virtual texture system shutdown complete");
 }
 
 VirtualTexture *virtual_texture_create(const char *name, uint32_t virtual_width,
@@ -399,21 +411,21 @@ VirtualTexture *virtual_texture_create(const char *name, uint32_t virtual_width,
                                        uint32_t tile_size,
                                        uint32_t cache_size) {
   if (!g_vt_system.initialized) {
-    LOG_ERROR(LOG_CAT_RENDERER, "Virtual texture system not initialized");
+    LOG_ERROR_CAT(LOG_CAT_RENDERER, "Virtual texture system not initialized");
     return NULL;
   }
 
   pthread_mutex_lock(&g_vt_system.vt_mutex);
 
   if (g_vt_system.texture_count >= g_vt_system.texture_capacity) {
-    LOG_ERROR(LOG_CAT_RENDERER, "Too many virtual textures");
+    LOG_ERROR_CAT(LOG_CAT_RENDERER, "Too many virtual textures");
     pthread_mutex_unlock(&g_vt_system.vt_mutex);
     return NULL;
   }
 
   VirtualTexture *vt = calloc(1, sizeof(VirtualTexture));
   if (!vt) {
-    LOG_ERROR(LOG_CAT_RENDERER, "Failed to allocate virtual texture");
+    LOG_ERROR_CAT(LOG_CAT_RENDERER, "Failed to allocate virtual texture");
     pthread_mutex_unlock(&g_vt_system.vt_mutex);
     return NULL;
   }
@@ -444,8 +456,8 @@ VirtualTexture *virtual_texture_create(const char *name, uint32_t virtual_width,
   vt->stream_queue_capacity = cache_size;
 
   if (!vt->tile_cache || !vt->stream_queue) {
-    LOG_ERROR(LOG_CAT_RENDERER,
-              "Failed to allocate tile cache or streaming queue");
+    LOG_ERROR_CAT(LOG_CAT_RENDERER,
+                  "Failed to allocate tile cache or streaming queue");
     free(vt);
     pthread_mutex_unlock(&g_vt_system.vt_mutex);
     return NULL;
@@ -456,15 +468,16 @@ VirtualTexture *virtual_texture_create(const char *name, uint32_t virtual_width,
 
   // Add to system
   g_vt_system.textures[g_vt_system.texture_count++] = vt;
-  g_vt_system.total_allocated_memory += vt->total_memory_usage;
+  g_vt_system.used_memory += vt->total_memory_usage;
 
   pthread_mutex_unlock(&g_vt_system.vt_mutex);
 
-  LOG_INFO(LOG_CAT_RENDERER,
-           "Created virtual texture '%s': %ux%ux%u virtual, %ux%ux%u physical "
-           "(%.2f MB)",
-           name, virtual_width, virtual_height, virtual_depth, tile_size,
-           vt->total_memory_usage / (1024.0f * 1024.0f));
+  LOG_INFO_CAT(
+      LOG_CAT_RENDERER,
+      "Created virtual texture '%s': %ux%ux%u virtual, %ux%ux%u physical "
+      "(%.2f MB)",
+      name, virtual_width, virtual_height, virtual_depth, tile_size,
+      vt->total_memory_usage / (1024.0f * 1024.0f));
   return vt;
 }
 
@@ -496,10 +509,10 @@ void virtual_texture_destroy(VirtualTexture *vt) {
 
   pthread_mutex_unlock(&g_vt_system.vt_mutex);
 
-  // LOG_DEBUG(LOG_CAT_RENDERER, "Destroyed virtual texture: %s", vt->name); //
-  // vt is freed! use name before free defined earlier? Since vt is freed,
+  // LOG_DEBUG_CAT(LOG_CAT_RENDERER, "Destroyed virtual texture: %s", vt->name);
+  // // vt is freed! use name before free defined earlier? Since vt is freed,
   // accessing name is safe? No.
-  LOG_DEBUG(LOG_CAT_RENDERER, "Destroyed virtual texture");
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER, "Destroyed virtual texture");
 }
 
 void virtual_texture_update(VirtualTexture *vt, const float *camera_pos) {
@@ -519,9 +532,9 @@ void virtual_texture_update(VirtualTexture *vt, const float *camera_pos) {
 
   pthread_mutex_unlock(&g_vt_system.vt_mutex);
 
-  LOG_DEBUG(LOG_CAT_RENDERER,
-            "Updated virtual texture '%s': %u cached, %u streaming", vt->name,
-            vt->cache_hits, vt->stream_queue_size);
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER,
+                "Updated virtual texture '%s': %u cached, %u streaming",
+                vt->name, vt->cache_hits, vt->stream_queue_size);
 }
 
 void virtual_texture_get_tile(VirtualTexture *vt, uint32_t tile_x,
@@ -535,24 +548,21 @@ void virtual_texture_get_tile(VirtualTexture *vt, uint32_t tile_x,
   uint32_t tile_index =
       (tile_z * vt->tile_count_y + tile_y) * vt->tile_count_x + tile_x;
 
-  *texture_handle = NULL;
+  // Continue to finding tile logic - removed premature return
+
+  VirtualTile *tile = &vt->tile_cache[tile_index];
+
+  if (!tile->is_loaded) {
+    load_tile(vt, tile_x, tile_y, tile_z);
+  }
+
+  *texture_handle =
+      tile->physical_index ? (void *)(uintptr_t)tile->physical_index : NULL;
+
   pthread_mutex_unlock(&g_vt_system.vt_mutex);
-  return;
-}
 
-VirtualTile *tile = &vt->tile_cache[tile_index];
-
-if (!tile->is_loaded) {
-  load_tile(vt, tile_x, tile_y, tile_z);
-}
-
-*texture_handle =
-    tile->physical_index ? (void *)(uintptr_t)tile->physical_index : NULL;
-
-pthread_mutex_unlock(&g_vt_system.vt_mutex);
-
-LOG_DEBUG(LOG_CAT_RENDERER, "Retrieved tile (%u, %u, %u): %s", tile_x, tile_y,
-          tile_z, tile->is_loaded ? "loaded" : "not loaded");
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER, "Retrieved tile (%u, %u, %u): %s", tile_x,
+                tile_y, tile_z, tile->is_loaded ? "loaded" : "not loaded");
 }
 
 void virtual_texture_invalidate_tile(VirtualTexture *vt, uint32_t tile_x,
@@ -576,7 +586,8 @@ void virtual_texture_invalidate_tile(VirtualTexture *vt, uint32_t tile_x,
 
   pthread_mutex_unlock(&g_vt_system.vt_mutex);
 
-  LOG_DEBUG("Invalidated tile (%u, %u, %u)", tile_x, tile_y, tile_z);
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER, "Invalidated tile (%u, %u, %u)", tile_x,
+                tile_y, tile_z);
 }
 
 void virtual_texture_set_streaming_parameters(VirtualTexture *vt,
@@ -592,8 +603,9 @@ void virtual_texture_set_streaming_parameters(VirtualTexture *vt,
 
   pthread_mutex_unlock(&g_vt_system.vt_mutex);
 
-  LOG_DEBUG("Updated streaming parameters: distance=%.1f, priority=%.1f",
-            distance_threshold, priority);
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER,
+                "Updated streaming parameters: distance=%.1f, priority=%.1f",
+                distance_threshold, priority);
 }
 
 void virtual_texture_get_streaming_stats(VirtualTexture *vt, uint32_t *loaded,
@@ -615,9 +627,10 @@ void virtual_texture_get_streaming_stats(VirtualTexture *vt, uint32_t *loaded,
   if (streaming_time)
     *streaming_time = vt->streaming_time_ms;
 
-  LOG_DEBUG("VT streaming stats: loaded=%u, evicted=%u, cache_hits=%u, "
-            "cache_misses=%u, time=%.2f ms",
-            *loaded, *evicted, *cache_hits, *cache_misses, *streaming_time);
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER,
+                "VT streaming stats: loaded=%u, evicted=%u, cache_hits=%u, "
+                "cache_misses=%u, time=%.2f ms",
+                *loaded, *evicted, *cache_hits, *cache_misses, *streaming_time);
 }
 
 void virtual_texture_get_memory_stats(VirtualTexture *vt, uint64_t *used_memory,
@@ -627,16 +640,17 @@ void virtual_texture_get_memory_stats(VirtualTexture *vt, uint64_t *used_memory,
     return;
 
   if (used_memory)
-    *used_memory = vt->total_memory_used;
+    *used_memory = vt->total_memory_usage;
   if (total_budget)
     *total_budget = g_vt_system.total_memory_budget;
   if (usage_percent)
-    *usage_percent = (float)vt->total_memory_used /
+    *usage_percent = (float)vt->total_memory_usage /
                      (float)g_vt_system.total_memory_budget * 100.0f;
 
-  LOG_DEBUG("VT memory: used=%.1f MB, budget=%.1f MB, usage=%.1f%%",
-            *used_memory / (1024.0f * 1024.0f),
-            *total_budget / (1024.0f * 1024.0f), *usage_percent);
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER,
+                "VT memory: used=%.1f MB, budget=%.1f MB, usage=%.1f%%",
+                *used_memory / (1024.0f * 1024.0f),
+                *total_budget / (1024.0f * 1024.0f), *usage_percent);
 }
 
 bool virtual_texture_is_tile_loaded(VirtualTexture *vt, uint32_t tile_x,
@@ -658,11 +672,13 @@ void virtual_texture_mark_tile_dirty(VirtualTexture *vt, uint32_t tile_x,
   if (!vt)
     return;
 
-    uint32_t tile_index = (tile_z * vt->tile_count_y + tile_y * vt->tile_count_x + tile_x;
-    
-    if (tile_index >= vt->tile_count) return;
-    
-    vt->tile_cache[tile_index].is_dirty = true;
+  uint32_t tile_index =
+      (tile_z * vt->tile_count_y + tile_y) * vt->tile_count_x + tile_x;
+
+  if (tile_index >= vt->tile_count)
+    return;
+
+  vt->tile_cache[tile_index].is_dirty = true;
 }
 
 void virtual_texture_clear_dirty_flags(VirtualTexture *vt) {
@@ -677,7 +693,8 @@ void virtual_texture_clear_dirty_flags(VirtualTexture *vt) {
 
   pthread_mutex_unlock(&g_vt_system.vt_mutex);
 
-  LOG_DEBUG("Cleared all dirty flags for virtual texture '%s'", vt->name);
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER,
+                "Cleared all dirty flags for virtual texture '%s'", vt->name);
 }
 
 void virtual_texture_get_dimensions(VirtualTexture *vt, uint32_t *width,
@@ -692,8 +709,8 @@ void virtual_texture_get_dimensions(VirtualTexture *vt, uint32_t *width,
   if (depth)
     *depth = vt->virtual_depth;
 
-  LOG_DEBUG("VT dimensions: %ux%ux%u", vt->virtual_width, vt->virtual_height,
-            vt->virtual_depth);
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER, "VT dimensions: %ux%ux%u", vt->virtual_width,
+                vt->virtual_height, vt->virtual_depth);
 }
 
 void virtual_texture_get_tile_info(VirtualTexture *vt, uint32_t tile_x,
@@ -704,18 +721,25 @@ void virtual_texture_get_tile_info(VirtualTexture *vt, uint32_t tile_x,
   if (!vt)
     return;
 
-    uint32_t tile_index = (tile_z * vt->tile_count_y + tile_y * vt->tile_count_x + tile_x;
-    
-    if (tile_index >= vt->tile_count) return;
-    
-    VirtualTile *tile = &vt->tile_cache[tile_index];
-    
-    if (physical_index) *physical_index = tile->physical_index;
-    if (cache_hits) *cache_hits = tile->access_count;
-    if (access_count) *access_count = tile->access_count;
-    
-    LOG_DEBUG("VT tile info: (%u, %u, %u): physical=%u, hits=%u, accesses=%u",
-             tile_x, tile_y, tile_z, tile->physical_index, *cache_hits, *access_count);
+  uint32_t tile_index =
+      (tile_z * vt->tile_count_y + tile_y) * vt->tile_count_x + tile_x;
+
+  if (tile_index >= vt->tile_count)
+    return;
+
+  VirtualTile *tile = &vt->tile_cache[tile_index];
+
+  if (physical_index)
+    *physical_index = tile->physical_index;
+  if (cache_hits)
+    *cache_hits = tile->access_count;
+  if (access_count)
+    *access_count = tile->access_count;
+
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER,
+                "VT tile info: (%u, %u, %u): physical=%u, hits=%u, accesses=%u",
+                tile_x, tile_y, tile_z, tile->physical_index, *cache_hits,
+                *access_count);
 }
 
 // ============================================================================
@@ -738,9 +762,10 @@ void virtual_texture_set_default_parameters(uint32_t tile_size,
 
   pthread_mutex_unlock(&g_vt_system.vt_mutex);
 
-  LOG_INFO("VT default parameters updated: tile_size=%u, cache_size=%u, "
-           "distance=%.1f, priority=%.1f",
-           tile_size, cache_size, distance_threshold, priority);
+  LOG_INFO_CAT(LOG_CAT_RENDERER,
+               "VT default parameters updated: tile_size=%u, cache_size=%u, "
+               "distance=%.1f, priority=%.1f",
+               tile_size, cache_size, distance_threshold, priority);
 }
 
 void virtual_texture_get_system_stats(
@@ -756,7 +781,7 @@ void virtual_texture_get_system_stats(
   if (total_memory)
     *total_memory = g_vt_system.total_memory_budget;
   if (used_memory)
-    *used_memory = g_vt_system.total_used;
+    *used_memory = g_vt_system.used_memory;
   if (total_tiles)
     *total_tiles = g_vt_system.total_tiles_loaded;
   if (cached_tiles)
@@ -766,11 +791,12 @@ void virtual_texture_get_system_stats(
 
   pthread_mutex_unlock(&g_vt_system.vt_mutex);
 
-  LOG_INFO("VT system stats: textures=%u, memory=%.1f MB, used=%.1f MB, "
-           "tiles=%u, cached=%u, streamed=%u",
-           *total_textures, *total_memory / (1024.0f * 1024.0f),
-           *used_memory / (1024.0f * 1024.0f), *total_tiles, *cached_tiles,
-           *streamed_tiles);
+  LOG_INFO_CAT(LOG_CAT_RENDERER,
+               "VT system stats: textures=%u, memory=%.1f MB, used=%.1f MB, "
+               "tiles=%u, cached=%u, streamed=%u",
+               *total_textures, *total_memory / (1024.0f * 1024.0f),
+               *used_memory / (1024.0f * 1024.0f), *total_tiles, *cached_tiles,
+               *streamed_tiles);
 }
 
 bool virtual_texture_is_initialized(void) { return g_vt_system.initialized; }
@@ -779,19 +805,4 @@ bool virtual_texture_is_initialized(void) { return g_vt_system.initialized; }
 // Helper Functions
 // ============================================================================
 
-static float3 lerp(const float3 a, const float3 b, float t) {
-  return (float3){a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t,
-                  a.z + (b.z - a.z) * t};
-}
-
-static float3 normalize(const float3 v) {
-  float length = sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
-  if (length > 0.0f) {
-    return (float3){v.x / length, v.y / length, v.z / length};
-  }
-  return (float3){0.0f, 0.0f, 0.0f};
-}
-
-static float clampf(float value, float min_val, float max_val) {
-  return fmaxf(min_val, fminf(max_val, value));
-}
+// Helper functions removed - using engine standard Vec3

@@ -23,7 +23,7 @@
 ** Hence even when the load factor reaches 100%, performance remains good.
 */
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <limits.h>
 
 #include "vendor/lua/lua.h"

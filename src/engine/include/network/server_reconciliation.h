@@ -2,7 +2,7 @@
 #ifndef SERVER_RECONCILIATION_H
 #define SERVER_RECONCILIATION_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/vec3.h"
 
 #define MAX_CLIENT_INPUT_HISTORY 128

@@ -26,7 +26,7 @@
 #ifndef PHYSICS_QUALITY_H
 #define PHYSICS_QUALITY_H
 
-#include "engine/include/common.h"
+#include <common.h>
 
 #ifdef __cplusplus
 extern "C" {

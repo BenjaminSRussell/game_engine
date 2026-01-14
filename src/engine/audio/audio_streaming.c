@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 void audio_streaming_init(AudioStreamingSystem* system, ma_engine* engine) {
     if (!system || !engine) {

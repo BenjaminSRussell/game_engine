@@ -1,7 +1,7 @@
 #ifndef CORE_MEMORY_ALLOCATOR_LINEAR_H
 #define CORE_MEMORY_ALLOCATOR_LINEAR_H
 
-#include "include/common.h"
+#include <common.h>
 
 typedef struct LinearAllocator {
     void *start;

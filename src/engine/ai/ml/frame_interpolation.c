@@ -17,7 +17,7 @@
 #include "engine/include/core/memory.h"
 #include <stdlib.h>
 #include <string.h>
-#include "engine/include/math/math.h"
+#include "engine/include/math/math_all.h"
 
 #ifdef __APPLE__
 #include <Metal/Metal.h>

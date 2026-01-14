@@ -7,7 +7,7 @@
  * APPROACH: Modal synthesis - model objects as collections of resonant modes
  */
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>

@@ -1,7 +1,7 @@
 #ifndef LANDSCAPE_SPLINE_H
 #define LANDSCAPE_SPLINE_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/vec3.h"
 
 #define SPLINE_MAX_POINTS 128

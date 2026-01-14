@@ -36,7 +36,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <math/mat4.h>
 #include <math/vec3.h>
 
@@ -68,10 +68,10 @@ void camera_init(Camera *camera, Vec3 position, f32 yaw, f32 pitch);
 void camera_set_position(Camera *camera, Vec3 position);
 
 // Get view matrix
-Mat4 camera_get_view_matrix(Camera *camera);
+Mat4 camera_get_view_matrix(const Camera *camera);
 
 // Get projection matrix
-Mat4 camera_get_projection_matrix(Camera *camera, f32 aspect);
+Mat4 camera_get_projection_matrix(const Camera *camera, f32 aspect);
 
 // Get forward vector
 Vec3 camera_get_forward(Camera *camera);

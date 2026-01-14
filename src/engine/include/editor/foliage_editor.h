@@ -2,7 +2,7 @@
 #ifndef FOLIAGE_EDITOR_H
 #define FOLIAGE_EDITOR_H
 
-#include "include/common.h"
+#include <common.h>
 
 typedef struct {
   char mesh_path[128];

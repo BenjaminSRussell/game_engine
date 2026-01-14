@@ -1,8 +1,8 @@
 #ifndef SPATIAL_PROPAGATION_H
 #define SPATIAL_PROPAGATION_H
 
-#include "engine/include/common.h"
-#include "engine/include/math/math.h"
+#include <common.h>
+#include "engine/include/math/math_all.h"
 
 // -------------------------------------------------------------------------------------------------
 // MATERIAL PROPERTIES FOR SOUND PROPAGATION

@@ -4,7 +4,7 @@
 #define ANIMATION_BLUEPRINTS_H
 
 #include "include/animation/animation_system.h"
-#include "include/common.h"
+#include <common.h>
 
 #define ANIM_BP_MAX_STATES 64
 #define ANIM_BP_MAX_TRANSITIONS 128

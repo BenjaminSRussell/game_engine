@@ -1,7 +1,7 @@
 #ifndef VIRTUAL_TEXTURE_H
 #define VIRTUAL_TEXTURE_H
 
-#include "include/common.h"
+#include <common.h>
 #include <stdint.h>
 
 #define VT_PAGE_SIZE 128

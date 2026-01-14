@@ -3,7 +3,7 @@
 #include "engine/include/core/memory.h"
 #include <stdlib.h>
 #include <string.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 // Helper function to align size to alignment boundary
 static u32 align_size(u32 size, u32 alignment) {

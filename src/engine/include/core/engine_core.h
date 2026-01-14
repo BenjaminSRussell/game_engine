@@ -20,11 +20,11 @@
 #ifndef ENGINE_CORE_H
 #define ENGINE_CORE_H
 
-#include "include/common.h"
-#include "include/ecs/ecs.h"
-#include <math/mat4.h>
-#include <math/vec3.h>
-#include <include/rendering/renderer.h>
+#include "ecs/ecs.h"
+#include "math/mat4.h"
+#include "math/vec3.h"
+#include "rendering/renderer.h"
+#include <common.h>
 
 // Forward declarations
 struct Camera;

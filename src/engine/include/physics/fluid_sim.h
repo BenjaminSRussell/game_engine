@@ -2,7 +2,7 @@
 #ifndef FLUID_SIM_H
 #define FLUID_SIM_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/vec3.h"
 #import <Metal/Metal.h>
 

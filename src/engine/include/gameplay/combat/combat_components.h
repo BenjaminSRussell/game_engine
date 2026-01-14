@@ -1,7 +1,7 @@
 #ifndef COMBAT_COMPONENTS_H
 #define COMBAT_COMPONENTS_H
 
-#include "include/common.h"
+#include <common.h>
 #include "include/ecs/ecs.h"
 #include "include/math/vec3.h"
 #include "include/math/quat.h"

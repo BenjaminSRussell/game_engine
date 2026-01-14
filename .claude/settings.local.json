@@ -47,7 +47,9 @@
       "Bash(do if git ls-files \"$file\")",
       "Bash(then echo \"✗ Still in git: $file\")",
       "Bash(else echo \"✓ Deleted: $file\")",
-      "Bash(fi)"
+      "Bash(fi)",
+      "Bash(test:*)",
+      "Bash(git -C \"/Users/benjaminrussell/Desktop/Minecraft v2\" ls-files)"
     ],
     "additionalDirectories": [
       "/Users/benjaminrussell/Desktop/Minecraft\\ v2"

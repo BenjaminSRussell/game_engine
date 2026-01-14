@@ -1,5 +1,5 @@
 #include "core/resource/vfs/vfs.h"
-#include "engine/include/common.h"
+#include <common.h>
 #include "engine/include/core/logger.h"
 #include <stdio.h>
 #include <stdlib.h>

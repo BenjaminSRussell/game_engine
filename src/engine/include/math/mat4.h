@@ -49,38 +49,10 @@
 #include <stddef.h>
 #include <stdio.h>
 
-// Matrix validation structure
-typedef struct {
-  bool has_nan;
-  bool has_inf;
-  bool is_valid;
-  bool is_orthogonal;
-  bool is_identity;
-} Mat4Validation;
+#include "../../math/linear_algebra/matrices/mat4/mat4_ops.h"
+#include "../../math/linear_algebra/matrices/mat4/mat4_types.h"
 
-// Matrix statistics structure
-typedef struct {
-  u64 operations_count;
-  u64 simd_operations_count;
-  u64 cache_hits;
-  u64 cache_misses;
-  f64 total_operation_time;
-} Mat4Statistics;
-
-
-// Use unified type from core/math/types.h
-typedef mat4 Mat4;
-
-INLINE Mat4 mat4_identity(void) {
-  Mat4 m = {0};
-  m.m[0][0] = m.m[1][1] = m.m[2][2] = m.m[3][3] = 1.0f;
-  return m;
-}
-
-INLINE Mat4 mat4_zero(void) {
-  Mat4 m = {0};
-  return m;
-}
+// Inline functions moved to mat4_ops.h
 
 Mat4 mat4_mul(Mat4 a, Mat4 b);
 Mat4 mat4_translate(Vec3 v);

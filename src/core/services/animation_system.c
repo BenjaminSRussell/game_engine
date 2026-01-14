@@ -1,5 +1,5 @@
 #include <rendering/animation_system.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <stdlib.h>
 #include <string.h>
 

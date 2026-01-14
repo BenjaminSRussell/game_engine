@@ -7,7 +7,7 @@
  * @note Provides complete JSON parsing, generation, and manipulation functionality
  */
 
-#include <core/json.h>
+#include "engine/include/core/json.h"
 #include "engine/include/core/logger.h"
 #include <ctype.h>
 #include <stdio.h>

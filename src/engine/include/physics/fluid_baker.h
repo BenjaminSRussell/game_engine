@@ -1,7 +1,7 @@
 #ifndef FLUID_BAKER_H
 #define FLUID_BAKER_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <stdbool.h>
 
 // Simulator types

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <math.h>
 #include <time.h>
 

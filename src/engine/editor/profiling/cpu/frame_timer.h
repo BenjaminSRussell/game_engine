@@ -1,7 +1,7 @@
 #ifndef RENDERING_FRAME_TIMER_H
 #define RENDERING_FRAME_TIMER_H
 
-#include "include/common.h"
+#include <common.h>
 
 typedef struct frame_timer {
     u64 start_ticks;

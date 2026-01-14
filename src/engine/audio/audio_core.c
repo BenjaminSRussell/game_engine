@@ -3,8 +3,8 @@
  * Full audio playback with mixing, streaming, and resource management
  */
 
-#include "audio/audio_system.h"
-#include "engine/include/core/logger.h"
+#include "../include/audio/audio_system.h"
+#include "../include/core/logger.h"
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -15,14 +15,7 @@
 #define CHANNELS 2
 #define BUFFER_SIZE 4096
 
-typedef struct {
-    float *data;
-    uint32_t length;
-    uint32_t channels;
-    uint32_t sample_rate;
-    char name[64];
-    bool is_loaded;
-} SoundBuffer;
+// SoundBuffer is defined in audio_system.h - remove duplicate
 
 typedef struct {
     SoundBuffer *buffer;
@@ -89,7 +82,7 @@ static void generate_test_tone(float *buffer, uint32_t length, float frequency) 
 // Initialize audio core system
 void audio_core_init(void) {
     if (g_audio_core.initialized) {
-        LOG_DEBUG("Audio core already initialized");
+        LOG_DEBUG("AUDIO", "Audio core already initialized");
         return;
     }
     
@@ -104,7 +97,7 @@ void audio_core_init(void) {
     memset(g_audio_core.mix_buffer, 0, sizeof(g_audio_core.mix_buffer));
     
     g_audio_core.initialized = 1;
-    LOG_INFO("Audio core system initialized");
+    LOG_INFO("AUDIO", "Audio core system initialized");
 }
 
 // Shutdown audio core system
@@ -128,7 +121,7 @@ void audio_core_shutdown(void) {
     }
     
     memset(&g_audio_core, 0, sizeof(AudioCore));
-    LOG_INFO("Audio core system shutdown");
+    LOG_INFO("AUDIO", "Audio core system shutdown");
 }
 
 // Load a sound from memory (simplified - would load from file in real implementation)
@@ -140,18 +133,16 @@ uint32_t audio_core_load_sound(const char* name, const float* data, uint32_t len
     
     SoundBuffer *buffer = &g_audio_core.sound_buffers[g_audio_core.sound_count];
     
-    buffer->data = malloc(length * sizeof(float));
+    buffer->data = malloc(length);
     if (!buffer->data) {
         return UINT32_MAX;
     }
     
-    memcpy(buffer->data, data, length * sizeof(float));
-    buffer->length = length;
-    buffer->channels = channels;
-    buffer->sample_rate = sample_rate;
-    strncpy(buffer->name, name, 63);
-    buffer->name[63] = '\0';
-    buffer->is_loaded = true;
+    memcpy(buffer->data, data, length);
+    buffer->data_size = length;
+    buffer->loaded = true;
+    strncpy(buffer->filepath, name, 255);
+    buffer->filepath[255] = '\0';
     
     return g_audio_core.sound_count++;
 }
@@ -184,7 +175,7 @@ uint32_t audio_core_play_sfx(uint32_t sound_id, float volume, float pitch, bool 
     }
     
     SoundBuffer *buffer = &g_audio_core.sound_buffers[sound_id];
-    if (!buffer->is_loaded) {
+    if (!buffer->loaded) {
         return 0;
     }
     
@@ -200,7 +191,7 @@ uint32_t audio_core_play_sfx(uint32_t sound_id, float volume, float pitch, bool 
     
     g_audio_core.playing_count++;
     
-    LOG_DEBUG("Playing SFX: %s (volume: %.2f, pitch: %.2f)", buffer->name, volume, pitch);
+    LOG_DEBUG("AUDIO", "Playing SFX: %s (volume: %.2f, pitch: %.2f)", buffer->filepath, volume, pitch);
     
     return sound->unique_id;
 }
@@ -291,10 +282,10 @@ void audio_core_mix(float *output_buffer, uint32_t frames) {
         uint32_t samples_to_process = frames;
         uint32_t step = (uint32_t)(1.0f / sound->pitch);
         
-        for (uint32_t frame = 0; frame < frames && sound->position < buffer->length; frame++) {
+        for (uint32_t frame = 0; frame < frames && sound->position < buffer->data_size; frame++) {
             uint32_t src_pos = sound->position / step;
             
-            if (src_pos >= buffer->length) {
+            if (src_pos >= buffer->data_size) {
                 if (sound->is_looping) {
                     sound->position = 0;
                     src_pos = 0;
@@ -304,7 +295,7 @@ void audio_core_mix(float *output_buffer, uint32_t frames) {
                 }
             }
             
-            float sample = buffer->data[src_pos];
+            float sample = ((float*)buffer->data)[src_pos];
             
             // Apply pan
             float left_gain = 1.0f;

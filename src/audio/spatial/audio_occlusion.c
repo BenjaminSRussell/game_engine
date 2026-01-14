@@ -1,6 +1,6 @@
 #include "audio/spatial/audio_occlusion.h"
 #include "core/core.h"
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <string.h>
 #include <stdlib.h>
 

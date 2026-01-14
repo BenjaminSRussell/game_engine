@@ -6,7 +6,7 @@
  */
 
 #include "cinematics/audio/audio_system.h"
-#include <include/math/math.h>
+#include "engine/include/math/math_all.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

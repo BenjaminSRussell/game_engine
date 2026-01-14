@@ -1,7 +1,7 @@
 #include "ai/ai_types.h"
 #include "core/core.h"
 #include <string.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 #define GRID_SIZE 64
 

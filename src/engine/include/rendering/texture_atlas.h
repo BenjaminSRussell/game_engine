@@ -1,7 +1,7 @@
 #ifndef TEXTURE_ATLAS_H
 #define TEXTURE_ATLAS_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <math/vec2.h>
 
 // Standard texture atlas configuration

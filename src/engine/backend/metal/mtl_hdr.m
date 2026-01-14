@@ -9,7 +9,7 @@
 #include "mtl_hdr.h"
 #import <CoreGraphics/CoreGraphics.h>
 #import <Metal/Metal.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <stdio.h>
 
 /* ============================================================================

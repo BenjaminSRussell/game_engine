@@ -5,7 +5,7 @@
 #ifndef RENDER_BACKEND_H
 #define RENDER_BACKEND_H
 
-#include "include/common.h"
+#include <common.h>
 
 // Forward declarations
 typedef struct RenderBackend RenderBackend;

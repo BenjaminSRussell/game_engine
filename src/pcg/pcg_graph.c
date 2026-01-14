@@ -5,7 +5,7 @@
  * @date 2026-01-13
  */
 
-#include "../include/pcg/pcg_graph.h"
+#include "engine/include/pcg/pcg_graph.h"
 #include "engine/include/core/memory.h"
 #include <stdio.h>
 #include <stdlib.h>

@@ -6,7 +6,7 @@
 #ifndef TEXT_RENDERER_H
 #define TEXT_RENDERER_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <math/vec2.h>
 #include <math/vec3.h>
 #include <math/vec4.h>

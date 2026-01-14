@@ -3,7 +3,7 @@
 #ifndef DECAL_SYSTEM_H
 #define DECAL_SYSTEM_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/mat4.h"
 #include "math/vec3.h"
 #include "math/vec4.h"

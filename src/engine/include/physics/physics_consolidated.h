@@ -6,9 +6,10 @@
 #ifndef PHYSICS_CONSOLIDATED_H
 #define PHYSICS_CONSOLIDATED_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include "math/vec3.h"
 #include "math/quat.h"
+#include "physics/physics.h"  // Include base physics definitions
 #include "ecs/ecs.h"
 
 // Forward declarations
@@ -28,7 +29,7 @@ typedef struct {
     bool enable_gpu_acceleration;
     bool enable_sleeping;
     u32 worker_threads;
-} PhysicsConfig;
+// PhysicsConfig is defined in physics.h to avoid duplication
 
 // Unified material system
 typedef struct {
@@ -50,12 +51,7 @@ typedef enum {
     COLLISION_SHAPE_HEIGHTFIELD
 } CollisionShapeType;
 
-// Body types
-typedef enum {
-    BODY_TYPE_STATIC,
-    BODY_TYPE_KINEMATIC,
-    BODY_TYPE_DYNAMIC
-} BodyType;
+// Body types are defined in physics.h to avoid duplication
 
 // ============================================================================
 // MAIN PHYSICS WORLD API

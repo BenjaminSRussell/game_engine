@@ -9,9 +9,9 @@
  */
 
 #include <audio/audio_engine_types.h>
-#include "engine/include/common.h"
+#include <common.h>
 #include <math.h>
-#include "engine/include/math/math.h"
+#include "engine/include/math/math_all.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>

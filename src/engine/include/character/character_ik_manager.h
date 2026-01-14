@@ -138,6 +138,6 @@ void character_ik_get_statistics(uint32_t* active_targets, uint32_t* active_chai
                                 uint32_t* active_solvers, float* solve_time_ms);
 
 // Utility function to get current time (placeholder)
-uint32_t get_current_time_ms(void);
+#include "core/utils.h"
 
 #endif // CHARACTER_IK_MANAGER_H

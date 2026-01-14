@@ -7,7 +7,7 @@
 #include "audio/spatial/dolby_atmos_renderer.h"
 #include <stdlib.h>
 #include <string.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 void atmos_renderer_init(DolbyAtmosRenderer *renderer, SpatialAudioConfig *config) {
     renderer->config = config;

@@ -20,6 +20,8 @@ u64 get_time_ns(void) {
   return ts.tv_sec * 1000000000LL + ts.tv_nsec;
 }
 
+u64 get_current_time_ms(void) { return get_time_ns() / 1000000; }
+
 f64 get_time(void) { return (f64)get_time_ns() / 1000000000.0; }
 
 StopWatch stopwatch_start(void) {

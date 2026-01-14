@@ -2,7 +2,7 @@
 #include "physics_demo_framework.h"
 #include "engine/include/core/logger.h"
 #include "rendering/renderer.h"
-#include "engine/include/math/math.h"
+#include "engine/include/math/math_all.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

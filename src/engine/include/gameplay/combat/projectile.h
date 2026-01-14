@@ -20,7 +20,7 @@
 #ifndef PROJECTILE_COMPONENT_H
 #define PROJECTILE_COMPONENT_H
 
-#include "include/common.h"
+#include <common.h>
 #include "include/ecs/ecs.h"
 #include "math/vec3.h"
 #include "include/gameplay/combat/damage.h"

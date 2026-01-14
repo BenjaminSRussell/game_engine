@@ -2,7 +2,7 @@
 #ifndef LEVEL_EDITOR_H
 #define LEVEL_EDITOR_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/vec3.h"
 
 typedef struct {

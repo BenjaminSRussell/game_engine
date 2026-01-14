@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "include/math/math.h"
+#include "include/math/math_all.h"
 
 // Perception types
 typedef enum {

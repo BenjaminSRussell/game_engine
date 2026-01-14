@@ -4,7 +4,7 @@
 #ifndef RAY_QUERY_H
 #define RAY_QUERY_H
 
-#include "include/common.h"
+#include <common.h>
 
 #ifdef VULKAN_BUILD
 

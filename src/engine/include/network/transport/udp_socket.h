@@ -35,6 +35,12 @@ typedef struct {
     NetworkAddress remote_address;
     bool is_bound;
     bool is_connected;
+    u32 packets_sent;
+    u32 packets_received;
+    u32 bytes_sent;
+    u32 bytes_received;
+    u32 send_errors;
+    u32 recv_errors;
     u8 send_buffer[UDP_BUFFER_SIZE];
     u8 recv_buffer[UDP_BUFFER_SIZE];
     u32 send_buffer_size;

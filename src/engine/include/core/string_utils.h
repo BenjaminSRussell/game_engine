@@ -35,7 +35,7 @@
 #define STRING_UTILS_H
 
 
-#include "include/common.h"
+#include <common.h>
 
 char *string_duplicate(const char *str);
 char *string_substring(const char *str, u32 start, u32 length);

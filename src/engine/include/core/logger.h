@@ -1,12 +1,13 @@
 // src/engine/include/core/logger.h
 //
-// Purpose: Consolidated unified logger interface - consolidates all logging backends
+// Purpose: Consolidated unified logger interface - consolidates all logging
+// backends
 //
 #ifndef LOGGER_H
 #define LOGGER_H
 
 // Include the unified logger implementation that consolidates all backends
-#include "logger/unified_logger.h"
+#include "core/logging/unified_logger.h"
 
 // Backwards compatibility aliases for existing code
 #define logger_init unified_logger_init
@@ -17,10 +18,6 @@
 #define logger_benchmark unified_logger_benchmark
 
 // Legacy macros for compatibility with existing code
-#define LOG(level, format, ...) LOG_DEBUG(LOG_CAT_GENERAL, format, ##__VA_ARGS__)
-#define LOGE(format, ...) LOG_ERROR(LOG_CAT_GENERAL, format, ##__VA_ARGS__)
-#define LOGW(format, ...) LOG_WARN(LOG_CAT_GENERAL, format, ##__VA_ARGS__)
-#define LOGI(format, ...) LOG_INFO(LOG_CAT_GENERAL, format, ##__VA_ARGS__)
-#define LOGD(format, ...) LOG_DEBUG(LOG_CAT_GENERAL, format, ##__VA_ARGS__)
+// compatibility macros are now handled in unified_logger.h
 
 #endif // LOGGER_H

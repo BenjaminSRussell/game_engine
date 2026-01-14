@@ -1,7 +1,7 @@
 #ifndef CORE_CONTAINERS_SKIP_LIST_H
 #define CORE_CONTAINERS_SKIP_LIST_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <stdbool.h>
 
 typedef struct SkipList SkipList;

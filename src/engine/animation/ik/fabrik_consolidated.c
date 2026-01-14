@@ -16,7 +16,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
-#include "include/math/math.h"
+#include "include/math/math_all.h"
 #include <math.h>
 
 // FABRIK solver specific data structures

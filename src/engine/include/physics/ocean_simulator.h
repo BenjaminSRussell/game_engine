@@ -1,7 +1,7 @@
 #ifndef OCEAN_SIMULATOR_H
 #define OCEAN_SIMULATOR_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <math/vec2.h>
 #include <math/vec3.h>
 #include <stdbool.h>

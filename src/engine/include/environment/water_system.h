@@ -2,7 +2,7 @@
 #ifndef WATER_SYSTEM_H
 #define WATER_SYSTEM_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/vec2.h"
 #include "math/vec3.h"
 #import <Metal/Metal.h>

@@ -35,7 +35,7 @@
 #ifndef COMPREHENSIVE_DEBUGGING_H
 #define COMPREHENSIVE_DEBUGGING_H
 
-#include "include/common.h"
+#include <common.h>
 #include "include/core/performance.h"
 #include <stdbool.h>
 

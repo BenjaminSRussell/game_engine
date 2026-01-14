@@ -4,7 +4,7 @@
  * ambient
  */
 
-#include <include/math/vec3.h>
+#include "../include/math/vec3.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>

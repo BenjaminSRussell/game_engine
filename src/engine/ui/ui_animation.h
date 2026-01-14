@@ -1,7 +1,7 @@
 #ifndef UI_ANIMATION_H
 #define UI_ANIMATION_H
 
-#include "include/math/math.h"
+#include "include/math/math_all.h"
 #include "include/math/vec2.h"
 #include "include/math/vec4.h"
 #include <stdbool.h>

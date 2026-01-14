@@ -176,7 +176,7 @@
 #include <audio/audio_system.h>
 #include <audio/underwater_filter.h>
 #include <core/asset_importers.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <physics/physics.h>
 #include <stdio.h>
 #include <stdlib.h>

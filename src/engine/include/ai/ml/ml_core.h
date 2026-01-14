@@ -24,7 +24,7 @@
 #ifndef ML_CORE_H
 #define ML_CORE_H
 
-#include "include/common.h"
+#include <common.h>
 #include "include/core/performance.h"
 #include "include/core/logger.h"
 #include <stdbool.h>

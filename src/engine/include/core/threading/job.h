@@ -54,7 +54,7 @@
 #ifndef JOB_H
 #define JOB_H
 
-#include "engine/include/common.h"
+#include <common.h>
 
 #ifndef PLATFORM_WEB
 #include <pthread.h>

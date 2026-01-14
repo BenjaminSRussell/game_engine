@@ -32,7 +32,7 @@
 #ifndef AI_NPC_DIALOGUE_H
 #define AI_NPC_DIALOGUE_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <ecs/ecs.h>
 #include <math/vec3.h>
 

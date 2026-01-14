@@ -1,7 +1,7 @@
 #ifndef ATMOSPHERE_LUT_PARAMETERIZATION_H
 #define ATMOSPHERE_LUT_PARAMETERIZATION_H
 
-#include "../../../include/math/math.h"
+#include "../../../include/math/math_all.h"
 #include <simd/simd.h>
 #include <stdbool.h>
 

@@ -4,7 +4,7 @@
 #ifndef AI_TYPES_H
 #define AI_TYPES_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/vec3.h"
 
 // AI Entity ID

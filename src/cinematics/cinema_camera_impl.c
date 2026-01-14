@@ -5,7 +5,7 @@
  * @date 2026-01-13
  */
 
-#include <include/math/math.h>
+#include "engine/include/math/math_all.h"
 
 typedef enum {
   CAM_DOLLY,   // Linear track

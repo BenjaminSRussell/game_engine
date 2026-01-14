@@ -2,7 +2,7 @@
 #ifndef CLOTH_SIMULATION_H
 #define CLOTH_SIMULATION_H
 
-#include "include/common.h"
+#include <common.h>
 #include "math/vec3.h"
 #import <Metal/Metal.h>
 

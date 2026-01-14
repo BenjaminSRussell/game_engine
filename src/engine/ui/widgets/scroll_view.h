@@ -2,7 +2,7 @@
 #define UI_SCROLL_VIEW_H
 
 #include "widget.h"
-#include "include/math/math.h"
+#include "include/math/math_all.h"
 
 #ifdef __cplusplus
 extern "C" {

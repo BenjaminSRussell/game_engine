@@ -11,7 +11,7 @@
 
 
 #include <locale.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>

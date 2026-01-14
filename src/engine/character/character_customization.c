@@ -610,8 +610,3 @@ static void update_character_mesh(uint32_t character_id) {
     log_debug("Updating mesh for character %u", character_id);
 }
 
-uint32_t get_current_time_ms(void) {
-    // Placeholder - would typically use platform-specific time function
-    static uint32_t counter = 0;
-    return counter += 16;  // Simulate 60 FPS
-}

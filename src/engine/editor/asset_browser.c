@@ -1,11 +1,11 @@
-#include "engine/include/common.h"
+#include <common.h>
 #include <core/asset_manager.h>
 #include "engine/include/core/logger.h"
 #include "engine/include/core/memory.h"
 #include <core/resource/vfs/vfs.h>
 #include <core/time_system.h>
 #include <editor/editor_main.h>
-#include "engine/include/math/math.h"
+#include "engine/include/math/math_all.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>

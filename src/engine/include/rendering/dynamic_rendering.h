@@ -4,7 +4,7 @@
 #ifndef DYNAMIC_RENDERING_H
 #define DYNAMIC_RENDERING_H
 
-#include "include/common.h"
+#include <common.h>
 
 #ifdef VULKAN_BUILD
 

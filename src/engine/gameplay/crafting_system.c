@@ -77,7 +77,6 @@ static crafting_system_t g_crafting = {0};
 static bool recipe_can_be_crafted(const recipe_t* recipe, uint32_t player_id);
 static void consume_ingredients(const recipe_t* recipe, uint32_t player_id);
 static void give_results(const recipe_t* recipe, uint32_t player_id);
-static uint32_t get_current_time_ms(void);
 
 bool crafting_init(void) {
     if (g_crafting.initialized) {
@@ -597,8 +596,3 @@ static void give_results(const recipe_t* recipe, uint32_t player_id) {
     }
 }
 
-static uint32_t get_current_time_ms(void) {
-    // Placeholder - would typically use platform-specific time function
-    static uint32_t counter = 0;
-    return counter += 16;  // Simulate 60 FPS
-}

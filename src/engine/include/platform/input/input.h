@@ -15,8 +15,8 @@
 #ifndef ENGINE_INPUT_H
 #define ENGINE_INPUT_H
 
-#include "engine/include/common.h"
-#include "engine/include/math/math.h"
+#include <common.h>
+#include "engine/include/math/math_all.h"
 
 // Forward declarations
 typedef struct InputSystem InputSystem;

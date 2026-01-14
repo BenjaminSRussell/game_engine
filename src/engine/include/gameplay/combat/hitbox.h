@@ -22,7 +22,7 @@
 #ifndef HITBOX_COMPONENT_H
 #define HITBOX_COMPONENT_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <ecs/ecs.h>
 #include <math/aabb.h>
 #include <math/vec3.h>

@@ -1,7 +1,7 @@
 #include "core/core.h"
 #include <stdlib.h>
 #include <string.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <stdint.h>
 
 //  COMPLETED: Bloom Filter Implementation - AGENT_CORE_2

@@ -14,7 +14,7 @@
 #include "engine/include/core/logger.h"
 #include "engine/include/core/memory.h"
 #include <math/vec3.h>
-#include "engine/include/math/math.h"
+#include "engine/include/math/math_all.h"
 #include <stdlib.h>
 #include <string.h>
 

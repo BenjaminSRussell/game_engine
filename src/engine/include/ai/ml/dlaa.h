@@ -7,7 +7,7 @@
 #ifndef DLAA_H
 #define DLAA_H
 
-#include "include/common.h"
+#include <common.h>
 #include "include/ai/ml/ml_core.h"
 #include <stdbool.h>
 

@@ -9,7 +9,7 @@
  */
 
 #include "include/animation/core/inverse_kinematics_solver.h"
-#include "include/math/math.h"
+#include "include/math/math_all.h"
 #include <math.h>
 #include <string.h>
 

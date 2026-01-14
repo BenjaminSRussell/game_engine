@@ -15,7 +15,7 @@
  * Provides LZ4 and ZSTD compression algorithms for asset optimization
  */
 
-#include "core/asset_compression.h"
+#include "engine/include/core/asset_compression.h"
 #include <stdlib.h>
 
 void compression_init() {}

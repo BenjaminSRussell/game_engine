@@ -1,8 +1,8 @@
 #ifndef DTX_SURROUND_H
 #define DTX_SURROUND_H
 
-#include "engine/include/common.h"
-#include "engine/include/math/math.h"
+#include <common.h>
+#include "engine/include/math/math_all.h"
 
 // -------------------------------------------------------------------------------------------------
 // DTX 5.1.2 CHANNEL CONFIGURATION

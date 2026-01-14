@@ -7,7 +7,7 @@
 #ifndef NEURAL_ANIMATION_H
 #define NEURAL_ANIMATION_H
 
-#include "include/common.h"
+#include <common.h>
 #include "include/ai/ml/ml_core.h"
 #include <stdbool.h>
 

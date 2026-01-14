@@ -17,19 +17,18 @@ static uint32_t g_subsystem_count = 0;
 
 bool subsystem_registry_register(const SubsystemDescriptor *descriptor) {
   if (!descriptor || !descriptor->name || !descriptor->create_func) {
-    LOG_ERROR(LOG_CAT_GENERAL, "Invalid subsystem descriptor");
+    LOG_ERROR("Invalid subsystem descriptor");
     return false;
   }
 
   if (g_subsystem_count >= MAX_SUBSYSTEMS) {
-    LOG_ERROR(LOG_CAT_GENERAL, "Max subsystems reached");
+    LOG_ERROR("Max subsystems reached");
     return false;
   }
 
   // Check duplicates
   if (subsystem_registry_get(descriptor->name)) {
-    LOG_WARN(LOG_CAT_GENERAL, "Subsystem %s already registered",
-             descriptor->name);
+    LOG_WARN("Subsystem %s already registered", descriptor->name);
     return true; // Already registered is not a failure?
   }
 
@@ -39,7 +38,7 @@ bool subsystem_registry_register(const SubsystemDescriptor *descriptor) {
   entry->initialized = false;
   entry->registered = true;
 
-  LOG_INFO(LOG_CAT_GENERAL, "Registered subsystem: %s", descriptor->name);
+  LOG_INFO("Registered subsystem: %s", descriptor->name);
   return true;
 }
 
@@ -60,16 +59,15 @@ static void sort_subsystems(void) {
 bool subsystem_registry_initialize_all(const EngineConfig *config) {
   sort_subsystems();
 
-  LOG_INFO(LOG_CAT_GENERAL, "Initializing %d subsystems...", g_subsystem_count);
+  LOG_INFO("Initializing %d subsystems...", g_subsystem_count);
 
   for (uint32_t i = 0; i < g_subsystem_count; i++) {
     SubsystemEntry *entry = &g_subsystems[i];
 
-    LOG_INFO(LOG_CAT_GENERAL, "Creating subsystem: %s", entry->descriptor.name);
+    LOG_INFO("Creating subsystem: %s", entry->descriptor.name);
     entry->instance = entry->descriptor.create_func();
     if (!entry->instance) {
-      LOG_FATAL(LOG_CAT_GENERAL, "Failed to create subsystem: %s",
-                entry->descriptor.name);
+      LOG_FATAL("Failed to create subsystem: %s", entry->descriptor.name);
       return false;
     }
 
@@ -77,11 +75,9 @@ bool subsystem_registry_initialize_all(const EngineConfig *config) {
     entry->instance->id = i;
 
     if (entry->instance->vtable && entry->instance->vtable->initialize) {
-      LOG_INFO(LOG_CAT_GENERAL, "Initializing subsystem: %s",
-               entry->descriptor.name);
+      LOG_INFO("Initializing subsystem: %s", entry->descriptor.name);
       if (!entry->instance->vtable->initialize(entry->instance, config)) {
-        LOG_FATAL(LOG_CAT_GENERAL, "Failed to initialize subsystem: %s",
-                  entry->descriptor.name);
+        LOG_FATAL("Failed to initialize subsystem: %s", entry->descriptor.name);
         return false;
       }
     }
@@ -97,8 +93,7 @@ void subsystem_registry_shutdown_all(void) {
   for (int32_t i = (int32_t)g_subsystem_count - 1; i >= 0; i--) {
     SubsystemEntry *entry = &g_subsystems[i];
     if (entry->initialized && entry->instance) {
-      LOG_INFO(LOG_CAT_GENERAL, "Shutting down subsystem: %s",
-               entry->descriptor.name);
+      LOG_INFO("Shutting down subsystem: %s", entry->descriptor.name);
       if (entry->instance->vtable && entry->instance->vtable->shutdown) {
         entry->instance->vtable->shutdown(entry->instance);
       }

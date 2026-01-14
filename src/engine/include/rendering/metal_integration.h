@@ -4,6 +4,7 @@
 #define METAL_INTEGRATION_H
 
 #include "../geometry/nanite/nanite_cluster.h"
+#include "../geometry/nanite/nanite_render.h"
 #include "../lighting/lumen/lumen_gi.h"
 #include "metal_fx.h"
 #include "metal_mesh_shaders.h"
@@ -38,6 +39,8 @@ typedef struct {
   id<MTLTexture> normals;
   id<MTLTexture> albedo;
   id<MTLTexture> gi_output;
+
+  NaniteRenderer *nanite;
 
 } MetalIntegratedRenderer;
 

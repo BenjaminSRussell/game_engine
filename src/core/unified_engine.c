@@ -9,7 +9,7 @@
 //
 // Purpose: Unified engine implementation integrating all systems
 //
-#include "../include/core/unified_engine.h"
+#include "engine/include/core/unified_engine.h"
 #include "../include/world/generator.h"
 #include "chunk/chunk.h"
 #include "core/asset_manager.h"

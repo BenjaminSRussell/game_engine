@@ -1,4 +1,4 @@
-#include "include/common.h"
+#include <common.h>
 
 void state_editor_init(void) {}
 

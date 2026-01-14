@@ -1,7 +1,7 @@
 #ifndef CORE_MEMORY_BUDDY_ALLOCATOR_H
 #define CORE_MEMORY_BUDDY_ALLOCATOR_H
 
-#include "include/common.h"
+#include <common.h>
 
 typedef struct BuddyBlock {
   struct BuddyBlock *left;

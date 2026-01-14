@@ -171,7 +171,7 @@ simd_float2 atm_skyview_lut_encode(simd_float3 view_dir, float view_height,
   // v coord (Zenith)
   // 0 = zenith, 0.5 = horizon, 1 = nadir ?
   // Non-linear mapping to focus on horizon.
-  float v;
+  float u, v;
   float horizon_angle =
       acosf(atm_horizon_angle_cos(view_height, planet_radius));
   float view_angle = acosf(cos_theta);
@@ -196,10 +196,9 @@ simd_float2 atm_skyview_lut_encode(simd_float3 view_dir, float view_height,
 
   // u coord (Azimuth relative to sun direction)
   // Project view direction onto horizontal plane perpendicular to up vector
-  simd_float3 up = {0, 1, 0};
   simd_float3 view_horizontal = view_dir - simd_dot(view_dir, up) * up;
   float view_horizontal_length = simd_length(view_horizontal);
-  
+
   if (view_horizontal_length > 0.0001f) {
     view_horizontal = view_horizontal / view_horizontal_length;
     // Calculate azimuth angle in range [0, 2π]

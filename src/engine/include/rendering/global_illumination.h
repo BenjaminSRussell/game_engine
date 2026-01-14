@@ -15,7 +15,7 @@
 #ifndef GLOBAL_ILLUMINATION_H
 #define GLOBAL_ILLUMINATION_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <math/vec3.h>
 #include <math/vec4.h>
 

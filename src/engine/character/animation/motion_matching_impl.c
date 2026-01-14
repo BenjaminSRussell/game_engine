@@ -4,7 +4,7 @@
  * Data-driven animation selection based on trajectory matching
  */
 
-#include "include/math/math.h"
+#include "include/math/math_all.h"
 #include <stdlib.h>
 #include <string.h>
 

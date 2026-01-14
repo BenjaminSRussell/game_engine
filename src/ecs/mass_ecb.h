@@ -1,7 +1,7 @@
 #ifndef MASS_ECB_H
 #define MASS_ECB_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <ecs/ecs.h>
 
 typedef struct MassCommandBuffer MassCommandBuffer;

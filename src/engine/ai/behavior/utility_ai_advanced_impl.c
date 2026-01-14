@@ -3,7 +3,7 @@
  * Infinite Axis Utility System
  */
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 typedef struct {
   float (*score_func)(void *ctx);

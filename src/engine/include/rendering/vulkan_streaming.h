@@ -5,6 +5,9 @@
 
 #ifdef VULKAN_BUILD
 
+// Forward declaration
+typedef struct VulkanRenderer VulkanRenderer;
+
 // Configuration for streaming system
 #define MESH_POOL_SIZE (128 * 1024 * 1024)   // 128MB per pool
 #define STAGING_RING_SIZE (32 * 1024 * 1024) // 32MB ring buffer
@@ -88,5 +91,3 @@ void vulkan_streaming_begin_frame(VulkanRenderer *renderer);
 void vulkan_streaming_end_frame(VulkanRenderer *renderer);
 
 #endif // VULKAN_BUILD
-
-#endif // VULKAN_STREAMING_H

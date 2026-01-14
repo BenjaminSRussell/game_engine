@@ -276,8 +276,219 @@ void vehicle_update(VehiclePhysics *vehicle, f32 delta_time) {
     // Update skid mark system
     vehicle_update_skid_mark_system(vehicle, delta_time);
     
-    // Update engine RPM based on wheel speed and gear
-    // This would be implemented in the engine todo
+    // Vehicle damage system
+typedef struct {
+    f32 health;
+    f32 max_health;
+    f32 engine_damage;
+    f32 wheel_damage[8];
+    f32 chassis_damage;
+    bool is_damaged;
+    bool is_destroyed;
+} VehicleDamage;
+
+// Vehicle fuel system
+typedef struct {
+    f32 fuel_level;
+    f32 max_fuel;
+    f32 fuel_consumption_rate;
+    f32 fuel_efficiency;
+    bool is_empty;
+} VehicleFuel;
+
+// Vehicle customization system
+typedef struct {
+    u32 color;
+    u32 wheel_type;
+    u32 engine_type;
+    f32 engine_power_multiplier;
+    f32 suspension_stiffness;
+    f32 turbo_boost;
+    bool has_nitro;
+} VehicleCustomization;
+
+// Enhanced vehicle structure with damage, fuel, and customization
+typedef struct {
+    // Existing vehicle physics members...
+    
+    // Damage system
+    VehicleDamage damage;
+    
+    // Fuel system
+    VehicleFuel fuel;
+    
+    // Customization
+    VehicleCustomization customization;
+} VehiclePhysicsEnhanced;
+
+// Initialize vehicle damage system
+void vehicle_init_damage(VehiclePhysics *vehicle, f32 max_health) {
+    if (!vehicle) return;
+    
+    vehicle->damage.health = max_health;
+    vehicle->damage.max_health = max_health;
+    vehicle->damage.engine_damage = 0.0f;
+    vehicle->damage.chassis_damage = 0.0f;
+    vehicle->damage.is_damaged = false;
+    vehicle->damage.is_destroyed = false;
+    
+    for (u32 i = 0; i < 8; i++) {
+        vehicle->damage.wheel_damage[i] = 0.0f;
+    }
+}
+
+// Apply damage to vehicle
+void vehicle_apply_damage(VehiclePhysics *vehicle, f32 damage_amount, u32 damage_type) {
+    if (!vehicle || vehicle->damage.is_destroyed) return;
+    
+    vehicle->damage.health -= damage_amount;
+    
+    if (vehicle->damage.health <= 0.0f) {
+        vehicle->damage.health = 0.0f;
+        vehicle->damage.is_destroyed = true;
+        vehicle->damage.is_damaged = true;
+        
+        // Disable vehicle when destroyed
+        vehicle->engine_rpm = 0.0f;
+        vehicle->throttle = 0.0f;
+        return;
+    }
+    
+    vehicle->damage.is_damaged = true;
+    
+    // Apply specific damage based on type
+    switch (damage_type) {
+        case 0: // Engine damage
+            vehicle->damage.engine_damage += damage_amount * 0.5f;
+            break;
+        case 1: // Wheel damage
+            for (u32 i = 0; i < vehicle->wheel_count && i < 8; i++) {
+                vehicle->damage.wheel_damage[i] += damage_amount * 0.2f;
+            }
+            break;
+        case 2: // Chassis damage
+            vehicle->damage.chassis_damage += damage_amount * 0.3f;
+            break;
+    }
+}
+
+// Repair vehicle
+void vehicle_repair(VehiclePhysics *vehicle, f32 repair_amount) {
+    if (!vehicle) return;
+    
+    vehicle->damage.health += repair_amount;
+    if (vehicle->damage.health > vehicle->damage.max_health) {
+        vehicle->damage.health = vehicle->damage.max_health;
+    }
+    
+    // Reduce damage
+    vehicle->damage.engine_damage *= 0.5f;
+    vehicle->damage.chassis_damage *= 0.5f;
+    
+    for (u32 i = 0; i < 8; i++) {
+        vehicle->damage.wheel_damage[i] *= 0.5f;
+    }
+    
+    if (vehicle->damage.health >= vehicle->damage.max_health * 0.9f) {
+        vehicle->damage.is_damaged = false;
+    }
+    
+    vehicle->damage.is_destroyed = false;
+}
+
+// Initialize vehicle fuel system
+void vehicle_init_fuel(VehiclePhysics *vehicle, f32 max_fuel, f32 consumption_rate) {
+    if (!vehicle) return;
+    
+    vehicle->fuel.fuel_level = max_fuel;
+    vehicle->fuel.max_fuel = max_fuel;
+    vehicle->fuel.fuel_consumption_rate = consumption_rate;
+    vehicle->fuel.fuel_efficiency = 1.0f;
+    vehicle->fuel.is_empty = false;
+}
+
+// Consume fuel
+void vehicle_consume_fuel(VehiclePhysics *vehicle, f32 delta_time) {
+    if (!vehicle || vehicle->fuel.is_empty) return;
+    
+    f32 consumption = vehicle->fuel.fuel_consumption_rate * vehicle->throttle * delta_time;
+    consumption /= vehicle->fuel.fuel_efficiency;
+    
+    vehicle->fuel.fuel_level -= consumption;
+    
+    if (vehicle->fuel.fuel_level <= 0.0f) {
+        vehicle->fuel.fuel_level = 0.0f;
+        vehicle->fuel.is_empty = true;
+        vehicle->engine_rpm = 0.0f;
+        vehicle->throttle = 0.0f;
+    }
+}
+
+// Refuel vehicle
+void vehicle_refuel(VehiclePhysics *vehicle, f32 fuel_amount) {
+    if (!vehicle) return;
+    
+    vehicle->fuel.fuel_level += fuel_amount;
+    if (vehicle->fuel.fuel_level > vehicle->fuel.max_fuel) {
+        vehicle->fuel.fuel_level = vehicle->fuel.max_fuel;
+    }
+    
+    vehicle->fuel.is_empty = false;
+}
+
+// Initialize vehicle customization
+void vehicle_init_customization(VehiclePhysics *vehicle) {
+    if (!vehicle) return;
+    
+    vehicle->customization.color = 0xFF0000FF; // Blue
+    vehicle->customization.wheel_type = 0;
+    vehicle->customization.engine_type = 0;
+    vehicle->customization.engine_power_multiplier = 1.0f;
+    vehicle->customization.suspension_stiffness = 1.0f;
+    vehicle->customization.turbo_boost = 0.0f;
+    vehicle->customization.has_nitro = false;
+}
+
+// Apply vehicle customization
+void vehicle_apply_customization(VehiclePhysics *vehicle, u32 color, u32 wheel_type, 
+                                u32 engine_type, f32 power_mult, f32 suspension) {
+    if (!vehicle) return;
+    
+    vehicle->customization.color = color;
+    vehicle->customization.wheel_type = wheel_type;
+    vehicle->customization.engine_type = engine_type;
+    vehicle->customization.engine_power_multiplier = power_mult;
+    vehicle->customization.suspension_stiffness = suspension;
+}
+
+// Apply turbo boost
+void vehicle_apply_turbo(VehiclePhysics *vehicle, f32 boost_amount, f32 duration) {
+    if (!vehicle || vehicle->fuel.is_empty) return;
+    
+    vehicle->customization.turbo_boost = boost_amount;
+    vehicle->customization.has_nitro = true;
+    
+    // Consume extra fuel for turbo
+    vehicle->fuel.fuel_level -= boost_amount * duration * 0.1f;
+    if (vehicle->fuel.fuel_level < 0.0f) {
+        vehicle->fuel.fuel_level = 0.0f;
+        vehicle->fuel.is_empty = true;
+    }
+}
+
+// Update engine RPM based on wheel speed and gear
+    f32 wheel_speed = vec3_length(vehicle_get_wheel_velocity(vehicle, 0));
+    f32 target_rpm = wheel_speed * vehicle->gear_ratios[vehicle->current_gear] * 50.0f;
+    target_rpm *= vehicle->customization.engine_power_multiplier;
+    
+    // Apply damage effects
+    if (vehicle->damage.is_damaged) {
+        target_rpm *= (1.0f - vehicle->damage.engine_damage * 0.5f);
+    }
+    
+    // Smooth RPM transition
+    f32 rpm_diff = target_rpm - vehicle->engine_rpm;
+    vehicle->engine_rpm += rpm_diff * delta_time * 2.0f;
     
     // Update physics simulation
     // This would include forces, integration, etc.

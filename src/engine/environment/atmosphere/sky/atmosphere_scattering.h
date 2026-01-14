@@ -1,7 +1,7 @@
 #ifndef ATMOSPHERE_SCATTERING_H
 #define ATMOSPHERE_SCATTERING_H
 
-#include "../../../include/math/math.h"
+#include "../../../include/math/math_all.h"
 #include <simd/simd.h>
 #include <stdbool.h>
 

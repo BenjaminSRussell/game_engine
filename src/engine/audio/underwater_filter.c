@@ -1,7 +1,7 @@
 #include "include/audio/underwater_filter.h"
 #include "include/core/logger.h"
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 static bool g_filter_enabled = false;
 static f32 g_filter_depth = 0.0f;

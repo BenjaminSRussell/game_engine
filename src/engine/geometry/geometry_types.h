@@ -22,12 +22,12 @@ typedef struct skeleton_t skeleton_t;
  * Size: 12 + 12 + 8 + 16 = 48 bytes
  * Alignment: 16 bytes (simd friendly)
  */
-typedef struct vertex_t {
+typedef struct geometry_vertex_t {
   Vec3 position; // 12 bytes
   Vec3 normal;   // 12 bytes
-  Vec2 uv;       // 8 bytes
+  Vec2 texcoord; // 8 bytes
   Vec4 tangent;  // 16 bytes (w component stores handedness for bitangent)
-} vertex_t;
+} geometry_vertex_t;
 
 /**
  * Skinned vertex structure for animated meshes
@@ -107,7 +107,7 @@ typedef struct mesh_t {
   u32 flags; // mesh_flags_e combination
 
   // CPU Data
-  vertex_t *vertices;
+  geometry_vertex_t *vertices;
   u32 vertex_count;
   u32 vertex_capacity;
 
@@ -137,7 +137,8 @@ typedef struct mesh_t {
   // Blend Shape Data
   blend_shape_t *blend_shapes;
   u32 blend_shape_count;
-  vertex_t *base_vertices; // Original vertices for blend shape evaluation
+  geometry_vertex_t
+      *base_vertices; // Original vertices for blend shape evaluation
 
   // Skeletal Animation Data
   skeleton_t *skeleton;

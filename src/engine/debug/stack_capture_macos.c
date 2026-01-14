@@ -1,12 +1,12 @@
 // Stack Capture System for macOS implementation
 #include "debug/stack_capture_macos.h"
 #include "engine/include/core/logger.h"
+#include "engine/include/math/math_all.h"
 #include <cxxabi.h>
 #include <dlfcn.h>
 #include <execinfo.h>
 #include <mach/mach.h>
 #include <mach/mach_vm.h>
-#include "engine/include/math/math.h"
 #include <math/vec3.h>
 #include <pthread.h>
 #include <stdio.h>
@@ -18,13 +18,7 @@
 // Global stack capture system instance
 StackCaptureSystem *g_stack_system = NULL;
 
-// MARK: - Helper Functions
-
-static u64 get_current_time_ms(void) {
-  struct timespec ts;
-  clock_gettime(CLOCK_MONOTONIC, &ts);
-  return (u64)(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
-}
+#include "engine/include/core/utils.h"
 
 static u32 get_current_thread_id(void) {
   // TODO(Jules): Optimize get_current_thread_id for performance in tight loops.

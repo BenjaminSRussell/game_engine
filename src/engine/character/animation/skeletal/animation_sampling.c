@@ -806,6 +806,214 @@ static void animation_animation_sampling_cleanup_internal(animation_animation_sa
     item->initialized = false;
 }
 
+static bool animation_transform_exceeds_tolerance(
+        const animation_bone_transform_t* a,
+        const animation_bone_transform_t* b,
+        const animation_compression_settings_t* settings) {
+    float max_pos_delta = 0.0f;
+    float max_scale_delta = 0.0f;
+    for (int i = 0; i < 3; i++) {
+        float pos_delta = fabsf(a->position[i] - b->position[i]);
+        float scale_delta = fabsf(a->scale[i] - b->scale[i]);
+        if (pos_delta > max_pos_delta) max_pos_delta = pos_delta;
+        if (scale_delta > max_scale_delta) max_scale_delta = scale_delta;
+    }
+
+    float dot = 0.0f;
+    for (int i = 0; i < 4; i++) {
+        dot += a->rotation[i] * b->rotation[i];
+    }
+    float rot_delta = 1.0f - fabsf(dot);
+
+    if (max_pos_delta > settings->position_tolerance) return true;
+    if (max_scale_delta > settings->scale_tolerance) return true;
+    if (rot_delta > settings->rotation_tolerance) return true;
+    return false;
+}
+
+static int animation_gpu_skinning_init(animation_gpu_skinning_data_t* gpu_data,
+                                       const animation_skeleton_t* skeleton) {
+    if (!gpu_data || !skeleton) {
+        return ANIMATION_SAMPLING_ERROR_INVALID_PARAM;
+    }
+
+    memset(gpu_data, 0, sizeof(*gpu_data));
+    gpu_data->bone_count = skeleton->bone_count;
+    if (gpu_data->bone_count == 0) {
+        gpu_data->gpu_accelerated = false;
+        return ANIMATION_SAMPLING_ERROR_NONE;
+    }
+
+    gpu_data->bone_buffer =
+        calloc(gpu_data->bone_count, sizeof(animation_bone_transform_t));
+    if (!gpu_data->bone_buffer) {
+        return ANIMATION_SAMPLING_ERROR_OUT_OF_MEMORY;
+    }
+
+    gpu_data->gpu_accelerated = true;
+    return ANIMATION_SAMPLING_ERROR_NONE;
+}
+
+static void animation_gpu_skinning_shutdown(animation_gpu_skinning_data_t* gpu_data) {
+    if (!gpu_data) return;
+    if (gpu_data->bone_buffer) {
+        free(gpu_data->bone_buffer);
+    }
+    memset(gpu_data, 0, sizeof(*gpu_data));
+}
+
+static int animation_gpu_skinning_update_bones(
+        animation_gpu_skinning_data_t* gpu_data,
+        const animation_bone_transform_t* transforms,
+        uint32_t bone_count) {
+    if (!gpu_data || !transforms) {
+        return ANIMATION_SAMPLING_ERROR_INVALID_PARAM;
+    }
+    if (!gpu_data->bone_buffer || gpu_data->bone_count == 0) {
+        return ANIMATION_SAMPLING_ERROR_GPU_ERROR;
+    }
+
+    uint32_t count = bone_count;
+    if (count > gpu_data->bone_count) {
+        count = gpu_data->bone_count;
+    }
+    memcpy(gpu_data->bone_buffer, transforms,
+           count * sizeof(animation_bone_transform_t));
+    return ANIMATION_SAMPLING_ERROR_NONE;
+}
+
+static int animation_compress_clip(const animation_clip_t* clip,
+                                   animation_compressed_clip_t* compressed,
+                                   const animation_compression_settings_t* settings) {
+    if (!clip || !compressed || !settings || !clip->keyframes ||
+        clip->keyframe_count == 0) {
+        return ANIMATION_SAMPLING_ERROR_INVALID_PARAM;
+    }
+
+    animation_keyframe_t* reduced =
+        calloc(clip->keyframe_count, sizeof(animation_keyframe_t));
+    if (!reduced) {
+        return ANIMATION_SAMPLING_ERROR_OUT_OF_MEMORY;
+    }
+
+    uint32_t reduced_count = 0;
+    reduced[reduced_count++] = clip->keyframes[0];
+
+    if (settings->use_keyframe_reduction && clip->keyframe_count > 2) {
+        for (uint32_t i = 1; i < clip->keyframe_count - 1; i++) {
+            const animation_keyframe_t* current = &clip->keyframes[i];
+            const animation_keyframe_t* last_kept = &reduced[reduced_count - 1];
+            if (animation_transform_exceeds_tolerance(&last_kept->transform,
+                                                      &current->transform,
+                                                      settings)) {
+                reduced[reduced_count++] = *current;
+            }
+        }
+    } else {
+        for (uint32_t i = 1; i < clip->keyframe_count - 1; i++) {
+            reduced[reduced_count++] = clip->keyframes[i];
+        }
+    }
+
+    if (clip->keyframe_count > 1) {
+        reduced[reduced_count++] = clip->keyframes[clip->keyframe_count - 1];
+    }
+
+    typedef struct {
+        uint32_t keyframe_count;
+        uint32_t flags;
+    } animation_compressed_header_t;
+
+    uint32_t flags = 0;
+    if (settings->use_keyframe_reduction) flags |= 0x1;
+    if (settings->use_quantization) flags |= 0x2;
+
+    size_t payload_size = reduced_count * sizeof(animation_keyframe_t);
+    size_t total_size = sizeof(animation_compressed_header_t) + payload_size;
+    uint8_t* data = (uint8_t*)malloc(total_size);
+    if (!data) {
+        free(reduced);
+        return ANIMATION_SAMPLING_ERROR_OUT_OF_MEMORY;
+    }
+
+    animation_compressed_header_t* header =
+        (animation_compressed_header_t*)data;
+    header->keyframe_count = reduced_count;
+    header->flags = flags;
+
+    memcpy(data + sizeof(*header), reduced, payload_size);
+
+    free(reduced);
+
+    compressed->compressed_data = data;
+    compressed->compressed_size = total_size;
+    compressed->settings = *settings;
+    compressed->compression_ratio =
+        animation_calculate_compression_ratio(clip, compressed);
+    return ANIMATION_SAMPLING_ERROR_NONE;
+}
+
+static int animation_decompress_clip(const animation_compressed_clip_t* compressed,
+                                     animation_clip_t* clip) {
+    if (!compressed || !compressed->compressed_data || !clip) {
+        return ANIMATION_SAMPLING_ERROR_INVALID_PARAM;
+    }
+
+    typedef struct {
+        uint32_t keyframe_count;
+        uint32_t flags;
+    } animation_compressed_header_t;
+
+    if (compressed->compressed_size < sizeof(animation_compressed_header_t)) {
+        return ANIMATION_SAMPLING_ERROR_DECOMPRESSION_FAILED;
+    }
+
+    const animation_compressed_header_t* header =
+        (const animation_compressed_header_t*)compressed->compressed_data;
+    size_t expected_size =
+        sizeof(*header) + header->keyframe_count * sizeof(animation_keyframe_t);
+    if (expected_size > compressed->compressed_size) {
+        return ANIMATION_SAMPLING_ERROR_DECOMPRESSION_FAILED;
+    }
+
+    animation_keyframe_t* keyframes =
+        calloc(header->keyframe_count, sizeof(animation_keyframe_t));
+    if (!keyframes) {
+        return ANIMATION_SAMPLING_ERROR_OUT_OF_MEMORY;
+    }
+
+    memcpy(keyframes,
+           (const uint8_t*)compressed->compressed_data + sizeof(*header),
+           header->keyframe_count * sizeof(animation_keyframe_t));
+
+    if (clip->keyframes) {
+        free(clip->keyframes);
+    }
+
+    clip->keyframes = keyframes;
+    clip->keyframe_count = header->keyframe_count;
+    clip->frame_count = header->keyframe_count;
+    if (clip->keyframe_count > 0) {
+        clip->duration = clip->keyframes[clip->keyframe_count - 1].time;
+    }
+
+    return ANIMATION_SAMPLING_ERROR_NONE;
+}
+
+static float animation_calculate_compression_ratio(
+        const animation_clip_t* original,
+        const animation_compressed_clip_t* compressed) {
+    if (!original || !compressed || original->keyframe_count == 0) {
+        return 0.0f;
+    }
+
+    float original_size =
+        (float)(original->keyframe_count * sizeof(animation_keyframe_t));
+    if (original_size <= 0.0f) return 0.0f;
+
+    return (float)compressed->compressed_size / original_size;
+}
+
 /* ============================================================================
  * PUBLIC API
  * ============================================================================ */

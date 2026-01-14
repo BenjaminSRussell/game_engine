@@ -1,6 +1,6 @@
 #include "ai/group/squad_tactics.h"
 #include <core/logger.h>
-#include <math/math.h>
+#include <math/math_all.h>
 #include <math/vec3.h>
 #include <stdlib.h>
 #include <string.h>

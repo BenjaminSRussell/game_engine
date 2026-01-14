@@ -1,7 +1,7 @@
 #ifndef SKELETON_SYSTEM_H
 #define SKELETON_SYSTEM_H
 
-#include "math/math.h"
+#include "math/math_all.h"
 #include <core/types.h>
 #include <stdbool.h>
 #include <stddef.h>

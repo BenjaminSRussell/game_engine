@@ -1,7 +1,7 @@
 #include "audio/procedural/footstep_synthesis.h"
 #include "engine/include/core/memory.h"
-#include "include/math/math.h"
-#include <include/math/math.h>
+#include "include/math/math_all.h"
+#include <include/math/math_all.h>
 #include <string.h>
 
 /**

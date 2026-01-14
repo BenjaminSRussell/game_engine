@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 
 //  COMPLETED: STT Bridge with Whisper integration, microphone capture, VAD, and recognition thread
 

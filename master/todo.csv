@@ -257,10 +257,10 @@ TODO-0246,doc_checklist,Massive Systems Implementation TODO List > PENDING IMPLE
 TODO-0247,doc_checklist,Massive Systems Implementation TODO List > PENDING IMPLEMENTATIONS (To Reach 3.5M LOC) > 2. ANIMATION BLUEPRINT SYSTEM - 5000+ lines NEEDED > 2.5 Skeletal Animation (~800 lines),MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md,Bone transformation matrices,open
 TODO-0248,doc_checklist,Massive Systems Implementation TODO List > PENDING IMPLEMENTATIONS (To Reach 3.5M LOC) > 2. ANIMATION BLUEPRINT SYSTEM - 5000+ lines NEEDED > 2.5 Skeletal Animation (~800 lines),MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md,Skeleton pose blending,open
 TODO-0249,doc_checklist,Massive Systems Implementation TODO List > PENDING IMPLEMENTATIONS (To Reach 3.5M LOC) > 2. ANIMATION BLUEPRINT SYSTEM - 5000+ lines NEEDED > 2.5 Skeletal Animation (~800 lines),MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md,Retargeting system (bone mapping),open
-TODO-0250,doc_checklist,Massive Systems Implementation TODO List > PENDING IMPLEMENTATIONS (To Reach 3.5M LOC) > 2. ANIMATION BLUEPRINT SYSTEM - 5000+ lines NEEDED > 2.5 Skeletal Animation (~800 lines),MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md,Animation compression,open
-TODO-0251,doc_checklist,Massive Systems Implementation TODO List > PENDING IMPLEMENTATIONS (To Reach 3.5M LOC) > 2. ANIMATION BLUEPRINT SYSTEM - 5000+ lines NEEDED > 2.5 Skeletal Animation (~800 lines),MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md,GPU skinning setup,open
-TODO-0252,doc_checklist,Massive Systems Implementation TODO List > PENDING IMPLEMENTATIONS (To Reach 3.5M LOC) > 3. NETWORKING SYSTEM - 6000+ lines NEEDED > 3.1 Transport Layer (~1500 lines),MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md,TCP socket management,open
-TODO-0253,doc_checklist,Massive Systems Implementation TODO List > PENDING IMPLEMENTATIONS (To Reach 3.5M LOC) > 3. NETWORKING SYSTEM - 6000+ lines NEEDED > 3.1 Transport Layer (~1500 lines),MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md,UDP socket management,open
+TODO-0250,doc_checklist,Massive Systems Implementation TODO List > PENDING IMPLEMENTATIONS (To Reach 3.5M LOC) > 2. ANIMATION BLUEPRINT SYSTEM - 5000+ lines NEEDED > 2.5 Skeletal Animation (~800 lines),MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md,Animation compression,closed
+TODO-0251,doc_checklist,Massive Systems Implementation TODO List > PENDING IMPLEMENTATIONS (To Reach 3.5M LOC) > 2. ANIMATION BLUEPRINT SYSTEM - 5000+ lines NEEDED > 2.5 Skeletal Animation (~800 lines),MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md,GPU skinning setup,closed
+TODO-0252,doc_checklist,Massive Systems Implementation TODO List > PENDING IMPLEMENTATIONS (To Reach 3.5M LOC) > 3. NETWORKING SYSTEM - 6000+ lines NEEDED > 3.1 Transport Layer (~1500 lines),MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md,TCP socket management,closed
+TODO-0253,doc_checklist,Massive Systems Implementation TODO List > PENDING IMPLEMENTATIONS (To Reach 3.5M LOC) > 3. NETWORKING SYSTEM - 6000+ lines NEEDED > 3.1 Transport Layer (~1500 lines),MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md,UDP socket management,closed
 TODO-0254,doc_checklist,Massive Systems Implementation TODO List > PENDING IMPLEMENTATIONS (To Reach 3.5M LOC) > 3. NETWORKING SYSTEM - 6000+ lines NEEDED > 3.1 Transport Layer (~1500 lines),MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md,Network serialization,open
 TODO-0255,doc_checklist,Massive Systems Implementation TODO List > PENDING IMPLEMENTATIONS (To Reach 3.5M LOC) > 3. NETWORKING SYSTEM - 6000+ lines NEEDED > 3.1 Transport Layer (~1500 lines),MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md,Packet fragmentation and reassembly,open
 TODO-0256,doc_checklist,Massive Systems Implementation TODO List > PENDING IMPLEMENTATIONS (To Reach 3.5M LOC) > 3. NETWORKING SYSTEM - 6000+ lines NEEDED > 3.1 Transport Layer (~1500 lines),MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md,Reliable/unreliable message delivery,open
@@ -16870,10 +16870,10 @@ TODO-16748,todo_md,Master TODO,master/todo.md,Skeleton hierarchy management (MAS
 TODO-16749,todo_md,Master TODO,master/todo.md,Bone transformation matrices (MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md),open
 TODO-16750,todo_md,Master TODO,master/todo.md,Skeleton pose blending (MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md),open
 TODO-16751,todo_md,Master TODO,master/todo.md,Retargeting system (bone mapping) (MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md),open
-TODO-16752,todo_md,Master TODO,master/todo.md,Animation compression (MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md),open
-TODO-16753,todo_md,Master TODO,master/todo.md,GPU skinning setup (MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md),open
-TODO-16754,todo_md,Master TODO,master/todo.md,TCP socket management (MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md),open
-TODO-16755,todo_md,Master TODO,master/todo.md,UDP socket management (MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md),open
+TODO-16752,todo_md,Master TODO,master/todo.md,Animation compression (MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md),closed
+TODO-16753,todo_md,Master TODO,master/todo.md,GPU skinning setup (MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md),closed
+TODO-16754,todo_md,Master TODO,master/todo.md,TCP socket management (MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md),closed
+TODO-16755,todo_md,Master TODO,master/todo.md,UDP socket management (MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md),closed
 TODO-16756,todo_md,Master TODO,master/todo.md,Network serialization (MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md),open
 TODO-16757,todo_md,Master TODO,master/todo.md,Packet fragmentation and reassembly (MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md),open
 TODO-16758,todo_md,Master TODO,master/todo.md,Reliable/unreliable message delivery (MASSIVE_SYSTEMS_IMPLEMENTATION_TODO.md),open

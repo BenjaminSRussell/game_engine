@@ -7,13 +7,13 @@
  * @note Essential for GregTech-style mods with massive quantities
  */
 
-#include <core/big_int.h>
+#include "engine/include/core/big_int.h"
 #include "engine/include/core/logger.h"
-#include "engine/include/common.h"
+#include <common.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <include/math/math.h>
+#include "engine/include/math/math_all.h"
 
 // Constants
 const BigInt BIG_INT_MAX_U64 = {.high = 0, .low = UINT64_MAX, .sign = false};

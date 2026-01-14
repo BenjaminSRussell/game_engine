@@ -5,7 +5,7 @@
 #ifndef VFX_OPTIMIZATION_H
 #define VFX_OPTIMIZATION_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <math/vec3.h>
 #include "include/effects/vfx/particle_system.h"
 

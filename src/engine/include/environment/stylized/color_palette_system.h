@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/include/common.h"
+#include <common.h>
 
 typedef struct ColorPalette {
     char name[32];

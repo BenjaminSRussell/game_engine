@@ -272,13 +272,16 @@ bool player_cast_spell(PlayerSystem *system, SpellType spell, Vec3 target) {
 
   // Check spell cooldown first
   if (!is_spell_ready(spell)) {
+    player_magic_record_cast_attempt(magic, spell, false);
     LOG_DEBUG("Spell %d is on cooldown", spell);
     return false;
   }
 
   PlayerMagicComponent *magic = &system->player->magic_component;
-  if (!player_can_cast_spell(magic, spell))
+  if (!player_can_cast_spell(magic, spell)) {
+    player_magic_record_cast_attempt(magic, spell, false);
     return false;
+  }
 
   TransformComponent *transform = ecs_get_component(
       (World *)system->ecs_world, (Entity){system->player->entity_id, 0},
@@ -317,11 +320,7 @@ bool player_cast_spell(PlayerSystem *system, SpellType spell, Vec3 target) {
   // Start cooldown using enhanced system
   start_spell_cooldown(spell, config->cooldown);
 
-  // Update stats
-  magic->stats.total_spells_cast++;
-  magic->stats.total_mana_consumed += spell_state->mana_cost;
-  magic->stats.spell_counts[spell]++;
-
+  // Determine animation duration
   f32 anim_duration = 0.45f;
   switch (spell) {
   case SPELL_HEAL:
@@ -338,6 +337,14 @@ bool player_cast_spell(PlayerSystem *system, SpellType spell, Vec3 target) {
     anim_duration = 0.45f;
     break;
   }
+
+  // Record successful cast with enhanced statistics
+  player_magic_record_cast_attempt(magic, spell, true);
+  magic->stats.total_mana_consumed += spell_state->mana_cost;
+  magic->stats.session_mana_consumed += spell_state->mana_cost;
+  magic->stats.spell_details[spell].mana_consumed += spell_state->mana_cost;
+  magic->stats.total_cast_time += anim_duration;
+  magic->stats.spell_details[spell].cast_time += anim_duration;
   player_trigger_action_animation(system->player, SPIRIT_ANIM_INTERACT,
                                   anim_duration);
   spell_state->cast_time = anim_duration;
@@ -424,11 +431,13 @@ bool player_cast_spell(PlayerSystem *system, SpellType spell, Vec3 target) {
     if (system->combat_system && system->ecs_world) {
       combat_ranged_attack(system->combat_system, system->ecs_world,
                            system->player->entity_id, direction, range);
+      player_magic_record_damage_dealt(magic, spell, magnitude, false);
     }
     break;
 
   case SPELL_HEAL:
     player_heal(system, magnitude);
+    player_magic_record_healing_done(magic, spell, magnitude);
     status_effect_remove(&system->player->status_effects, STATUS_EFFECT_POISON);
     status_effect_remove(&system->player->status_effects,
                          STATUS_EFFECT_WEAKNESS);
@@ -644,4 +653,169 @@ bool player_magic_upgrade_spell(PlayerMagicComponent *magic, SpellType spell) {
     LOG_INFO("Upgraded spell %d to level %u. Remaining points: %u", spell, state->level, magic->spell_points);
 
     return true;
+}
+
+// ============================================================================
+// ENHANCED STATISTICS TRACKING IMPLEMENTATION
+// ============================================================================
+
+void player_magic_record_cast_attempt(PlayerMagicComponent *magic, SpellType spell, bool success) {
+    if (!magic || spell >= SPELL_COUNT) return;
+    
+    if (!success) {
+        magic->stats.failed_casts++;
+        magic->stats.spell_details[spell].interrupts++;
+        LOG_DEBUG("Recorded failed cast for spell %d", spell);
+        return;
+    }
+    
+    magic->stats.total_spells_cast++;
+    magic->stats.spell_counts[spell]++;
+    magic->stats.session_spells_cast++;
+    
+    // Update per-spell statistics
+    magic->stats.spell_details[spell].last_used_time = 0.0f; // Would use current time
+    magic->stats.spell_details[spell].total_use_time += 0.0f; // Would track actual cast time
+    
+    LOG_DEBUG("Recorded successful cast for spell %d (total: %u)", 
+              spell, magic->stats.spell_counts[spell]);
+}
+
+void player_magic_record_damage_dealt(PlayerMagicComponent *magic, SpellType spell, f32 damage, bool critical) {
+    if (!magic || spell >= SPELL_COUNT || damage <= 0.0f) return;
+    
+    magic->stats.total_damage_dealt += damage;
+    magic->stats.spell_details[spell].damage_dealt += damage;
+    
+    if (critical) {
+        magic->stats.critical_hits++;
+        magic->stats.spell_details[spell].critical_hits++;
+        LOG_DEBUG("Recorded critical hit for spell %d: %.1f damage", spell, damage);
+    } else {
+        LOG_DEBUG("Recorded damage for spell %d: %.1f damage", spell, damage);
+    }
+}
+
+void player_magic_record_healing_done(PlayerMagicComponent *magic, SpellType spell, f32 healing) {
+    if (!magic || spell >= SPELL_COUNT || healing <= 0.0f) return;
+    
+    magic->stats.total_healing_done += healing;
+    magic->stats.spell_details[spell].healing_done += healing;
+    
+    LOG_DEBUG("Recorded healing for spell %d: %.1f HP", spell, healing);
+}
+
+void player_magic_record_interrupt(PlayerMagicComponent *magic, SpellType spell) {
+    if (!magic || spell >= SPELL_COUNT) return;
+    
+    magic->stats.interrupts++;
+    magic->stats.spell_details[spell].interrupts++;
+    
+    LOG_DEBUG("Recorded interrupt for spell %d", spell);
+}
+
+void player_magic_record_combo(PlayerMagicComponent *magic, u32 combo_count, f32 combo_time) {
+    if (!magic || combo_count == 0) return;
+    
+    magic->stats.combos_completed++;
+    
+    if (combo_count > magic->stats.highest_combo) {
+        magic->stats.highest_combo = combo_count;
+        LOG_DEBUG("New highest combo: %u spells", combo_count);
+    }
+    
+    if (combo_time > magic->stats.longest_combo_time) {
+        magic->stats.longest_combo_time = combo_time;
+        LOG_DEBUG("New longest combo duration: %.2f seconds", combo_time);
+    }
+    
+    LOG_DEBUG("Recorded combo: %u spells in %.2f seconds", combo_count, combo_time);
+}
+
+void player_magic_update_session_stats(PlayerMagicComponent *magic) {
+    if (!magic) return;
+    
+    // Calculate session efficiency (damage per mana point)
+    if (magic->stats.session_mana_consumed > 0.0f) {
+        magic->stats.session_efficiency = magic->stats.total_damage_dealt / magic->stats.session_mana_consumed;
+    }
+    
+    // Calculate average cast time
+    if (magic->stats.total_spells_cast > 0) {
+        magic->stats.average_cast_time = magic->stats.total_cast_time / magic->stats.total_spells_cast;
+    }
+    
+    LOG_DEBUG("Session stats updated - Efficiency: %.2f damage/mana, Avg cast time: %.3f seconds", 
+              magic->stats.session_efficiency, magic->stats.average_cast_time);
+}
+
+void player_magic_reset_session_stats(PlayerMagicComponent *magic) {
+    if (!magic) return;
+    
+    magic->stats.session_start_time = 0.0f; // Would use current time
+    magic->stats.session_spells_cast = 0;
+    magic->stats.session_mana_consumed = 0.0f;
+    magic->stats.session_efficiency = 0.0f;
+    
+    LOG_INFO("Session statistics reset");
+}
+
+// ============================================================================
+// STATISTICS QUERIES IMPLEMENTATION
+// ============================================================================
+
+const SpellStats* player_magic_get_stats(PlayerMagicComponent *magic) {
+    if (!magic) return NULL;
+    
+    // Update session stats before returning
+    player_magic_update_session_stats(magic);
+    
+    return &magic->stats;
+}
+
+f32 player_magic_get_spell_efficiency(PlayerMagicComponent *magic, SpellType spell) {
+    if (!magic || spell >= SPELL_COUNT) return 0.0f;
+    
+    const struct {
+        f32 damage_dealt;
+        f32 mana_consumed;
+    } *details = &magic->stats.spell_details[spell];
+    
+    if (details->mana_consumed <= 0.0f) {
+        return 0.0f;
+    }
+    
+    return details->damage_dealt / details->mana_consumed;
+}
+
+f32 player_magic_get_cast_frequency(PlayerMagicComponent *magic, SpellType spell) {
+    if (!magic || spell >= SPELL_COUNT) return 0.0f;
+    
+    if (magic->stats.total_spells_cast == 0) {
+        return 0.0f;
+    }
+    
+    return (f32)magic->stats.spell_counts[spell] / (f32)magic->stats.total_spells_cast;
+}
+
+u32 player_magic_get_most_used_spell(PlayerMagicComponent *magic) {
+    if (!magic) return SPELL_COUNT;
+    
+    u32 max_count = 0;
+    u32 most_used = SPELL_COUNT;
+    
+    for (u32 i = 0; i < SPELL_COUNT; i++) {
+        if (magic->stats.spell_counts[i] > max_count) {
+            max_count = magic->stats.spell_counts[i];
+            most_used = i;
+        }
+    }
+    
+    return most_used;
+}
+
+f32 player_magic_get_average_damage_per_cast(PlayerMagicComponent *magic) {
+    if (!magic || magic->stats.total_spells_cast == 0) return 0.0f;
+    
+    return magic->stats.total_damage_dealt / (f32)magic->stats.total_spells_cast;
 }

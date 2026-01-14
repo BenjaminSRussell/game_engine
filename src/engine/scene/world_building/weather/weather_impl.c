@@ -11,6 +11,7 @@
  */
 
 #include "weather_system.h"
+#include "unified_memory_allocator.h"
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -426,7 +427,7 @@ bool transition_start(WeatherTransition *transition, WeatherType from_weather,
     WeatherParameters *from_params = weather_params_create(from_weather);
     if (from_params) {
         transition->current_params = *from_params;
-        free(from_params);
+        UNIFIED_FREE(from_params);
     }
     
     return true;
@@ -452,7 +453,7 @@ bool transition_update(WeatherTransition *transition, float delta_time,
     bool success = weather_params_lerp(from_params, to_params, transition->progress, 
                                       &transition->current_params);
     
-    free(from_params);
+    UNIFIED_FREE(from_params);
     return success;
 }
 
@@ -466,7 +467,7 @@ bool transition_complete(WeatherTransition *transition) {
     WeatherParameters *to_params = weather_params_create(transition->to_weather);
     if (to_params) {
         transition->current_params = *to_params;
-        free(to_params);
+        UNIFIED_FREE(to_params);
     }
     
     return true;

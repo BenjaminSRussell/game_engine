@@ -6,7 +6,7 @@
 #ifndef MODULAR_ASSETS_H
 #define MODULAR_ASSETS_H
 
-#include "include/common.h"
+#include <common.h>
 #include <math/vec3.h>
 #include <math/mat4.h>
 

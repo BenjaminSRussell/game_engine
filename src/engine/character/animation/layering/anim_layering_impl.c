@@ -3,7 +3,7 @@
  * Additive Blending & Bone Masking
  */
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <string.h>
 
 #define MAX_BONES 256

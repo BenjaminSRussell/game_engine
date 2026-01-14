@@ -14,7 +14,7 @@
 #include "assets/textures/virtual_texturing/virtual_texture.h"
 #include "assets/textures/virtual_texturing/page_cache.h"
 #include "assets/textures/virtual_texturing/page_table.h"
-#include "engine/include/common.h"
+#include <common.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>

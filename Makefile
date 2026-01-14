@@ -9241,53 +9241,125 @@ src/engine/lighting/vsm/virtual_shadow_maps/rendering_vsm/vsm_sampling.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/lighting/vsm/virtual_shadow_maps/rendering_vsm/vsm_sampling.c.s
 .PHONY : src/engine/lighting/vsm/virtual_shadow_maps/rendering_vsm/vsm_sampling.c.s
 
-src/engine/math/mat4.o: src/engine/math/mat4.c.o
-.PHONY : src/engine/math/mat4.o
+src/engine/math/linear_algebra/matrices/mat4/mat4_core.o: src/engine/math/linear_algebra/matrices/mat4/mat4_core.c.o
+.PHONY : src/engine/math/linear_algebra/matrices/mat4/mat4_core.o
 
 # target to build an object file
-src/engine/math/mat4.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/mat4.c.o
-.PHONY : src/engine/math/mat4.c.o
+src/engine/math/linear_algebra/matrices/mat4/mat4_core.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/linear_algebra/matrices/mat4/mat4_core.c.o
+.PHONY : src/engine/math/linear_algebra/matrices/mat4/mat4_core.c.o
 
-src/engine/math/mat4.i: src/engine/math/mat4.c.i
-.PHONY : src/engine/math/mat4.i
+src/engine/math/linear_algebra/matrices/mat4/mat4_core.i: src/engine/math/linear_algebra/matrices/mat4/mat4_core.c.i
+.PHONY : src/engine/math/linear_algebra/matrices/mat4/mat4_core.i
 
 # target to preprocess a source file
-src/engine/math/mat4.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/mat4.c.i
-.PHONY : src/engine/math/mat4.c.i
+src/engine/math/linear_algebra/matrices/mat4/mat4_core.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/linear_algebra/matrices/mat4/mat4_core.c.i
+.PHONY : src/engine/math/linear_algebra/matrices/mat4/mat4_core.c.i
 
-src/engine/math/mat4.s: src/engine/math/mat4.c.s
-.PHONY : src/engine/math/mat4.s
+src/engine/math/linear_algebra/matrices/mat4/mat4_core.s: src/engine/math/linear_algebra/matrices/mat4/mat4_core.c.s
+.PHONY : src/engine/math/linear_algebra/matrices/mat4/mat4_core.s
 
 # target to generate assembly for a file
-src/engine/math/mat4.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/mat4.c.s
-.PHONY : src/engine/math/mat4.c.s
+src/engine/math/linear_algebra/matrices/mat4/mat4_core.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/linear_algebra/matrices/mat4/mat4_core.c.s
+.PHONY : src/engine/math/linear_algebra/matrices/mat4/mat4_core.c.s
 
-src/engine/math/quat.o: src/engine/math/quat.c.o
-.PHONY : src/engine/math/quat.o
+src/engine/math/linear_algebra/matrices/mat4/mat4_projection.o: src/engine/math/linear_algebra/matrices/mat4/mat4_projection.c.o
+.PHONY : src/engine/math/linear_algebra/matrices/mat4/mat4_projection.o
 
 # target to build an object file
-src/engine/math/quat.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/quat.c.o
-.PHONY : src/engine/math/quat.c.o
+src/engine/math/linear_algebra/matrices/mat4/mat4_projection.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/linear_algebra/matrices/mat4/mat4_projection.c.o
+.PHONY : src/engine/math/linear_algebra/matrices/mat4/mat4_projection.c.o
 
-src/engine/math/quat.i: src/engine/math/quat.c.i
-.PHONY : src/engine/math/quat.i
+src/engine/math/linear_algebra/matrices/mat4/mat4_projection.i: src/engine/math/linear_algebra/matrices/mat4/mat4_projection.c.i
+.PHONY : src/engine/math/linear_algebra/matrices/mat4/mat4_projection.i
 
 # target to preprocess a source file
-src/engine/math/quat.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/quat.c.i
-.PHONY : src/engine/math/quat.c.i
+src/engine/math/linear_algebra/matrices/mat4/mat4_projection.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/linear_algebra/matrices/mat4/mat4_projection.c.i
+.PHONY : src/engine/math/linear_algebra/matrices/mat4/mat4_projection.c.i
 
-src/engine/math/quat.s: src/engine/math/quat.c.s
-.PHONY : src/engine/math/quat.s
+src/engine/math/linear_algebra/matrices/mat4/mat4_projection.s: src/engine/math/linear_algebra/matrices/mat4/mat4_projection.c.s
+.PHONY : src/engine/math/linear_algebra/matrices/mat4/mat4_projection.s
 
 # target to generate assembly for a file
-src/engine/math/quat.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/quat.c.s
-.PHONY : src/engine/math/quat.c.s
+src/engine/math/linear_algebra/matrices/mat4/mat4_projection.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/linear_algebra/matrices/mat4/mat4_projection.c.s
+.PHONY : src/engine/math/linear_algebra/matrices/mat4/mat4_projection.c.s
+
+src/engine/math/linear_algebra/matrices/mat4/mat4_transform.o: src/engine/math/linear_algebra/matrices/mat4/mat4_transform.c.o
+.PHONY : src/engine/math/linear_algebra/matrices/mat4/mat4_transform.o
+
+# target to build an object file
+src/engine/math/linear_algebra/matrices/mat4/mat4_transform.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/linear_algebra/matrices/mat4/mat4_transform.c.o
+.PHONY : src/engine/math/linear_algebra/matrices/mat4/mat4_transform.c.o
+
+src/engine/math/linear_algebra/matrices/mat4/mat4_transform.i: src/engine/math/linear_algebra/matrices/mat4/mat4_transform.c.i
+.PHONY : src/engine/math/linear_algebra/matrices/mat4/mat4_transform.i
+
+# target to preprocess a source file
+src/engine/math/linear_algebra/matrices/mat4/mat4_transform.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/linear_algebra/matrices/mat4/mat4_transform.c.i
+.PHONY : src/engine/math/linear_algebra/matrices/mat4/mat4_transform.c.i
+
+src/engine/math/linear_algebra/matrices/mat4/mat4_transform.s: src/engine/math/linear_algebra/matrices/mat4/mat4_transform.c.s
+.PHONY : src/engine/math/linear_algebra/matrices/mat4/mat4_transform.s
+
+# target to generate assembly for a file
+src/engine/math/linear_algebra/matrices/mat4/mat4_transform.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/linear_algebra/matrices/mat4/mat4_transform.c.s
+.PHONY : src/engine/math/linear_algebra/matrices/mat4/mat4_transform.c.s
+
+src/engine/math/linear_algebra/quaternions/quat/quat_core.o: src/engine/math/linear_algebra/quaternions/quat/quat_core.c.o
+.PHONY : src/engine/math/linear_algebra/quaternions/quat/quat_core.o
+
+# target to build an object file
+src/engine/math/linear_algebra/quaternions/quat/quat_core.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/linear_algebra/quaternions/quat/quat_core.c.o
+.PHONY : src/engine/math/linear_algebra/quaternions/quat/quat_core.c.o
+
+src/engine/math/linear_algebra/quaternions/quat/quat_core.i: src/engine/math/linear_algebra/quaternions/quat/quat_core.c.i
+.PHONY : src/engine/math/linear_algebra/quaternions/quat/quat_core.i
+
+# target to preprocess a source file
+src/engine/math/linear_algebra/quaternions/quat/quat_core.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/linear_algebra/quaternions/quat/quat_core.c.i
+.PHONY : src/engine/math/linear_algebra/quaternions/quat/quat_core.c.i
+
+src/engine/math/linear_algebra/quaternions/quat/quat_core.s: src/engine/math/linear_algebra/quaternions/quat/quat_core.c.s
+.PHONY : src/engine/math/linear_algebra/quaternions/quat/quat_core.s
+
+# target to generate assembly for a file
+src/engine/math/linear_algebra/quaternions/quat/quat_core.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/linear_algebra/quaternions/quat/quat_core.c.s
+.PHONY : src/engine/math/linear_algebra/quaternions/quat/quat_core.c.s
+
+src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.o: src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.c.o
+.PHONY : src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.o
+
+# target to build an object file
+src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.c.o
+.PHONY : src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.c.o
+
+src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.i: src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.c.i
+.PHONY : src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.i
+
+# target to preprocess a source file
+src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.c.i
+.PHONY : src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.c.i
+
+src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.s: src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.c.s
+.PHONY : src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.s
+
+# target to generate assembly for a file
+src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.c.s
+.PHONY : src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.c.s
 
 src/engine/network/bandwidth/bandwidth_throttler.o: src/engine/network/bandwidth/bandwidth_throttler.c.o
 .PHONY : src/engine/network/bandwidth/bandwidth_throttler.o
@@ -10440,6 +10512,30 @@ src/engine/network/transport/reliable_channel.s: src/engine/network/transport/re
 src/engine/network/transport/reliable_channel.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/transport/reliable_channel.c.s
 .PHONY : src/engine/network/transport/reliable_channel.c.s
+
+src/engine/network/transport/tcp_socket.o: src/engine/network/transport/tcp_socket.c.o
+.PHONY : src/engine/network/transport/tcp_socket.o
+
+# target to build an object file
+src/engine/network/transport/tcp_socket.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/transport/tcp_socket.c.o
+.PHONY : src/engine/network/transport/tcp_socket.c.o
+
+src/engine/network/transport/tcp_socket.i: src/engine/network/transport/tcp_socket.c.i
+.PHONY : src/engine/network/transport/tcp_socket.i
+
+# target to preprocess a source file
+src/engine/network/transport/tcp_socket.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/transport/tcp_socket.c.i
+.PHONY : src/engine/network/transport/tcp_socket.c.i
+
+src/engine/network/transport/tcp_socket.s: src/engine/network/transport/tcp_socket.c.s
+.PHONY : src/engine/network/transport/tcp_socket.s
+
+# target to generate assembly for a file
+src/engine/network/transport/tcp_socket.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/transport/tcp_socket.c.s
+.PHONY : src/engine/network/transport/tcp_socket.c.s
 
 src/engine/network/transport/udp_socket.o: src/engine/network/transport/udp_socket.c.o
 .PHONY : src/engine/network/transport/udp_socket.o
@@ -18513,6 +18609,54 @@ src/game/blockgame/player/player_combat.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_combat.c.s
 .PHONY : src/game/blockgame/player/player_combat.c.s
 
+src/game/blockgame/player/spell_effects.o: src/game/blockgame/player/spell_effects.c.o
+.PHONY : src/game/blockgame/player/spell_effects.o
+
+# target to build an object file
+src/game/blockgame/player/spell_effects.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/spell_effects.c.o
+.PHONY : src/game/blockgame/player/spell_effects.c.o
+
+src/game/blockgame/player/spell_effects.i: src/game/blockgame/player/spell_effects.c.i
+.PHONY : src/game/blockgame/player/spell_effects.i
+
+# target to preprocess a source file
+src/game/blockgame/player/spell_effects.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/spell_effects.c.i
+.PHONY : src/game/blockgame/player/spell_effects.c.i
+
+src/game/blockgame/player/spell_effects.s: src/game/blockgame/player/spell_effects.c.s
+.PHONY : src/game/blockgame/player/spell_effects.s
+
+# target to generate assembly for a file
+src/game/blockgame/player/spell_effects.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/spell_effects.c.s
+.PHONY : src/game/blockgame/player/spell_effects.c.s
+
+src/game/blockgame/player/spell_upgrade.o: src/game/blockgame/player/spell_upgrade.c.o
+.PHONY : src/game/blockgame/player/spell_upgrade.o
+
+# target to build an object file
+src/game/blockgame/player/spell_upgrade.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/spell_upgrade.c.o
+.PHONY : src/game/blockgame/player/spell_upgrade.c.o
+
+src/game/blockgame/player/spell_upgrade.i: src/game/blockgame/player/spell_upgrade.c.i
+.PHONY : src/game/blockgame/player/spell_upgrade.i
+
+# target to preprocess a source file
+src/game/blockgame/player/spell_upgrade.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/spell_upgrade.c.i
+.PHONY : src/game/blockgame/player/spell_upgrade.c.i
+
+src/game/blockgame/player/spell_upgrade.s: src/game/blockgame/player/spell_upgrade.c.s
+.PHONY : src/game/blockgame/player/spell_upgrade.s
+
+# target to generate assembly for a file
+src/game/blockgame/player/spell_upgrade.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/spell_upgrade.c.s
+.PHONY : src/game/blockgame/player/spell_upgrade.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -19657,12 +19801,21 @@ help:
 	@echo "... src/engine/lighting/vsm/virtual_shadow_maps/rendering_vsm/vsm_sampling.o"
 	@echo "... src/engine/lighting/vsm/virtual_shadow_maps/rendering_vsm/vsm_sampling.i"
 	@echo "... src/engine/lighting/vsm/virtual_shadow_maps/rendering_vsm/vsm_sampling.s"
-	@echo "... src/engine/math/mat4.o"
-	@echo "... src/engine/math/mat4.i"
-	@echo "... src/engine/math/mat4.s"
-	@echo "... src/engine/math/quat.o"
-	@echo "... src/engine/math/quat.i"
-	@echo "... src/engine/math/quat.s"
+	@echo "... src/engine/math/linear_algebra/matrices/mat4/mat4_core.o"
+	@echo "... src/engine/math/linear_algebra/matrices/mat4/mat4_core.i"
+	@echo "... src/engine/math/linear_algebra/matrices/mat4/mat4_core.s"
+	@echo "... src/engine/math/linear_algebra/matrices/mat4/mat4_projection.o"
+	@echo "... src/engine/math/linear_algebra/matrices/mat4/mat4_projection.i"
+	@echo "... src/engine/math/linear_algebra/matrices/mat4/mat4_projection.s"
+	@echo "... src/engine/math/linear_algebra/matrices/mat4/mat4_transform.o"
+	@echo "... src/engine/math/linear_algebra/matrices/mat4/mat4_transform.i"
+	@echo "... src/engine/math/linear_algebra/matrices/mat4/mat4_transform.s"
+	@echo "... src/engine/math/linear_algebra/quaternions/quat/quat_core.o"
+	@echo "... src/engine/math/linear_algebra/quaternions/quat/quat_core.i"
+	@echo "... src/engine/math/linear_algebra/quaternions/quat/quat_core.s"
+	@echo "... src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.o"
+	@echo "... src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.i"
+	@echo "... src/engine/math/linear_algebra/vectors/vec3/vec3_geometry.s"
 	@echo "... src/engine/network/bandwidth/bandwidth_throttler.o"
 	@echo "... src/engine/network/bandwidth/bandwidth_throttler.i"
 	@echo "... src/engine/network/bandwidth/bandwidth_throttler.s"
@@ -19807,6 +19960,9 @@ help:
 	@echo "... src/engine/network/transport/reliable_channel.o"
 	@echo "... src/engine/network/transport/reliable_channel.i"
 	@echo "... src/engine/network/transport/reliable_channel.s"
+	@echo "... src/engine/network/transport/tcp_socket.o"
+	@echo "... src/engine/network/transport/tcp_socket.i"
+	@echo "... src/engine/network/transport/tcp_socket.s"
 	@echo "... src/engine/network/transport/udp_socket.o"
 	@echo "... src/engine/network/transport/udp_socket.i"
 	@echo "... src/engine/network/transport/udp_socket.s"
@@ -20816,6 +20972,12 @@ help:
 	@echo "... src/game/blockgame/player/player_combat.o"
 	@echo "... src/game/blockgame/player/player_combat.i"
 	@echo "... src/game/blockgame/player/player_combat.s"
+	@echo "... src/game/blockgame/player/spell_effects.o"
+	@echo "... src/game/blockgame/player/spell_effects.i"
+	@echo "... src/game/blockgame/player/spell_effects.s"
+	@echo "... src/game/blockgame/player/spell_upgrade.o"
+	@echo "... src/game/blockgame/player/spell_upgrade.i"
+	@echo "... src/game/blockgame/player/spell_upgrade.s"
 .PHONY : help
 
 

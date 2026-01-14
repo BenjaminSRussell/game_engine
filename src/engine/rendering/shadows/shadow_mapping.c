@@ -368,8 +368,8 @@ static void render_shadow_cascade(ShadowCascade *cascade, const Light *light,
 
   renderer_end_shadow_pass();
 
-  LOG_DEBUG(LOG_CAT_RENDERER, "Rendered shadow cascade %u",
-            cascade->cascade_index);
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER, "Rendered shadow cascade %u",
+                cascade->cascade_index);
 }
 
 static void render_point_light_shadows(const Light *light) {
@@ -420,8 +420,8 @@ static void render_point_light_shadows(const Light *light) {
     render_scene_shadow_casters(view_proj, cube_map_size);
   }
 
-  LOG_DEBUG(LOG_CAT_RENDERER, "Rendering point light shadows for: %s",
-            light->name);
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER, "Rendering point light shadows for: %s",
+                light->name);
 }
 
 // ============================================================================
@@ -431,7 +431,7 @@ static void render_point_light_shadows(const Light *light) {
 bool shadow_mapping_init(uint32_t cascade_count, uint32_t cascade_size,
                          uint32_t atlas_size, ShadowFilterType filter_type) {
   if (g_shadow_system.initialized) {
-    LOG_WARN(LOG_CAT_RENDERER, "Shadow mapping system already initialized");
+    LOG_WARN_CAT(LOG_CAT_RENDERER, "Shadow mapping system already initialized");
     return true;
   }
 
@@ -445,7 +445,7 @@ bool shadow_mapping_init(uint32_t cascade_count, uint32_t cascade_size,
   // Create shadow cascades
   g_shadow_system.cascades = calloc(cascade_count, sizeof(ShadowCascade));
   if (!g_shadow_system.cascades) {
-    LOG_ERROR(LOG_CAT_RENDERER, "Failed to allocate shadow cascades");
+    LOG_ERROR_CAT(LOG_CAT_RENDERER, "Failed to allocate shadow cascades");
     return false;
   }
 
@@ -460,7 +460,7 @@ bool shadow_mapping_init(uint32_t cascade_count, uint32_t cascade_size,
         MEMORY_POOL_TEXTURE, cascade_size * cascade_size * 4, "shadow_depth");
     cascade->depth_texture = alloc.metal_buffer;
     if (!cascade->depth_texture) {
-      LOG_ERROR(LOG_CAT_RENDERER, "Failed to create shadow depth texture");
+      LOG_ERROR_CAT(LOG_CAT_RENDERER, "Failed to create shadow depth texture");
       shadow_mapping_shutdown();
       return false;
     }
@@ -471,8 +471,8 @@ bool shadow_mapping_init(uint32_t cascade_count, uint32_t cascade_size,
 
     cascade->framebuffer = framebuffer_create(cascade_size, cascade_size);
     if (!cascade->framebuffer) {
-      LOG_ERROR(LOG_CAT_RENDERER,
-                "Failed to create shadow cascade framebuffer");
+      LOG_ERROR_CAT(LOG_CAT_RENDERER,
+                    "Failed to create shadow cascade framebuffer");
       shadow_mapping_shutdown();
       return false;
     }
@@ -488,7 +488,7 @@ bool shadow_mapping_init(uint32_t cascade_count, uint32_t cascade_size,
         MEMORY_POOL_TEXTURE, atlas_size * atlas_size * 4, "shadow_atlas");
     g_shadow_system.shadow_atlas = alloc.metal_buffer;
     if (!g_shadow_system.shadow_atlas) {
-      LOG_ERROR(LOG_CAT_RENDERER, "Failed to create shadow atlas texture");
+      LOG_ERROR_CAT(LOG_CAT_RENDERER, "Failed to create shadow atlas texture");
       shadow_mapping_shutdown();
       return false;
     }
@@ -497,8 +497,8 @@ bool shadow_mapping_init(uint32_t cascade_count, uint32_t cascade_size,
     texture_configure_depth(g_shadow_system.shadow_atlas, atlas_size,
                             atlas_size, TEXTURE_FORMAT_DEPTH32F);
 
-    LOG_DEBUG(LOG_CAT_RENDERER, "Created shadow atlas: %ux%u", atlas_size,
-              atlas_size);
+    LOG_DEBUG_CAT(LOG_CAT_RENDERER, "Created shadow atlas: %ux%u", atlas_size,
+                  atlas_size);
   }
 
   // Set default bias values
@@ -512,9 +512,10 @@ bool shadow_mapping_init(uint32_t cascade_count, uint32_t cascade_size,
   g_shadow_system.enable_pcss = (filter_type == SHADOW_FILTER_PCSS);
 
   g_shadow_system.initialized = true;
-  LOG_INFO(LOG_CAT_RENDERER,
-           "Shadow mapping system initialized (%u cascades, %u size, %u atlas)",
-           cascade_count, cascade_size, atlas_size);
+  LOG_INFO_CAT(
+      LOG_CAT_RENDERER,
+      "Shadow mapping system initialized (%u cascades, %u size, %u atlas)",
+      cascade_count, cascade_size, atlas_size);
   return true;
 }
 
@@ -545,7 +546,7 @@ void shadow_mapping_shutdown(void) {
 
   memset(&g_shadow_system, 0, sizeof(ShadowMappingSystem));
 
-  LOG_INFO(LOG_CAT_RENDERER, "Shadow mapping system shutdown");
+  LOG_INFO_CAT(LOG_CAT_RENDERER, "Shadow mapping system shutdown");
 }
 
 void shadow_mapping_render_shadows(const Light *lights, uint32_t light_count,
@@ -643,7 +644,7 @@ void shadow_mapping_render_shadows(const Light *lights, uint32_t light_count,
   uint64_t end_time = get_time_nanos();
   g_shadow_system.shadow_render_time_ms = nanos_to_ms(end_time - start_time);
 
-  LOG_DEBUG(
+  LOG_DEBUG_CAT(
       LOG_CAT_RENDERER, "Shadow rendering: %u casters, %u pixels, %.2f ms",
       g_shadow_system.shadow_casters, g_shadow_system.shadow_pixels_rendered,
       g_shadow_system.shadow_render_time_ms);
@@ -658,8 +659,8 @@ void shadow_mapping_bind_cascade_textures(void *shader, uint32_t start_slot) {
     ShadowCascade *cascade = &g_shadow_system.cascades[i];
     // Bind cascade->depth_texture to shader at slot start_slot + i
     shader_bind_texture(shader, cascade->depth_texture, start_slot + i);
-    LOG_DEBUG(LOG_CAT_RENDERER, "Bound cascade %u to slot %u", i,
-              start_slot + i);
+    LOG_DEBUG_CAT(LOG_CAT_RENDERER, "Bound cascade %u to slot %u", i,
+                  start_slot + i);
   }
 }
 
@@ -672,9 +673,9 @@ void shadow_mapping_set_bias_parameters(float constant_bias, float normal_bias,
   g_shadow_system.normal_bias = normal_bias;
   g_shadow_system.slope_scale_bias = slope_scale_bias;
 
-  LOG_DEBUG(LOG_CAT_RENDERER,
-            "Shadow bias updated: constant=%.4f, normal=%.4f, slope=%.4f",
-            constant_bias, normal_bias, slope_scale_bias);
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER,
+                "Shadow bias updated: constant=%.4f, normal=%.4f, slope=%.4f",
+                constant_bias, normal_bias, slope_scale_bias);
 }
 
 void shadow_mapping_set_filter_parameters(ShadowFilterType filter_type,
@@ -687,9 +688,9 @@ void shadow_mapping_set_filter_parameters(ShadowFilterType filter_type,
   g_shadow_system.pcf_radius = pcf_radius;
   g_shadow_system.pcf_samples = pcf_samples;
 
-  LOG_DEBUG(LOG_CAT_RENDERER,
-            "Shadow filter updated: type=%d, radius=%.2f, samples=%u",
-            (int)filter_type, pcf_radius, pcf_samples);
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER,
+                "Shadow filter updated: type=%d, radius=%.2f, samples=%u",
+                (int)filter_type, pcf_radius, pcf_samples);
 }
 
 void shadow_mapping_get_cascade_matrices(float *matrices,

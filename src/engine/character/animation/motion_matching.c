@@ -7,7 +7,7 @@
  * APPROACH: Build feature vectors from game state, find nearest pose in database
  */
 
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <stdlib.h>
 #include <string.h>
 #include <float.h>

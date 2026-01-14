@@ -10,7 +10,7 @@
  */
 
 #include "character/cloth/rendering_cloth/cloth_shading.h"
-#include <include/math/math.h>
+#include <include/math/math_all.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>

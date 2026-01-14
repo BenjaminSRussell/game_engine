@@ -250,7 +250,7 @@ static void initialize_clusters(uint32_t cluster_x, uint32_t cluster_y,
       calloc(g_lighting_system.cluster_capacity, sizeof(uint32_t));
 
   if (!g_lighting_system.light_clusters || !g_lighting_system.light_indices) {
-    LOG_ERROR(LOG_CAT_RENDERER, "Failed to allocate light clusters");
+    LOG_ERROR_CAT(LOG_CAT_RENDERER, "Failed to allocate light clusters");
     free(g_lighting_system.light_clusters);
     free(g_lighting_system.light_indices);
     g_lighting_system.light_clusters = NULL;
@@ -328,7 +328,7 @@ static void assign_lights_to_clusters(const float *view_matrix,
 
 bool lighting_system_init(uint32_t max_lights, bool enable_clustered_shading) {
   if (g_lighting_system.initialized) {
-    LOG_WARN(LOG_CAT_RENDERER, "Lighting system already initialized");
+    LOG_WARN_CAT(LOG_CAT_RENDERER, "Lighting system already initialized");
     return true;
   }
 
@@ -339,7 +339,7 @@ bool lighting_system_init(uint32_t max_lights, bool enable_clustered_shading) {
   // g_lighting_system.lights = calloc(max_lights, sizeof(Light*));
 
   // if (!g_lighting_system.lights) {
-  //    LOG_ERROR(LOG_CAT_RENDERER, "Failed to allocate lights array");
+  //    LOG_ERROR_CAT(LOG_CAT_RENDERER, "Failed to allocate lights array");
   //    return false;
   // }
 
@@ -368,9 +368,9 @@ bool lighting_system_init(uint32_t max_lights, bool enable_clustered_shading) {
   // g_lighting_system.cluster_buffer = create_cluster_buffer();
 
   g_lighting_system.initialized = true;
-  LOG_INFO(LOG_CAT_RENDERER,
-           "Lighting system initialized (max lights: %u, clustered: %s)",
-           max_lights, enable_clustered_shading ? "yes" : "no");
+  LOG_INFO_CAT(LOG_CAT_RENDERER,
+               "Lighting system initialized (max lights: %u, clustered: %s)",
+               max_lights, enable_clustered_shading ? "yes" : "no");
   return true;
 }
 
@@ -396,24 +396,24 @@ void lighting_system_shutdown(void) {
   free(g_lighting_system.lights);
   memset(&g_lighting_system, 0, sizeof(LightingSystem));
 
-  LOG_INFO(LOG_CAT_RENDERER, "Lighting system shutdown");
+  LOG_INFO_CAT(LOG_CAT_RENDERER, "Lighting system shutdown");
 }
 
 Light *lighting_create_light(const char *name, LightType type) {
   if (!g_lighting_system.initialized || !name) {
-    LOG_ERROR(LOG_CAT_RENDERER,
-              "Lighting system not initialized or invalid name");
+    LOG_ERROR_CAT(LOG_CAT_RENDERER,
+                  "Lighting system not initialized or invalid name");
     return NULL;
   }
 
   if (g_lighting_system.light_count >= g_lighting_system.light_capacity) {
-    LOG_ERROR(LOG_CAT_RENDERER, "Too many lights in system");
+    LOG_ERROR_CAT(LOG_CAT_RENDERER, "Too many lights in system");
     return NULL;
   }
 
   Light *light = calloc(1, sizeof(Light));
   if (!light) {
-    LOG_ERROR(LOG_CAT_RENDERER, "Failed to allocate light");
+    LOG_ERROR_CAT(LOG_CAT_RENDERER, "Failed to allocate light");
     return NULL;
   }
 
@@ -443,7 +443,8 @@ Light *lighting_create_light(const char *name, LightType type) {
 
   g_lighting_system.lights[g_lighting_system.light_count++] = light;
 
-  LOG_DEBUG(LOG_CAT_RENDERER, "Created light: %s (type: %d)", name, (int)type);
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER, "Created light: %s (type: %d)", name,
+                (int)type);
   return light;
 }
 
@@ -468,7 +469,7 @@ void lighting_destroy_light(Light *light) {
   }
 
   free(light);
-  LOG_DEBUG(LOG_CAT_RENDERER, "Destroyed light: %s", light->name);
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER, "Destroyed light: %s", light->name);
 }
 
 void lighting_set_light_position(Light *light, float x, float y, float z) {
@@ -523,8 +524,8 @@ void lighting_set_light_shadow_mode(Light *light, LightShadowMode mode) {
 
   if (mode != LIGHT_SHADOW_MODE_NONE && !light->shadow_map) {
     // TODO: Create shadow map texture
-    LOG_DEBUG(LOG_CAT_RENDERER, "Created shadow map for light: %s",
-              light->name);
+    LOG_DEBUG_CAT(LOG_CAT_RENDERER, "Created shadow map for light: %s",
+                  light->name);
   }
 }
 

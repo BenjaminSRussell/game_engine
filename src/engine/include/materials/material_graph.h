@@ -3,7 +3,7 @@
 #ifndef MATERIAL_GRAPH_H
 #define MATERIAL_GRAPH_H
 
-#include "include/common.h"
+#include <common.h>
 #include "include/materials/pbr_material.h"
 #include "math/vec4.h"
 
