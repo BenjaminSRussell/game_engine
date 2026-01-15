@@ -204,13 +204,13 @@ static u8 calculate_path_quality(const vec3 *waypoints, u32 waypoint_count) {
 
 bool pathfinding_cache_advanced_initialize(u32 max_paths, u32 max_regions) {
   if (g_advanced_cache) {
-    LOG_WARN_CAT(LOG_CAT_AI, "Advanced path cache already initialized");
+    LOG_WARN(LOG_CAT_AI, "Advanced path cache already initialized");
     return true;
   }
 
   g_advanced_cache = memory_alloc(sizeof(AdvancedPathCache));
   if (!g_advanced_cache) {
-    LOG_ERROR_CAT(LOG_CAT_AI, "Failed to allocate advanced path cache");
+    LOG_ERROR(LOG_CAT_AI, "Failed to allocate advanced path cache");
     return false;
   }
 
@@ -291,7 +291,7 @@ bool pathfinding_cache_advanced_lookup(vec3 start, vec3 goal,
 
     g_advanced_cache->cache_hits++;
 
-    LOG_DEBUG_CAT(LOG_CAT_AI, "Advanced cache hit: %u waypoints, quality=%u",
+    LOG_DEBUG(LOG_CAT_AI, "Advanced cache hit: %u waypoints, quality=%u",
               path->waypoint_count, path->quality_score);
     return true;
   }
@@ -387,7 +387,7 @@ void pathfinding_cache_advanced_store(vec3 start, vec3 goal,
     goal_region->path_indices[goal_region->path_count++] = path_index;
   }
 
-  LOG_DEBUG_CAT(LOG_CAT_AI,
+  LOG_DEBUG(LOG_CAT_AI,
             "Advanced cache store: %u waypoints, quality=%u, length=%.2f",
             waypoint_count, path->quality_score, path->path_length);
 }
@@ -426,7 +426,7 @@ void pathfinding_cache_predict_path(vec3 current_position, vec3 likely_goal,
 
   g_advanced_cache->predictions_made++;
 
-  LOG_DEBUG_CAT(LOG_CAT_AI, "Path prediction created: confidence=%.2f", confidence);
+  LOG_DEBUG(LOG_CAT_AI, "Path prediction created: confidence=%.2f", confidence);
 }
 
 bool pathfinding_cache_get_predicted_path(vec3 current_position,
@@ -448,7 +448,7 @@ bool pathfinding_cache_get_predicted_path(vec3 current_position,
         pred->frames_since_prediction++;
         pred->target_path_index = i; // Store for success tracking
 
-        LOG_DEBUG_CAT(LOG_CAT_AI, "Predicted path found, frames_since=%u",
+        LOG_DEBUG(LOG_CAT_AI, "Predicted path found, frames_since=%u",
                   pred->frames_since_prediction);
         return true;
       }
@@ -506,7 +506,7 @@ void pathfinding_cache_advanced_update(f32 delta_time) {
     f32 hit_rate =
         (f32)g_advanced_cache->cache_hits / g_advanced_cache->total_requests;
     if (hit_rate < 0.3f) {
-      LOG_WARN_CAT(LOG_CAT_AI, "Low cache hit rate: %.2f%%", hit_rate * 100.0f);
+      LOG_WARN(LOG_CAT_AI, "Low cache hit rate: %.2f%%", hit_rate * 100.0f);
     }
   }
 }
@@ -557,7 +557,7 @@ void pathfinding_cache_advanced_get_statistics(AdvancedCacheStats *out_stats) {
 
 void pathfinding_cache_advanced_print_statistics(void) {
   if (!g_advanced_cache) {
-    LOG_WARN_CAT(LOG_CAT_AI, "Advanced path cache not initialized");
+    LOG_WARN(LOG_CAT_AI, "Advanced path cache not initialized");
     return;
   }
 

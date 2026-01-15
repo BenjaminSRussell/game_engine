@@ -77,13 +77,13 @@ static CollisionSystem g_collision_system = {0};
 bool collision_system_init(void) {
   memset(&g_collision_system, 0, sizeof(CollisionSystem));
   g_collision_system.hash_cell_size = (Vec3){16.0f, 16.0f, 16.0f};
-  LOG_INFO_CAT(LOG_CAT_PHYSICS, "Collision detection system initialized");
+  LOG_INFO(LOG_CAT_PHYSICS, "Collision detection system initialized");
   return true;
 }
 
 void collision_system_shutdown(void) {
   memset(&g_collision_system, 0, sizeof(CollisionSystem));
-  LOG_INFO_CAT(LOG_CAT_PHYSICS, "Collision detection system shutdown");
+  LOG_INFO(LOG_CAT_PHYSICS, "Collision detection system shutdown");
 }
 
 void collision_system_clear_bodies(void) {
@@ -113,7 +113,7 @@ void collision_system_update(f32 delta_time) {
   // Perform narrowphase collision detection
   collision_narrowphase_update();
   
-  LOG_DEBUG_CAT(LOG_CAT_PHYSICS, "Collision update: %d broadphase tests, %d narrowphase tests, %d actual collisions",
+  LOG_DEBUG(LOG_CAT_PHYSICS, "Collision update: %d broadphase tests, %d narrowphase tests, %d actual collisions",
             g_collision_system.broadphase_tests, g_collision_system.narrowphase_tests, 
             g_collision_system.actual_collisions);
 }
@@ -143,7 +143,7 @@ void collision_broadphase_update(void) {
     }
   }
   
-  LOG_DEBUG_CAT(LOG_CAT_PHYSICS, "Broadphase found %d potential collision pairs", g_collision_system.pair_count);
+  LOG_DEBUG(LOG_CAT_PHYSICS, "Broadphase found %d potential collision pairs", g_collision_system.pair_count);
 }
 
 void collision_narrowphase_update(void) {
@@ -161,7 +161,7 @@ void collision_narrowphase_update(void) {
     }
   }
   
-  LOG_DEBUG_CAT(LOG_CAT_PHYSICS, "Narrowphase resolved %d actual collisions", g_collision_system.actual_collisions);
+  LOG_DEBUG(LOG_CAT_PHYSICS, "Narrowphase resolved %d actual collisions", g_collision_system.actual_collisions);
 }
 
 // Helper to find body position from ID (slow, O(N))
@@ -223,7 +223,7 @@ void collision_generate_contacts(CollisionPair *pair) {
     contact->entity_a = pair->entity_a;
     contact->entity_b = pair->entity_b;
     
-    LOG_DEBUG_CAT(LOG_CAT_PHYSICS, "Generated contact: entity %d-%d, normal(%.2f,%.2f,%.2f), depth=%.3f",
+    LOG_DEBUG(LOG_CAT_PHYSICS, "Generated contact: entity %d-%d, normal(%.2f,%.2f,%.2f), depth=%.3f",
               pair->entity_a, pair->entity_b, normal.x, normal.y, normal.z, min_penetration);
   }
 }

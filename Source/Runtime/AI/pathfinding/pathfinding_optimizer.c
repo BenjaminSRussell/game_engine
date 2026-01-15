@@ -1,7 +1,7 @@
 // Pathfinding Optimizer - Path caching and smoothing for improved performance
 // Reduces redundant pathfinding calculations with tolerance-based cache lookup
 #include "pathfinding_optimizer.h"
-#include "core/logger/unified_logger.h"
+#include "core/logging/unified_logger.h"
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>
@@ -32,7 +32,7 @@ static PathCache g_path_cache = {0};
 // Initialize path cache
 void pathfinding_cache_init(void) {
     memset(&g_path_cache, 0, sizeof(PathCache));
-    LOG_INFO_CAT(LOG_CAT_AI, "Path cache initialized with capacity %u", PATHCACHE_MAX_ENTRIES);
+    LOG_INFO(LOG_CAT_AI, "Path cache initialized with capacity %u", PATHCACHE_MAX_ENTRIES);
 }
 
 // Destroy path cache
@@ -43,7 +43,7 @@ void pathfinding_cache_shutdown(void) {
         }
     }
     memset(&g_path_cache, 0, sizeof(PathCache));
-    LOG_INFO_CAT(LOG_CAT_AI, "Path cache shutdown");
+    LOG_INFO(LOG_CAT_AI, "Path cache shutdown");
 }
 
 // Check if two points are within tolerance

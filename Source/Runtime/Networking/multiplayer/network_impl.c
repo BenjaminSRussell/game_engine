@@ -1,0 +1,694 @@
+/**
+ * @file network_impl.c
+ * @brief Multiplayer network implementation with server connection system
+ */
+
+#include "engine/include/core/logger.h"
+#include "engine/include/core/memory.h"
+#include "network/network_manager.h"
+#include "network/network_types.h"
+#include <arpa/inet.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <netinet/in.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <time.h>
+#include <unistd.h>
+
+// Network constants
+#define MAX_PACKET_SIZE 4096
+#define MAX_CLIENTS 64
+#define SERVER_TICK_RATE 60
+#define CLIENT_TIMEOUT_MS 5000
+#define CONNECTION_RETRY_DELAY_MS 1000
+#define MAX_RETRIES 5
+
+// Packet definitions are now in network_types.h
+
+// Client connection structure
+typedef struct {
+  int socket_fd;
+  struct sockaddr_in address;
+  uint32_t client_id;
+  char username[64];
+  bool authenticated;
+  bool connected;
+  float last_heartbeat;
+  uint32_t packets_sent;
+  uint32_t packets_received;
+  float connection_time;
+} ClientConnection;
+
+// Server structure
+typedef struct {
+  int server_socket;
+  struct sockaddr_in server_addr;
+  ClientConnection clients[MAX_CLIENTS];
+  uint32_t next_client_id;
+  bool running;
+  float last_tick;
+  uint32_t connected_clients;
+  char server_name[128];
+  uint32_t max_players;
+  bool password_required;
+  char password[64];
+} Server;
+
+// Client structure
+typedef struct {
+  int client_socket;
+  struct sockaddr_in server_addr;
+  bool connected;
+  bool authenticated;
+  uint32_t client_id;
+  float last_heartbeat;
+  float connection_retry_time;
+  uint32_t retry_count;
+  char username[64];
+  char server_address[64];
+  uint16_t server_port;
+} Client;
+
+// Global network state
+static Server g_server = {0};
+static Client g_client = {0};
+static bool g_network_initialized = false;
+
+// Internal helper functions
+static int create_socket(uint16_t port, bool is_server);
+static int set_socket_nonblocking(int socket_fd);
+static uint32_t generate_client_id(void);
+static int send_packet(int socket_fd, const struct sockaddr_in *addr,
+                       PacketType type, const void *data, size_t data_size);
+static int receive_packet(int socket_fd, struct sockaddr_in *addr,
+                          PacketHeader *header, void *data, size_t max_size);
+static void handle_server_packet(PacketType type, const void *data,
+                                 size_t size);
+static void handle_client_packet(int client_index, PacketType type,
+                                 const void *data, size_t size);
+static void update_server(float delta_time);
+static void update_client(float delta_time);
+static void cleanup_disconnected_clients(void);
+static bool authenticate_client(ClientConnection *client, const char *username,
+                                const char *password);
+
+// Server implementation
+int network_server_start(const char *server_name, uint16_t port,
+                         uint32_t max_players, const char *password) {
+  if (g_network_initialized) {
+    LOG_WARN("Network server already running");
+    return -1;
+  }
+
+  LOG_INFO("Starting multiplayer server: %s on port %d", server_name, port);
+
+  // Initialize server structure
+  memset(&g_server, 0, sizeof(Server));
+  strncpy(g_server.server_name, server_name, sizeof(g_server.server_name) - 1);
+  g_server.max_players = max_players;
+  g_server.next_client_id = 1;
+
+  if (password && strlen(password) > 0) {
+    g_server.password_required = true;
+    strncpy(g_server.password, password, sizeof(g_server.password) - 1);
+  }
+
+  // Create server socket
+  g_server.server_socket = create_socket(port, true);
+  if (g_server.server_socket < 0) {
+    LOG_ERROR("Failed to create server socket");
+    return -1;
+  }
+
+  // Start listening for connections
+  if (listen(g_server.server_socket, SOMAXCONN) < 0) {
+    LOG_ERROR("Failed to listen on server socket: %s", strerror(errno));
+    close(g_server.server_socket);
+    return -1;
+  }
+
+  g_server.running = true;
+  g_server.last_tick = (float)clock() / CLOCKS_PER_SEC;
+  g_network_initialized = true;
+
+  LOG_INFO("Server started successfully on port %d", port);
+  return 0;
+}
+
+int network_server_stop(void) {
+  if (!g_network_initialized || !g_server.running) {
+    return 0;
+  }
+
+  LOG_INFO("Stopping multiplayer server");
+
+  g_server.running = false;
+
+  // Disconnect all clients
+  for (int i = 0; i < MAX_CLIENTS; i++) {
+    if (g_server.clients[i].connected) {
+      send_packet(g_server.clients[i].socket_fd, &g_server.clients[i].address,
+                  PACKET_TYPE_DISCONNECT, NULL, 0);
+      close(g_server.clients[i].socket_fd);
+      g_server.clients[i].connected = false;
+    }
+  }
+
+  // Close server socket
+  if (g_server.server_socket >= 0) {
+    close(g_server.server_socket);
+    g_server.server_socket = -1;
+  }
+
+  g_network_initialized = false;
+  LOG_INFO("Server stopped successfully");
+  return 0;
+}
+
+int network_server_broadcast(PacketType type, const void *data,
+                             size_t data_size) {
+  if (!g_network_initialized || !g_server.running) {
+    return -1;
+  }
+
+  int sent_count = 0;
+  for (int i = 0; i < MAX_CLIENTS; i++) {
+    if (g_server.clients[i].connected && g_server.clients[i].authenticated) {
+      if (send_packet(g_server.clients[i].socket_fd,
+                      &g_server.clients[i].address, type, data,
+                      data_size) == 0) {
+        sent_count++;
+      }
+    }
+  }
+
+  return sent_count;
+}
+
+int network_server_send_to_client(uint32_t client_id, PacketType type,
+                                  const void *data, size_t data_size) {
+  if (!g_network_initialized || !g_server.running) {
+    return -1;
+  }
+
+  for (int i = 0; i < MAX_CLIENTS; i++) {
+    if (g_server.clients[i].connected &&
+        g_server.clients[i].client_id == client_id) {
+      return send_packet(g_server.clients[i].socket_fd,
+                         &g_server.clients[i].address, type, data, data_size);
+    }
+  }
+
+  return -1;
+}
+
+uint32_t network_server_get_client_count(void) {
+  return g_network_initialized ? g_server.connected_clients : 0;
+}
+
+// Client implementation
+int network_client_connect(const char *server_address, uint16_t port,
+                           const char *username, const char *password) {
+  if (g_network_initialized) {
+    LOG_WARN("Network client already connected");
+    return -1;
+  }
+
+  LOG_INFO("Connecting to multiplayer server: %s:%d", server_address, port);
+
+  // Initialize client structure
+  memset(&g_client, 0, sizeof(Client));
+  strncpy(g_client.server_address, server_address,
+          sizeof(g_client.server_address) - 1);
+  strncpy(g_client.username, username, sizeof(g_client.username) - 1);
+  g_client.server_port = port;
+
+  // Create client socket
+  g_client.client_socket = create_socket(0, false);
+  if (g_client.client_socket < 0) {
+    LOG_ERROR("Failed to create client socket");
+    return -1;
+  }
+
+  // Set up server address
+  g_client.server_addr.sin_family = AF_INET;
+  g_client.server_addr.sin_port = htons(port);
+  if (inet_pton(AF_INET, server_address, &g_client.server_addr.sin_addr) <= 0) {
+    LOG_ERROR("Invalid server address: %s", server_address);
+    close(g_client.client_socket);
+    return -1;
+  }
+
+  // Send connection request
+  ClientInfo client_info = {.client_id = 0, .username = {0}};
+  strncpy(client_info.username, username, sizeof(client_info.username) - 1);
+
+  if (send_packet(g_client.client_socket, &g_client.server_addr,
+                  PACKET_TYPE_CONNECT, &client_info,
+                  sizeof(client_info)) != 0) {
+    LOG_ERROR("Failed to send connection request");
+    close(g_client.client_socket);
+    return -1;
+  }
+
+  g_client.connection_retry_time =
+      (float)clock() / CLOCKS_PER_SEC + CONNECTION_RETRY_DELAY_MS / 1000.0f;
+  g_network_initialized = true;
+
+  LOG_INFO("Connection request sent to server");
+  return 0;
+}
+
+int network_client_disconnect(void) {
+  if (!g_network_initialized || !g_client.connected) {
+    return 0;
+  }
+
+  LOG_INFO("Disconnecting from server");
+
+  // Send disconnect packet
+  send_packet(g_client.client_socket, &g_client.server_addr,
+              PACKET_TYPE_DISCONNECT, NULL, 0);
+
+  // Close socket
+  if (g_client.client_socket >= 0) {
+    close(g_client.client_socket);
+    g_client.client_socket = -1;
+  }
+
+  g_client.connected = false;
+  g_client.authenticated = false;
+  g_network_initialized = false;
+
+  LOG_INFO("Disconnected from server");
+  return 0;
+}
+
+int network_client_send(PacketType type, const void *data, size_t data_size) {
+  if (!g_network_initialized || !g_client.connected ||
+      !g_client.authenticated) {
+    return -1;
+  }
+
+  return send_packet(g_client.client_socket, &g_client.server_addr, type, data,
+                     data_size);
+}
+
+bool network_client_is_connected(void) {
+  return g_network_initialized && g_client.connected && g_client.authenticated;
+}
+
+uint32_t network_client_get_id(void) { return g_client.client_id; }
+
+// Network update
+int network_update(float delta_time) {
+  if (!g_network_initialized) {
+    return 0;
+  }
+
+  if (g_server.running) {
+    update_server(delta_time);
+  } else {
+    update_client(delta_time);
+  }
+
+  return 0;
+}
+
+// Internal helper functions
+static int create_socket(uint16_t port, bool is_server) {
+  int socket_fd = socket(AF_INET, SOCK_DGRAM, 0);
+  if (socket_fd < 0) {
+    LOG_ERROR("Failed to create socket: %s", strerror(errno));
+    return -1;
+  }
+
+  // Set socket options
+  int reuse_addr = 1;
+  if (setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &reuse_addr,
+                 sizeof(reuse_addr)) < 0) {
+    LOG_WARN("Failed to set SO_REUSEADDR: %s", strerror(errno));
+  }
+
+  // Set non-blocking
+  if (set_socket_nonblocking(socket_fd) < 0) {
+    close(socket_fd);
+    return -1;
+  }
+
+  // Bind socket if server
+  if (is_server) {
+    struct sockaddr_in addr;
+    memset(&addr, 0, sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = INADDR_ANY;
+    addr.sin_port = htons(port);
+
+    if (bind(socket_fd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
+      LOG_ERROR("Failed to bind socket to port %d: %s", port, strerror(errno));
+      close(socket_fd);
+      return -1;
+    }
+  }
+
+  return socket_fd;
+}
+
+static int set_socket_nonblocking(int socket_fd) {
+  int flags = fcntl(socket_fd, F_GETFL, 0);
+  if (flags < 0) {
+    LOG_ERROR("Failed to get socket flags: %s", strerror(errno));
+    return -1;
+  }
+
+  if (fcntl(socket_fd, F_SETFL, flags | O_NONBLOCK) < 0) {
+    LOG_ERROR("Failed to set non-blocking mode: %s", strerror(errno));
+    return -1;
+  }
+
+  return 0;
+}
+
+static uint32_t generate_client_id(void) {
+  static uint32_t next_id = 1;
+  return next_id++;
+}
+
+static int send_packet(int socket_fd, const struct sockaddr_in *addr,
+                       PacketType type, const void *data, size_t data_size) {
+  if (data_size > MAX_PACKET_SIZE - sizeof(PacketHeader)) {
+    LOG_ERROR("Packet data too large: %zu bytes", data_size);
+    return -1;
+  }
+
+  // Create packet
+  uint8_t packet_buffer[MAX_PACKET_SIZE];
+  PacketHeader *header = (PacketHeader *)packet_buffer;
+
+  header->packet_id = generate_client_id();
+  header->type = type;
+  header->timestamp = (uint32_t)time(NULL);
+  header->data_size = data_size;
+
+  if (data && data_size > 0) {
+    memcpy(packet_buffer + sizeof(PacketHeader), data, data_size);
+  }
+
+  // Send packet
+  size_t total_size = sizeof(PacketHeader) + data_size;
+  ssize_t sent = sendto(socket_fd, packet_buffer, total_size, 0,
+                        (struct sockaddr *)addr, sizeof(struct sockaddr_in));
+
+  if (sent < 0) {
+    LOG_ERROR("Failed to send packet: %s", strerror(errno));
+    return -1;
+  }
+
+  return 0;
+}
+
+static int receive_packet(int socket_fd, struct sockaddr_in *addr,
+                          PacketHeader *header, void *data, size_t max_size) {
+  uint8_t packet_buffer[MAX_PACKET_SIZE];
+  socklen_t addr_len = sizeof(struct sockaddr_in);
+
+  ssize_t received = recvfrom(socket_fd, packet_buffer, sizeof(packet_buffer),
+                              0, (struct sockaddr *)addr, &addr_len);
+
+  if (received < 0) {
+    if (errno != EAGAIN && errno != EWOULDBLOCK) {
+      LOG_ERROR("Failed to receive packet: %s", strerror(errno));
+    }
+    return -1;
+  }
+
+  if (received < sizeof(PacketHeader)) {
+    LOG_WARN("Received packet too small: %zd bytes", received);
+    return -1;
+  }
+
+  // Parse header
+  PacketHeader *received_header = (PacketHeader *)packet_buffer;
+  *header = *received_header;
+
+  // Copy data
+  size_t data_size = received - sizeof(PacketHeader);
+  if (data_size > 0 && data_size <= max_size) {
+    memcpy(data, packet_buffer + sizeof(PacketHeader), data_size);
+  }
+
+  return data_size;
+}
+
+static void update_server(float delta_time) {
+  float current_time = (float)clock() / CLOCKS_PER_SEC;
+
+  // Accept new connections
+  if (current_time - g_server.last_tick >= 1.0f / SERVER_TICK_RATE) {
+    struct sockaddr_in client_addr;
+    socklen_t addr_len = sizeof(client_addr);
+    int client_socket = accept(g_server.server_socket,
+                               (struct sockaddr *)&client_addr, &addr_len);
+
+    if (client_socket >= 0) {
+      // Find empty client slot
+      for (int i = 0; i < MAX_CLIENTS; i++) {
+        if (!g_server.clients[i].connected) {
+          g_server.clients[i].socket_fd = client_socket;
+          g_server.clients[i].address = client_addr;
+          g_server.clients[i].client_id = g_server.next_client_id++;
+          g_server.clients[i].connected = true;
+          g_server.clients[i].connection_time = current_time;
+          g_server.clients[i].last_heartbeat = current_time;
+          g_server.connected_clients++;
+
+          LOG_INFO("New client connected: ID=%d",
+                   g_server.clients[i].client_id);
+          break;
+        }
+      }
+    }
+
+    g_server.last_tick = current_time;
+  }
+
+  // Process packets from all clients
+  for (int i = 0; i < MAX_CLIENTS; i++) {
+    if (g_server.clients[i].connected) {
+      PacketHeader header;
+      uint8_t data[MAX_PACKET_SIZE];
+
+      int received = receive_packet(g_server.clients[i].socket_fd,
+                                    &g_server.clients[i].address, &header, data,
+                                    sizeof(data));
+
+      if (received >= 0) {
+        g_server.clients[i].last_heartbeat = current_time;
+        g_server.clients[i].packets_received++;
+        handle_client_packet(i, header.type, data, received);
+      }
+    }
+  }
+
+  // Cleanup disconnected clients
+  cleanup_disconnected_clients();
+
+  // Send heartbeats
+  if (current_time - g_server.last_tick >= 1.0f) {
+    for (int i = 0; i < MAX_CLIENTS; i++) {
+      if (g_server.clients[i].connected && g_server.clients[i].authenticated) {
+        send_packet(g_server.clients[i].socket_fd, &g_server.clients[i].address,
+                    PACKET_TYPE_HEARTBEAT, NULL, 0);
+      }
+    }
+  }
+}
+
+static void update_client(float delta_time) {
+  float current_time = (float)clock() / CLOCKS_PER_SEC;
+
+  // Process packets from server
+  PacketHeader header;
+  uint8_t data[MAX_PACKET_SIZE];
+
+  int received = receive_packet(g_client.client_socket, &g_client.server_addr,
+                                &header, data, sizeof(data));
+
+  if (received >= 0) {
+    g_client.last_heartbeat = current_time;
+    g_client.retry_count = 0;
+    handle_server_packet(header.type, data, received);
+  }
+
+  // Handle connection timeout
+  if (g_client.connected &&
+      current_time - g_client.last_heartbeat > CLIENT_TIMEOUT_MS / 1000.0f) {
+    LOG_WARN("Connection to server timed out");
+    g_client.connected = false;
+    g_client.authenticated = false;
+  }
+
+  // Retry connection if not connected
+  if (!g_client.connected && g_client.retry_count < MAX_RETRIES) {
+    if (current_time >= g_client.connection_retry_time) {
+      LOG_INFO("Retrying connection to server (attempt %d/%d)",
+               g_client.retry_count + 1, MAX_RETRIES);
+
+      ClientInfo client_info = {0};
+      strncpy(client_info.username, g_client.username,
+              sizeof(client_info.username) - 1);
+
+      if (send_packet(g_client.client_socket, &g_client.server_addr,
+                      PACKET_TYPE_CONNECT, &client_info,
+                      sizeof(client_info)) == 0) {
+        g_client.retry_count++;
+        g_client.connection_retry_time =
+            current_time + CONNECTION_RETRY_DELAY_MS / 1000.0f;
+      }
+    }
+  }
+}
+
+static void handle_server_packet(PacketType type, const void *data,
+                                 size_t size) {
+  switch (type) {
+  case PACKET_TYPE_CONNECT:
+    LOG_INFO("Connection accepted by server");
+    g_client.connected = true;
+    break;
+
+  case PACKET_TYPE_AUTH_RESPONSE:
+    if (size >= sizeof(AuthResponse)) {
+      AuthResponse *response = (AuthResponse *)data;
+      if (response->success) {
+        g_client.authenticated = true;
+        g_client.client_id = response->client_id;
+        LOG_INFO("Authentication successful, client ID: %d",
+                 g_client.client_id);
+      } else {
+        LOG_ERROR("Authentication failed: %s", response->message);
+      }
+    }
+    break;
+
+  case PACKET_TYPE_DISCONNECT:
+    LOG_INFO("Disconnected by server");
+    g_client.connected = false;
+    g_client.authenticated = false;
+    break;
+
+  case PACKET_TYPE_HEARTBEAT:
+    // Send heartbeat response
+    send_packet(g_client.client_socket, &g_client.server_addr,
+                PACKET_TYPE_HEARTBEAT, NULL, 0);
+    break;
+
+  case PACKET_TYPE_CHAT:
+    if (size >= sizeof(ChatMessage)) {
+      ChatMessage *msg = (ChatMessage *)data;
+      LOG_INFO("[Chat] %s: %s", msg->username, msg->message);
+    }
+    break;
+
+  default:
+    LOG_DEBUG("Received unknown packet type: %d", type);
+    break;
+  }
+}
+
+static void handle_client_packet(int client_index, PacketType type,
+                                 const void *data, size_t size) {
+  ClientConnection *client = &g_server.clients[client_index];
+
+  switch (type) {
+  case PACKET_TYPE_CONNECT:
+    if (size >= sizeof(ClientInfo)) {
+      ClientInfo *info = (ClientInfo *)data;
+      strncpy(client->username, info->username, sizeof(client->username) - 1);
+
+      // Authenticate client
+      if (authenticate_client(client, info->username, "")) {
+        AuthResponse response = {
+            .success = true, .client_id = client->client_id, .message = {0}};
+        send_packet(client->socket_fd, &client->address,
+                    PACKET_TYPE_AUTH_RESPONSE, &response, sizeof(response));
+
+        LOG_INFO("Client authenticated: %s (ID: %d)", client->username,
+                 client->client_id);
+      } else {
+        AuthResponse response = {.success = false,
+                                 .client_id = 0,
+                                 .message = "Authentication failed"};
+        send_packet(client->socket_fd, &client->address,
+                    PACKET_TYPE_AUTH_RESPONSE, &response, sizeof(response));
+      }
+    }
+    break;
+
+  case PACKET_TYPE_DISCONNECT:
+    LOG_INFO("Client disconnected: %s (ID: %d)", client->username,
+             client->client_id);
+    client->connected = false;
+    g_server.connected_clients--;
+    break;
+
+  case PACKET_TYPE_HEARTBEAT:
+    client->last_heartbeat = (float)clock() / CLOCKS_PER_SEC;
+    break;
+
+  case PACKET_TYPE_CHAT:
+    if (size >= sizeof(ChatMessage)) {
+      // Broadcast chat message to all clients
+      network_server_broadcast(PACKET_TYPE_CHAT, data, size);
+    }
+    break;
+
+  default:
+    LOG_DEBUG("Received unknown packet type: %d from client %d", type,
+              client->client_id);
+    break;
+  }
+}
+
+static void cleanup_disconnected_clients(void) {
+  float current_time = (float)clock() / CLOCKS_PER_SEC;
+
+  for (int i = 0; i < MAX_CLIENTS; i++) {
+    if (g_server.clients[i].connected) {
+      // Check timeout
+      if (current_time - g_server.clients[i].last_heartbeat >
+          CLIENT_TIMEOUT_MS / 1000.0f) {
+        LOG_INFO("Client timed out: %s (ID: %d)", g_server.clients[i].username,
+                 g_server.clients[i].client_id);
+        close(g_server.clients[i].socket_fd);
+        g_server.clients[i].connected = false;
+        g_server.connected_clients--;
+      }
+    }
+  }
+}
+
+static bool authenticate_client(ClientConnection *client, const char *username,
+                                const char *password) {
+  // Simple authentication - in a real implementation, this would check against
+  // a database
+  if (g_server.password_required) {
+    if (strcmp(password, g_server.password) != 0) {
+      return false;
+    }
+  }
+
+  // Check if username is already taken
+  for (int i = 0; i < MAX_CLIENTS; i++) {
+    if (i != (client - g_server.clients) && g_server.clients[i].connected &&
+        strcmp(g_server.clients[i].username, username) == 0) {
+      return false;
+    }
+  }
+
+  client->authenticated = true;
+  return true;
+}

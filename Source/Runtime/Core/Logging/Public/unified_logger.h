@@ -6,7 +6,13 @@
 #include <stdio.h>
 #include <time.h>
 
-#include <core/types.h>
+// Basic type definitions
+#ifndef u32
+typedef uint8_t u8;
+typedef uint32_t u32;
+typedef uint64_t u64;
+typedef int32_t i32;
+#endif
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -58,6 +64,7 @@ typedef enum {
   LOG_CAT_ANIMATION = 14,
   LOG_CAT_INPUT = 15,
   LOG_CAT_UI = 16,
+  LOG_CAT_SYSTEM = 17,
   LOG_CAT_COUNT
 } LogCategory;
 

@@ -62,20 +62,20 @@ bool physics_integration_init(const Vec3 *gravity, f32 fixed_timestep) {
   
   g_physics_integration.world = physics_world_create(config);
   if (!g_physics_integration.world) {
-    LOG_ERROR_CAT(LOG_CAT_PHYSICS, "Failed to create physics world");
+    LOG_ERROR(LOG_CAT_PHYSICS, "Failed to create physics world");
     return false;
   }
   
   // Initialize collision detection
   if (!collision_system_init()) {
-    LOG_ERROR_CAT(LOG_CAT_PHYSICS, "Failed to initialize collision system");
+    LOG_ERROR(LOG_CAT_PHYSICS, "Failed to initialize collision system");
     physics_world_destroy(g_physics_integration.world);
     return false;
   }
   
   // Initialize CCD
   if (!ccd_world_init(&g_physics_integration.ccd_world, MAX_PHYSICS_ENTITIES)) {
-    LOG_ERROR_CAT(LOG_CAT_PHYSICS, "Failed to initialize CCD world");
+    LOG_ERROR(LOG_CAT_PHYSICS, "Failed to initialize CCD world");
     collision_system_shutdown();
     physics_world_destroy(g_physics_integration.world);
     return false;
@@ -86,7 +86,7 @@ bool physics_integration_init(const Vec3 *gravity, f32 fixed_timestep) {
   g_physics_integration.simulation_running = true;
   g_physics_integration.is_initialized = true;
   
-  LOG_INFO_CAT(LOG_CAT_PHYSICS, "Physics integration initialized with gravity (%.2f, %.2f, %.2f), timestep %.4f",
+  LOG_INFO(LOG_CAT_PHYSICS, "Physics integration initialized with gravity (%.2f, %.2f, %.2f), timestep %.4f",
            g_physics_integration.gravity.x, g_physics_integration.gravity.y, 
            g_physics_integration.gravity.z, g_physics_integration.fixed_timestep);
   
@@ -111,7 +111,7 @@ void physics_integration_shutdown(void) {
   g_physics_integration.is_initialized = false;
   g_physics_integration.simulation_running = false;
   
-  LOG_INFO_CAT(LOG_CAT_PHYSICS, "Physics integration shutdown");
+  LOG_INFO(LOG_CAT_PHYSICS, "Physics integration shutdown");
 }
 
 EntityID physics_integration_add_entity(EntityID entity_id, RigidBody *rigid_body, 
@@ -496,7 +496,7 @@ void physics_clear_all_entities(void) {
   g_physics_integration.entity_count = 0;
   memset(g_physics_integration.entities, 0, sizeof(g_physics_integration.entities));
   
-  LOG_INFO_CAT(LOG_CAT_PHYSICS, "Cleared all physics entities");
+  LOG_INFO(LOG_CAT_PHYSICS, "Cleared all physics entities");
 }
 
 void physics_set_block_physics_system(BlockPhysicsSystem *block_physics) {

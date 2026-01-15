@@ -74,7 +74,7 @@ static bool coreml_initialize_context(MLSystem *system) {
     context->config.computeUnits = MLComputeUnitsAll;
     
     system->coreml_context = context;
-    LOG_INFO_CAT(LOG_CAT_AI, "CoreML context initialized successfully");
+    LOG_INFO(LOG_CAT_AI, "CoreML context initialized successfully");
     return true;
 }
 
@@ -100,7 +100,7 @@ static void *coreml_load_model(MLSystem *system, const char *model_path, const M
     MLModel *model = [MLModel modelWithContentsOfURL:modelURL configuration:context->config error:&error];
     
     if (error) {
-        LOG_ERROR_CAT(LOG_CAT_AI, "CoreML model loading failed: %s", [[error localizedDescription] UTF8String]);
+        LOG_ERROR(LOG_CAT_AI, "CoreML model loading failed: %s", [[error localizedDescription] UTF8String]);
         return NULL;
     }
     
@@ -116,7 +116,7 @@ static void *coreml_load_model(MLSystem *system, const char *model_path, const M
     loaded_model->last_access_time = time(NULL);
     loaded_model->is_resident = true;
     
-    LOG_INFO_CAT(LOG_CAT_AI, "CoreML model loaded successfully: %s", model_path);
+    LOG_INFO(LOG_CAT_AI, "CoreML model loaded successfully: %s", model_path);
     return loaded_model;
 }
 
@@ -165,7 +165,7 @@ static bool coreml_run_inference(MLSystem *system, void *model, MLInferenceConte
         id<MLFeatureProvider> outputProvider = [ml_model predictionFromFeatures:inputProvider error:&error];
         
         if (error) {
-            LOG_ERROR_CAT(LOG_CAT_AI, "CoreML inference failed: %s", [[error localizedDescription] UTF8String]);
+            LOG_ERROR(LOG_CAT_AI, "CoreML inference failed: %s", [[error localizedDescription] UTF8String]);
             [inputProvider release];
             return false;
         }
@@ -220,7 +220,7 @@ static bool onnx_initialize_context(MLSystem *system) {
     
     OrtStatus *status = OrtCreateEnv(ORT_LOGGING_LEVEL_WARNING, "minecraft_v2", &context->env);
     if (status) {
-        LOG_ERROR_CAT(LOG_CAT_AI, "ONNX Runtime environment creation failed");
+        LOG_ERROR(LOG_CAT_AI, "ONNX Runtime environment creation failed");
         free(context);
         return false;
     }
@@ -246,7 +246,7 @@ static bool onnx_initialize_context(MLSystem *system) {
     }
     
     system->onnx_runtime = context;
-    LOG_INFO_CAT(LOG_CAT_AI, "ONNX Runtime context initialized successfully");
+    LOG_INFO(LOG_CAT_AI, "ONNX Runtime context initialized successfully");
     return true;
 }
 
@@ -279,14 +279,14 @@ static void onnx_shutdown_context(MLSystem *system) {
 static bool initialize_tensor_pool(MLSystem *system) {
     system->tensor_pool = MALLOC(MAX_TENSOR_POOL_SIZE);
     if (!system->tensor_pool) {
-        LOG_ERROR_CAT(LOG_CAT_AI, "Failed to allocate tensor pool");
+        LOG_ERROR(LOG_CAT_AI, "Failed to allocate tensor pool");
         return false;
     }
     
     system->total_tensor_memory = MAX_TENSOR_POOL_SIZE;
     system->used_tensor_memory = 0;
     
-    LOG_INFO_CAT(LOG_CAT_AI, "Tensor pool initialized: %zu bytes", MAX_TENSOR_POOL_SIZE);
+    LOG_INFO(LOG_CAT_AI, "Tensor pool initialized: %zu bytes", MAX_TENSOR_POOL_SIZE);
     return true;
 }
 
@@ -301,7 +301,7 @@ static void shutdown_tensor_pool(MLSystem *system) {
 
 static void *allocate_from_tensor_pool(MLSystem *system, size_t size) {
     if (system->used_tensor_memory + size > system->total_tensor_memory) {
-        LOG_WARN_CAT(LOG_CAT_AI, "Tensor pool exhausted, falling back to malloc");
+        LOG_WARN(LOG_CAT_AI, "Tensor pool exhausted, falling back to malloc");
         return malloc(size);
     }
     
@@ -340,7 +340,7 @@ MLSystem *ml_system_create(const MLFramework framework, const MLDevice device) {
         return NULL;
     }
     
-    LOG_INFO_CAT(LOG_CAT_AI, "ML System created with framework: %s, device: %s",
+    LOG_INFO(LOG_CAT_AI, "ML System created with framework: %s, device: %s",
              ml_get_framework_name(framework), ml_get_device_name(device));
     
     return system;
@@ -357,7 +357,7 @@ void ml_system_destroy(MLSystem *system) {
     if (system->performance_stats) free(system->performance_stats);
     
     free(system);
-    LOG_INFO_CAT(LOG_CAT_AI, "ML System destroyed");
+    LOG_INFO(LOG_CAT_AI, "ML System destroyed");
 }
 
 bool ml_system_initialize(MLSystem *system) {
@@ -382,11 +382,11 @@ bool ml_system_initialize(MLSystem *system) {
             break;
 #endif
         case ML_FRAMEWORK_CUSTOM:
-            LOG_INFO_CAT(LOG_CAT_AI, "Initializing Custom ML framework (Mock)");
+            LOG_INFO(LOG_CAT_AI, "Initializing Custom ML framework (Mock)");
             success = true;
             break;
         default:
-            LOG_ERROR_CAT(LOG_CAT_AI, "Unsupported ML framework: %d", system->default_framework);
+            LOG_ERROR(LOG_CAT_AI, "Unsupported ML framework: %d", system->default_framework);
             success = false;
             break;
     }
@@ -403,7 +403,7 @@ bool ml_system_initialize(MLSystem *system) {
     }
     
     system->initialized = true;
-    LOG_INFO_CAT(LOG_CAT_AI, "ML System initialized successfully");
+    LOG_INFO(LOG_CAT_AI, "ML System initialized successfully");
     return true;
 }
 
@@ -444,7 +444,7 @@ void ml_system_shutdown(MLSystem *system) {
     shutdown_tensor_pool(system);
     
     system->initialized = false;
-    LOG_INFO_CAT(LOG_CAT_AI, "ML System shutdown complete");
+    LOG_INFO(LOG_CAT_AI, "ML System shutdown complete");
 }
 
 void *ml_load_model(MLSystem *system, const char *model_path, const MLModelMetadata *metadata) {
@@ -453,7 +453,7 @@ void *ml_load_model(MLSystem *system, const char *model_path, const MLModelMetad
     ML_CHECK_NULL_PARAM_PTR(metadata);
     
     if (system->loaded_model_count >= system->max_loaded_models) {
-        LOG_ERROR_CAT(LOG_CAT_AI, "Model cache full, cannot load more models");
+        LOG_ERROR(LOG_CAT_AI, "Model cache full, cannot load more models");
         return NULL;
     }
     
@@ -473,12 +473,12 @@ void *ml_load_model(MLSystem *system, const char *model_path, const MLModelMetad
                     lm->last_access_time = time(NULL);
                     lm->is_resident = true;
                     model = lm;
-                    LOG_INFO_CAT(LOG_CAT_AI, "Custom model loaded: %s", metadata->name);
+                    LOG_INFO(LOG_CAT_AI, "Custom model loaded: %s", metadata->name);
                 }
             }
             break;
         default:
-            LOG_ERROR_CAT(LOG_CAT_AI, "Model loading not implemented for framework: %d", system->default_framework);
+            LOG_ERROR(LOG_CAT_AI, "Model loading not implemented for framework: %d", system->default_framework);
             return NULL;
     }
     
@@ -487,7 +487,7 @@ void *ml_load_model(MLSystem *system, const char *model_path, const MLModelMetad
         system->model_metadata[system->loaded_model_count] = *metadata;
         system->loaded_model_count++;
         
-        LOG_INFO_CAT(LOG_CAT_AI, "Model loaded: %s (%s)", metadata->name, model_path);
+        LOG_INFO(LOG_CAT_AI, "Model loaded: %s (%s)", metadata->name, model_path);
     }
     
     return model;
@@ -518,12 +518,12 @@ bool ml_unload_model(MLSystem *system, void *model) {
             }
             
             system->loaded_model_count--;
-            LOG_INFO_CAT(LOG_CAT_AI, "Model unloaded successfully");
+            LOG_INFO(LOG_CAT_AI, "Model unloaded successfully");
             return true;
         }
     }
     
-    LOG_WARN_CAT(LOG_CAT_AI, "Model not found in cache");
+    LOG_WARN(LOG_CAT_AI, "Model not found in cache");
     return false;
 }
 
@@ -546,7 +546,7 @@ MLTensor *ml_create_tensor(MLSystem *system, const u32 *dimensions, u32 dimensio
         case ML_DATA_TYPE_INT8: element_size = sizeof(i8); break;
         case ML_DATA_TYPE_UINT8: element_size = sizeof(u8); break;
         default:
-            LOG_ERROR_CAT(LOG_CAT_AI, "Unsupported data type: %d", data_type);
+            LOG_ERROR(LOG_CAT_AI, "Unsupported data type: %d", data_type);
             return NULL;
     }
     
@@ -555,7 +555,7 @@ MLTensor *ml_create_tensor(MLSystem *system, const u32 *dimensions, u32 dimensio
     // Allocate tensor structure
     MLTensor *tensor = malloc(sizeof(MLTensor));
     if (!tensor) {
-        LOG_ERROR_CAT(LOG_CAT_AI, "Failed to allocate tensor structure");
+        LOG_ERROR(LOG_CAT_AI, "Failed to allocate tensor structure");
         return NULL;
     }
     
@@ -565,7 +565,7 @@ MLTensor *ml_create_tensor(MLSystem *system, const u32 *dimensions, u32 dimensio
     tensor->data = allocate_from_tensor_pool(system, total_size);
     if (!tensor->data) {
         free(tensor);
-        LOG_ERROR_CAT(LOG_CAT_AI, "Failed to allocate tensor data");
+        LOG_ERROR(LOG_CAT_AI, "Failed to allocate tensor data");
         return NULL;
     }
     
@@ -574,7 +574,7 @@ MLTensor *ml_create_tensor(MLSystem *system, const u32 *dimensions, u32 dimensio
     if (!tensor->dimensions) {
         free(tensor->data);
         free(tensor);
-        LOG_ERROR_CAT(LOG_CAT_AI, "Failed to allocate tensor dimensions");
+        LOG_ERROR(LOG_CAT_AI, "Failed to allocate tensor dimensions");
         return NULL;
     }
     
@@ -608,7 +608,7 @@ MLInferenceContext *ml_create_inference_context(MLSystem *system, void *model) {
     ML_CHECK_NULL_PARAM_PTR(model);
     
     if (system->active_inference_count >= system->max_concurrent_inferences) {
-        LOG_ERROR_CAT(LOG_CAT_AI, "Maximum concurrent inference limit reached");
+        LOG_ERROR(LOG_CAT_AI, "Maximum concurrent inference limit reached");
         return NULL;
     }
     
@@ -645,7 +645,7 @@ bool ml_run_inference(MLSystem *system, MLInferenceContext *context) {
             }
             break;
         default:
-            LOG_ERROR_CAT(LOG_CAT_AI, "Inference not implemented for framework: %d", system->default_framework);
+            LOG_ERROR(LOG_CAT_AI, "Inference not implemented for framework: %d", system->default_framework);
             success = false;
             break;
     }

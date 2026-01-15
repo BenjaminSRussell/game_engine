@@ -5,7 +5,7 @@
 
 #include "physics/simd/physics_simd.h"
 #include "core/memory/unified_allocator.h"
-#include "core/logger/unified_logger.h"
+#include "core/logging/unified_logger.h"
 #include <immintrin.h>  // For SSE/AVX intrinsics
 #include <string.h>
 
@@ -53,7 +53,7 @@ void physics_simd_initialize(void) {
         "None", "SSE2", "SSE4.1", "AVX", "AVX2", "AVX512"
     };
     
-    LOG_INFO_CAT(LOG_CAT_PHYSICS, "Physics SIMD initialized: %s", level_names[g_simd_level]);
+    LOG_INFO(LOG_CAT_PHYSICS, "Physics SIMD initialized: %s", level_names[g_simd_level]);
 }
 
 SIMDLevel physics_simd_get_level(void) {

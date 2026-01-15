@@ -29,7 +29,7 @@ static Vec3 vec3_rotate_y(Vec3 v, float angle_rad) {
 Squad* squad_create(u32 capacity) {
     Squad* squad = (Squad*)calloc(1, sizeof(Squad));
     if (!squad) {
-        LOG_ERROR_CAT(LOG_CAT_AI, "Failed to allocate Squad");
+        LOG_ERROR(LOG_CAT_AI, "Failed to allocate Squad");
         return NULL;
     }
 
@@ -55,7 +55,7 @@ bool squad_init(Squad* squad, u32 capacity) {
     if (capacity > 0) {
         squad->members = (SquadMember*)calloc(capacity, sizeof(SquadMember));
         if (!squad->members) {
-            LOG_ERROR_CAT(LOG_CAT_AI, "Failed to allocate squad members");
+            LOG_ERROR(LOG_CAT_AI, "Failed to allocate squad members");
             return false;
         }
     }
@@ -67,7 +67,7 @@ bool squad_init(Squad* squad, u32 capacity) {
     squad->leader_direction = (Vec3){0, 0, 1}; // Default forward
     squad->initialized = true;
 
-    LOG_INFO_CAT(LOG_CAT_AI, "Squad initialized with capacity %u", capacity);
+    LOG_INFO(LOG_CAT_AI, "Squad initialized with capacity %u", capacity);
     return true;
 }
 
@@ -80,7 +80,7 @@ void squad_shutdown(Squad* squad) {
     }
 
     squad->initialized = false;
-    LOG_INFO_CAT(LOG_CAT_AI, "Squad shutdown");
+    LOG_INFO(LOG_CAT_AI, "Squad shutdown");
 }
 
 bool squad_add_member(Squad* squad, Entity entity) {
@@ -102,7 +102,7 @@ bool squad_add_member(Squad* squad, Entity entity) {
     squad->members[squad->member_count].is_leader = false;
     squad->member_count++;
 
-    LOG_DEBUG_CAT(LOG_CAT_AI, "Added member to squad (total: %u)", squad->member_count);
+    LOG_DEBUG(LOG_CAT_AI, "Added member to squad (total: %u)", squad->member_count);
     return true;
 }
 
@@ -155,7 +155,7 @@ void squad_set_leader(Squad* squad, Entity entity) {
         }
     }
 
-    LOG_INFO_CAT(LOG_CAT_AI, "Squad leader set to Entity %u", entity.id);
+    LOG_INFO(LOG_CAT_AI, "Squad leader set to Entity %u", entity.id);
 }
 
 SquadMember* squad_get_member(Squad* squad, Entity entity) {
@@ -175,7 +175,7 @@ void squad_set_formation(Squad* squad, FormationType type, float spacing) {
 
     // Recalculate offsets immediately?
     // Usually updated in update loop, but can be forced here.
-    LOG_DEBUG_CAT(LOG_CAT_AI, "Squad formation set to %d", type);
+    LOG_DEBUG(LOG_CAT_AI, "Squad formation set to %d", type);
 }
 
 void squad_set_facing(Squad* squad, Vec3 direction) {
@@ -312,27 +312,27 @@ void squad_update(Squad* squad, float delta_time) {
 void squad_form_up(Squad* squad) {
     if (!squad) return;
     squad->current_state = SQUAD_STATE_MOVING; // Moving to formation
-    LOG_INFO_CAT(LOG_CAT_AI, "Squad ordered to form up");
+    LOG_INFO(LOG_CAT_AI, "Squad ordered to form up");
 }
 
 void squad_attack_target(Squad* squad, Entity target) {
     if (!squad) return;
     squad->current_state = SQUAD_STATE_ATTACKING;
     squad->current_target_entity = target;
-    LOG_INFO_CAT(LOG_CAT_AI, "Squad ordered to attack target %u", target.id);
+    LOG_INFO(LOG_CAT_AI, "Squad ordered to attack target %u", target.id);
 }
 
 void squad_move_to(Squad* squad, Vec3 position) {
     if (!squad) return;
     squad->current_state = SQUAD_STATE_MOVING;
     squad->move_target = position;
-    LOG_INFO_CAT(LOG_CAT_AI, "Squad ordered to move to (%.2f, %.2f, %.2f)", position.x, position.y, position.z);
+    LOG_INFO(LOG_CAT_AI, "Squad ordered to move to (%.2f, %.2f, %.2f)", position.x, position.y, position.z);
 }
 
 void squad_take_cover(Squad* squad) {
     if (!squad) return;
     squad->current_state = SQUAD_STATE_DEFENDING; // Or separate COVER state
-    LOG_INFO_CAT(LOG_CAT_AI, "Squad ordered to take cover");
+    LOG_INFO(LOG_CAT_AI, "Squad ordered to take cover");
 }
 
 u32 squad_get_member_count(const Squad* squad) {

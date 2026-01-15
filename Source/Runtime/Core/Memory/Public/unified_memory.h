@@ -10,10 +10,14 @@
 #include <stddef.h>
 // #include "memory_utils.h" // Removed or moved to private context if not
 // needed for public API types
-#include <core/error_handling.h>
+// #include <core/error_handling.h> // Commented out - not strictly needed for
+// public API
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+
+// Forward declaration for error handling
+typedef struct error_context error_context_t;
 
 #ifdef __cplusplus
 extern "C" {

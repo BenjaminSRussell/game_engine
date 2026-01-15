@@ -25,7 +25,7 @@ bool ccd_world_init(CCDWorld *world, uint32_t max_entities) {
     world->entries = (CCDBroadphaseEntry*)calloc(world->entry_capacity, sizeof(CCDBroadphaseEntry));
 
     if (!world->entries) {
-        LOG_ERROR_CAT(LOG_CAT_PHYSICS, "Failed to allocate CCD world entries");
+        LOG_ERROR(LOG_CAT_PHYSICS, "Failed to allocate CCD world entries");
         return false;
     }
 
@@ -38,7 +38,7 @@ bool ccd_world_init(CCDWorld *world, uint32_t max_entities) {
     // Spatial hash init (stub for now, using brute force)
     world->spatial_hash.table_size = 1024; // Example
 
-    LOG_INFO_CAT(LOG_CAT_PHYSICS, "CCD World initialized with capacity %d", world->entry_capacity);
+    LOG_INFO(LOG_CAT_PHYSICS, "CCD World initialized with capacity %d", world->entry_capacity);
     return true;
 }
 
@@ -59,7 +59,7 @@ void ccd_world_cleanup(CCDWorld *world) {
     if (world->spatial_hash.entry_lists) free(world->spatial_hash.entry_lists);
 
     memset(world, 0, sizeof(CCDWorld));
-    LOG_INFO_CAT(LOG_CAT_PHYSICS, "CCD World cleanup complete");
+    LOG_INFO(LOG_CAT_PHYSICS, "CCD World cleanup complete");
 }
 
 static CCDBroadphaseEntry* get_free_entry(CCDWorld *world) {
