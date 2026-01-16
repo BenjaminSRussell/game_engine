@@ -515,7 +515,9 @@ typedef enum {
 
 // Min/Max/Clamp
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
+#ifndef MAX
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
+#endif
 #define CLAMP(x, min, max) MIN(MAX((x), (min)), (max))
 
 // Array size

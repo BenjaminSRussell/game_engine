@@ -7,7 +7,7 @@
 #define LOGGER_H
 
 // Include the unified logger implementation that consolidates all backends
-#include <unified_logger.h>
+#include <core/logger/unified_logger.h>
 
 // Backwards compatibility aliases for existing code
 #define logger_init unified_logger_init

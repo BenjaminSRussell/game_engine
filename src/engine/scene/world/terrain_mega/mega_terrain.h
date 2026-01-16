@@ -16,6 +16,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+typedef struct TerrainSystem TerrainSystem;
+
 /* =================================================================================================
  *                                    TERRAIN CONFIGURATION
  * =================================================================================================
@@ -160,9 +162,8 @@ typedef struct ErosionSettings {
 // TODO(AGENT_WORLD_1): Implement hydraulic erosion simulation [Difficulty: 8]
 // TODO(AGENT_WORLD_1): Implement thermal erosion simulation [Difficulty: 7]
 // TODO(AGENT_WORLD_1): Implement GPU-accelerated erosion [Difficulty: 9]
-void terrain_erosion_preview(struct TerrainSystem *system,
-                             ErosionSettings *settings);
-void terrain_erosion_undo(struct TerrainSystem *system);
+void terrain_erosion_preview(TerrainSystem *system, ErosionSettings *settings);
+void terrain_erosion_undo(TerrainSystem *system);
 
 /* =================================================================================================
  *                                    TERRAIN API

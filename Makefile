@@ -179,19 +179,6 @@ Engine/fast:
 .PHONY : Engine/fast
 
 #=============================================================================
-# Target rules for targets named Game
-
-# Build rule for target.
-Game: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Game
-.PHONY : Game
-
-# fast build rule for target.
-Game/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/build
-.PHONY : Game/fast
-
-#=============================================================================
 # Target rules for targets named BlockGameApp
 
 # Build rule for target.
@@ -205,17 +192,1154 @@ BlockGameApp/fast:
 .PHONY : BlockGameApp/fast
 
 #=============================================================================
-# Target rules for targets named physics_demos
+# Target rules for targets named EngineTests
 
 # Build rule for target.
-physics_demos: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 physics_demos
-.PHONY : physics_demos
+EngineTests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 EngineTests
+.PHONY : EngineTests
 
 # fast build rule for target.
-physics_demos/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/build
-.PHONY : physics_demos/fast
+EngineTests/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/EngineTests.dir/build.make CMakeFiles/EngineTests.dir/build
+.PHONY : EngineTests/fast
+
+#=============================================================================
+# Target rules for targets named BasicEngineExample
+
+# Build rule for target.
+BasicEngineExample: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 BasicEngineExample
+.PHONY : BasicEngineExample
+
+# fast build rule for target.
+BasicEngineExample/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BasicEngineExample.dir/build.make CMakeFiles/BasicEngineExample.dir/build
+.PHONY : BasicEngineExample/fast
+
+#=============================================================================
+# Target rules for targets named Catch2
+
+# Build rule for target.
+Catch2: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Catch2
+.PHONY : Catch2
+
+# fast build rule for target.
+Catch2/fast:
+	$(MAKE) $(MAKESILENT) -f Vendor/Catch2/src/CMakeFiles/Catch2.dir/build.make Vendor/Catch2/src/CMakeFiles/Catch2.dir/build
+.PHONY : Catch2/fast
+
+#=============================================================================
+# Target rules for targets named Catch2WithMain
+
+# Build rule for target.
+Catch2WithMain: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Catch2WithMain
+.PHONY : Catch2WithMain
+
+# fast build rule for target.
+Catch2WithMain/fast:
+	$(MAKE) $(MAKESILENT) -f Vendor/Catch2/src/CMakeFiles/Catch2WithMain.dir/build.make Vendor/Catch2/src/CMakeFiles/Catch2WithMain.dir/build
+.PHONY : Catch2WithMain/fast
+
+Examples/01_BasicEngine/main.o: Examples/01_BasicEngine/main.c.o
+.PHONY : Examples/01_BasicEngine/main.o
+
+# target to build an object file
+Examples/01_BasicEngine/main.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BasicEngineExample.dir/build.make CMakeFiles/BasicEngineExample.dir/Examples/01_BasicEngine/main.c.o
+.PHONY : Examples/01_BasicEngine/main.c.o
+
+Examples/01_BasicEngine/main.i: Examples/01_BasicEngine/main.c.i
+.PHONY : Examples/01_BasicEngine/main.i
+
+# target to preprocess a source file
+Examples/01_BasicEngine/main.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BasicEngineExample.dir/build.make CMakeFiles/BasicEngineExample.dir/Examples/01_BasicEngine/main.c.i
+.PHONY : Examples/01_BasicEngine/main.c.i
+
+Examples/01_BasicEngine/main.s: Examples/01_BasicEngine/main.c.s
+.PHONY : Examples/01_BasicEngine/main.s
+
+# target to generate assembly for a file
+Examples/01_BasicEngine/main.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BasicEngineExample.dir/build.make CMakeFiles/BasicEngineExample.dir/Examples/01_BasicEngine/main.c.s
+.PHONY : Examples/01_BasicEngine/main.c.s
+
+Source/Runtime/AI/AI.o: Source/Runtime/AI/AI.c.o
+.PHONY : Source/Runtime/AI/AI.o
+
+# target to build an object file
+Source/Runtime/AI/AI.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/AI/AI.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/AI/AI.c.o
+.PHONY : Source/Runtime/AI/AI.c.o
+
+Source/Runtime/AI/AI.i: Source/Runtime/AI/AI.c.i
+.PHONY : Source/Runtime/AI/AI.i
+
+# target to preprocess a source file
+Source/Runtime/AI/AI.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/AI/AI.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/AI/AI.c.i
+.PHONY : Source/Runtime/AI/AI.c.i
+
+Source/Runtime/AI/AI.s: Source/Runtime/AI/AI.c.s
+.PHONY : Source/Runtime/AI/AI.s
+
+# target to generate assembly for a file
+Source/Runtime/AI/AI.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/AI/AI.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/AI/AI.c.s
+.PHONY : Source/Runtime/AI/AI.c.s
+
+Source/Runtime/Animation/Animation.o: Source/Runtime/Animation/Animation.c.o
+.PHONY : Source/Runtime/Animation/Animation.o
+
+# target to build an object file
+Source/Runtime/Animation/Animation.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Animation/Animation.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Animation/Animation.c.o
+.PHONY : Source/Runtime/Animation/Animation.c.o
+
+Source/Runtime/Animation/Animation.i: Source/Runtime/Animation/Animation.c.i
+.PHONY : Source/Runtime/Animation/Animation.i
+
+# target to preprocess a source file
+Source/Runtime/Animation/Animation.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Animation/Animation.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Animation/Animation.c.i
+.PHONY : Source/Runtime/Animation/Animation.c.i
+
+Source/Runtime/Animation/Animation.s: Source/Runtime/Animation/Animation.c.s
+.PHONY : Source/Runtime/Animation/Animation.s
+
+# target to generate assembly for a file
+Source/Runtime/Animation/Animation.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Animation/Animation.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Animation/Animation.c.s
+.PHONY : Source/Runtime/Animation/Animation.c.s
+
+Source/Runtime/Asset/Asset.o: Source/Runtime/Asset/Asset.c.o
+.PHONY : Source/Runtime/Asset/Asset.o
+
+# target to build an object file
+Source/Runtime/Asset/Asset.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Asset/Asset.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Asset/Asset.c.o
+.PHONY : Source/Runtime/Asset/Asset.c.o
+
+Source/Runtime/Asset/Asset.i: Source/Runtime/Asset/Asset.c.i
+.PHONY : Source/Runtime/Asset/Asset.i
+
+# target to preprocess a source file
+Source/Runtime/Asset/Asset.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Asset/Asset.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Asset/Asset.c.i
+.PHONY : Source/Runtime/Asset/Asset.c.i
+
+Source/Runtime/Asset/Asset.s: Source/Runtime/Asset/Asset.c.s
+.PHONY : Source/Runtime/Asset/Asset.s
+
+# target to generate assembly for a file
+Source/Runtime/Asset/Asset.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Asset/Asset.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Asset/Asset.c.s
+.PHONY : Source/Runtime/Asset/Asset.c.s
+
+Source/Runtime/Audio/Audio.o: Source/Runtime/Audio/Audio.c.o
+.PHONY : Source/Runtime/Audio/Audio.o
+
+# target to build an object file
+Source/Runtime/Audio/Audio.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Audio/Audio.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Audio/Audio.c.o
+.PHONY : Source/Runtime/Audio/Audio.c.o
+
+Source/Runtime/Audio/Audio.i: Source/Runtime/Audio/Audio.c.i
+.PHONY : Source/Runtime/Audio/Audio.i
+
+# target to preprocess a source file
+Source/Runtime/Audio/Audio.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Audio/Audio.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Audio/Audio.c.i
+.PHONY : Source/Runtime/Audio/Audio.c.i
+
+Source/Runtime/Audio/Audio.s: Source/Runtime/Audio/Audio.c.s
+.PHONY : Source/Runtime/Audio/Audio.s
+
+# target to generate assembly for a file
+Source/Runtime/Audio/Audio.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Audio/Audio.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Audio/Audio.c.s
+.PHONY : Source/Runtime/Audio/Audio.c.s
+
+Source/Runtime/Core/Engine.o: Source/Runtime/Core/Engine.c.o
+.PHONY : Source/Runtime/Core/Engine.o
+
+# target to build an object file
+Source/Runtime/Core/Engine.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Engine.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Engine.c.o
+.PHONY : Source/Runtime/Core/Engine.c.o
+
+Source/Runtime/Core/Engine.i: Source/Runtime/Core/Engine.c.i
+.PHONY : Source/Runtime/Core/Engine.i
+
+# target to preprocess a source file
+Source/Runtime/Core/Engine.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Engine.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Engine.c.i
+.PHONY : Source/Runtime/Core/Engine.c.i
+
+Source/Runtime/Core/Engine.s: Source/Runtime/Core/Engine.c.s
+.PHONY : Source/Runtime/Core/Engine.s
+
+# target to generate assembly for a file
+Source/Runtime/Core/Engine.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Engine.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Engine.c.s
+.PHONY : Source/Runtime/Core/Engine.c.s
+
+Source/Runtime/Core/Log/Log.o: Source/Runtime/Core/Log/Log.c.o
+.PHONY : Source/Runtime/Core/Log/Log.o
+
+# target to build an object file
+Source/Runtime/Core/Log/Log.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Log/Log.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Log/Log.c.o
+.PHONY : Source/Runtime/Core/Log/Log.c.o
+
+Source/Runtime/Core/Log/Log.i: Source/Runtime/Core/Log/Log.c.i
+.PHONY : Source/Runtime/Core/Log/Log.i
+
+# target to preprocess a source file
+Source/Runtime/Core/Log/Log.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Log/Log.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Log/Log.c.i
+.PHONY : Source/Runtime/Core/Log/Log.c.i
+
+Source/Runtime/Core/Log/Log.s: Source/Runtime/Core/Log/Log.c.s
+.PHONY : Source/Runtime/Core/Log/Log.s
+
+# target to generate assembly for a file
+Source/Runtime/Core/Log/Log.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Log/Log.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Log/Log.c.s
+.PHONY : Source/Runtime/Core/Log/Log.c.s
+
+Source/Runtime/Core/Memory/allocators/arena/arena_allocator.o: Source/Runtime/Core/Memory/allocators/arena/arena_allocator.c.o
+.PHONY : Source/Runtime/Core/Memory/allocators/arena/arena_allocator.o
+
+# target to build an object file
+Source/Runtime/Core/Memory/allocators/arena/arena_allocator.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Memory/allocators/arena/arena_allocator.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Memory/allocators/arena/arena_allocator.c.o
+.PHONY : Source/Runtime/Core/Memory/allocators/arena/arena_allocator.c.o
+
+Source/Runtime/Core/Memory/allocators/arena/arena_allocator.i: Source/Runtime/Core/Memory/allocators/arena/arena_allocator.c.i
+.PHONY : Source/Runtime/Core/Memory/allocators/arena/arena_allocator.i
+
+# target to preprocess a source file
+Source/Runtime/Core/Memory/allocators/arena/arena_allocator.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Memory/allocators/arena/arena_allocator.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Memory/allocators/arena/arena_allocator.c.i
+.PHONY : Source/Runtime/Core/Memory/allocators/arena/arena_allocator.c.i
+
+Source/Runtime/Core/Memory/allocators/arena/arena_allocator.s: Source/Runtime/Core/Memory/allocators/arena/arena_allocator.c.s
+.PHONY : Source/Runtime/Core/Memory/allocators/arena/arena_allocator.s
+
+# target to generate assembly for a file
+Source/Runtime/Core/Memory/allocators/arena/arena_allocator.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Memory/allocators/arena/arena_allocator.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Memory/allocators/arena/arena_allocator.c.s
+.PHONY : Source/Runtime/Core/Memory/allocators/arena/arena_allocator.c.s
+
+Source/Runtime/Core/Memory/allocators/pool/pool_allocator.o: Source/Runtime/Core/Memory/allocators/pool/pool_allocator.c.o
+.PHONY : Source/Runtime/Core/Memory/allocators/pool/pool_allocator.o
+
+# target to build an object file
+Source/Runtime/Core/Memory/allocators/pool/pool_allocator.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Memory/allocators/pool/pool_allocator.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Memory/allocators/pool/pool_allocator.c.o
+.PHONY : Source/Runtime/Core/Memory/allocators/pool/pool_allocator.c.o
+
+Source/Runtime/Core/Memory/allocators/pool/pool_allocator.i: Source/Runtime/Core/Memory/allocators/pool/pool_allocator.c.i
+.PHONY : Source/Runtime/Core/Memory/allocators/pool/pool_allocator.i
+
+# target to preprocess a source file
+Source/Runtime/Core/Memory/allocators/pool/pool_allocator.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Memory/allocators/pool/pool_allocator.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Memory/allocators/pool/pool_allocator.c.i
+.PHONY : Source/Runtime/Core/Memory/allocators/pool/pool_allocator.c.i
+
+Source/Runtime/Core/Memory/allocators/pool/pool_allocator.s: Source/Runtime/Core/Memory/allocators/pool/pool_allocator.c.s
+.PHONY : Source/Runtime/Core/Memory/allocators/pool/pool_allocator.s
+
+# target to generate assembly for a file
+Source/Runtime/Core/Memory/allocators/pool/pool_allocator.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Memory/allocators/pool/pool_allocator.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Memory/allocators/pool/pool_allocator.c.s
+.PHONY : Source/Runtime/Core/Memory/allocators/pool/pool_allocator.c.s
+
+Source/Runtime/Core/Memory/allocators/stack/stack_allocator.o: Source/Runtime/Core/Memory/allocators/stack/stack_allocator.c.o
+.PHONY : Source/Runtime/Core/Memory/allocators/stack/stack_allocator.o
+
+# target to build an object file
+Source/Runtime/Core/Memory/allocators/stack/stack_allocator.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Memory/allocators/stack/stack_allocator.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Memory/allocators/stack/stack_allocator.c.o
+.PHONY : Source/Runtime/Core/Memory/allocators/stack/stack_allocator.c.o
+
+Source/Runtime/Core/Memory/allocators/stack/stack_allocator.i: Source/Runtime/Core/Memory/allocators/stack/stack_allocator.c.i
+.PHONY : Source/Runtime/Core/Memory/allocators/stack/stack_allocator.i
+
+# target to preprocess a source file
+Source/Runtime/Core/Memory/allocators/stack/stack_allocator.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Memory/allocators/stack/stack_allocator.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Memory/allocators/stack/stack_allocator.c.i
+.PHONY : Source/Runtime/Core/Memory/allocators/stack/stack_allocator.c.i
+
+Source/Runtime/Core/Memory/allocators/stack/stack_allocator.s: Source/Runtime/Core/Memory/allocators/stack/stack_allocator.c.s
+.PHONY : Source/Runtime/Core/Memory/allocators/stack/stack_allocator.s
+
+# target to generate assembly for a file
+Source/Runtime/Core/Memory/allocators/stack/stack_allocator.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Memory/allocators/stack/stack_allocator.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Memory/allocators/stack/stack_allocator.c.s
+.PHONY : Source/Runtime/Core/Memory/allocators/stack/stack_allocator.c.s
+
+Source/Runtime/Core/Memory/profiling/memory_profiler.o: Source/Runtime/Core/Memory/profiling/memory_profiler.c.o
+.PHONY : Source/Runtime/Core/Memory/profiling/memory_profiler.o
+
+# target to build an object file
+Source/Runtime/Core/Memory/profiling/memory_profiler.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Memory/profiling/memory_profiler.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Memory/profiling/memory_profiler.c.o
+.PHONY : Source/Runtime/Core/Memory/profiling/memory_profiler.c.o
+
+Source/Runtime/Core/Memory/profiling/memory_profiler.i: Source/Runtime/Core/Memory/profiling/memory_profiler.c.i
+.PHONY : Source/Runtime/Core/Memory/profiling/memory_profiler.i
+
+# target to preprocess a source file
+Source/Runtime/Core/Memory/profiling/memory_profiler.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Memory/profiling/memory_profiler.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Memory/profiling/memory_profiler.c.i
+.PHONY : Source/Runtime/Core/Memory/profiling/memory_profiler.c.i
+
+Source/Runtime/Core/Memory/profiling/memory_profiler.s: Source/Runtime/Core/Memory/profiling/memory_profiler.c.s
+.PHONY : Source/Runtime/Core/Memory/profiling/memory_profiler.s
+
+# target to generate assembly for a file
+Source/Runtime/Core/Memory/profiling/memory_profiler.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Memory/profiling/memory_profiler.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Memory/profiling/memory_profiler.c.s
+.PHONY : Source/Runtime/Core/Memory/profiling/memory_profiler.c.s
+
+Source/Runtime/Core/Memory/tracking/memory_tracker.o: Source/Runtime/Core/Memory/tracking/memory_tracker.c.o
+.PHONY : Source/Runtime/Core/Memory/tracking/memory_tracker.o
+
+# target to build an object file
+Source/Runtime/Core/Memory/tracking/memory_tracker.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Memory/tracking/memory_tracker.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Memory/tracking/memory_tracker.c.o
+.PHONY : Source/Runtime/Core/Memory/tracking/memory_tracker.c.o
+
+Source/Runtime/Core/Memory/tracking/memory_tracker.i: Source/Runtime/Core/Memory/tracking/memory_tracker.c.i
+.PHONY : Source/Runtime/Core/Memory/tracking/memory_tracker.i
+
+# target to preprocess a source file
+Source/Runtime/Core/Memory/tracking/memory_tracker.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Memory/tracking/memory_tracker.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Memory/tracking/memory_tracker.c.i
+.PHONY : Source/Runtime/Core/Memory/tracking/memory_tracker.c.i
+
+Source/Runtime/Core/Memory/tracking/memory_tracker.s: Source/Runtime/Core/Memory/tracking/memory_tracker.c.s
+.PHONY : Source/Runtime/Core/Memory/tracking/memory_tracker.s
+
+# target to generate assembly for a file
+Source/Runtime/Core/Memory/tracking/memory_tracker.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Memory/tracking/memory_tracker.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Memory/tracking/memory_tracker.c.s
+.PHONY : Source/Runtime/Core/Memory/tracking/memory_tracker.c.s
+
+Source/Runtime/Core/Platform/platform_bootstrap.o: Source/Runtime/Core/Platform/platform_bootstrap.c.o
+.PHONY : Source/Runtime/Core/Platform/platform_bootstrap.o
+
+# target to build an object file
+Source/Runtime/Core/Platform/platform_bootstrap.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Platform/platform_bootstrap.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Platform/platform_bootstrap.c.o
+.PHONY : Source/Runtime/Core/Platform/platform_bootstrap.c.o
+
+Source/Runtime/Core/Platform/platform_bootstrap.i: Source/Runtime/Core/Platform/platform_bootstrap.c.i
+.PHONY : Source/Runtime/Core/Platform/platform_bootstrap.i
+
+# target to preprocess a source file
+Source/Runtime/Core/Platform/platform_bootstrap.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Platform/platform_bootstrap.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Platform/platform_bootstrap.c.i
+.PHONY : Source/Runtime/Core/Platform/platform_bootstrap.c.i
+
+Source/Runtime/Core/Platform/platform_bootstrap.s: Source/Runtime/Core/Platform/platform_bootstrap.c.s
+.PHONY : Source/Runtime/Core/Platform/platform_bootstrap.s
+
+# target to generate assembly for a file
+Source/Runtime/Core/Platform/platform_bootstrap.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Platform/platform_bootstrap.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Platform/platform_bootstrap.c.s
+.PHONY : Source/Runtime/Core/Platform/platform_bootstrap.c.s
+
+Source/Runtime/Core/Threading/queues/work_stealing_queue.o: Source/Runtime/Core/Threading/queues/work_stealing_queue.c.o
+.PHONY : Source/Runtime/Core/Threading/queues/work_stealing_queue.o
+
+# target to build an object file
+Source/Runtime/Core/Threading/queues/work_stealing_queue.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Threading/queues/work_stealing_queue.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Threading/queues/work_stealing_queue.c.o
+.PHONY : Source/Runtime/Core/Threading/queues/work_stealing_queue.c.o
+
+Source/Runtime/Core/Threading/queues/work_stealing_queue.i: Source/Runtime/Core/Threading/queues/work_stealing_queue.c.i
+.PHONY : Source/Runtime/Core/Threading/queues/work_stealing_queue.i
+
+# target to preprocess a source file
+Source/Runtime/Core/Threading/queues/work_stealing_queue.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Threading/queues/work_stealing_queue.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Threading/queues/work_stealing_queue.c.i
+.PHONY : Source/Runtime/Core/Threading/queues/work_stealing_queue.c.i
+
+Source/Runtime/Core/Threading/queues/work_stealing_queue.s: Source/Runtime/Core/Threading/queues/work_stealing_queue.c.s
+.PHONY : Source/Runtime/Core/Threading/queues/work_stealing_queue.s
+
+# target to generate assembly for a file
+Source/Runtime/Core/Threading/queues/work_stealing_queue.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Threading/queues/work_stealing_queue.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Threading/queues/work_stealing_queue.c.s
+.PHONY : Source/Runtime/Core/Threading/queues/work_stealing_queue.c.s
+
+Source/Runtime/Core/Threading/sync/mutex.o: Source/Runtime/Core/Threading/sync/mutex.c.o
+.PHONY : Source/Runtime/Core/Threading/sync/mutex.o
+
+# target to build an object file
+Source/Runtime/Core/Threading/sync/mutex.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Threading/sync/mutex.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Threading/sync/mutex.c.o
+.PHONY : Source/Runtime/Core/Threading/sync/mutex.c.o
+
+Source/Runtime/Core/Threading/sync/mutex.i: Source/Runtime/Core/Threading/sync/mutex.c.i
+.PHONY : Source/Runtime/Core/Threading/sync/mutex.i
+
+# target to preprocess a source file
+Source/Runtime/Core/Threading/sync/mutex.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Threading/sync/mutex.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Threading/sync/mutex.c.i
+.PHONY : Source/Runtime/Core/Threading/sync/mutex.c.i
+
+Source/Runtime/Core/Threading/sync/mutex.s: Source/Runtime/Core/Threading/sync/mutex.c.s
+.PHONY : Source/Runtime/Core/Threading/sync/mutex.s
+
+# target to generate assembly for a file
+Source/Runtime/Core/Threading/sync/mutex.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Threading/sync/mutex.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Threading/sync/mutex.c.s
+.PHONY : Source/Runtime/Core/Threading/sync/mutex.c.s
+
+Source/Runtime/Core/Threading/sync/semaphore.o: Source/Runtime/Core/Threading/sync/semaphore.c.o
+.PHONY : Source/Runtime/Core/Threading/sync/semaphore.o
+
+# target to build an object file
+Source/Runtime/Core/Threading/sync/semaphore.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Threading/sync/semaphore.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Threading/sync/semaphore.c.o
+.PHONY : Source/Runtime/Core/Threading/sync/semaphore.c.o
+
+Source/Runtime/Core/Threading/sync/semaphore.i: Source/Runtime/Core/Threading/sync/semaphore.c.i
+.PHONY : Source/Runtime/Core/Threading/sync/semaphore.i
+
+# target to preprocess a source file
+Source/Runtime/Core/Threading/sync/semaphore.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Threading/sync/semaphore.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Threading/sync/semaphore.c.i
+.PHONY : Source/Runtime/Core/Threading/sync/semaphore.c.i
+
+Source/Runtime/Core/Threading/sync/semaphore.s: Source/Runtime/Core/Threading/sync/semaphore.c.s
+.PHONY : Source/Runtime/Core/Threading/sync/semaphore.s
+
+# target to generate assembly for a file
+Source/Runtime/Core/Threading/sync/semaphore.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Threading/sync/semaphore.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Threading/sync/semaphore.c.s
+.PHONY : Source/Runtime/Core/Threading/sync/semaphore.c.s
+
+Source/Runtime/Core/Threading/workers/worker_thread.o: Source/Runtime/Core/Threading/workers/worker_thread.c.o
+.PHONY : Source/Runtime/Core/Threading/workers/worker_thread.o
+
+# target to build an object file
+Source/Runtime/Core/Threading/workers/worker_thread.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Threading/workers/worker_thread.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Threading/workers/worker_thread.c.o
+.PHONY : Source/Runtime/Core/Threading/workers/worker_thread.c.o
+
+Source/Runtime/Core/Threading/workers/worker_thread.i: Source/Runtime/Core/Threading/workers/worker_thread.c.i
+.PHONY : Source/Runtime/Core/Threading/workers/worker_thread.i
+
+# target to preprocess a source file
+Source/Runtime/Core/Threading/workers/worker_thread.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Threading/workers/worker_thread.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Threading/workers/worker_thread.c.i
+.PHONY : Source/Runtime/Core/Threading/workers/worker_thread.c.i
+
+Source/Runtime/Core/Threading/workers/worker_thread.s: Source/Runtime/Core/Threading/workers/worker_thread.c.s
+.PHONY : Source/Runtime/Core/Threading/workers/worker_thread.s
+
+# target to generate assembly for a file
+Source/Runtime/Core/Threading/workers/worker_thread.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Core/Threading/workers/worker_thread.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Core/Threading/workers/worker_thread.c.s
+.PHONY : Source/Runtime/Core/Threading/workers/worker_thread.c.s
+
+Source/Runtime/ECS/Archetypes/ECS_Archetype.o: Source/Runtime/ECS/Archetypes/ECS_Archetype.c.o
+.PHONY : Source/Runtime/ECS/Archetypes/ECS_Archetype.o
+
+# target to build an object file
+Source/Runtime/ECS/Archetypes/ECS_Archetype.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/Archetypes/ECS_Archetype.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/Archetypes/ECS_Archetype.c.o
+.PHONY : Source/Runtime/ECS/Archetypes/ECS_Archetype.c.o
+
+Source/Runtime/ECS/Archetypes/ECS_Archetype.i: Source/Runtime/ECS/Archetypes/ECS_Archetype.c.i
+.PHONY : Source/Runtime/ECS/Archetypes/ECS_Archetype.i
+
+# target to preprocess a source file
+Source/Runtime/ECS/Archetypes/ECS_Archetype.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/Archetypes/ECS_Archetype.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/Archetypes/ECS_Archetype.c.i
+.PHONY : Source/Runtime/ECS/Archetypes/ECS_Archetype.c.i
+
+Source/Runtime/ECS/Archetypes/ECS_Archetype.s: Source/Runtime/ECS/Archetypes/ECS_Archetype.c.s
+.PHONY : Source/Runtime/ECS/Archetypes/ECS_Archetype.s
+
+# target to generate assembly for a file
+Source/Runtime/ECS/Archetypes/ECS_Archetype.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/Archetypes/ECS_Archetype.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/Archetypes/ECS_Archetype.c.s
+.PHONY : Source/Runtime/ECS/Archetypes/ECS_Archetype.c.s
+
+Source/Runtime/ECS/Components/ECS_Component.o: Source/Runtime/ECS/Components/ECS_Component.c.o
+.PHONY : Source/Runtime/ECS/Components/ECS_Component.o
+
+# target to build an object file
+Source/Runtime/ECS/Components/ECS_Component.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/Components/ECS_Component.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/Components/ECS_Component.c.o
+.PHONY : Source/Runtime/ECS/Components/ECS_Component.c.o
+
+Source/Runtime/ECS/Components/ECS_Component.i: Source/Runtime/ECS/Components/ECS_Component.c.i
+.PHONY : Source/Runtime/ECS/Components/ECS_Component.i
+
+# target to preprocess a source file
+Source/Runtime/ECS/Components/ECS_Component.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/Components/ECS_Component.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/Components/ECS_Component.c.i
+.PHONY : Source/Runtime/ECS/Components/ECS_Component.c.i
+
+Source/Runtime/ECS/Components/ECS_Component.s: Source/Runtime/ECS/Components/ECS_Component.c.s
+.PHONY : Source/Runtime/ECS/Components/ECS_Component.s
+
+# target to generate assembly for a file
+Source/Runtime/ECS/Components/ECS_Component.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/Components/ECS_Component.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/Components/ECS_Component.c.s
+.PHONY : Source/Runtime/ECS/Components/ECS_Component.c.s
+
+Source/Runtime/ECS/ECS.o: Source/Runtime/ECS/ECS.c.o
+.PHONY : Source/Runtime/ECS/ECS.o
+
+# target to build an object file
+Source/Runtime/ECS/ECS.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/ECS.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/ECS.c.o
+.PHONY : Source/Runtime/ECS/ECS.c.o
+
+Source/Runtime/ECS/ECS.i: Source/Runtime/ECS/ECS.c.i
+.PHONY : Source/Runtime/ECS/ECS.i
+
+# target to preprocess a source file
+Source/Runtime/ECS/ECS.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/ECS.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/ECS.c.i
+.PHONY : Source/Runtime/ECS/ECS.c.i
+
+Source/Runtime/ECS/ECS.s: Source/Runtime/ECS/ECS.c.s
+.PHONY : Source/Runtime/ECS/ECS.s
+
+# target to generate assembly for a file
+Source/Runtime/ECS/ECS.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/ECS.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/ECS.c.s
+.PHONY : Source/Runtime/ECS/ECS.c.s
+
+Source/Runtime/ECS/Queries/ECS_Query.o: Source/Runtime/ECS/Queries/ECS_Query.c.o
+.PHONY : Source/Runtime/ECS/Queries/ECS_Query.o
+
+# target to build an object file
+Source/Runtime/ECS/Queries/ECS_Query.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/Queries/ECS_Query.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/Queries/ECS_Query.c.o
+.PHONY : Source/Runtime/ECS/Queries/ECS_Query.c.o
+
+Source/Runtime/ECS/Queries/ECS_Query.i: Source/Runtime/ECS/Queries/ECS_Query.c.i
+.PHONY : Source/Runtime/ECS/Queries/ECS_Query.i
+
+# target to preprocess a source file
+Source/Runtime/ECS/Queries/ECS_Query.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/Queries/ECS_Query.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/Queries/ECS_Query.c.i
+.PHONY : Source/Runtime/ECS/Queries/ECS_Query.c.i
+
+Source/Runtime/ECS/Queries/ECS_Query.s: Source/Runtime/ECS/Queries/ECS_Query.c.s
+.PHONY : Source/Runtime/ECS/Queries/ECS_Query.s
+
+# target to generate assembly for a file
+Source/Runtime/ECS/Queries/ECS_Query.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/Queries/ECS_Query.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/Queries/ECS_Query.c.s
+.PHONY : Source/Runtime/ECS/Queries/ECS_Query.c.s
+
+Source/Runtime/ECS/components/Components_Registration.o: Source/Runtime/ECS/components/Components_Registration.c.o
+.PHONY : Source/Runtime/ECS/components/Components_Registration.o
+
+# target to build an object file
+Source/Runtime/ECS/components/Components_Registration.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/components/Components_Registration.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/components/Components_Registration.c.o
+.PHONY : Source/Runtime/ECS/components/Components_Registration.c.o
+
+Source/Runtime/ECS/components/Components_Registration.i: Source/Runtime/ECS/components/Components_Registration.c.i
+.PHONY : Source/Runtime/ECS/components/Components_Registration.i
+
+# target to preprocess a source file
+Source/Runtime/ECS/components/Components_Registration.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/components/Components_Registration.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/components/Components_Registration.c.i
+.PHONY : Source/Runtime/ECS/components/Components_Registration.c.i
+
+Source/Runtime/ECS/components/Components_Registration.s: Source/Runtime/ECS/components/Components_Registration.c.s
+.PHONY : Source/Runtime/ECS/components/Components_Registration.s
+
+# target to generate assembly for a file
+Source/Runtime/ECS/components/Components_Registration.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/components/Components_Registration.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/components/Components_Registration.c.s
+.PHONY : Source/Runtime/ECS/components/Components_Registration.c.s
+
+Source/Runtime/ECS/systems/Audio_System.o: Source/Runtime/ECS/systems/Audio_System.c.o
+.PHONY : Source/Runtime/ECS/systems/Audio_System.o
+
+# target to build an object file
+Source/Runtime/ECS/systems/Audio_System.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/systems/Audio_System.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/systems/Audio_System.c.o
+.PHONY : Source/Runtime/ECS/systems/Audio_System.c.o
+
+Source/Runtime/ECS/systems/Audio_System.i: Source/Runtime/ECS/systems/Audio_System.c.i
+.PHONY : Source/Runtime/ECS/systems/Audio_System.i
+
+# target to preprocess a source file
+Source/Runtime/ECS/systems/Audio_System.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/systems/Audio_System.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/systems/Audio_System.c.i
+.PHONY : Source/Runtime/ECS/systems/Audio_System.c.i
+
+Source/Runtime/ECS/systems/Audio_System.s: Source/Runtime/ECS/systems/Audio_System.c.s
+.PHONY : Source/Runtime/ECS/systems/Audio_System.s
+
+# target to generate assembly for a file
+Source/Runtime/ECS/systems/Audio_System.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/systems/Audio_System.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/systems/Audio_System.c.s
+.PHONY : Source/Runtime/ECS/systems/Audio_System.c.s
+
+Source/Runtime/ECS/systems/ECS_System.o: Source/Runtime/ECS/systems/ECS_System.c.o
+.PHONY : Source/Runtime/ECS/systems/ECS_System.o
+
+# target to build an object file
+Source/Runtime/ECS/systems/ECS_System.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/systems/ECS_System.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/systems/ECS_System.c.o
+.PHONY : Source/Runtime/ECS/systems/ECS_System.c.o
+
+Source/Runtime/ECS/systems/ECS_System.i: Source/Runtime/ECS/systems/ECS_System.c.i
+.PHONY : Source/Runtime/ECS/systems/ECS_System.i
+
+# target to preprocess a source file
+Source/Runtime/ECS/systems/ECS_System.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/systems/ECS_System.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/systems/ECS_System.c.i
+.PHONY : Source/Runtime/ECS/systems/ECS_System.c.i
+
+Source/Runtime/ECS/systems/ECS_System.s: Source/Runtime/ECS/systems/ECS_System.c.s
+.PHONY : Source/Runtime/ECS/systems/ECS_System.s
+
+# target to generate assembly for a file
+Source/Runtime/ECS/systems/ECS_System.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/systems/ECS_System.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/systems/ECS_System.c.s
+.PHONY : Source/Runtime/ECS/systems/ECS_System.c.s
+
+Source/Runtime/ECS/systems/Particle_System.o: Source/Runtime/ECS/systems/Particle_System.c.o
+.PHONY : Source/Runtime/ECS/systems/Particle_System.o
+
+# target to build an object file
+Source/Runtime/ECS/systems/Particle_System.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/systems/Particle_System.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/systems/Particle_System.c.o
+.PHONY : Source/Runtime/ECS/systems/Particle_System.c.o
+
+Source/Runtime/ECS/systems/Particle_System.i: Source/Runtime/ECS/systems/Particle_System.c.i
+.PHONY : Source/Runtime/ECS/systems/Particle_System.i
+
+# target to preprocess a source file
+Source/Runtime/ECS/systems/Particle_System.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/systems/Particle_System.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/systems/Particle_System.c.i
+.PHONY : Source/Runtime/ECS/systems/Particle_System.c.i
+
+Source/Runtime/ECS/systems/Particle_System.s: Source/Runtime/ECS/systems/Particle_System.c.s
+.PHONY : Source/Runtime/ECS/systems/Particle_System.s
+
+# target to generate assembly for a file
+Source/Runtime/ECS/systems/Particle_System.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/systems/Particle_System.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/systems/Particle_System.c.s
+.PHONY : Source/Runtime/ECS/systems/Particle_System.c.s
+
+Source/Runtime/ECS/systems/Physics_System.o: Source/Runtime/ECS/systems/Physics_System.c.o
+.PHONY : Source/Runtime/ECS/systems/Physics_System.o
+
+# target to build an object file
+Source/Runtime/ECS/systems/Physics_System.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/systems/Physics_System.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/systems/Physics_System.c.o
+.PHONY : Source/Runtime/ECS/systems/Physics_System.c.o
+
+Source/Runtime/ECS/systems/Physics_System.i: Source/Runtime/ECS/systems/Physics_System.c.i
+.PHONY : Source/Runtime/ECS/systems/Physics_System.i
+
+# target to preprocess a source file
+Source/Runtime/ECS/systems/Physics_System.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/systems/Physics_System.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/systems/Physics_System.c.i
+.PHONY : Source/Runtime/ECS/systems/Physics_System.c.i
+
+Source/Runtime/ECS/systems/Physics_System.s: Source/Runtime/ECS/systems/Physics_System.c.s
+.PHONY : Source/Runtime/ECS/systems/Physics_System.s
+
+# target to generate assembly for a file
+Source/Runtime/ECS/systems/Physics_System.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/ECS/systems/Physics_System.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/ECS/systems/Physics_System.c.s
+.PHONY : Source/Runtime/ECS/systems/Physics_System.c.s
+
+Source/Runtime/Input/Input.o: Source/Runtime/Input/Input.c.o
+.PHONY : Source/Runtime/Input/Input.o
+
+# target to build an object file
+Source/Runtime/Input/Input.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Input/Input.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Input/Input.c.o
+.PHONY : Source/Runtime/Input/Input.c.o
+
+Source/Runtime/Input/Input.i: Source/Runtime/Input/Input.c.i
+.PHONY : Source/Runtime/Input/Input.i
+
+# target to preprocess a source file
+Source/Runtime/Input/Input.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Input/Input.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Input/Input.c.i
+.PHONY : Source/Runtime/Input/Input.c.i
+
+Source/Runtime/Input/Input.s: Source/Runtime/Input/Input.c.s
+.PHONY : Source/Runtime/Input/Input.s
+
+# target to generate assembly for a file
+Source/Runtime/Input/Input.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Input/Input.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Input/Input.c.s
+.PHONY : Source/Runtime/Input/Input.c.s
+
+Source/Runtime/Launch/main.o: Source/Runtime/Launch/main.c.o
+.PHONY : Source/Runtime/Launch/main.o
+
+# target to build an object file
+Source/Runtime/Launch/main.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Launch/main.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Launch/main.c.o
+.PHONY : Source/Runtime/Launch/main.c.o
+
+Source/Runtime/Launch/main.i: Source/Runtime/Launch/main.c.i
+.PHONY : Source/Runtime/Launch/main.i
+
+# target to preprocess a source file
+Source/Runtime/Launch/main.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Launch/main.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Launch/main.c.i
+.PHONY : Source/Runtime/Launch/main.c.i
+
+Source/Runtime/Launch/main.s: Source/Runtime/Launch/main.c.s
+.PHONY : Source/Runtime/Launch/main.s
+
+# target to generate assembly for a file
+Source/Runtime/Launch/main.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Launch/main.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Launch/main.c.s
+.PHONY : Source/Runtime/Launch/main.c.s
+
+Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.o: Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.c.o
+.PHONY : Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.o
+
+# target to build an object file
+Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.c.o
+.PHONY : Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.c.o
+
+Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.i: Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.c.i
+.PHONY : Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.i
+
+# target to preprocess a source file
+Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.c.i
+.PHONY : Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.c.i
+
+Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.s: Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.c.s
+.PHONY : Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.s
+
+# target to generate assembly for a file
+Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.c.s
+.PHONY : Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.c.s
+
+Source/Runtime/Memory/Memory.o: Source/Runtime/Memory/Memory.c.o
+.PHONY : Source/Runtime/Memory/Memory.o
+
+# target to build an object file
+Source/Runtime/Memory/Memory.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Memory/Memory.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Memory/Memory.c.o
+.PHONY : Source/Runtime/Memory/Memory.c.o
+
+Source/Runtime/Memory/Memory.i: Source/Runtime/Memory/Memory.c.i
+.PHONY : Source/Runtime/Memory/Memory.i
+
+# target to preprocess a source file
+Source/Runtime/Memory/Memory.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Memory/Memory.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Memory/Memory.c.i
+.PHONY : Source/Runtime/Memory/Memory.c.i
+
+Source/Runtime/Memory/Memory.s: Source/Runtime/Memory/Memory.c.s
+.PHONY : Source/Runtime/Memory/Memory.s
+
+# target to generate assembly for a file
+Source/Runtime/Memory/Memory.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Memory/Memory.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Memory/Memory.c.s
+.PHONY : Source/Runtime/Memory/Memory.c.s
+
+Source/Runtime/Networking/Networking.o: Source/Runtime/Networking/Networking.c.o
+.PHONY : Source/Runtime/Networking/Networking.o
+
+# target to build an object file
+Source/Runtime/Networking/Networking.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Networking/Networking.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Networking/Networking.c.o
+.PHONY : Source/Runtime/Networking/Networking.c.o
+
+Source/Runtime/Networking/Networking.i: Source/Runtime/Networking/Networking.c.i
+.PHONY : Source/Runtime/Networking/Networking.i
+
+# target to preprocess a source file
+Source/Runtime/Networking/Networking.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Networking/Networking.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Networking/Networking.c.i
+.PHONY : Source/Runtime/Networking/Networking.c.i
+
+Source/Runtime/Networking/Networking.s: Source/Runtime/Networking/Networking.c.s
+.PHONY : Source/Runtime/Networking/Networking.s
+
+# target to generate assembly for a file
+Source/Runtime/Networking/Networking.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Networking/Networking.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Networking/Networking.c.s
+.PHONY : Source/Runtime/Networking/Networking.c.s
+
+Source/Runtime/Physics/Physics.o: Source/Runtime/Physics/Physics.c.o
+.PHONY : Source/Runtime/Physics/Physics.o
+
+# target to build an object file
+Source/Runtime/Physics/Physics.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Physics/Physics.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Physics/Physics.c.o
+.PHONY : Source/Runtime/Physics/Physics.c.o
+
+Source/Runtime/Physics/Physics.i: Source/Runtime/Physics/Physics.c.i
+.PHONY : Source/Runtime/Physics/Physics.i
+
+# target to preprocess a source file
+Source/Runtime/Physics/Physics.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Physics/Physics.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Physics/Physics.c.i
+.PHONY : Source/Runtime/Physics/Physics.c.i
+
+Source/Runtime/Physics/Physics.s: Source/Runtime/Physics/Physics.c.s
+.PHONY : Source/Runtime/Physics/Physics.s
+
+# target to generate assembly for a file
+Source/Runtime/Physics/Physics.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Physics/Physics.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Physics/Physics.c.s
+.PHONY : Source/Runtime/Physics/Physics.c.s
+
+Source/Runtime/Platform/Platform.o: Source/Runtime/Platform/Platform.c.o
+.PHONY : Source/Runtime/Platform/Platform.o
+
+# target to build an object file
+Source/Runtime/Platform/Platform.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Platform/Platform.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Platform/Platform.c.o
+.PHONY : Source/Runtime/Platform/Platform.c.o
+
+Source/Runtime/Platform/Platform.i: Source/Runtime/Platform/Platform.c.i
+.PHONY : Source/Runtime/Platform/Platform.i
+
+# target to preprocess a source file
+Source/Runtime/Platform/Platform.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Platform/Platform.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Platform/Platform.c.i
+.PHONY : Source/Runtime/Platform/Platform.c.i
+
+Source/Runtime/Platform/Platform.s: Source/Runtime/Platform/Platform.c.s
+.PHONY : Source/Runtime/Platform/Platform.s
+
+# target to generate assembly for a file
+Source/Runtime/Platform/Platform.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Platform/Platform.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Platform/Platform.c.s
+.PHONY : Source/Runtime/Platform/Platform.c.s
+
+Source/Runtime/Profiling/Profiler.o: Source/Runtime/Profiling/Profiler.c.o
+.PHONY : Source/Runtime/Profiling/Profiler.o
+
+# target to build an object file
+Source/Runtime/Profiling/Profiler.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Profiling/Profiler.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Profiling/Profiler.c.o
+.PHONY : Source/Runtime/Profiling/Profiler.c.o
+
+Source/Runtime/Profiling/Profiler.i: Source/Runtime/Profiling/Profiler.c.i
+.PHONY : Source/Runtime/Profiling/Profiler.i
+
+# target to preprocess a source file
+Source/Runtime/Profiling/Profiler.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Profiling/Profiler.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Profiling/Profiler.c.i
+.PHONY : Source/Runtime/Profiling/Profiler.c.i
+
+Source/Runtime/Profiling/Profiler.s: Source/Runtime/Profiling/Profiler.c.s
+.PHONY : Source/Runtime/Profiling/Profiler.s
+
+# target to generate assembly for a file
+Source/Runtime/Profiling/Profiler.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Profiling/Profiler.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Profiling/Profiler.c.s
+.PHONY : Source/Runtime/Profiling/Profiler.c.s
+
+Source/Runtime/Render/Render.o: Source/Runtime/Render/Render.c.o
+.PHONY : Source/Runtime/Render/Render.o
+
+# target to build an object file
+Source/Runtime/Render/Render.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Render/Render.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Render/Render.c.o
+.PHONY : Source/Runtime/Render/Render.c.o
+
+Source/Runtime/Render/Render.i: Source/Runtime/Render/Render.c.i
+.PHONY : Source/Runtime/Render/Render.i
+
+# target to preprocess a source file
+Source/Runtime/Render/Render.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Render/Render.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Render/Render.c.i
+.PHONY : Source/Runtime/Render/Render.c.i
+
+Source/Runtime/Render/Render.s: Source/Runtime/Render/Render.c.s
+.PHONY : Source/Runtime/Render/Render.s
+
+# target to generate assembly for a file
+Source/Runtime/Render/Render.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Render/Render.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Render/Render.c.s
+.PHONY : Source/Runtime/Render/Render.c.s
+
+Source/Runtime/Scripting/Scripting.o: Source/Runtime/Scripting/Scripting.c.o
+.PHONY : Source/Runtime/Scripting/Scripting.o
+
+# target to build an object file
+Source/Runtime/Scripting/Scripting.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Scripting/Scripting.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Scripting/Scripting.c.o
+.PHONY : Source/Runtime/Scripting/Scripting.c.o
+
+Source/Runtime/Scripting/Scripting.i: Source/Runtime/Scripting/Scripting.c.i
+.PHONY : Source/Runtime/Scripting/Scripting.i
+
+# target to preprocess a source file
+Source/Runtime/Scripting/Scripting.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Scripting/Scripting.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Scripting/Scripting.c.i
+.PHONY : Source/Runtime/Scripting/Scripting.c.i
+
+Source/Runtime/Scripting/Scripting.s: Source/Runtime/Scripting/Scripting.c.s
+.PHONY : Source/Runtime/Scripting/Scripting.s
+
+# target to generate assembly for a file
+Source/Runtime/Scripting/Scripting.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Scripting/Scripting.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Scripting/Scripting.c.s
+.PHONY : Source/Runtime/Scripting/Scripting.c.s
+
+Source/Runtime/Shaders/Shader_System.o: Source/Runtime/Shaders/Shader_System.c.o
+.PHONY : Source/Runtime/Shaders/Shader_System.o
+
+# target to build an object file
+Source/Runtime/Shaders/Shader_System.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Shaders/Shader_System.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Shaders/Shader_System.c.o
+.PHONY : Source/Runtime/Shaders/Shader_System.c.o
+
+Source/Runtime/Shaders/Shader_System.i: Source/Runtime/Shaders/Shader_System.c.i
+.PHONY : Source/Runtime/Shaders/Shader_System.i
+
+# target to preprocess a source file
+Source/Runtime/Shaders/Shader_System.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Shaders/Shader_System.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Shaders/Shader_System.c.i
+.PHONY : Source/Runtime/Shaders/Shader_System.c.i
+
+Source/Runtime/Shaders/Shader_System.s: Source/Runtime/Shaders/Shader_System.c.s
+.PHONY : Source/Runtime/Shaders/Shader_System.s
+
+# target to generate assembly for a file
+Source/Runtime/Shaders/Shader_System.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Shaders/Shader_System.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Shaders/Shader_System.c.s
+.PHONY : Source/Runtime/Shaders/Shader_System.c.s
+
+Source/Runtime/Threading/Jobs/Job_System.o: Source/Runtime/Threading/Jobs/Job_System.c.o
+.PHONY : Source/Runtime/Threading/Jobs/Job_System.o
+
+# target to build an object file
+Source/Runtime/Threading/Jobs/Job_System.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Threading/Jobs/Job_System.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Threading/Jobs/Job_System.c.o
+.PHONY : Source/Runtime/Threading/Jobs/Job_System.c.o
+
+Source/Runtime/Threading/Jobs/Job_System.i: Source/Runtime/Threading/Jobs/Job_System.c.i
+.PHONY : Source/Runtime/Threading/Jobs/Job_System.i
+
+# target to preprocess a source file
+Source/Runtime/Threading/Jobs/Job_System.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Threading/Jobs/Job_System.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Threading/Jobs/Job_System.c.i
+.PHONY : Source/Runtime/Threading/Jobs/Job_System.c.i
+
+Source/Runtime/Threading/Jobs/Job_System.s: Source/Runtime/Threading/Jobs/Job_System.c.s
+.PHONY : Source/Runtime/Threading/Jobs/Job_System.s
+
+# target to generate assembly for a file
+Source/Runtime/Threading/Jobs/Job_System.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/Threading/Jobs/Job_System.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/Threading/Jobs/Job_System.c.s
+.PHONY : Source/Runtime/Threading/Jobs/Job_System.c.s
+
+Source/Runtime/UI/UI.o: Source/Runtime/UI/UI.c.o
+.PHONY : Source/Runtime/UI/UI.o
+
+# target to build an object file
+Source/Runtime/UI/UI.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/UI/UI.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/UI/UI.c.o
+.PHONY : Source/Runtime/UI/UI.c.o
+
+Source/Runtime/UI/UI.i: Source/Runtime/UI/UI.c.i
+.PHONY : Source/Runtime/UI/UI.i
+
+# target to preprocess a source file
+Source/Runtime/UI/UI.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/UI/UI.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/UI/UI.c.i
+.PHONY : Source/Runtime/UI/UI.c.i
+
+Source/Runtime/UI/UI.s: Source/Runtime/UI/UI.c.s
+.PHONY : Source/Runtime/UI/UI.s
+
+# target to generate assembly for a file
+Source/Runtime/UI/UI.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/Source/Runtime/UI/UI.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/Source/Runtime/UI/UI.c.s
+.PHONY : Source/Runtime/UI/UI.c.s
+
+Source/Tests/Tests.o: Source/Tests/Tests.c.o
+.PHONY : Source/Tests/Tests.o
+
+# target to build an object file
+Source/Tests/Tests.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/EngineTests.dir/build.make CMakeFiles/EngineTests.dir/Source/Tests/Tests.c.o
+.PHONY : Source/Tests/Tests.c.o
+
+Source/Tests/Tests.i: Source/Tests/Tests.c.i
+.PHONY : Source/Tests/Tests.i
+
+# target to preprocess a source file
+Source/Tests/Tests.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/EngineTests.dir/build.make CMakeFiles/EngineTests.dir/Source/Tests/Tests.c.i
+.PHONY : Source/Tests/Tests.c.i
+
+Source/Tests/Tests.s: Source/Tests/Tests.c.s
+.PHONY : Source/Tests/Tests.s
+
+# target to generate assembly for a file
+Source/Tests/Tests.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/EngineTests.dir/build.make CMakeFiles/EngineTests.dir/Source/Tests/Tests.c.s
+.PHONY : Source/Tests/Tests.c.s
+
+src/Runtime/Engine/memory/unified_memory_allocator.o: src/Runtime/Engine/memory/unified_memory_allocator.c.o
+.PHONY : src/Runtime/Engine/memory/unified_memory_allocator.o
+
+# target to build an object file
+src/Runtime/Engine/memory/unified_memory_allocator.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/Runtime/Engine/memory/unified_memory_allocator.c.o
+.PHONY : src/Runtime/Engine/memory/unified_memory_allocator.c.o
+
+src/Runtime/Engine/memory/unified_memory_allocator.i: src/Runtime/Engine/memory/unified_memory_allocator.c.i
+.PHONY : src/Runtime/Engine/memory/unified_memory_allocator.i
+
+# target to preprocess a source file
+src/Runtime/Engine/memory/unified_memory_allocator.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/Runtime/Engine/memory/unified_memory_allocator.c.i
+.PHONY : src/Runtime/Engine/memory/unified_memory_allocator.c.i
+
+src/Runtime/Engine/memory/unified_memory_allocator.s: src/Runtime/Engine/memory/unified_memory_allocator.c.s
+.PHONY : src/Runtime/Engine/memory/unified_memory_allocator.s
+
+# target to generate assembly for a file
+src/Runtime/Engine/memory/unified_memory_allocator.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/Runtime/Engine/memory/unified_memory_allocator.c.s
+.PHONY : src/Runtime/Engine/memory/unified_memory_allocator.c.s
 
 src/engine/backend/metal/metal_mesh_bridge.o: src/engine/backend/metal/metal_mesh_bridge.c.o
 .PHONY : src/engine/backend/metal/metal_mesh_bridge.o
@@ -441,54 +1565,6 @@ src/engine/backend/metal/simple_metal_test.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/simple_metal_test.c.o
 .PHONY : src/engine/backend/metal/simple_metal_test.c.o
 
-src/engine/backend/metal/tests/mtl_resource_tests.o: src/engine/backend/metal/tests/mtl_resource_tests.c.o
-.PHONY : src/engine/backend/metal/tests/mtl_resource_tests.o
-
-# target to build an object file
-src/engine/backend/metal/tests/mtl_resource_tests.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_resource_tests.c.o
-.PHONY : src/engine/backend/metal/tests/mtl_resource_tests.c.o
-
-src/engine/backend/metal/tests/mtl_resource_tests.i: src/engine/backend/metal/tests/mtl_resource_tests.c.i
-.PHONY : src/engine/backend/metal/tests/mtl_resource_tests.i
-
-# target to preprocess a source file
-src/engine/backend/metal/tests/mtl_resource_tests.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_resource_tests.c.i
-.PHONY : src/engine/backend/metal/tests/mtl_resource_tests.c.i
-
-src/engine/backend/metal/tests/mtl_resource_tests.s: src/engine/backend/metal/tests/mtl_resource_tests.c.s
-.PHONY : src/engine/backend/metal/tests/mtl_resource_tests.s
-
-# target to generate assembly for a file
-src/engine/backend/metal/tests/mtl_resource_tests.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_resource_tests.c.s
-.PHONY : src/engine/backend/metal/tests/mtl_resource_tests.c.s
-
-src/engine/backend/metal/tests/mtl_voxel_test.o: src/engine/backend/metal/tests/mtl_voxel_test.c.o
-.PHONY : src/engine/backend/metal/tests/mtl_voxel_test.o
-
-# target to build an object file
-src/engine/backend/metal/tests/mtl_voxel_test.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_voxel_test.c.o
-.PHONY : src/engine/backend/metal/tests/mtl_voxel_test.c.o
-
-src/engine/backend/metal/tests/mtl_voxel_test.i: src/engine/backend/metal/tests/mtl_voxel_test.c.i
-.PHONY : src/engine/backend/metal/tests/mtl_voxel_test.i
-
-# target to preprocess a source file
-src/engine/backend/metal/tests/mtl_voxel_test.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_voxel_test.c.i
-.PHONY : src/engine/backend/metal/tests/mtl_voxel_test.c.i
-
-src/engine/backend/metal/tests/mtl_voxel_test.s: src/engine/backend/metal/tests/mtl_voxel_test.c.s
-.PHONY : src/engine/backend/metal/tests/mtl_voxel_test.s
-
-# target to generate assembly for a file
-src/engine/backend/metal/tests/mtl_voxel_test.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_voxel_test.c.s
-.PHONY : src/engine/backend/metal/tests/mtl_voxel_test.c.s
-
 src/engine/backend/opengl_backend.o: src/engine/backend/opengl_backend.c.o
 .PHONY : src/engine/backend/opengl_backend.o
 
@@ -633,917 +1709,29 @@ src/engine/backend/vertex_format_reflect.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vertex_format_reflect.c.s
 .PHONY : src/engine/backend/vertex_format_reflect.c.s
 
-src/engine/backend/vulkan/dynamic_rendering.o: src/engine/backend/vulkan/dynamic_rendering.c.o
-.PHONY : src/engine/backend/vulkan/dynamic_rendering.o
-
-# target to build an object file
-src/engine/backend/vulkan/dynamic_rendering.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/dynamic_rendering.c.o
-.PHONY : src/engine/backend/vulkan/dynamic_rendering.c.o
-
-src/engine/backend/vulkan/dynamic_rendering.i: src/engine/backend/vulkan/dynamic_rendering.c.i
-.PHONY : src/engine/backend/vulkan/dynamic_rendering.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/dynamic_rendering.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/dynamic_rendering.c.i
-.PHONY : src/engine/backend/vulkan/dynamic_rendering.c.i
-
-src/engine/backend/vulkan/dynamic_rendering.s: src/engine/backend/vulkan/dynamic_rendering.c.s
-.PHONY : src/engine/backend/vulkan/dynamic_rendering.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/dynamic_rendering.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/dynamic_rendering.c.s
-.PHONY : src/engine/backend/vulkan/dynamic_rendering.c.s
-
-src/engine/backend/vulkan/modern_renderer_example.o: src/engine/backend/vulkan/modern_renderer_example.c.o
-.PHONY : src/engine/backend/vulkan/modern_renderer_example.o
-
-# target to build an object file
-src/engine/backend/vulkan/modern_renderer_example.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/modern_renderer_example.c.o
-.PHONY : src/engine/backend/vulkan/modern_renderer_example.c.o
-
-src/engine/backend/vulkan/modern_renderer_example.i: src/engine/backend/vulkan/modern_renderer_example.c.i
-.PHONY : src/engine/backend/vulkan/modern_renderer_example.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/modern_renderer_example.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/modern_renderer_example.c.i
-.PHONY : src/engine/backend/vulkan/modern_renderer_example.c.i
-
-src/engine/backend/vulkan/modern_renderer_example.s: src/engine/backend/vulkan/modern_renderer_example.c.s
-.PHONY : src/engine/backend/vulkan/modern_renderer_example.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/modern_renderer_example.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/modern_renderer_example.c.s
-.PHONY : src/engine/backend/vulkan/modern_renderer_example.c.s
-
-src/engine/backend/vulkan/moltenvk_config.o: src/engine/backend/vulkan/moltenvk_config.c.o
-.PHONY : src/engine/backend/vulkan/moltenvk_config.o
-
-# target to build an object file
-src/engine/backend/vulkan/moltenvk_config.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/moltenvk_config.c.o
-.PHONY : src/engine/backend/vulkan/moltenvk_config.c.o
-
-src/engine/backend/vulkan/moltenvk_config.i: src/engine/backend/vulkan/moltenvk_config.c.i
-.PHONY : src/engine/backend/vulkan/moltenvk_config.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/moltenvk_config.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/moltenvk_config.c.i
-.PHONY : src/engine/backend/vulkan/moltenvk_config.c.i
-
-src/engine/backend/vulkan/moltenvk_config.s: src/engine/backend/vulkan/moltenvk_config.c.s
-.PHONY : src/engine/backend/vulkan/moltenvk_config.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/moltenvk_config.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/moltenvk_config.c.s
-.PHONY : src/engine/backend/vulkan/moltenvk_config.c.s
-
-src/engine/backend/vulkan/queue_ownership.o: src/engine/backend/vulkan/queue_ownership.c.o
-.PHONY : src/engine/backend/vulkan/queue_ownership.o
-
-# target to build an object file
-src/engine/backend/vulkan/queue_ownership.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/queue_ownership.c.o
-.PHONY : src/engine/backend/vulkan/queue_ownership.c.o
-
-src/engine/backend/vulkan/queue_ownership.i: src/engine/backend/vulkan/queue_ownership.c.i
-.PHONY : src/engine/backend/vulkan/queue_ownership.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/queue_ownership.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/queue_ownership.c.i
-.PHONY : src/engine/backend/vulkan/queue_ownership.c.i
-
-src/engine/backend/vulkan/queue_ownership.s: src/engine/backend/vulkan/queue_ownership.c.s
-.PHONY : src/engine/backend/vulkan/queue_ownership.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/queue_ownership.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/queue_ownership.c.s
-.PHONY : src/engine/backend/vulkan/queue_ownership.c.s
-
-src/engine/backend/vulkan/ray_query.o: src/engine/backend/vulkan/ray_query.c.o
-.PHONY : src/engine/backend/vulkan/ray_query.o
-
-# target to build an object file
-src/engine/backend/vulkan/ray_query.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/ray_query.c.o
-.PHONY : src/engine/backend/vulkan/ray_query.c.o
-
-src/engine/backend/vulkan/ray_query.i: src/engine/backend/vulkan/ray_query.c.i
-.PHONY : src/engine/backend/vulkan/ray_query.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/ray_query.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/ray_query.c.i
-.PHONY : src/engine/backend/vulkan/ray_query.c.i
-
-src/engine/backend/vulkan/ray_query.s: src/engine/backend/vulkan/ray_query.c.s
-.PHONY : src/engine/backend/vulkan/ray_query.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/ray_query.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/ray_query.c.s
-.PHONY : src/engine/backend/vulkan/ray_query.c.s
-
-src/engine/backend/vulkan/vk_command.o: src/engine/backend/vulkan/vk_command.c.o
-.PHONY : src/engine/backend/vulkan/vk_command.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_command.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_command.c.o
-.PHONY : src/engine/backend/vulkan/vk_command.c.o
-
-src/engine/backend/vulkan/vk_command.i: src/engine/backend/vulkan/vk_command.c.i
-.PHONY : src/engine/backend/vulkan/vk_command.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_command.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_command.c.i
-.PHONY : src/engine/backend/vulkan/vk_command.c.i
-
-src/engine/backend/vulkan/vk_command.s: src/engine/backend/vulkan/vk_command.c.s
-.PHONY : src/engine/backend/vulkan/vk_command.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_command.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_command.c.s
-.PHONY : src/engine/backend/vulkan/vk_command.c.s
-
-src/engine/backend/vulkan/vk_command_buffer_helpers.o: src/engine/backend/vulkan/vk_command_buffer_helpers.c.o
-.PHONY : src/engine/backend/vulkan/vk_command_buffer_helpers.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_command_buffer_helpers.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_command_buffer_helpers.c.o
-.PHONY : src/engine/backend/vulkan/vk_command_buffer_helpers.c.o
-
-src/engine/backend/vulkan/vk_command_buffer_helpers.i: src/engine/backend/vulkan/vk_command_buffer_helpers.c.i
-.PHONY : src/engine/backend/vulkan/vk_command_buffer_helpers.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_command_buffer_helpers.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_command_buffer_helpers.c.i
-.PHONY : src/engine/backend/vulkan/vk_command_buffer_helpers.c.i
-
-src/engine/backend/vulkan/vk_command_buffer_helpers.s: src/engine/backend/vulkan/vk_command_buffer_helpers.c.s
-.PHONY : src/engine/backend/vulkan/vk_command_buffer_helpers.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_command_buffer_helpers.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_command_buffer_helpers.c.s
-.PHONY : src/engine/backend/vulkan/vk_command_buffer_helpers.c.s
-
-src/engine/backend/vulkan/vk_debug.o: src/engine/backend/vulkan/vk_debug.c.o
-.PHONY : src/engine/backend/vulkan/vk_debug.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_debug.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_debug.c.o
-.PHONY : src/engine/backend/vulkan/vk_debug.c.o
-
-src/engine/backend/vulkan/vk_debug.i: src/engine/backend/vulkan/vk_debug.c.i
-.PHONY : src/engine/backend/vulkan/vk_debug.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_debug.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_debug.c.i
-.PHONY : src/engine/backend/vulkan/vk_debug.c.i
-
-src/engine/backend/vulkan/vk_debug.s: src/engine/backend/vulkan/vk_debug.c.s
-.PHONY : src/engine/backend/vulkan/vk_debug.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_debug.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_debug.c.s
-.PHONY : src/engine/backend/vulkan/vk_debug.c.s
-
-src/engine/backend/vulkan/vk_descriptor.o: src/engine/backend/vulkan/vk_descriptor.c.o
-.PHONY : src/engine/backend/vulkan/vk_descriptor.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_descriptor.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_descriptor.c.o
-.PHONY : src/engine/backend/vulkan/vk_descriptor.c.o
-
-src/engine/backend/vulkan/vk_descriptor.i: src/engine/backend/vulkan/vk_descriptor.c.i
-.PHONY : src/engine/backend/vulkan/vk_descriptor.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_descriptor.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_descriptor.c.i
-.PHONY : src/engine/backend/vulkan/vk_descriptor.c.i
-
-src/engine/backend/vulkan/vk_descriptor.s: src/engine/backend/vulkan/vk_descriptor.c.s
-.PHONY : src/engine/backend/vulkan/vk_descriptor.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_descriptor.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_descriptor.c.s
-.PHONY : src/engine/backend/vulkan/vk_descriptor.c.s
-
-src/engine/backend/vulkan/vk_device.o: src/engine/backend/vulkan/vk_device.c.o
-.PHONY : src/engine/backend/vulkan/vk_device.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_device.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_device.c.o
-.PHONY : src/engine/backend/vulkan/vk_device.c.o
-
-src/engine/backend/vulkan/vk_device.i: src/engine/backend/vulkan/vk_device.c.i
-.PHONY : src/engine/backend/vulkan/vk_device.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_device.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_device.c.i
-.PHONY : src/engine/backend/vulkan/vk_device.c.i
-
-src/engine/backend/vulkan/vk_device.s: src/engine/backend/vulkan/vk_device.c.s
-.PHONY : src/engine/backend/vulkan/vk_device.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_device.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_device.c.s
-.PHONY : src/engine/backend/vulkan/vk_device.c.s
-
-src/engine/backend/vulkan/vk_framebuffer.o: src/engine/backend/vulkan/vk_framebuffer.c.o
-.PHONY : src/engine/backend/vulkan/vk_framebuffer.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_framebuffer.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_framebuffer.c.o
-.PHONY : src/engine/backend/vulkan/vk_framebuffer.c.o
-
-src/engine/backend/vulkan/vk_framebuffer.i: src/engine/backend/vulkan/vk_framebuffer.c.i
-.PHONY : src/engine/backend/vulkan/vk_framebuffer.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_framebuffer.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_framebuffer.c.i
-.PHONY : src/engine/backend/vulkan/vk_framebuffer.c.i
-
-src/engine/backend/vulkan/vk_framebuffer.s: src/engine/backend/vulkan/vk_framebuffer.c.s
-.PHONY : src/engine/backend/vulkan/vk_framebuffer.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_framebuffer.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_framebuffer.c.s
-.PHONY : src/engine/backend/vulkan/vk_framebuffer.c.s
-
-src/engine/backend/vulkan/vk_graphics_pipeline.o: src/engine/backend/vulkan/vk_graphics_pipeline.c.o
-.PHONY : src/engine/backend/vulkan/vk_graphics_pipeline.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_graphics_pipeline.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_graphics_pipeline.c.o
-.PHONY : src/engine/backend/vulkan/vk_graphics_pipeline.c.o
-
-src/engine/backend/vulkan/vk_graphics_pipeline.i: src/engine/backend/vulkan/vk_graphics_pipeline.c.i
-.PHONY : src/engine/backend/vulkan/vk_graphics_pipeline.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_graphics_pipeline.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_graphics_pipeline.c.i
-.PHONY : src/engine/backend/vulkan/vk_graphics_pipeline.c.i
-
-src/engine/backend/vulkan/vk_graphics_pipeline.s: src/engine/backend/vulkan/vk_graphics_pipeline.c.s
-.PHONY : src/engine/backend/vulkan/vk_graphics_pipeline.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_graphics_pipeline.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_graphics_pipeline.c.s
-.PHONY : src/engine/backend/vulkan/vk_graphics_pipeline.c.s
-
-src/engine/backend/vulkan/vk_instance.o: src/engine/backend/vulkan/vk_instance.c.o
-.PHONY : src/engine/backend/vulkan/vk_instance.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_instance.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_instance.c.o
-.PHONY : src/engine/backend/vulkan/vk_instance.c.o
-
-src/engine/backend/vulkan/vk_instance.i: src/engine/backend/vulkan/vk_instance.c.i
-.PHONY : src/engine/backend/vulkan/vk_instance.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_instance.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_instance.c.i
-.PHONY : src/engine/backend/vulkan/vk_instance.c.i
-
-src/engine/backend/vulkan/vk_instance.s: src/engine/backend/vulkan/vk_instance.c.s
-.PHONY : src/engine/backend/vulkan/vk_instance.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_instance.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_instance.c.s
-.PHONY : src/engine/backend/vulkan/vk_instance.c.s
-
-src/engine/backend/vulkan/vk_memory.o: src/engine/backend/vulkan/vk_memory.c.o
-.PHONY : src/engine/backend/vulkan/vk_memory.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_memory.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_memory.c.o
-.PHONY : src/engine/backend/vulkan/vk_memory.c.o
-
-src/engine/backend/vulkan/vk_memory.i: src/engine/backend/vulkan/vk_memory.c.i
-.PHONY : src/engine/backend/vulkan/vk_memory.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_memory.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_memory.c.i
-.PHONY : src/engine/backend/vulkan/vk_memory.c.i
-
-src/engine/backend/vulkan/vk_memory.s: src/engine/backend/vulkan/vk_memory.c.s
-.PHONY : src/engine/backend/vulkan/vk_memory.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_memory.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_memory.c.s
-.PHONY : src/engine/backend/vulkan/vk_memory.c.s
-
-src/engine/backend/vulkan/vk_pipeline.o: src/engine/backend/vulkan/vk_pipeline.c.o
-.PHONY : src/engine/backend/vulkan/vk_pipeline.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_pipeline.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_pipeline.c.o
-.PHONY : src/engine/backend/vulkan/vk_pipeline.c.o
-
-src/engine/backend/vulkan/vk_pipeline.i: src/engine/backend/vulkan/vk_pipeline.c.i
-.PHONY : src/engine/backend/vulkan/vk_pipeline.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_pipeline.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_pipeline.c.i
-.PHONY : src/engine/backend/vulkan/vk_pipeline.c.i
-
-src/engine/backend/vulkan/vk_pipeline.s: src/engine/backend/vulkan/vk_pipeline.c.s
-.PHONY : src/engine/backend/vulkan/vk_pipeline.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_pipeline.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_pipeline.c.s
-.PHONY : src/engine/backend/vulkan/vk_pipeline.c.s
-
-src/engine/backend/vulkan/vk_pipeline_cache.o: src/engine/backend/vulkan/vk_pipeline_cache.c.o
-.PHONY : src/engine/backend/vulkan/vk_pipeline_cache.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_pipeline_cache.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_pipeline_cache.c.o
-.PHONY : src/engine/backend/vulkan/vk_pipeline_cache.c.o
-
-src/engine/backend/vulkan/vk_pipeline_cache.i: src/engine/backend/vulkan/vk_pipeline_cache.c.i
-.PHONY : src/engine/backend/vulkan/vk_pipeline_cache.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_pipeline_cache.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_pipeline_cache.c.i
-.PHONY : src/engine/backend/vulkan/vk_pipeline_cache.c.i
-
-src/engine/backend/vulkan/vk_pipeline_cache.s: src/engine/backend/vulkan/vk_pipeline_cache.c.s
-.PHONY : src/engine/backend/vulkan/vk_pipeline_cache.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_pipeline_cache.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_pipeline_cache.c.s
-.PHONY : src/engine/backend/vulkan/vk_pipeline_cache.c.s
-
-src/engine/backend/vulkan/vk_render_pass.o: src/engine/backend/vulkan/vk_render_pass.c.o
-.PHONY : src/engine/backend/vulkan/vk_render_pass.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_render_pass.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_render_pass.c.o
-.PHONY : src/engine/backend/vulkan/vk_render_pass.c.o
-
-src/engine/backend/vulkan/vk_render_pass.i: src/engine/backend/vulkan/vk_render_pass.c.i
-.PHONY : src/engine/backend/vulkan/vk_render_pass.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_render_pass.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_render_pass.c.i
-.PHONY : src/engine/backend/vulkan/vk_render_pass.c.i
-
-src/engine/backend/vulkan/vk_render_pass.s: src/engine/backend/vulkan/vk_render_pass.c.s
-.PHONY : src/engine/backend/vulkan/vk_render_pass.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_render_pass.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_render_pass.c.s
-.PHONY : src/engine/backend/vulkan/vk_render_pass.c.s
-
-src/engine/backend/vulkan/vk_shader.o: src/engine/backend/vulkan/vk_shader.c.o
-.PHONY : src/engine/backend/vulkan/vk_shader.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_shader.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_shader.c.o
-.PHONY : src/engine/backend/vulkan/vk_shader.c.o
-
-src/engine/backend/vulkan/vk_shader.i: src/engine/backend/vulkan/vk_shader.c.i
-.PHONY : src/engine/backend/vulkan/vk_shader.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_shader.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_shader.c.i
-.PHONY : src/engine/backend/vulkan/vk_shader.c.i
-
-src/engine/backend/vulkan/vk_shader.s: src/engine/backend/vulkan/vk_shader.c.s
-.PHONY : src/engine/backend/vulkan/vk_shader.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_shader.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_shader.c.s
-.PHONY : src/engine/backend/vulkan/vk_shader.c.s
-
-src/engine/backend/vulkan/vk_swapchain.o: src/engine/backend/vulkan/vk_swapchain.c.o
-.PHONY : src/engine/backend/vulkan/vk_swapchain.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_swapchain.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_swapchain.c.o
-.PHONY : src/engine/backend/vulkan/vk_swapchain.c.o
-
-src/engine/backend/vulkan/vk_swapchain.i: src/engine/backend/vulkan/vk_swapchain.c.i
-.PHONY : src/engine/backend/vulkan/vk_swapchain.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_swapchain.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_swapchain.c.i
-.PHONY : src/engine/backend/vulkan/vk_swapchain.c.i
-
-src/engine/backend/vulkan/vk_swapchain.s: src/engine/backend/vulkan/vk_swapchain.c.s
-.PHONY : src/engine/backend/vulkan/vk_swapchain.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_swapchain.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_swapchain.c.s
-.PHONY : src/engine/backend/vulkan/vk_swapchain.c.s
-
-src/engine/backend/vulkan/vk_sync.o: src/engine/backend/vulkan/vk_sync.c.o
-.PHONY : src/engine/backend/vulkan/vk_sync.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_sync.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_sync.c.o
-.PHONY : src/engine/backend/vulkan/vk_sync.c.o
-
-src/engine/backend/vulkan/vk_sync.i: src/engine/backend/vulkan/vk_sync.c.i
-.PHONY : src/engine/backend/vulkan/vk_sync.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_sync.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_sync.c.i
-.PHONY : src/engine/backend/vulkan/vk_sync.c.i
-
-src/engine/backend/vulkan/vk_sync.s: src/engine/backend/vulkan/vk_sync.c.s
-.PHONY : src/engine/backend/vulkan/vk_sync.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_sync.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_sync.c.s
-.PHONY : src/engine/backend/vulkan/vk_sync.c.s
-
-src/engine/backend/vulkan/vk_texture.o: src/engine/backend/vulkan/vk_texture.c.o
-.PHONY : src/engine/backend/vulkan/vk_texture.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_texture.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_texture.c.o
-.PHONY : src/engine/backend/vulkan/vk_texture.c.o
-
-src/engine/backend/vulkan/vk_texture.i: src/engine/backend/vulkan/vk_texture.c.i
-.PHONY : src/engine/backend/vulkan/vk_texture.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_texture.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_texture.c.i
-.PHONY : src/engine/backend/vulkan/vk_texture.c.i
-
-src/engine/backend/vulkan/vk_texture.s: src/engine/backend/vulkan/vk_texture.c.s
-.PHONY : src/engine/backend/vulkan/vk_texture.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_texture.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_texture.c.s
-.PHONY : src/engine/backend/vulkan/vk_texture.c.s
-
-src/engine/backend/vulkan/vk_validation.o: src/engine/backend/vulkan/vk_validation.c.o
-.PHONY : src/engine/backend/vulkan/vk_validation.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_validation.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_validation.c.o
-.PHONY : src/engine/backend/vulkan/vk_validation.c.o
-
-src/engine/backend/vulkan/vk_validation.i: src/engine/backend/vulkan/vk_validation.c.i
-.PHONY : src/engine/backend/vulkan/vk_validation.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_validation.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_validation.c.i
-.PHONY : src/engine/backend/vulkan/vk_validation.c.i
-
-src/engine/backend/vulkan/vk_validation.s: src/engine/backend/vulkan/vk_validation.c.s
-.PHONY : src/engine/backend/vulkan/vk_validation.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_validation.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_validation.c.s
-.PHONY : src/engine/backend/vulkan/vk_validation.c.s
-
-src/engine/backend/vulkan/vulkan.o: src/engine/backend/vulkan/vulkan.c.o
-.PHONY : src/engine/backend/vulkan/vulkan.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan.c.o
-.PHONY : src/engine/backend/vulkan/vulkan.c.o
-
-src/engine/backend/vulkan/vulkan.i: src/engine/backend/vulkan/vulkan.c.i
-.PHONY : src/engine/backend/vulkan/vulkan.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan.c.i
-.PHONY : src/engine/backend/vulkan/vulkan.c.i
-
-src/engine/backend/vulkan/vulkan.s: src/engine/backend/vulkan/vulkan.c.s
-.PHONY : src/engine/backend/vulkan/vulkan.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan.c.s
-.PHONY : src/engine/backend/vulkan/vulkan.c.s
-
-src/engine/backend/vulkan/vulkan_buffer_config.o: src/engine/backend/vulkan/vulkan_buffer_config.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_buffer_config.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan_buffer_config.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffer_config.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_buffer_config.c.o
-
-src/engine/backend/vulkan/vulkan_buffer_config.i: src/engine/backend/vulkan/vulkan_buffer_config.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_buffer_config.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan_buffer_config.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffer_config.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_buffer_config.c.i
-
-src/engine/backend/vulkan/vulkan_buffer_config.s: src/engine/backend/vulkan/vulkan_buffer_config.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_buffer_config.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan_buffer_config.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffer_config.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_buffer_config.c.s
-
-src/engine/backend/vulkan/vulkan_buffers.o: src/engine/backend/vulkan/vulkan_buffers.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_buffers.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan_buffers.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_buffers.c.o
-
-src/engine/backend/vulkan/vulkan_buffers.i: src/engine/backend/vulkan/vulkan_buffers.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_buffers.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan_buffers.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_buffers.c.i
-
-src/engine/backend/vulkan/vulkan_buffers.s: src/engine/backend/vulkan/vulkan_buffers.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_buffers.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan_buffers.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_buffers.c.s
-
-src/engine/backend/vulkan/vulkan_capabilities.o: src/engine/backend/vulkan/vulkan_capabilities.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_capabilities.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan_capabilities.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_capabilities.c.o
-
-src/engine/backend/vulkan/vulkan_capabilities.i: src/engine/backend/vulkan/vulkan_capabilities.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_capabilities.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan_capabilities.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_capabilities.c.i
-
-src/engine/backend/vulkan/vulkan_capabilities.s: src/engine/backend/vulkan/vulkan_capabilities.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_capabilities.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan_capabilities.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_capabilities.c.s
-
-src/engine/backend/vulkan/vulkan_dispatch.o: src/engine/backend/vulkan/vulkan_dispatch.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_dispatch.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan_dispatch.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_dispatch.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_dispatch.c.o
-
-src/engine/backend/vulkan/vulkan_dispatch.i: src/engine/backend/vulkan/vulkan_dispatch.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_dispatch.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan_dispatch.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_dispatch.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_dispatch.c.i
-
-src/engine/backend/vulkan/vulkan_dispatch.s: src/engine/backend/vulkan/vulkan_dispatch.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_dispatch.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan_dispatch.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_dispatch.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_dispatch.c.s
-
-src/engine/backend/vulkan/vulkan_framebuffer.o: src/engine/backend/vulkan/vulkan_framebuffer.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_framebuffer.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan_framebuffer.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_framebuffer.c.o
-
-src/engine/backend/vulkan/vulkan_framebuffer.i: src/engine/backend/vulkan/vulkan_framebuffer.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_framebuffer.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan_framebuffer.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_framebuffer.c.i
-
-src/engine/backend/vulkan/vulkan_framebuffer.s: src/engine/backend/vulkan/vulkan_framebuffer.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_framebuffer.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan_framebuffer.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_framebuffer.c.s
-
-src/engine/backend/vulkan/vulkan_image.o: src/engine/backend/vulkan/vulkan_image.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_image.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan_image.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_image.c.o
-
-src/engine/backend/vulkan/vulkan_image.i: src/engine/backend/vulkan/vulkan_image.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_image.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan_image.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_image.c.i
-
-src/engine/backend/vulkan/vulkan_image.s: src/engine/backend/vulkan/vulkan_image.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_image.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan_image.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_image.c.s
-
-src/engine/backend/vulkan/vulkan_impl.o: src/engine/backend/vulkan/vulkan_impl.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_impl.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan_impl.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_impl.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_impl.c.o
-
-src/engine/backend/vulkan/vulkan_impl.i: src/engine/backend/vulkan/vulkan_impl.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_impl.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan_impl.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_impl.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_impl.c.i
-
-src/engine/backend/vulkan/vulkan_impl.s: src/engine/backend/vulkan/vulkan_impl.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_impl.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan_impl.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_impl.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_impl.c.s
-
-src/engine/backend/vulkan/vulkan_math.o: src/engine/backend/vulkan/vulkan_math.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_math.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan_math.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_math.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_math.c.o
-
-src/engine/backend/vulkan/vulkan_math.i: src/engine/backend/vulkan/vulkan_math.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_math.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan_math.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_math.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_math.c.i
-
-src/engine/backend/vulkan/vulkan_math.s: src/engine/backend/vulkan/vulkan_math.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_math.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan_math.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_math.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_math.c.s
-
-src/engine/backend/vulkan/vulkan_pipeline.o: src/engine/backend/vulkan/vulkan_pipeline.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_pipeline.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan_pipeline.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_pipeline.c.o
-
-src/engine/backend/vulkan/vulkan_pipeline.i: src/engine/backend/vulkan/vulkan_pipeline.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_pipeline.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan_pipeline.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_pipeline.c.i
-
-src/engine/backend/vulkan/vulkan_pipeline.s: src/engine/backend/vulkan/vulkan_pipeline.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_pipeline.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan_pipeline.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_pipeline.c.s
-
-src/engine/backend/vulkan/vulkan_pipeline_cache.o: src/engine/backend/vulkan/vulkan_pipeline_cache.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_pipeline_cache.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan_pipeline_cache.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_cache.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_pipeline_cache.c.o
-
-src/engine/backend/vulkan/vulkan_pipeline_cache.i: src/engine/backend/vulkan/vulkan_pipeline_cache.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_pipeline_cache.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan_pipeline_cache.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_cache.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_pipeline_cache.c.i
-
-src/engine/backend/vulkan/vulkan_pipeline_cache.s: src/engine/backend/vulkan/vulkan_pipeline_cache.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_pipeline_cache.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan_pipeline_cache.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_cache.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_pipeline_cache.c.s
-
-src/engine/backend/vulkan/vulkan_raytracing.o: src/engine/backend/vulkan/vulkan_raytracing.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_raytracing.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan_raytracing.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_raytracing.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_raytracing.c.o
-
-src/engine/backend/vulkan/vulkan_raytracing.i: src/engine/backend/vulkan/vulkan_raytracing.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_raytracing.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan_raytracing.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_raytracing.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_raytracing.c.i
-
-src/engine/backend/vulkan/vulkan_raytracing.s: src/engine/backend/vulkan/vulkan_raytracing.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_raytracing.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan_raytracing.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_raytracing.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_raytracing.c.s
-
-src/engine/backend/vulkan/vulkan_render.o: src/engine/backend/vulkan/vulkan_render.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_render.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan_render.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_render.c.o
-
-src/engine/backend/vulkan/vulkan_render.i: src/engine/backend/vulkan/vulkan_render.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_render.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan_render.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_render.c.i
-
-src/engine/backend/vulkan/vulkan_render.s: src/engine/backend/vulkan/vulkan_render.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_render.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan_render.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_render.c.s
-
-src/engine/backend/vulkan/vulkan_streaming.o: src/engine/backend/vulkan/vulkan_streaming.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_streaming.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan_streaming.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_streaming.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_streaming.c.o
-
-src/engine/backend/vulkan/vulkan_streaming.i: src/engine/backend/vulkan/vulkan_streaming.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_streaming.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan_streaming.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_streaming.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_streaming.c.i
-
-src/engine/backend/vulkan/vulkan_streaming.s: src/engine/backend/vulkan/vulkan_streaming.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_streaming.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan_streaming.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_streaming.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_streaming.c.s
-
-src/engine/backend/vulkan/vulkan_surface.o: src/engine/backend/vulkan/vulkan_surface.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_surface.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan_surface.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_surface.c.o
-
-src/engine/backend/vulkan/vulkan_surface.i: src/engine/backend/vulkan/vulkan_surface.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_surface.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan_surface.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_surface.c.i
-
-src/engine/backend/vulkan/vulkan_surface.s: src/engine/backend/vulkan/vulkan_surface.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_surface.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan_surface.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_surface.c.s
-
-src/engine/backend/vulkan_backend.o: src/engine/backend/vulkan_backend.c.o
+src/engine/backend/vulkan_backend.o: src/engine/backend/vulkan_backend.cpp.o
 .PHONY : src/engine/backend/vulkan_backend.o
 
 # target to build an object file
-src/engine/backend/vulkan_backend.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan_backend.c.o
-.PHONY : src/engine/backend/vulkan_backend.c.o
+src/engine/backend/vulkan_backend.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan_backend.cpp.o
+.PHONY : src/engine/backend/vulkan_backend.cpp.o
 
-src/engine/backend/vulkan_backend.i: src/engine/backend/vulkan_backend.c.i
+src/engine/backend/vulkan_backend.i: src/engine/backend/vulkan_backend.cpp.i
 .PHONY : src/engine/backend/vulkan_backend.i
 
 # target to preprocess a source file
-src/engine/backend/vulkan_backend.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan_backend.c.i
-.PHONY : src/engine/backend/vulkan_backend.c.i
+src/engine/backend/vulkan_backend.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan_backend.cpp.i
+.PHONY : src/engine/backend/vulkan_backend.cpp.i
 
-src/engine/backend/vulkan_backend.s: src/engine/backend/vulkan_backend.c.s
+src/engine/backend/vulkan_backend.s: src/engine/backend/vulkan_backend.cpp.s
 .PHONY : src/engine/backend/vulkan_backend.s
 
 # target to generate assembly for a file
-src/engine/backend/vulkan_backend.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan_backend.c.s
-.PHONY : src/engine/backend/vulkan_backend.c.s
+src/engine/backend/vulkan_backend.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan_backend.cpp.s
+.PHONY : src/engine/backend/vulkan_backend.cpp.s
 
 src/engine/core/config.o: src/engine/core/config.c.o
 .PHONY : src/engine/core/config.o
@@ -1760,30 +1948,6 @@ src/engine/core/legacy/memory_allocator.s: src/engine/core/legacy/memory_allocat
 src/engine/core/legacy/memory_allocator.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/legacy/memory_allocator.c.s
 .PHONY : src/engine/core/legacy/memory_allocator.c.s
-
-src/engine/core/monolithic_main.o: src/engine/core/monolithic_main.c.o
-.PHONY : src/engine/core/monolithic_main.o
-
-# target to build an object file
-src/engine/core/monolithic_main.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/src/engine/core/monolithic_main.c.o
-.PHONY : src/engine/core/monolithic_main.c.o
-
-src/engine/core/monolithic_main.i: src/engine/core/monolithic_main.c.i
-.PHONY : src/engine/core/monolithic_main.i
-
-# target to preprocess a source file
-src/engine/core/monolithic_main.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/src/engine/core/monolithic_main.c.i
-.PHONY : src/engine/core/monolithic_main.c.i
-
-src/engine/core/monolithic_main.s: src/engine/core/monolithic_main.c.s
-.PHONY : src/engine/core/monolithic_main.s
-
-# target to generate assembly for a file
-src/engine/core/monolithic_main.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/src/engine/core/monolithic_main.c.s
-.PHONY : src/engine/core/monolithic_main.c.s
 
 src/engine/core/profiling/gpu_profiler.o: src/engine/core/profiling/gpu_profiler.c.o
 .PHONY : src/engine/core/profiling/gpu_profiler.o
@@ -9721,6 +9885,30 @@ src/engine/network/latency/jitter_buffer.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/latency/jitter_buffer.c.s
 .PHONY : src/engine/network/latency/jitter_buffer.c.s
 
+src/engine/network/matchmaking/lobby_system.o: src/engine/network/matchmaking/lobby_system.c.o
+.PHONY : src/engine/network/matchmaking/lobby_system.o
+
+# target to build an object file
+src/engine/network/matchmaking/lobby_system.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/matchmaking/lobby_system.c.o
+.PHONY : src/engine/network/matchmaking/lobby_system.c.o
+
+src/engine/network/matchmaking/lobby_system.i: src/engine/network/matchmaking/lobby_system.c.i
+.PHONY : src/engine/network/matchmaking/lobby_system.i
+
+# target to preprocess a source file
+src/engine/network/matchmaking/lobby_system.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/matchmaking/lobby_system.c.i
+.PHONY : src/engine/network/matchmaking/lobby_system.c.i
+
+src/engine/network/matchmaking/lobby_system.s: src/engine/network/matchmaking/lobby_system.c.s
+.PHONY : src/engine/network/matchmaking/lobby_system.s
+
+# target to generate assembly for a file
+src/engine/network/matchmaking/lobby_system.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/matchmaking/lobby_system.c.s
+.PHONY : src/engine/network/matchmaking/lobby_system.c.s
+
 src/engine/network/matchmaking/skill_matchmaking.o: src/engine/network/matchmaking/skill_matchmaking.c.o
 .PHONY : src/engine/network/matchmaking/skill_matchmaking.o
 
@@ -11208,198 +11396,6 @@ src/engine/networking/transport/udp_socket.s: src/engine/networking/transport/ud
 src/engine/networking/transport/udp_socket.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/networking/transport/udp_socket.c.s
 .PHONY : src/engine/networking/transport/udp_socket.c.s
-
-src/engine/physics/demos/demo_domino_chain.o: src/engine/physics/demos/demo_domino_chain.c.o
-.PHONY : src/engine/physics/demos/demo_domino_chain.o
-
-# target to build an object file
-src/engine/physics/demos/demo_domino_chain.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_domino_chain.c.o
-.PHONY : src/engine/physics/demos/demo_domino_chain.c.o
-
-src/engine/physics/demos/demo_domino_chain.i: src/engine/physics/demos/demo_domino_chain.c.i
-.PHONY : src/engine/physics/demos/demo_domino_chain.i
-
-# target to preprocess a source file
-src/engine/physics/demos/demo_domino_chain.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_domino_chain.c.i
-.PHONY : src/engine/physics/demos/demo_domino_chain.c.i
-
-src/engine/physics/demos/demo_domino_chain.s: src/engine/physics/demos/demo_domino_chain.c.s
-.PHONY : src/engine/physics/demos/demo_domino_chain.s
-
-# target to generate assembly for a file
-src/engine/physics/demos/demo_domino_chain.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_domino_chain.c.s
-.PHONY : src/engine/physics/demos/demo_domino_chain.c.s
-
-src/engine/physics/demos/demo_fluid_simulation.o: src/engine/physics/demos/demo_fluid_simulation.c.o
-.PHONY : src/engine/physics/demos/demo_fluid_simulation.o
-
-# target to build an object file
-src/engine/physics/demos/demo_fluid_simulation.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_fluid_simulation.c.o
-.PHONY : src/engine/physics/demos/demo_fluid_simulation.c.o
-
-src/engine/physics/demos/demo_fluid_simulation.i: src/engine/physics/demos/demo_fluid_simulation.c.i
-.PHONY : src/engine/physics/demos/demo_fluid_simulation.i
-
-# target to preprocess a source file
-src/engine/physics/demos/demo_fluid_simulation.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_fluid_simulation.c.i
-.PHONY : src/engine/physics/demos/demo_fluid_simulation.c.i
-
-src/engine/physics/demos/demo_fluid_simulation.s: src/engine/physics/demos/demo_fluid_simulation.c.s
-.PHONY : src/engine/physics/demos/demo_fluid_simulation.s
-
-# target to generate assembly for a file
-src/engine/physics/demos/demo_fluid_simulation.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_fluid_simulation.c.s
-.PHONY : src/engine/physics/demos/demo_fluid_simulation.c.s
-
-src/engine/physics/demos/demo_newton_cradle.o: src/engine/physics/demos/demo_newton_cradle.c.o
-.PHONY : src/engine/physics/demos/demo_newton_cradle.o
-
-# target to build an object file
-src/engine/physics/demos/demo_newton_cradle.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_newton_cradle.c.o
-.PHONY : src/engine/physics/demos/demo_newton_cradle.c.o
-
-src/engine/physics/demos/demo_newton_cradle.i: src/engine/physics/demos/demo_newton_cradle.c.i
-.PHONY : src/engine/physics/demos/demo_newton_cradle.i
-
-# target to preprocess a source file
-src/engine/physics/demos/demo_newton_cradle.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_newton_cradle.c.i
-.PHONY : src/engine/physics/demos/demo_newton_cradle.c.i
-
-src/engine/physics/demos/demo_newton_cradle.s: src/engine/physics/demos/demo_newton_cradle.c.s
-.PHONY : src/engine/physics/demos/demo_newton_cradle.s
-
-# target to generate assembly for a file
-src/engine/physics/demos/demo_newton_cradle.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_newton_cradle.c.s
-.PHONY : src/engine/physics/demos/demo_newton_cradle.c.s
-
-src/engine/physics/demos/demo_ragdoll.o: src/engine/physics/demos/demo_ragdoll.c.o
-.PHONY : src/engine/physics/demos/demo_ragdoll.o
-
-# target to build an object file
-src/engine/physics/demos/demo_ragdoll.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_ragdoll.c.o
-.PHONY : src/engine/physics/demos/demo_ragdoll.c.o
-
-src/engine/physics/demos/demo_ragdoll.i: src/engine/physics/demos/demo_ragdoll.c.i
-.PHONY : src/engine/physics/demos/demo_ragdoll.i
-
-# target to preprocess a source file
-src/engine/physics/demos/demo_ragdoll.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_ragdoll.c.i
-.PHONY : src/engine/physics/demos/demo_ragdoll.c.i
-
-src/engine/physics/demos/demo_ragdoll.s: src/engine/physics/demos/demo_ragdoll.c.s
-.PHONY : src/engine/physics/demos/demo_ragdoll.s
-
-# target to generate assembly for a file
-src/engine/physics/demos/demo_ragdoll.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_ragdoll.c.s
-.PHONY : src/engine/physics/demos/demo_ragdoll.c.s
-
-src/engine/physics/demos/demo_stack_collapse.o: src/engine/physics/demos/demo_stack_collapse.c.o
-.PHONY : src/engine/physics/demos/demo_stack_collapse.o
-
-# target to build an object file
-src/engine/physics/demos/demo_stack_collapse.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_stack_collapse.c.o
-.PHONY : src/engine/physics/demos/demo_stack_collapse.c.o
-
-src/engine/physics/demos/demo_stack_collapse.i: src/engine/physics/demos/demo_stack_collapse.c.i
-.PHONY : src/engine/physics/demos/demo_stack_collapse.i
-
-# target to preprocess a source file
-src/engine/physics/demos/demo_stack_collapse.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_stack_collapse.c.i
-.PHONY : src/engine/physics/demos/demo_stack_collapse.c.i
-
-src/engine/physics/demos/demo_stack_collapse.s: src/engine/physics/demos/demo_stack_collapse.c.s
-.PHONY : src/engine/physics/demos/demo_stack_collapse.s
-
-# target to generate assembly for a file
-src/engine/physics/demos/demo_stack_collapse.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_stack_collapse.c.s
-.PHONY : src/engine/physics/demos/demo_stack_collapse.c.s
-
-src/engine/physics/demos/demo_vehicle_physics.o: src/engine/physics/demos/demo_vehicle_physics.c.o
-.PHONY : src/engine/physics/demos/demo_vehicle_physics.o
-
-# target to build an object file
-src/engine/physics/demos/demo_vehicle_physics.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_vehicle_physics.c.o
-.PHONY : src/engine/physics/demos/demo_vehicle_physics.c.o
-
-src/engine/physics/demos/demo_vehicle_physics.i: src/engine/physics/demos/demo_vehicle_physics.c.i
-.PHONY : src/engine/physics/demos/demo_vehicle_physics.i
-
-# target to preprocess a source file
-src/engine/physics/demos/demo_vehicle_physics.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_vehicle_physics.c.i
-.PHONY : src/engine/physics/demos/demo_vehicle_physics.c.i
-
-src/engine/physics/demos/demo_vehicle_physics.s: src/engine/physics/demos/demo_vehicle_physics.c.s
-.PHONY : src/engine/physics/demos/demo_vehicle_physics.s
-
-# target to generate assembly for a file
-src/engine/physics/demos/demo_vehicle_physics.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_vehicle_physics.c.s
-.PHONY : src/engine/physics/demos/demo_vehicle_physics.c.s
-
-src/engine/physics/demos/main.o: src/engine/physics/demos/main.c.o
-.PHONY : src/engine/physics/demos/main.o
-
-# target to build an object file
-src/engine/physics/demos/main.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/main.c.o
-.PHONY : src/engine/physics/demos/main.c.o
-
-src/engine/physics/demos/main.i: src/engine/physics/demos/main.c.i
-.PHONY : src/engine/physics/demos/main.i
-
-# target to preprocess a source file
-src/engine/physics/demos/main.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/main.c.i
-.PHONY : src/engine/physics/demos/main.c.i
-
-src/engine/physics/demos/main.s: src/engine/physics/demos/main.c.s
-.PHONY : src/engine/physics/demos/main.s
-
-# target to generate assembly for a file
-src/engine/physics/demos/main.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/main.c.s
-.PHONY : src/engine/physics/demos/main.c.s
-
-src/engine/physics/demos/physics_demo_framework.o: src/engine/physics/demos/physics_demo_framework.c.o
-.PHONY : src/engine/physics/demos/physics_demo_framework.o
-
-# target to build an object file
-src/engine/physics/demos/physics_demo_framework.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/physics_demo_framework.c.o
-.PHONY : src/engine/physics/demos/physics_demo_framework.c.o
-
-src/engine/physics/demos/physics_demo_framework.i: src/engine/physics/demos/physics_demo_framework.c.i
-.PHONY : src/engine/physics/demos/physics_demo_framework.i
-
-# target to preprocess a source file
-src/engine/physics/demos/physics_demo_framework.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/physics_demo_framework.c.i
-.PHONY : src/engine/physics/demos/physics_demo_framework.c.i
-
-src/engine/physics/demos/physics_demo_framework.s: src/engine/physics/demos/physics_demo_framework.c.s
-.PHONY : src/engine/physics/demos/physics_demo_framework.s
-
-# target to generate assembly for a file
-src/engine/physics/demos/physics_demo_framework.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/physics_demo_framework.c.s
-.PHONY : src/engine/physics/demos/physics_demo_framework.c.s
 
 src/engine/platform/time_system.o: src/engine/platform/time_system.c.o
 .PHONY : src/engine/platform/time_system.o
@@ -16065,6 +16061,30 @@ src/engine/tools/analytics_dashboard.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard.c.s
 .PHONY : src/engine/tools/analytics_dashboard.c.s
 
+src/engine/tools/analytics_dashboard_3.o: src/engine/tools/analytics_dashboard_3.c.o
+.PHONY : src/engine/tools/analytics_dashboard_3.o
+
+# target to build an object file
+src/engine/tools/analytics_dashboard_3.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard_3.c.o
+.PHONY : src/engine/tools/analytics_dashboard_3.c.o
+
+src/engine/tools/analytics_dashboard_3.i: src/engine/tools/analytics_dashboard_3.c.i
+.PHONY : src/engine/tools/analytics_dashboard_3.i
+
+# target to preprocess a source file
+src/engine/tools/analytics_dashboard_3.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard_3.c.i
+.PHONY : src/engine/tools/analytics_dashboard_3.c.i
+
+src/engine/tools/analytics_dashboard_3.s: src/engine/tools/analytics_dashboard_3.c.s
+.PHONY : src/engine/tools/analytics_dashboard_3.s
+
+# target to generate assembly for a file
+src/engine/tools/analytics_dashboard_3.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard_3.c.s
+.PHONY : src/engine/tools/analytics_dashboard_3.c.s
+
 src/engine/tools/asset_browser/asset_view.o: src/engine/tools/asset_browser/asset_view.c.o
 .PHONY : src/engine/tools/asset_browser/asset_view.o
 
@@ -17625,6 +17645,30 @@ src/engine/ui/widgets/dialog.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/dialog.c.s
 .PHONY : src/engine/ui/widgets/dialog.c.s
 
+src/engine/ui/widgets/list_view.o: src/engine/ui/widgets/list_view.c.o
+.PHONY : src/engine/ui/widgets/list_view.o
+
+# target to build an object file
+src/engine/ui/widgets/list_view.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/list_view.c.o
+.PHONY : src/engine/ui/widgets/list_view.c.o
+
+src/engine/ui/widgets/list_view.i: src/engine/ui/widgets/list_view.c.i
+.PHONY : src/engine/ui/widgets/list_view.i
+
+# target to preprocess a source file
+src/engine/ui/widgets/list_view.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/list_view.c.i
+.PHONY : src/engine/ui/widgets/list_view.c.i
+
+src/engine/ui/widgets/list_view.s: src/engine/ui/widgets/list_view.c.s
+.PHONY : src/engine/ui/widgets/list_view.s
+
+# target to generate assembly for a file
+src/engine/ui/widgets/list_view.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/list_view.c.s
+.PHONY : src/engine/ui/widgets/list_view.c.s
+
 src/engine/ui/widgets/scroll_view.o: src/engine/ui/widgets/scroll_view.c.o
 .PHONY : src/engine/ui/widgets/scroll_view.o
 
@@ -17673,6 +17717,30 @@ src/engine/ui/widgets/text_field.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/text_field.c.s
 .PHONY : src/engine/ui/widgets/text_field.c.s
 
+src/engine/ui/widgets/tree_view.o: src/engine/ui/widgets/tree_view.c.o
+.PHONY : src/engine/ui/widgets/tree_view.o
+
+# target to build an object file
+src/engine/ui/widgets/tree_view.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/tree_view.c.o
+.PHONY : src/engine/ui/widgets/tree_view.c.o
+
+src/engine/ui/widgets/tree_view.i: src/engine/ui/widgets/tree_view.c.i
+.PHONY : src/engine/ui/widgets/tree_view.i
+
+# target to preprocess a source file
+src/engine/ui/widgets/tree_view.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/tree_view.c.i
+.PHONY : src/engine/ui/widgets/tree_view.c.i
+
+src/engine/ui/widgets/tree_view.s: src/engine/ui/widgets/tree_view.c.s
+.PHONY : src/engine/ui/widgets/tree_view.s
+
+# target to generate assembly for a file
+src/engine/ui/widgets/tree_view.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/tree_view.c.s
+.PHONY : src/engine/ui/widgets/tree_view.c.s
+
 src/engine/ui/widgets/ui_button.o: src/engine/ui/widgets/ui_button.c.o
 .PHONY : src/engine/ui/widgets/ui_button.o
 
@@ -17696,6 +17764,30 @@ src/engine/ui/widgets/ui_button.s: src/engine/ui/widgets/ui_button.c.s
 src/engine/ui/widgets/ui_button.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/ui_button.c.s
 .PHONY : src/engine/ui/widgets/ui_button.c.s
+
+src/engine/ui/widgets/ui_image.o: src/engine/ui/widgets/ui_image.c.o
+.PHONY : src/engine/ui/widgets/ui_image.o
+
+# target to build an object file
+src/engine/ui/widgets/ui_image.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/ui_image.c.o
+.PHONY : src/engine/ui/widgets/ui_image.c.o
+
+src/engine/ui/widgets/ui_image.i: src/engine/ui/widgets/ui_image.c.i
+.PHONY : src/engine/ui/widgets/ui_image.i
+
+# target to preprocess a source file
+src/engine/ui/widgets/ui_image.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/ui_image.c.i
+.PHONY : src/engine/ui/widgets/ui_image.c.i
+
+src/engine/ui/widgets/ui_image.s: src/engine/ui/widgets/ui_image.c.s
+.PHONY : src/engine/ui/widgets/ui_image.s
+
+# target to generate assembly for a file
+src/engine/ui/widgets/ui_image.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/ui_image.c.s
+.PHONY : src/engine/ui/widgets/ui_image.c.s
 
 src/engine/ui/widgets/ui_label.o: src/engine/ui/widgets/ui_label.c.o
 .PHONY : src/engine/ui/widgets/ui_label.o
@@ -18561,102 +18653,6 @@ src/engine/vendor/stb_image/stb_image_impl.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/vendor/stb_image/stb_image_impl.c.s
 .PHONY : src/engine/vendor/stb_image/stb_image_impl.c.s
 
-src/game/blockgame/player/player.o: src/game/blockgame/player/player.c.o
-.PHONY : src/game/blockgame/player/player.o
-
-# target to build an object file
-src/game/blockgame/player/player.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player.c.o
-.PHONY : src/game/blockgame/player/player.c.o
-
-src/game/blockgame/player/player.i: src/game/blockgame/player/player.c.i
-.PHONY : src/game/blockgame/player/player.i
-
-# target to preprocess a source file
-src/game/blockgame/player/player.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player.c.i
-.PHONY : src/game/blockgame/player/player.c.i
-
-src/game/blockgame/player/player.s: src/game/blockgame/player/player.c.s
-.PHONY : src/game/blockgame/player/player.s
-
-# target to generate assembly for a file
-src/game/blockgame/player/player.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player.c.s
-.PHONY : src/game/blockgame/player/player.c.s
-
-src/game/blockgame/player/player_combat.o: src/game/blockgame/player/player_combat.c.o
-.PHONY : src/game/blockgame/player/player_combat.o
-
-# target to build an object file
-src/game/blockgame/player/player_combat.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_combat.c.o
-.PHONY : src/game/blockgame/player/player_combat.c.o
-
-src/game/blockgame/player/player_combat.i: src/game/blockgame/player/player_combat.c.i
-.PHONY : src/game/blockgame/player/player_combat.i
-
-# target to preprocess a source file
-src/game/blockgame/player/player_combat.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_combat.c.i
-.PHONY : src/game/blockgame/player/player_combat.c.i
-
-src/game/blockgame/player/player_combat.s: src/game/blockgame/player/player_combat.c.s
-.PHONY : src/game/blockgame/player/player_combat.s
-
-# target to generate assembly for a file
-src/game/blockgame/player/player_combat.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_combat.c.s
-.PHONY : src/game/blockgame/player/player_combat.c.s
-
-src/game/blockgame/player/spell_effects.o: src/game/blockgame/player/spell_effects.c.o
-.PHONY : src/game/blockgame/player/spell_effects.o
-
-# target to build an object file
-src/game/blockgame/player/spell_effects.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/spell_effects.c.o
-.PHONY : src/game/blockgame/player/spell_effects.c.o
-
-src/game/blockgame/player/spell_effects.i: src/game/blockgame/player/spell_effects.c.i
-.PHONY : src/game/blockgame/player/spell_effects.i
-
-# target to preprocess a source file
-src/game/blockgame/player/spell_effects.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/spell_effects.c.i
-.PHONY : src/game/blockgame/player/spell_effects.c.i
-
-src/game/blockgame/player/spell_effects.s: src/game/blockgame/player/spell_effects.c.s
-.PHONY : src/game/blockgame/player/spell_effects.s
-
-# target to generate assembly for a file
-src/game/blockgame/player/spell_effects.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/spell_effects.c.s
-.PHONY : src/game/blockgame/player/spell_effects.c.s
-
-src/game/blockgame/player/spell_upgrade.o: src/game/blockgame/player/spell_upgrade.c.o
-.PHONY : src/game/blockgame/player/spell_upgrade.o
-
-# target to build an object file
-src/game/blockgame/player/spell_upgrade.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/spell_upgrade.c.o
-.PHONY : src/game/blockgame/player/spell_upgrade.c.o
-
-src/game/blockgame/player/spell_upgrade.i: src/game/blockgame/player/spell_upgrade.c.i
-.PHONY : src/game/blockgame/player/spell_upgrade.i
-
-# target to preprocess a source file
-src/game/blockgame/player/spell_upgrade.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/spell_upgrade.c.i
-.PHONY : src/game/blockgame/player/spell_upgrade.c.i
-
-src/game/blockgame/player/spell_upgrade.s: src/game/blockgame/player/spell_upgrade.c.s
-.PHONY : src/game/blockgame/player/spell_upgrade.s
-
-# target to generate assembly for a file
-src/game/blockgame/player/spell_upgrade.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/spell_upgrade.c.s
-.PHONY : src/game/blockgame/player/spell_upgrade.c.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -18669,10 +18665,135 @@ help:
 	@echo "... compile_instancing_shaders"
 	@echo "... compile_shaders"
 	@echo "... validate_assets"
+	@echo "... BasicEngineExample"
 	@echo "... BlockGameApp"
+	@echo "... Catch2"
+	@echo "... Catch2WithMain"
 	@echo "... Engine"
-	@echo "... Game"
-	@echo "... physics_demos"
+	@echo "... EngineTests"
+	@echo "... Examples/01_BasicEngine/main.o"
+	@echo "... Examples/01_BasicEngine/main.i"
+	@echo "... Examples/01_BasicEngine/main.s"
+	@echo "... Source/Runtime/AI/AI.o"
+	@echo "... Source/Runtime/AI/AI.i"
+	@echo "... Source/Runtime/AI/AI.s"
+	@echo "... Source/Runtime/Animation/Animation.o"
+	@echo "... Source/Runtime/Animation/Animation.i"
+	@echo "... Source/Runtime/Animation/Animation.s"
+	@echo "... Source/Runtime/Asset/Asset.o"
+	@echo "... Source/Runtime/Asset/Asset.i"
+	@echo "... Source/Runtime/Asset/Asset.s"
+	@echo "... Source/Runtime/Audio/Audio.o"
+	@echo "... Source/Runtime/Audio/Audio.i"
+	@echo "... Source/Runtime/Audio/Audio.s"
+	@echo "... Source/Runtime/Core/Engine.o"
+	@echo "... Source/Runtime/Core/Engine.i"
+	@echo "... Source/Runtime/Core/Engine.s"
+	@echo "... Source/Runtime/Core/Log/Log.o"
+	@echo "... Source/Runtime/Core/Log/Log.i"
+	@echo "... Source/Runtime/Core/Log/Log.s"
+	@echo "... Source/Runtime/Core/Memory/allocators/arena/arena_allocator.o"
+	@echo "... Source/Runtime/Core/Memory/allocators/arena/arena_allocator.i"
+	@echo "... Source/Runtime/Core/Memory/allocators/arena/arena_allocator.s"
+	@echo "... Source/Runtime/Core/Memory/allocators/pool/pool_allocator.o"
+	@echo "... Source/Runtime/Core/Memory/allocators/pool/pool_allocator.i"
+	@echo "... Source/Runtime/Core/Memory/allocators/pool/pool_allocator.s"
+	@echo "... Source/Runtime/Core/Memory/allocators/stack/stack_allocator.o"
+	@echo "... Source/Runtime/Core/Memory/allocators/stack/stack_allocator.i"
+	@echo "... Source/Runtime/Core/Memory/allocators/stack/stack_allocator.s"
+	@echo "... Source/Runtime/Core/Memory/profiling/memory_profiler.o"
+	@echo "... Source/Runtime/Core/Memory/profiling/memory_profiler.i"
+	@echo "... Source/Runtime/Core/Memory/profiling/memory_profiler.s"
+	@echo "... Source/Runtime/Core/Memory/tracking/memory_tracker.o"
+	@echo "... Source/Runtime/Core/Memory/tracking/memory_tracker.i"
+	@echo "... Source/Runtime/Core/Memory/tracking/memory_tracker.s"
+	@echo "... Source/Runtime/Core/Platform/platform_bootstrap.o"
+	@echo "... Source/Runtime/Core/Platform/platform_bootstrap.i"
+	@echo "... Source/Runtime/Core/Platform/platform_bootstrap.s"
+	@echo "... Source/Runtime/Core/Threading/queues/work_stealing_queue.o"
+	@echo "... Source/Runtime/Core/Threading/queues/work_stealing_queue.i"
+	@echo "... Source/Runtime/Core/Threading/queues/work_stealing_queue.s"
+	@echo "... Source/Runtime/Core/Threading/sync/mutex.o"
+	@echo "... Source/Runtime/Core/Threading/sync/mutex.i"
+	@echo "... Source/Runtime/Core/Threading/sync/mutex.s"
+	@echo "... Source/Runtime/Core/Threading/sync/semaphore.o"
+	@echo "... Source/Runtime/Core/Threading/sync/semaphore.i"
+	@echo "... Source/Runtime/Core/Threading/sync/semaphore.s"
+	@echo "... Source/Runtime/Core/Threading/workers/worker_thread.o"
+	@echo "... Source/Runtime/Core/Threading/workers/worker_thread.i"
+	@echo "... Source/Runtime/Core/Threading/workers/worker_thread.s"
+	@echo "... Source/Runtime/ECS/Archetypes/ECS_Archetype.o"
+	@echo "... Source/Runtime/ECS/Archetypes/ECS_Archetype.i"
+	@echo "... Source/Runtime/ECS/Archetypes/ECS_Archetype.s"
+	@echo "... Source/Runtime/ECS/Components/ECS_Component.o"
+	@echo "... Source/Runtime/ECS/Components/ECS_Component.i"
+	@echo "... Source/Runtime/ECS/Components/ECS_Component.s"
+	@echo "... Source/Runtime/ECS/ECS.o"
+	@echo "... Source/Runtime/ECS/ECS.i"
+	@echo "... Source/Runtime/ECS/ECS.s"
+	@echo "... Source/Runtime/ECS/Queries/ECS_Query.o"
+	@echo "... Source/Runtime/ECS/Queries/ECS_Query.i"
+	@echo "... Source/Runtime/ECS/Queries/ECS_Query.s"
+	@echo "... Source/Runtime/ECS/components/Components_Registration.o"
+	@echo "... Source/Runtime/ECS/components/Components_Registration.i"
+	@echo "... Source/Runtime/ECS/components/Components_Registration.s"
+	@echo "... Source/Runtime/ECS/systems/Audio_System.o"
+	@echo "... Source/Runtime/ECS/systems/Audio_System.i"
+	@echo "... Source/Runtime/ECS/systems/Audio_System.s"
+	@echo "... Source/Runtime/ECS/systems/ECS_System.o"
+	@echo "... Source/Runtime/ECS/systems/ECS_System.i"
+	@echo "... Source/Runtime/ECS/systems/ECS_System.s"
+	@echo "... Source/Runtime/ECS/systems/Particle_System.o"
+	@echo "... Source/Runtime/ECS/systems/Particle_System.i"
+	@echo "... Source/Runtime/ECS/systems/Particle_System.s"
+	@echo "... Source/Runtime/ECS/systems/Physics_System.o"
+	@echo "... Source/Runtime/ECS/systems/Physics_System.i"
+	@echo "... Source/Runtime/ECS/systems/Physics_System.s"
+	@echo "... Source/Runtime/Input/Input.o"
+	@echo "... Source/Runtime/Input/Input.i"
+	@echo "... Source/Runtime/Input/Input.s"
+	@echo "... Source/Runtime/Launch/main.o"
+	@echo "... Source/Runtime/Launch/main.i"
+	@echo "... Source/Runtime/Launch/main.s"
+	@echo "... Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.o"
+	@echo "... Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.i"
+	@echo "... Source/Runtime/Memory/Allocators/Arena/Arena_Allocator.s"
+	@echo "... Source/Runtime/Memory/Memory.o"
+	@echo "... Source/Runtime/Memory/Memory.i"
+	@echo "... Source/Runtime/Memory/Memory.s"
+	@echo "... Source/Runtime/Networking/Networking.o"
+	@echo "... Source/Runtime/Networking/Networking.i"
+	@echo "... Source/Runtime/Networking/Networking.s"
+	@echo "... Source/Runtime/Physics/Physics.o"
+	@echo "... Source/Runtime/Physics/Physics.i"
+	@echo "... Source/Runtime/Physics/Physics.s"
+	@echo "... Source/Runtime/Platform/Platform.o"
+	@echo "... Source/Runtime/Platform/Platform.i"
+	@echo "... Source/Runtime/Platform/Platform.s"
+	@echo "... Source/Runtime/Profiling/Profiler.o"
+	@echo "... Source/Runtime/Profiling/Profiler.i"
+	@echo "... Source/Runtime/Profiling/Profiler.s"
+	@echo "... Source/Runtime/Render/Render.o"
+	@echo "... Source/Runtime/Render/Render.i"
+	@echo "... Source/Runtime/Render/Render.s"
+	@echo "... Source/Runtime/Scripting/Scripting.o"
+	@echo "... Source/Runtime/Scripting/Scripting.i"
+	@echo "... Source/Runtime/Scripting/Scripting.s"
+	@echo "... Source/Runtime/Shaders/Shader_System.o"
+	@echo "... Source/Runtime/Shaders/Shader_System.i"
+	@echo "... Source/Runtime/Shaders/Shader_System.s"
+	@echo "... Source/Runtime/Threading/Jobs/Job_System.o"
+	@echo "... Source/Runtime/Threading/Jobs/Job_System.i"
+	@echo "... Source/Runtime/Threading/Jobs/Job_System.s"
+	@echo "... Source/Runtime/UI/UI.o"
+	@echo "... Source/Runtime/UI/UI.i"
+	@echo "... Source/Runtime/UI/UI.s"
+	@echo "... Source/Tests/Tests.o"
+	@echo "... Source/Tests/Tests.i"
+	@echo "... Source/Tests/Tests.s"
+	@echo "... src/Runtime/Engine/memory/unified_memory_allocator.o"
+	@echo "... src/Runtime/Engine/memory/unified_memory_allocator.i"
+	@echo "... src/Runtime/Engine/memory/unified_memory_allocator.s"
 	@echo "... src/engine/backend/metal/metal_mesh_bridge.o"
 	@echo "... src/engine/backend/metal/mtl_argument_buffer.o"
 	@echo "... src/engine/backend/metal/mtl_buffer.o"
@@ -18701,12 +18822,6 @@ help:
 	@echo "... src/engine/backend/metal/old/metal_backend.i"
 	@echo "... src/engine/backend/metal/old/metal_backend.s"
 	@echo "... src/engine/backend/metal/simple_metal_test.o"
-	@echo "... src/engine/backend/metal/tests/mtl_resource_tests.o"
-	@echo "... src/engine/backend/metal/tests/mtl_resource_tests.i"
-	@echo "... src/engine/backend/metal/tests/mtl_resource_tests.s"
-	@echo "... src/engine/backend/metal/tests/mtl_voxel_test.o"
-	@echo "... src/engine/backend/metal/tests/mtl_voxel_test.i"
-	@echo "... src/engine/backend/metal/tests/mtl_voxel_test.s"
 	@echo "... src/engine/backend/opengl_backend.o"
 	@echo "... src/engine/backend/opengl_backend.i"
 	@echo "... src/engine/backend/opengl_backend.s"
@@ -18725,117 +18840,6 @@ help:
 	@echo "... src/engine/backend/vertex_format_reflect.o"
 	@echo "... src/engine/backend/vertex_format_reflect.i"
 	@echo "... src/engine/backend/vertex_format_reflect.s"
-	@echo "... src/engine/backend/vulkan/dynamic_rendering.o"
-	@echo "... src/engine/backend/vulkan/dynamic_rendering.i"
-	@echo "... src/engine/backend/vulkan/dynamic_rendering.s"
-	@echo "... src/engine/backend/vulkan/modern_renderer_example.o"
-	@echo "... src/engine/backend/vulkan/modern_renderer_example.i"
-	@echo "... src/engine/backend/vulkan/modern_renderer_example.s"
-	@echo "... src/engine/backend/vulkan/moltenvk_config.o"
-	@echo "... src/engine/backend/vulkan/moltenvk_config.i"
-	@echo "... src/engine/backend/vulkan/moltenvk_config.s"
-	@echo "... src/engine/backend/vulkan/queue_ownership.o"
-	@echo "... src/engine/backend/vulkan/queue_ownership.i"
-	@echo "... src/engine/backend/vulkan/queue_ownership.s"
-	@echo "... src/engine/backend/vulkan/ray_query.o"
-	@echo "... src/engine/backend/vulkan/ray_query.i"
-	@echo "... src/engine/backend/vulkan/ray_query.s"
-	@echo "... src/engine/backend/vulkan/vk_command.o"
-	@echo "... src/engine/backend/vulkan/vk_command.i"
-	@echo "... src/engine/backend/vulkan/vk_command.s"
-	@echo "... src/engine/backend/vulkan/vk_command_buffer_helpers.o"
-	@echo "... src/engine/backend/vulkan/vk_command_buffer_helpers.i"
-	@echo "... src/engine/backend/vulkan/vk_command_buffer_helpers.s"
-	@echo "... src/engine/backend/vulkan/vk_debug.o"
-	@echo "... src/engine/backend/vulkan/vk_debug.i"
-	@echo "... src/engine/backend/vulkan/vk_debug.s"
-	@echo "... src/engine/backend/vulkan/vk_descriptor.o"
-	@echo "... src/engine/backend/vulkan/vk_descriptor.i"
-	@echo "... src/engine/backend/vulkan/vk_descriptor.s"
-	@echo "... src/engine/backend/vulkan/vk_device.o"
-	@echo "... src/engine/backend/vulkan/vk_device.i"
-	@echo "... src/engine/backend/vulkan/vk_device.s"
-	@echo "... src/engine/backend/vulkan/vk_framebuffer.o"
-	@echo "... src/engine/backend/vulkan/vk_framebuffer.i"
-	@echo "... src/engine/backend/vulkan/vk_framebuffer.s"
-	@echo "... src/engine/backend/vulkan/vk_graphics_pipeline.o"
-	@echo "... src/engine/backend/vulkan/vk_graphics_pipeline.i"
-	@echo "... src/engine/backend/vulkan/vk_graphics_pipeline.s"
-	@echo "... src/engine/backend/vulkan/vk_instance.o"
-	@echo "... src/engine/backend/vulkan/vk_instance.i"
-	@echo "... src/engine/backend/vulkan/vk_instance.s"
-	@echo "... src/engine/backend/vulkan/vk_memory.o"
-	@echo "... src/engine/backend/vulkan/vk_memory.i"
-	@echo "... src/engine/backend/vulkan/vk_memory.s"
-	@echo "... src/engine/backend/vulkan/vk_pipeline.o"
-	@echo "... src/engine/backend/vulkan/vk_pipeline.i"
-	@echo "... src/engine/backend/vulkan/vk_pipeline.s"
-	@echo "... src/engine/backend/vulkan/vk_pipeline_cache.o"
-	@echo "... src/engine/backend/vulkan/vk_pipeline_cache.i"
-	@echo "... src/engine/backend/vulkan/vk_pipeline_cache.s"
-	@echo "... src/engine/backend/vulkan/vk_render_pass.o"
-	@echo "... src/engine/backend/vulkan/vk_render_pass.i"
-	@echo "... src/engine/backend/vulkan/vk_render_pass.s"
-	@echo "... src/engine/backend/vulkan/vk_shader.o"
-	@echo "... src/engine/backend/vulkan/vk_shader.i"
-	@echo "... src/engine/backend/vulkan/vk_shader.s"
-	@echo "... src/engine/backend/vulkan/vk_swapchain.o"
-	@echo "... src/engine/backend/vulkan/vk_swapchain.i"
-	@echo "... src/engine/backend/vulkan/vk_swapchain.s"
-	@echo "... src/engine/backend/vulkan/vk_sync.o"
-	@echo "... src/engine/backend/vulkan/vk_sync.i"
-	@echo "... src/engine/backend/vulkan/vk_sync.s"
-	@echo "... src/engine/backend/vulkan/vk_texture.o"
-	@echo "... src/engine/backend/vulkan/vk_texture.i"
-	@echo "... src/engine/backend/vulkan/vk_texture.s"
-	@echo "... src/engine/backend/vulkan/vk_validation.o"
-	@echo "... src/engine/backend/vulkan/vk_validation.i"
-	@echo "... src/engine/backend/vulkan/vk_validation.s"
-	@echo "... src/engine/backend/vulkan/vulkan.o"
-	@echo "... src/engine/backend/vulkan/vulkan.i"
-	@echo "... src/engine/backend/vulkan/vulkan.s"
-	@echo "... src/engine/backend/vulkan/vulkan_buffer_config.o"
-	@echo "... src/engine/backend/vulkan/vulkan_buffer_config.i"
-	@echo "... src/engine/backend/vulkan/vulkan_buffer_config.s"
-	@echo "... src/engine/backend/vulkan/vulkan_buffers.o"
-	@echo "... src/engine/backend/vulkan/vulkan_buffers.i"
-	@echo "... src/engine/backend/vulkan/vulkan_buffers.s"
-	@echo "... src/engine/backend/vulkan/vulkan_capabilities.o"
-	@echo "... src/engine/backend/vulkan/vulkan_capabilities.i"
-	@echo "... src/engine/backend/vulkan/vulkan_capabilities.s"
-	@echo "... src/engine/backend/vulkan/vulkan_dispatch.o"
-	@echo "... src/engine/backend/vulkan/vulkan_dispatch.i"
-	@echo "... src/engine/backend/vulkan/vulkan_dispatch.s"
-	@echo "... src/engine/backend/vulkan/vulkan_framebuffer.o"
-	@echo "... src/engine/backend/vulkan/vulkan_framebuffer.i"
-	@echo "... src/engine/backend/vulkan/vulkan_framebuffer.s"
-	@echo "... src/engine/backend/vulkan/vulkan_image.o"
-	@echo "... src/engine/backend/vulkan/vulkan_image.i"
-	@echo "... src/engine/backend/vulkan/vulkan_image.s"
-	@echo "... src/engine/backend/vulkan/vulkan_impl.o"
-	@echo "... src/engine/backend/vulkan/vulkan_impl.i"
-	@echo "... src/engine/backend/vulkan/vulkan_impl.s"
-	@echo "... src/engine/backend/vulkan/vulkan_math.o"
-	@echo "... src/engine/backend/vulkan/vulkan_math.i"
-	@echo "... src/engine/backend/vulkan/vulkan_math.s"
-	@echo "... src/engine/backend/vulkan/vulkan_pipeline.o"
-	@echo "... src/engine/backend/vulkan/vulkan_pipeline.i"
-	@echo "... src/engine/backend/vulkan/vulkan_pipeline.s"
-	@echo "... src/engine/backend/vulkan/vulkan_pipeline_cache.o"
-	@echo "... src/engine/backend/vulkan/vulkan_pipeline_cache.i"
-	@echo "... src/engine/backend/vulkan/vulkan_pipeline_cache.s"
-	@echo "... src/engine/backend/vulkan/vulkan_raytracing.o"
-	@echo "... src/engine/backend/vulkan/vulkan_raytracing.i"
-	@echo "... src/engine/backend/vulkan/vulkan_raytracing.s"
-	@echo "... src/engine/backend/vulkan/vulkan_render.o"
-	@echo "... src/engine/backend/vulkan/vulkan_render.i"
-	@echo "... src/engine/backend/vulkan/vulkan_render.s"
-	@echo "... src/engine/backend/vulkan/vulkan_streaming.o"
-	@echo "... src/engine/backend/vulkan/vulkan_streaming.i"
-	@echo "... src/engine/backend/vulkan/vulkan_streaming.s"
-	@echo "... src/engine/backend/vulkan/vulkan_surface.o"
-	@echo "... src/engine/backend/vulkan/vulkan_surface.i"
-	@echo "... src/engine/backend/vulkan/vulkan_surface.s"
 	@echo "... src/engine/backend/vulkan_backend.o"
 	@echo "... src/engine/backend/vulkan_backend.i"
 	@echo "... src/engine/backend/vulkan_backend.s"
@@ -18866,9 +18870,6 @@ help:
 	@echo "... src/engine/core/legacy/memory_allocator.o"
 	@echo "... src/engine/core/legacy/memory_allocator.i"
 	@echo "... src/engine/core/legacy/memory_allocator.s"
-	@echo "... src/engine/core/monolithic_main.o"
-	@echo "... src/engine/core/monolithic_main.i"
-	@echo "... src/engine/core/monolithic_main.s"
 	@echo "... src/engine/core/profiling/gpu_profiler.o"
 	@echo "... src/engine/core/profiling/gpu_profiler.i"
 	@echo "... src/engine/core/profiling/gpu_profiler.s"
@@ -19861,6 +19862,9 @@ help:
 	@echo "... src/engine/network/latency/jitter_buffer.o"
 	@echo "... src/engine/network/latency/jitter_buffer.i"
 	@echo "... src/engine/network/latency/jitter_buffer.s"
+	@echo "... src/engine/network/matchmaking/lobby_system.o"
+	@echo "... src/engine/network/matchmaking/lobby_system.i"
+	@echo "... src/engine/network/matchmaking/lobby_system.s"
 	@echo "... src/engine/network/matchmaking/skill_matchmaking.o"
 	@echo "... src/engine/network/matchmaking/skill_matchmaking.i"
 	@echo "... src/engine/network/matchmaking/skill_matchmaking.s"
@@ -20047,30 +20051,6 @@ help:
 	@echo "... src/engine/networking/transport/udp_socket.o"
 	@echo "... src/engine/networking/transport/udp_socket.i"
 	@echo "... src/engine/networking/transport/udp_socket.s"
-	@echo "... src/engine/physics/demos/demo_domino_chain.o"
-	@echo "... src/engine/physics/demos/demo_domino_chain.i"
-	@echo "... src/engine/physics/demos/demo_domino_chain.s"
-	@echo "... src/engine/physics/demos/demo_fluid_simulation.o"
-	@echo "... src/engine/physics/demos/demo_fluid_simulation.i"
-	@echo "... src/engine/physics/demos/demo_fluid_simulation.s"
-	@echo "... src/engine/physics/demos/demo_newton_cradle.o"
-	@echo "... src/engine/physics/demos/demo_newton_cradle.i"
-	@echo "... src/engine/physics/demos/demo_newton_cradle.s"
-	@echo "... src/engine/physics/demos/demo_ragdoll.o"
-	@echo "... src/engine/physics/demos/demo_ragdoll.i"
-	@echo "... src/engine/physics/demos/demo_ragdoll.s"
-	@echo "... src/engine/physics/demos/demo_stack_collapse.o"
-	@echo "... src/engine/physics/demos/demo_stack_collapse.i"
-	@echo "... src/engine/physics/demos/demo_stack_collapse.s"
-	@echo "... src/engine/physics/demos/demo_vehicle_physics.o"
-	@echo "... src/engine/physics/demos/demo_vehicle_physics.i"
-	@echo "... src/engine/physics/demos/demo_vehicle_physics.s"
-	@echo "... src/engine/physics/demos/main.o"
-	@echo "... src/engine/physics/demos/main.i"
-	@echo "... src/engine/physics/demos/main.s"
-	@echo "... src/engine/physics/demos/physics_demo_framework.o"
-	@echo "... src/engine/physics/demos/physics_demo_framework.i"
-	@echo "... src/engine/physics/demos/physics_demo_framework.s"
 	@echo "... src/engine/platform/time_system.o"
 	@echo "... src/engine/platform/time_system.i"
 	@echo "... src/engine/platform/time_system.s"
@@ -20654,6 +20634,9 @@ help:
 	@echo "... src/engine/tools/analytics_dashboard.o"
 	@echo "... src/engine/tools/analytics_dashboard.i"
 	@echo "... src/engine/tools/analytics_dashboard.s"
+	@echo "... src/engine/tools/analytics_dashboard_3.o"
+	@echo "... src/engine/tools/analytics_dashboard_3.i"
+	@echo "... src/engine/tools/analytics_dashboard_3.s"
 	@echo "... src/engine/tools/asset_browser/asset_view.o"
 	@echo "... src/engine/tools/asset_browser/asset_view.i"
 	@echo "... src/engine/tools/asset_browser/asset_view.s"
@@ -20849,15 +20832,24 @@ help:
 	@echo "... src/engine/ui/widgets/dialog.o"
 	@echo "... src/engine/ui/widgets/dialog.i"
 	@echo "... src/engine/ui/widgets/dialog.s"
+	@echo "... src/engine/ui/widgets/list_view.o"
+	@echo "... src/engine/ui/widgets/list_view.i"
+	@echo "... src/engine/ui/widgets/list_view.s"
 	@echo "... src/engine/ui/widgets/scroll_view.o"
 	@echo "... src/engine/ui/widgets/scroll_view.i"
 	@echo "... src/engine/ui/widgets/scroll_view.s"
 	@echo "... src/engine/ui/widgets/text_field.o"
 	@echo "... src/engine/ui/widgets/text_field.i"
 	@echo "... src/engine/ui/widgets/text_field.s"
+	@echo "... src/engine/ui/widgets/tree_view.o"
+	@echo "... src/engine/ui/widgets/tree_view.i"
+	@echo "... src/engine/ui/widgets/tree_view.s"
 	@echo "... src/engine/ui/widgets/ui_button.o"
 	@echo "... src/engine/ui/widgets/ui_button.i"
 	@echo "... src/engine/ui/widgets/ui_button.s"
+	@echo "... src/engine/ui/widgets/ui_image.o"
+	@echo "... src/engine/ui/widgets/ui_image.i"
+	@echo "... src/engine/ui/widgets/ui_image.s"
 	@echo "... src/engine/ui/widgets/ui_label.o"
 	@echo "... src/engine/ui/widgets/ui_label.i"
 	@echo "... src/engine/ui/widgets/ui_label.s"
@@ -20966,18 +20958,6 @@ help:
 	@echo "... src/engine/vendor/stb_image/stb_image_impl.o"
 	@echo "... src/engine/vendor/stb_image/stb_image_impl.i"
 	@echo "... src/engine/vendor/stb_image/stb_image_impl.s"
-	@echo "... src/game/blockgame/player/player.o"
-	@echo "... src/game/blockgame/player/player.i"
-	@echo "... src/game/blockgame/player/player.s"
-	@echo "... src/game/blockgame/player/player_combat.o"
-	@echo "... src/game/blockgame/player/player_combat.i"
-	@echo "... src/game/blockgame/player/player_combat.s"
-	@echo "... src/game/blockgame/player/spell_effects.o"
-	@echo "... src/game/blockgame/player/spell_effects.i"
-	@echo "... src/game/blockgame/player/spell_effects.s"
-	@echo "... src/game/blockgame/player/spell_upgrade.o"
-	@echo "... src/game/blockgame/player/spell_upgrade.i"
-	@echo "... src/game/blockgame/player/spell_upgrade.s"
 .PHONY : help
 
 

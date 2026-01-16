@@ -106,8 +106,7 @@ const char *error_code_to_string(ErrorCode code) {
     return "File not found";
   case ERROR_PERMISSION_DENIED:
     return "Permission denied";
-  case ERROR_UNKNOWN:
-    return "Unknown error";
+
   default:
     return "Unknown error code";
   }

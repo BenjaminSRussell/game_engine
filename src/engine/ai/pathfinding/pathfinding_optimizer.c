@@ -1,7 +1,7 @@
 // Pathfinding Optimizer - Path caching and smoothing for improved performance
 // Reduces redundant pathfinding calculations with tolerance-based cache lookup
 #include "pathfinding_optimizer.h"
-#include "core/logging/unified_logger.h"
+#include "core/logger/unified_logger.h"
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>

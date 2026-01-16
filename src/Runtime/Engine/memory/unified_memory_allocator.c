@@ -1,4 +1,4 @@
-#include "memory/unified_memory_allocator.h"
+#include "core/memory/unified_memory_allocator.h"
 #include <execinfo.h>
 #include <signal.h>
 #include <stdio.h>

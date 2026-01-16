@@ -1,9 +1,9 @@
 #ifndef ERROR_HANDLING_H
 #define ERROR_HANDLING_H
 
+#include <core/logger/unified_logger.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <unified_logger.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -302,6 +302,9 @@ void error_dump_stats(void);
  */
 
 // Legacy compatibility for common patterns
+#ifdef log_error
+#undef log_error
+#endif
 #define log_error(message) REPORT_ERROR(ERROR_OPERATION_FAILED, message)
 #define log_error_code(code, message) REPORT_ERROR(code, message)
 

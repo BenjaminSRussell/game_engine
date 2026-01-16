@@ -1,8 +1,8 @@
 // Source/Runtime/Core/Engine/engine.c
+#include "Public/engine.h"
 #include "../Logging/Public/unified_logger.h"
 #include "../Memory/Public/unified_memory.h"
 #include "Private/engine_private.h"
-#include <core/engine.h>
 #include <core/game_loop.h>
 #include <core/game_module.h>
 #include <core/hot_reload.h>
@@ -72,15 +72,43 @@ bool engine_init(Engine *engine, const EngineConfig *config) {
   game_loop_set_render_callback(&pdata->loop, engine_render_callback);
   game_loop_set_user_data(&pdata->loop, engine);
 
-  // Initialize Internal Subsystems
-  if (!engine_init_subsystems(engine)) {
-    LOG_ERROR(LOG_CAT_GENERAL, "Failed to initialize engine subsystems");
-    engine_shutdown_subsystems(engine); // Use the internal function
+  // Initialize Internal Subsystems (Phased Initialization)
+  LOG_INFO(LOG_CAT_GENERAL, "Starting Phased Initialization...");
+
+  // Phase 1: Core Systems
+  if (!engine_init_core_systems(engine)) {
+    LOG_ERROR(LOG_CAT_GENERAL, "Phase 1 Failed: Core Systems Initialization");
+    engine_shutdown_core_systems(engine);
     window_shutdown(&pdata->window);
     free(engine->platform_data);
     profiler_shutdown();
     return false;
   }
+
+  // Phase 2: Engine Systems
+  if (!engine_init_engine_systems(engine)) {
+    LOG_ERROR(LOG_CAT_GENERAL, "Phase 2 Failed: Engine Systems Initialization");
+    engine_shutdown_engine_systems(engine);
+    engine_shutdown_core_systems(engine);
+    window_shutdown(&pdata->window);
+    free(engine->platform_data);
+    profiler_shutdown();
+    return false;
+  }
+
+  // Phase 3: Game Systems
+  if (!engine_init_game_systems(engine)) {
+    LOG_ERROR(LOG_CAT_GENERAL, "Phase 3 Failed: Game Systems Initialization");
+    engine_shutdown_game_systems(engine);
+    engine_shutdown_engine_systems(engine);
+    engine_shutdown_core_systems(engine);
+    window_shutdown(&pdata->window);
+    free(engine->platform_data);
+    profiler_shutdown();
+    return false;
+  }
+
+  LOG_INFO(LOG_CAT_GENERAL, "Phased Initialization Complete.");
 
   // Initialize Hot Reload
   HotReloadConfig hr_config = {.enable_code_hot_reload = true,
@@ -145,8 +173,10 @@ void engine_shutdown(Engine *engine) {
     return;
   }
 
-  // Shutdown subsystems
-  engine_shutdown_subsystems(engine);
+  // Shutdown subsystems (Phased Shutdown)
+  engine_shutdown_game_systems(engine);
+  engine_shutdown_engine_systems(engine);
+  engine_shutdown_core_systems(engine);
 
   // Shutdown hot reload
   hot_reload_shutdown();

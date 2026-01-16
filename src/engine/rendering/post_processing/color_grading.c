@@ -1,16 +1,24 @@
 // Color Grading Post-Processing Effect
 // Applies a 3D LUT (Look-Up Table) for color correction and cinematic effects
-#include "core/logging/unified_logger.h"
-#include "rendering/core/shader.h"
+#include "core/logger/unified_logger.h"
+#include "include/rendering/texture_system.h"
 #include "rendering/core/texture.h"
 #include "rendering/frame_graph/frame_graph.h"
 #include <stdlib.h>
+
+// Stubs for shader system (temporary)
+typedef u32 ShaderID;
+typedef enum { SHADER_TYPE_COMPUTE } ShaderType;
+static ShaderID shader_load_from_file(const char *path, ShaderType type) {
+  return 1;
+}
+static void shader_compile(ShaderID shader) {}
 
 typedef struct ColorGradePassData {
   RGResourceHandle input;
   TextureID lut_texture;
   RGResourceHandle output;
-  u32 shader;
+  ShaderID shader;
 } ColorGradePassData;
 
 static void color_grade_execute_pass(RGPassContext *ctx, void *user_data) {
@@ -27,8 +35,8 @@ static void color_grade_execute_pass(RGPassContext *ctx, void *user_data) {
   // 3. Bind output_tex as image2D
   // 4. Dispatch compute shader
 
-  LOG_DEBUG(LOG_CAT_RENDERER, "Executed color grading pass with LUT %u",
-            data->lut_texture);
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER, "Executed color grading pass with LUT %u",
+                data->lut_texture);
 }
 
 RGResourceHandle color_grade_add_to_graph(RenderGraph *rg,
@@ -40,7 +48,8 @@ RGResourceHandle color_grade_add_to_graph(RenderGraph *rg,
 
   RGTextureDesc output_desc = {.width = 0,
                                .height = 0,
-                               .format = TEXTURE_FORMAT_RGBA8,
+                               .depth = 1,
+                               .format = TEXFMT_RGBA8,
                                .usage = TEXTURE_USAGE_STORAGE |
                                         TEXTURE_USAGE_SAMPLED,
                                .name = "Color_Graded_Output"};
@@ -66,8 +75,8 @@ RGResourceHandle color_grade_add_to_graph(RenderGraph *rg,
   rg_pass_read(rg, pass, input);
   rg_pass_write(rg, pass, output);
 
-  LOG_DEBUG(LOG_CAT_RENDERER,
-            "Color grading pass integrated into render graph");
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER,
+                "Color grading pass integrated into render graph");
 
   return output;
 }

@@ -1,6 +1,6 @@
 // Screen-Space Reflections (SSR) Implementation
 // Efficient screen-space reflection algorithm with hierarchical ray marching
-#include "core/logging/unified_logger.h"
+#include "core/logger/unified_logger.h"
 #include "rendering/frame_graph/frame_graph.h"
 #include "rendering/post_processing/ssr_compute.h"
 #include <math.h>

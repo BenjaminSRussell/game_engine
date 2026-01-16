@@ -5,8 +5,18 @@
 cmake_minimum_required(VERSION 3.20)
 project(BlockGame C CXX OBJC)
 
+# Standard C Standard
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
+
+# Code Quality & Sanitizers
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_compile_options(-fsanitize=address,undefined -fno-omit-frame-pointer -g)
+    add_link_options(-fsanitize=address,undefined)
+    if(APPLE)
+        add_definitions(-DGL_SILENCE_DEPRECATION)
+    endif()
+endif()
 
 # PHASE 1: Build System Restructuring - Runtime/Editor Separation
 option(BUILD_EDITOR "Build editor executable with ImGui and editor tools" ON)
@@ -65,7 +75,19 @@ include_directories(
     src/engine/include/core/math
     src/engine/include/core/memory
     src/engine/include/core/logging
+    # New modular runtime (Phase 4+5)
+    Source/Runtime
+    Source/Runtime/Core
+    Source/Runtime/Core/Platform
+    Source/Runtime/Core/Initialization
+    Source/Runtime/Core/Game
+    Source/Runtime/Core/Config
+    Source/Runtime/Core/Camera
+    Source/Runtime/Input
+    Source/Runtime/World/Generation
+    Source/Runtime/Engine
 )
+
 
 
 # --- Custom Targets ---
@@ -102,10 +124,15 @@ endif()
 # Engine Sources
 include(cmake/sources.cmake)
 
+# New modular runtime sources (Phase 5)
+include(cmake/modular_sources.cmake)
+list(APPEND ENGINE_SOURCES ${MODULAR_RUNTIME_SOURCES})
+
+
 
 # --- Vulkan ---
 find_package(Vulkan)
-if(Vulkan_FOUND)
+if(FALSE AND Vulkan_FOUND)
     file(GLOB_RECURSE VULKAN_SOURCES "src/engine/backend/vulkan/*.c")
     list(APPEND ENGINE_SOURCES ${VULKAN_SOURCES})
     add_definitions(-DVULKAN_BUILD)
@@ -145,6 +172,20 @@ if(APPLE)
     
     # Add Metal sources to engine sources
     list(APPEND ENGINE_SOURCES ${METAL_OBJC_SOURCES} ${METAL_C_SOURCES})
+
+    find_library(METAL_LIBRARY Metal)
+    find_library(FOUNDATION_LIBRARY Foundation)
+    find_library(QUARTZCORE_LIBRARY QuartzCore)
+    find_library(OPENAL_LIBRARY OpenAL)
+    
+    target_link_libraries(Engine PRIVATE
+        ${METAL_LIBRARY}
+        ${FOUNDATION_LIBRARY}
+        ${QUARTZCORE_LIBRARY}
+        ${OPENAL_LIBRARY}
+    )
+    
+    target_compile_definitions(Engine PRIVATE -DPLATFORM_MACOS)
 
     # Core integration files using Metal/ObjC
     set(CORE_OBJC_SOURCES 
@@ -310,16 +351,21 @@ endif()
 find_package(ZLIB REQUIRED)
 find_package(Threads REQUIRED)
 
-add_library(Game STATIC ${GAME_SOURCES})
-target_link_libraries(Game PUBLIC Engine ZLIB::ZLIB)
-target_include_directories(Game PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/game/blockgame/include>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/engine/include>
-)
+option(BUILD_GAME_LEGACY "Build legacy Game library" OFF)
+
+if(BUILD_GAME_LEGACY)
+    add_library(Game STATIC ${GAME_SOURCES})
+    target_link_libraries(Game PUBLIC Engine ZLIB::ZLIB)
+    target_include_directories(Game PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/game/blockgame/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/engine/include>
+    )
+endif()
 
 # --- App Executable ---
-if(APPLE AND IOS)
+# --- App Executable ---
+if(APPLE AND IOS AND BUILD_GAME_LEGACY)
     set(APP_SOURCES
         App/Sources/AppDelegate.swift
         App/Sources/SceneDelegate.swift
@@ -340,20 +386,22 @@ if(APPLE AND IOS)
         XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "1,2" # iPhone, iPad
     )
 
-if(APPLE)
-    target_link_libraries(BlockGameApp PRIVATE Game ZLIB::ZLIB Threads::Threads "-framework UIKit" "-framework SwiftUI" "-framework Metal" "-framework MetalKit")
-else()
-    target_link_libraries(BlockGameApp PRIVATE Game Engine ZLIB::ZLIB Threads::Threads)
-endif()
+    if(APPLE)
+        target_link_libraries(BlockGameApp PRIVATE Game ZLIB::ZLIB Threads::Threads "-framework UIKit" "-framework SwiftUI" "-framework Metal" "-framework MetalKit")
+    else()
+        target_link_libraries(BlockGameApp PRIVATE Game Engine ZLIB::ZLIB Threads::Threads)
+    endif()
 endif()
 
 # Placeholder for other platforms (e.g. macOS Desktop)
 message(STATUS "Checking BlockGameApp target conditions: IOS=${IOS}, APPLE=${APPLE}")
 if(NOT IOS)
-    message(STATUS "Adding BlockGameApp executable target")
-    add_executable(BlockGameApp src/engine/core/monolithic_main.c)
-    target_link_libraries(BlockGameApp PRIVATE Game Engine ZLIB::ZLIB Threads::Threads "-framework Metal" "-framework MetalKit" "-framework Cocoa" "-framework IOKit" "-framework QuartzCore")
+    message(STATUS "Adding BlockGameApp executable target with new modular architecture")
+    # Phase 5: Use new modular entry point instead of monolithic_main.c
+    add_executable(BlockGameApp ${MODULAR_RUNTIME_SOURCES})
+    target_link_libraries(BlockGameApp PRIVATE Engine ZLIB::ZLIB Threads::Threads "-framework Metal" "-framework MetalKit" "-framework Cocoa" "-framework IOKit" "-framework QuartzCore")
 endif()
+
 
 # ===========================================
 # Demo Applications (Added 2026-01-04)
@@ -433,6 +481,7 @@ macro(add_engine_test name source)
         ${CMAKE_SOURCE_DIR}/src/engine
         ${CMAKE_SOURCE_DIR}/test
         ${CMAKE_SOURCE_DIR}/tests
+        ${CMAKE_SOURCE_DIR}/Source/Tests
     )
     add_test(NAME ${name} COMMAND ${name})
 endmacro()
@@ -562,25 +611,45 @@ endmacro()
 # message(STATUS "Render Graph tests configured: test_frame_graph")
 
 # ===========================================
+# Phase 15: Unified Test Suite
+# ===========================================
+enable_testing()
+add_executable(EngineTests Source/Tests/Tests.c)
+target_link_libraries(EngineTests PRIVATE Engine)
+add_test(NAME EngineTests COMMAND EngineTests)
+target_include_directories(EngineTests PRIVATE Source/Runtime)
+
+# ===========================================
+# Phase 17: Basic Engine Example
+# ===========================================
+add_executable(BasicEngineExample Examples/01_BasicEngine/main.c)
+target_link_libraries(BasicEngineExample PRIVATE Engine)
+target_include_directories(BasicEngineExample PRIVATE Source/Runtime)
+
+# ===========================================
 # Physics Demos - Visual Physics Simulations
 # ===========================================
-add_executable(physics_demos
-    src/engine/physics/demos/main.c
-    src/engine/physics/demos/physics_demo_framework.c
-    src/engine/physics/demos/demo_stack_collapse.c
-    src/engine/physics/demos/demo_newton_cradle.c
-    src/engine/physics/demos/demo_domino_chain.c
-    src/engine/physics/demos/demo_ragdoll.c
-    src/engine/physics/demos/demo_vehicle_physics.c
-    src/engine/physics/demos/demo_fluid_simulation.c
-)
-target_link_libraries(physics_demos PRIVATE Engine Game ZLIB::ZLIB Threads::Threads "-framework Foundation" "-framework CoreVideo" "-framework CoreGraphics" "-framework QuartzCore" "-framework AppKit")
-target_include_directories(physics_demos PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/engine/include
-    ${CMAKE_SOURCE_DIR}/src/engine
-    ${CMAKE_SOURCE_DIR}/src/engine/physics/demos
-)
-message(STATUS "Physics demos configured: physics_demos")
+option(BUILD_PHYSICS_DEMOS "Build physics demos" OFF)
+
+if(BUILD_PHYSICS_DEMOS)
+    add_executable(physics_demos
+        src/engine/physics/demos/main.c
+        src/engine/physics/demos/physics_demo_framework.c
+        src/engine/physics/demos/demo_stack_collapse.c
+        src/engine/physics/demos/demo_newton_cradle.c
+        src/engine/physics/demos/demo_domino_chain.c
+        src/engine/physics/demos/demo_ragdoll.c
+        src/engine/physics/demos/demo_vehicle_physics.c
+        src/engine/physics/demos/demo_fluid_simulation.c
+    )
+    target_link_libraries(physics_demos PRIVATE Engine Game ZLIB::ZLIB Threads::Threads "-framework Foundation" "-framework CoreVideo" "-framework CoreGraphics" "-framework QuartzCore" "-framework AppKit")
+    target_include_directories(physics_demos PRIVATE
+        ${CMAKE_SOURCE_DIR}/src/engine/include
+        ${CMAKE_SOURCE_DIR}/src/engine
+        ${CMAKE_SOURCE_DIR}/src/engine/physics/demos
+    )
+    message(STATUS "Physics demos configured: physics_demos")
+endif()
 
 # ===========================================
 # Full Integration Verification

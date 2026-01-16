@@ -2,7 +2,7 @@
 // Uses SIMD to process 4-8 rigid bodies simultaneously
 #include "physics_solver.h"
 #include "core/simd/simd_math.h"
-#include "core/logging/unified_logger.h"
+#include "core/logger/unified_logger.h"
 #include <string.h>
 #include <math.h>
 

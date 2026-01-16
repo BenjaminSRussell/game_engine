@@ -1,22 +1,13 @@
 #ifndef VULKAN_H
 #define VULKAN_H
 
-#include <stdint.h>
-
-// Forward declarations for Vulkan types
-struct VkCommandBuffer_T;
-typedef struct VkCommandBuffer_T* VkCommandBuffer;
-
-struct VkImageView_T;
-typedef struct VkImageView_T* VkImageView;
-
-typedef uint64_t VkAccelerationStructureKHR;
+#include <vulkan/vulkan.h>
 
 // Forward declaration for VulkanRenderer
 typedef struct VulkanRenderer {
-    void* device;
-    void* instance;
-    void* physical_device;
+  void *device;
+  void *instance;
+  void *physical_device;
 } VulkanRenderer;
 
 #endif // VULKAN_H

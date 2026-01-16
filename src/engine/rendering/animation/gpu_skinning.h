@@ -6,9 +6,9 @@
 #ifndef GPU_SKINNING_H
 #define GPU_SKINNING_H
 
-#include "core/math/types.h"
-#include "rendering/core/buffer.h"
-#include "rendering/core/texture.h"
+#include "../../include/core/math/types.h"
+#include "../core/buffer.h"
+#include "../core/texture.h"
 #include <stdbool.h>
 
 #ifdef __cplusplus
@@ -58,17 +58,17 @@ typedef struct GPUSkinningMesh {
   u32 index_count;
 
   // Output data (skinned)
-  BufferID output_vertex_buffer;
-  BufferID output_index_buffer;
+  Buffer *output_vertex_buffer;
+  Buffer *output_index_buffer;
 
   // Bone information
   u32 bone_count;
   u32 bone_offset; // Offset in global bone array
 
   // GPU resources
-  BufferID vertex_buffer;
-  BufferID index_buffer;
-  BufferID bone_buffer;
+  Buffer *vertex_buffer;
+  Buffer *index_buffer;
+  Buffer *bone_buffer;
 
   bool is_dirty;
 } GPUSkinningMesh;
@@ -81,8 +81,8 @@ typedef struct GPUSkeleton {
   u32 parent_indices[GPU_SKINNING_MAX_BONES];
 
   // GPU resources
-  BufferID bone_buffer;
-  TextureID bone_texture; // For compute shader access
+  Buffer *bone_buffer;
+  Texture *bone_texture; // For compute shader access
 
   bool is_dirty;
 } GPUSkeleton;
@@ -100,10 +100,10 @@ typedef struct GPUAnimationInstance {
 
   // GPU resources
   u32 instance_id;
-  BufferID instance_buffer;
+  Buffer *instance_buffer;
 
   // Output
-  BufferID skinned_vertices;
+  Buffer *skinned_vertices;
 } GPUAnimationInstance;
 
 // GPU skinning system context
@@ -121,8 +121,8 @@ typedef struct GPUSkinningContext {
   u32 instance_count;
 
   // Global bone buffer (for all skeletons)
-  BufferID global_bone_buffer;
-  TextureID global_bone_texture;
+  Buffer *global_bone_buffer;
+  Texture *global_bone_texture;
 
   // Statistics
   u32 total_vertices_processed;
@@ -212,10 +212,10 @@ void gpu_skinning_process_all(void);
 void gpu_skinning_process_instance(GPUAnimationInstance *instance);
 
 // Get skinned vertex buffer for rendering
-BufferID gpu_skinning_get_vertex_buffer(GPUAnimationInstance *instance);
+Buffer *gpu_skinning_get_vertex_buffer(GPUAnimationInstance *instance);
 
 // Get skinned index buffer for rendering
-BufferID gpu_skinning_get_index_buffer(GPUAnimationInstance *instance);
+Buffer *gpu_skinning_get_index_buffer(GPUAnimationInstance *instance);
 
 // ============================================================================
 // BATCH PROCESSING

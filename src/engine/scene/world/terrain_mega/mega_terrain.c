@@ -4,6 +4,7 @@
 
 #include "mega_terrain.h"
 #include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -318,7 +319,7 @@ static float calculate_distance_sq(float p1[3], float p2[3]) {
 }
 
 // Biome sampling implementation (TODO-26606)
-BiomeType terrain_get_biome_at(TerrainSystem *system, float x, float z) {
+BiomeType mega_terrain_get_biome_at(TerrainSystem *system, float x, float z) {
   if (!system)
     return BIOME_PLAINS;
 
@@ -344,7 +345,7 @@ BiomeType terrain_get_biome_at(TerrainSystem *system, float x, float z) {
 
 // Biome-specific hooks (TODO-26608, 26609, 26610)
 void terrain_update_biome_effects(TerrainSystem *system, float x, float z) {
-  BiomeType biome = terrain_get_biome_at(system, x, z);
+  BiomeType biome = mega_terrain_get_biome_at(system, x, z);
   BiomeDefinition *def = &system->biomes[biome];
 
   // TODO: Implement biome-specific vegetation placement (TODO-26608)

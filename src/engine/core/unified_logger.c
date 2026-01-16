@@ -3,7 +3,7 @@
 // Purpose: Unified logging system implementation consolidating all logging backends
 // Provides comprehensive logging with multiple channels, categories, and advanced features
 
-#include <core/logging/unified_logger.h>
+#include <core/logger/unified_logger.h>
 #include <core/memory/unified_allocator.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -64,6 +64,26 @@ typedef u32 AssetHandle;
 #define INVALID_HANDLE ((u32)0xFFFFFFFF)
 
 // ============================================================================
+// Math Types
+// ============================================================================
+
+typedef struct vec2 {
+  f32 x, y;
+} vec2;
+typedef struct vec3 {
+  f32 x, y, z;
+} vec3;
+typedef struct vec4 {
+  f32 x, y, z, w;
+} vec4;
+typedef struct quat {
+  f32 x, y, z, w;
+} quat;
+typedef struct mat4 {
+  f32 m[4][4];
+} mat4;
+
+// ============================================================================
 // Result Type
 // ============================================================================
 

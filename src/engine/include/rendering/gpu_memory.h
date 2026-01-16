@@ -26,15 +26,7 @@ typedef enum {
 } MemoryPoolType;
 
 // Buffer usage flags
-typedef enum {
-  BUFFER_USAGE_VERTEX = 1 << 0,
-  BUFFER_USAGE_INDEX = 1 << 1,
-  BUFFER_USAGE_UNIFORM = 1 << 2,
-  BUFFER_USAGE_STORAGE = 1 << 3,
-  BUFFER_USAGE_TRANSFER_SRC = 1 << 4,
-  BUFFER_USAGE_TRANSFER_DST = 1 << 5,
-  BUFFER_USAGE_INDIRECT = 1 << 6,
-} BufferUsageFlags;
+#include "engine/rendering/core/buffer.h"
 
 // Allocation info
 typedef struct {

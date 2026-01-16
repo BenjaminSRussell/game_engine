@@ -2,15 +2,18 @@
 //
 // Purpose: Core engine implementation conforming to engine.h interface
 //
+#include "core/memory/common_pools.h"
+#include "core/memory/frame_allocator.h"
+#include "core/memory/unified_memory_allocator.h"
+#include "engine/include/core/logger.h"
+#include "engine/include/core/memory.h"
 #include <core/engine.h>
 #include <core/game_loop.h>
 #include <core/game_module.h>
-#include "engine/include/core/logger.h"
-#include "engine/include/core/memory.h"
 #include <core/performance.h>
 #include <core/string_utils.h>
-#include <core/window.h>
 #include <core/thread_pool.h>
+#include <core/window.h>
 #include <physics/physics.h>
 #include <stdlib.h>
 #include <string.h>
@@ -81,8 +84,11 @@ static bool engine_init_subsystems(Engine *engine);
 static void engine_shutdown_subsystems(Engine *engine);
 static void engine_update_callback(void *user_data, f32 delta_time);
 static void engine_render_callback(void *user_data, f32 interpolation);
-static bool engine_validate_subsystem_init(const char *name, bool success, SubsystemValidationState *validation);
-static void engine_log_initialization_summary(const SubsystemValidationState *validation);
+static bool
+engine_validate_subsystem_init(const char *name, bool success,
+                               SubsystemValidationState *validation);
+static void
+engine_log_initialization_summary(const SubsystemValidationState *validation);
 
 // -----------------------------------------------------------------------------
 // Engine Lifecycle
@@ -154,7 +160,7 @@ bool engine_init(Engine *engine, const EngineConfig *config) {
     LOG_ERROR("Invalid target FPS: %f", target_fps);
     target_fps = 60.0f; // Default fallback
   }
-  
+
   game_loop_init(&pdata->loop, 1.0f / target_fps);
   game_loop_set_update_callback(&pdata->loop, engine_update_callback);
   game_loop_set_render_callback(&pdata->loop, engine_render_callback);
@@ -176,7 +182,7 @@ bool engine_init(Engine *engine, const EngineConfig *config) {
       .enable_asset_hot_reload = true,
       .watch_path = "." // Current directory for now
   };
-  
+
   if (!hot_reload_init(hr_config)) {
     LOG_WARN("Hot reload initialization failed, continuing without it");
   }
@@ -391,18 +397,51 @@ void engine_update(Engine *engine, f32 delta_time) {
 
 static bool engine_init_subsystems(Engine *engine) {
   PlatformData *pdata = (PlatformData *)engine->platform_data;
-  
+
   // Initialize validation state
   SubsystemValidationState validation = {0};
   bool critical_failure = false;
 
-  // 1. Memory Allocator (CRITICAL - must be first)
-  LOG_INFO("Initializing Memory Allocator...");
+  // 1. Unified Memory Allocator (CRITICAL - must be FIRST)
+  printf("Initializing Unified Memory Allocator...\n");
+  MemoryPolicy memory_policy = {
+      .global_limit = SIZE_MAX,             // No global limit for now
+      .per_pool_limit = 64 * 1024 * 1024,   // 64MB per pool
+      .per_stack_limit = 16 * 1024 * 1024,  // 16MB per stack
+      .per_arena_limit = 128 * 1024 * 1024, // 128MB per arena
+      .max_allocations = 1000000,
+      .enable_guard_pages = false,  // Disable for performance
+      .enable_canaries = true,      // Enable corruption detection
+      .enable_stack_traces = false, // Disable for performance
+      .stack_trace_depth = 8,
+      .enable_leak_detection = true,
+      .enable_fragmentation_check = true};
+
+  if (!unified_memory_init(&memory_policy)) {
+    printf("CRITICAL: Failed to initialize unified memory allocator\n");
+    return false;
+  }
+  printf(" Unified Memory Allocator initialized successfully\n");
+
+  // Initialize common memory pools
+  if (!common_pools_init()) {
+    printf("CRITICAL: Failed to initialize common memory pools\n");
+    unified_memory_shutdown();
+    return false;
+  }
+
+  // Initialize frame allocator
+  if (!frame_allocator_init()) {
+    printf("CRITICAL: Failed to initialize frame allocator\n");
+    common_pools_shutdown();
+    unified_memory_shutdown();
+    return false;
+  }
+
+  // 2. Legacy Memory Tracker (for compatibility)
   if (!memory_tracker_init(1024)) {
-    LOG_ERROR("Failed to initialize memory allocator");
-    critical_failure = true;
-  } else {
-    LOG_INFO(" Memory Allocator initialized successfully");
+    LOG_ERROR("Failed to initialize legacy memory tracker");
+    // Non-critical, continue
   }
 
   // 2. Logging System (CRITICAL - must be second)
@@ -416,7 +455,8 @@ static bool engine_init_subsystems(Engine *engine) {
 
   // 3. Thread Pool (CRITICAL - must be third)
   LOG_INFO("Initializing Thread Pool...");
-  if (!thread_pool_init(engine->config.max_threads > 0 ? engine->config.max_threads : 4)) {
+  if (!thread_pool_init(
+          engine->config.max_threads > 0 ? engine->config.max_threads : 4)) {
     LOG_ERROR("Failed to initialize thread pool");
     critical_failure = true;
   } else {
@@ -426,9 +466,11 @@ static bool engine_init_subsystems(Engine *engine) {
   // 4. VFS
   vfs_init(&g_vfs);
   if (vfs_mount(&g_vfs, "assets", "assets")) {
-    validation.vfs_initialized = engine_validate_subsystem_init("VFS", true, &validation);
+    validation.vfs_initialized =
+        engine_validate_subsystem_init("VFS", true, &validation);
   } else {
-    validation.vfs_initialized = engine_validate_subsystem_init("VFS", false, &validation);
+    validation.vfs_initialized =
+        engine_validate_subsystem_init("VFS", false, &validation);
     critical_failure = true;
   }
 
@@ -442,34 +484,39 @@ static bool engine_init_subsystems(Engine *engine) {
   if (engine->subsystems.input) {
     InputConfig input_config = input_create_default_config();
     validation.input_initialized = engine_validate_subsystem_init(
-        "Input", 
-        engine->subsystems.input->init(engine->subsystems.input, &input_config), 
-        &validation
-    );
+        "Input",
+        engine->subsystems.input->init(engine->subsystems.input, &input_config),
+        &validation);
     if (!validation.input_initialized) {
       critical_failure = true;
     }
   } else {
-    validation.input_initialized = engine_validate_subsystem_init("Input", false, &validation);
+    validation.input_initialized =
+        engine_validate_subsystem_init("Input", false, &validation);
     critical_failure = true;
   }
 
   // 6. ECS
   WorldConfig world_config = ecs_world_create_default_config();
-  engine->subsystems.entities = (EntityManager *)ecs_world_create(&world_config);
-  validation.ecs_initialized = engine_validate_subsystem_init("ECS", engine->subsystems.entities != NULL, &validation);
+  engine->subsystems.entities =
+      (EntityManager *)ecs_world_create(&world_config);
+  validation.ecs_initialized = engine_validate_subsystem_init(
+      "ECS", engine->subsystems.entities != NULL, &validation);
   if (!validation.ecs_initialized) {
     critical_failure = true;
   }
 
   // 7. Asset Manager (requires ECS)
   if (validation.ecs_initialized) {
-    engine->subsystems.assets = asset_manager_create(512, (World *)engine->subsystems.entities, &g_vfs);
+    engine->subsystems.assets =
+        asset_manager_create(512, (World *)engine->subsystems.entities, &g_vfs);
     if (engine->subsystems.assets) {
       engine->subsystems.assets->vfs = &g_vfs;
-      validation.assets_initialized = engine_validate_subsystem_init("Asset Manager", true, &validation);
+      validation.assets_initialized =
+          engine_validate_subsystem_init("Asset Manager", true, &validation);
     } else {
-      validation.assets_initialized = engine_validate_subsystem_init("Asset Manager", false, &validation);
+      validation.assets_initialized =
+          engine_validate_subsystem_init("Asset Manager", false, &validation);
       critical_failure = true;
     }
   } else {
@@ -481,114 +528,109 @@ static bool engine_init_subsystems(Engine *engine) {
   // 8. Renderer
   engine->subsystems.renderer = renderer_create_with_backend(
       RENDERER_TYPE_VOXEL, engine->config.renderer_backend, &pdata->window);
-  
+
   if (engine->subsystems.renderer) {
-    RendererInitParams render_params = {
-      .window = &pdata->window,
-      .width = engine->config.window_width,
-      .height = engine->config.window_height,
-      .type = RENDERER_TYPE_VOXEL,
-      .backend = engine->config.renderer_backend,
-      .config = NULL
-    };
+    RendererInitParams render_params = {.window = &pdata->window,
+                                        .width = engine->config.window_width,
+                                        .height = engine->config.window_height,
+                                        .type = RENDERER_TYPE_VOXEL,
+                                        .backend =
+                                            engine->config.renderer_backend,
+                                        .config = NULL};
     validation.renderer_initialized = engine_validate_subsystem_init(
-        "Renderer", 
-        engine->subsystems.renderer->init(engine->subsystems.renderer, &render_params), 
-        &validation
-    );
+        "Renderer",
+        engine->subsystems.renderer->init(engine->subsystems.renderer,
+                                          &render_params),
+        &validation);
     if (!validation.renderer_initialized) {
       critical_failure = true;
     }
   } else {
-    validation.renderer_initialized = engine_validate_subsystem_init("Renderer", false, &validation);
+    validation.renderer_initialized =
+        engine_validate_subsystem_init("Renderer", false, &validation);
     critical_failure = true;
   }
 
   // 9. Physics (non-critical)
-  PhysicsConfig phys_config = {
-    .gravity = {0.0f, -9.81f, 0.0f},
-    .fixed_timestep = 1.0f / 60.0f,
-    .velocity_iterations = 8,
-    .position_iterations = 3
-  };
+  PhysicsConfig phys_config = {.gravity = {0.0f, -9.81f, 0.0f},
+                               .fixed_timestep = 1.0f / 60.0f,
+                               .velocity_iterations = 8,
+                               .position_iterations = 3};
   engine->subsystems.physics = physics_world_create(phys_config);
-  validation.physics_initialized = engine_validate_subsystem_init("Physics", engine->subsystems.physics != NULL, &validation);
+  validation.physics_initialized = engine_validate_subsystem_init(
+      "Physics", engine->subsystems.physics != NULL, &validation);
 
   // 10. Scene Manager (non-critical)
-  engine->subsystems.scene_manager = (SceneManager *)calloc(1, sizeof(SceneManager));
+  engine->subsystems.scene_manager =
+      (SceneManager *)calloc(1, sizeof(SceneManager));
   if (engine->subsystems.scene_manager) {
     validation.scene_manager_initialized = engine_validate_subsystem_init(
-        "Scene Manager", 
-        scene_manager_init(engine->subsystems.scene_manager), 
-        &validation
-    );
+        "Scene Manager", scene_manager_init(engine->subsystems.scene_manager),
+        &validation);
   } else {
-    validation.scene_manager_initialized = engine_validate_subsystem_init("Scene Manager", false, &validation);
+    validation.scene_manager_initialized =
+        engine_validate_subsystem_init("Scene Manager", false, &validation);
   }
 
   // 11. Audio System (non-critical)
   engine->subsystems.audio = (AudioSystem *)calloc(1, sizeof(AudioSystem));
   if (engine->subsystems.audio) {
     audio_system_init(engine->subsystems.audio, 32);
-    validation.audio_initialized = engine_validate_subsystem_init(
-        "Audio", 
-        true, 
-        &validation
-    );
+    validation.audio_initialized =
+        engine_validate_subsystem_init("Audio", true, &validation);
   } else {
-    validation.audio_initialized = engine_validate_subsystem_init(
-        "Audio", 
-        false, 
-        &validation
-    );
+    validation.audio_initialized =
+        engine_validate_subsystem_init("Audio", false, &validation);
   }
 
   // 12. Post Processing (non-critical)
-  engine->subsystems.post_processing = (PostProcessingPipeline *)calloc(1, sizeof(PostProcessingPipeline));
+  engine->subsystems.post_processing =
+      (PostProcessingPipeline *)calloc(1, sizeof(PostProcessingPipeline));
   if (engine->subsystems.post_processing) {
     PostProcessingConfig pp_config = {0};
     pp_config.enabledEffects = 0;
-    
+
     bool use_metal_pp = false;
 #ifdef GPU_BACKEND_METAL
     use_metal_pp = true;
 #endif
 
     validation.post_processing_initialized = engine_validate_subsystem_init(
-        "Post Processing", 
-        post_process_init(engine->subsystems.post_processing, NULL, &pp_config), 
-        &validation
-    );
+        "Post Processing",
+        post_process_init(engine->subsystems.post_processing, NULL, &pp_config),
+        &validation);
   } else {
-    validation.post_processing_initialized = engine_validate_subsystem_init("Post Processing", false, &validation);
+    validation.post_processing_initialized =
+        engine_validate_subsystem_init("Post Processing", false, &validation);
   }
 
   // 13. AI Systems (non-critical)
-  PerceptionSystemConfig perception_config = {
-    .max_agents = 100,
-    .max_stimuli_per_frame = 50,
-    .max_perceived_entities = 20,
-    .spatial_grid_size = 10.0f,
-    .enable_occlusion = true,
-    .memory_decay_time = 30.0,
-    .debug_mode = engine->config.debug_mode
-  };
+  PerceptionSystemConfig perception_config = {.max_agents = 100,
+                                              .max_stimuli_per_frame = 50,
+                                              .max_perceived_entities = 20,
+                                              .spatial_grid_size = 10.0f,
+                                              .enable_occlusion = true,
+                                              .memory_decay_time = 30.0,
+                                              .debug_mode =
+                                                  engine->config.debug_mode};
   engine->subsystems.perception = perception_system_create(&perception_config);
   if (engine->subsystems.perception) {
     validation.perception_initialized = engine_validate_subsystem_init(
-        "Perception System", 
-        perception_system_initialize(engine->subsystems.perception), 
-        &validation
-    );
+        "Perception System",
+        perception_system_initialize(engine->subsystems.perception),
+        &validation);
   } else {
-    validation.perception_initialized = engine_validate_subsystem_init("Perception System", false, &validation);
+    validation.perception_initialized =
+        engine_validate_subsystem_init("Perception System", false, &validation);
   }
 
   engine->subsystems.memory = memory_system_create(100);
-  validation.memory_initialized = engine_validate_subsystem_init("Memory System", engine->subsystems.memory != NULL, &validation);
+  validation.memory_initialized = engine_validate_subsystem_init(
+      "Memory System", engine->subsystems.memory != NULL, &validation);
 
   engine->subsystems.planner = goap_planner_create_state(256);
-  validation.planner_initialized = engine_validate_subsystem_init("GOAP Planner", engine->subsystems.planner != NULL, &validation);
+  validation.planner_initialized = engine_validate_subsystem_init(
+      "GOAP Planner", engine->subsystems.planner != NULL, &validation);
 
   // Log initialization summary
   engine_log_initialization_summary(&validation);
@@ -598,7 +640,7 @@ static bool engine_init_subsystems(Engine *engine) {
 
 static void engine_shutdown_subsystems(Engine *engine) {
   // Shutdown in reverse order of initialization
-  
+
   // AI Systems Shutdown
   if (engine->subsystems.perception) {
     perception_system_shutdown(engine->subsystems.perception);
@@ -671,6 +713,20 @@ static void engine_shutdown_subsystems(Engine *engine) {
   thread_pool_shutdown();
   logger_shutdown();
   memory_tracker_shutdown();
+
+  // Shutdown memory systems (LAST)
+  frame_allocator_shutdown();
+  common_pools_shutdown();
+
+  // Print final memory statistics
+  printf("\n=== Final Memory Statistics ===\n");
+  unified_memory_print_stats();
+
+  // Check for leaks
+  unified_memory_check_leaks();
+
+  // Shutdown unified memory allocator
+  unified_memory_shutdown();
 }
 
 // -----------------------------------------------------------------------------
@@ -802,7 +858,9 @@ const char *engine_get_error_string(EngineError error) {
 // Validation Helper Functions
 // -----------------------------------------------------------------------------
 
-static bool engine_validate_subsystem_init(const char *name, bool success, SubsystemValidationState *validation) {
+static bool
+engine_validate_subsystem_init(const char *name, bool success,
+                               SubsystemValidationState *validation) {
   if (success) {
     LOG_INFO(" %s initialized successfully", name);
     return true;
@@ -812,9 +870,10 @@ static bool engine_validate_subsystem_init(const char *name, bool success, Subsy
   }
 }
 
-static void engine_log_initialization_summary(const SubsystemValidationState *validation) {
+static void
+engine_log_initialization_summary(const SubsystemValidationState *validation) {
   LOG_INFO("=== Engine Initialization Summary ===");
-  
+
   // Critical systems
   LOG_INFO("Critical Systems:");
   LOG_INFO("  VFS: %s", validation->vfs_initialized ? "" : "");
@@ -822,26 +881,31 @@ static void engine_log_initialization_summary(const SubsystemValidationState *va
   LOG_INFO("  ECS: %s", validation->ecs_initialized ? "" : "");
   LOG_INFO("  Asset Manager: %s", validation->assets_initialized ? "" : "");
   LOG_INFO("  Renderer: %s", validation->renderer_initialized ? "" : "");
-  
+
   // Non-critical systems
   LOG_INFO("Non-Critical Systems:");
   LOG_INFO("  Physics: %s", validation->physics_initialized ? "" : "");
-  LOG_INFO("  Scene Manager: %s", validation->scene_manager_initialized ? "" : "");
+  LOG_INFO("  Scene Manager: %s",
+           validation->scene_manager_initialized ? "" : "");
   LOG_INFO("  Audio: %s", validation->audio_initialized ? "" : "");
-  LOG_INFO("  Post Processing: %s", validation->post_processing_initialized ? "" : "");
-  LOG_INFO("  Perception System: %s", validation->perception_initialized ? "" : "");
+  LOG_INFO("  Post Processing: %s",
+           validation->post_processing_initialized ? "" : "");
+  LOG_INFO("  Perception System: %s",
+           validation->perception_initialized ? "" : "");
   LOG_INFO("  Memory System: %s", validation->memory_initialized ? "" : "");
   LOG_INFO("  GOAP Planner: %s", validation->planner_initialized ? "" : "");
-  
+
   // Count successful initializations
-  int critical_count = validation->vfs_initialized + validation->input_initialized + 
-                      validation->ecs_initialized + validation->assets_initialized + 
-                      validation->renderer_initialized;
-  int non_critical_count = validation->physics_initialized + validation->scene_manager_initialized +
-                          validation->audio_initialized + validation->post_processing_initialized +
-                          validation->perception_initialized + validation->memory_initialized +
-                          validation->planner_initialized;
-  
+  int critical_count =
+      validation->vfs_initialized + validation->input_initialized +
+      validation->ecs_initialized + validation->assets_initialized +
+      validation->renderer_initialized;
+  int non_critical_count =
+      validation->physics_initialized + validation->scene_manager_initialized +
+      validation->audio_initialized + validation->post_processing_initialized +
+      validation->perception_initialized + validation->memory_initialized +
+      validation->planner_initialized;
+
   LOG_INFO("Critical Systems: %d/5 initialized", critical_count);
   LOG_INFO("Non-Critical Systems: %d/7 initialized", non_critical_count);
   LOG_INFO("=====================================");

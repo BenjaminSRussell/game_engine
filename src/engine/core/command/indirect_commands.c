@@ -7,7 +7,7 @@
  */
 
 #include "core/command/indirect_commands.h"
-#include "core/logging/unified_logger.h"
+#include "core/logger/unified_logger.h"
 #include "core/threading/mutex.h"
 #include <stdint.h>
 #include <stdbool.h>

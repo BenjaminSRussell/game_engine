@@ -5,7 +5,7 @@
 
 #include "physics/simd/physics_simd.h"
 #include "core/memory/unified_allocator.h"
-#include "core/logging/unified_logger.h"
+#include "core/logger/unified_logger.h"
 #include <immintrin.h>  // For SSE/AVX intrinsics
 #include <string.h>
 

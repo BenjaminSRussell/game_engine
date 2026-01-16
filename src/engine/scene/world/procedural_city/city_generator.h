@@ -16,6 +16,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+typedef struct ProceduralBuilding ProceduralBuilding;
+
 /* =================================================================================================
  *                                    CITY CONFIGURATION
  * =================================================================================================
@@ -195,15 +197,16 @@ typedef struct CityBlock {
 } CityBlock;
 
 // City block management functions
-bool block_from_road_polygon(CityBlock *block, const float *road_vertices, 
-                           uint32_t vertex_count);
-bool block_subdivide(CityBlock *parent, CityBlock *children, uint32_t *child_count,
-                     uint32_t max_children, float min_area);
-bool block_assign_zone(CityBlock *block, const CityConfig *config, 
+bool block_from_road_polygon(CityBlock *block, const float *road_vertices,
+                             uint32_t vertex_count);
+bool block_subdivide(CityBlock *parent, CityBlock *children,
+                     uint32_t *child_count, uint32_t max_children,
+                     float min_area);
+bool block_assign_zone(CityBlock *block, const CityConfig *config,
                        const CityBlock *all_blocks, uint32_t total_blocks);
 bool block_fill_with_buildings(CityBlock *block, ProceduralBuilding *buildings,
-                                uint32_t *building_count, uint32_t max_buildings,
-                                const CityConfig *config);
+                               uint32_t *building_count, uint32_t max_buildings,
+                               const CityConfig *config);
 bool block_add_courtyard(CityBlock *block, float courtyard_ratio);
 bool block_add_plaza(CityBlock *block, float plaza_size);
 bool block_optimize_layout(CityBlock *block);
@@ -258,14 +261,20 @@ typedef struct ProceduralBuilding {
 } ProceduralBuilding;
 
 // Building generation functions
-bool building_generate_footprint(ProceduralBuilding *building, const CityBlock *block,
-                                  const CityConfig *config);
+bool building_generate_footprint(ProceduralBuilding *building,
+                                 const CityBlock *block,
+                                 const CityConfig *config);
 bool building_extrude_floors(ProceduralBuilding *building);
-bool building_generate_roof(ProceduralBuilding *building, const CityConfig *config);
-bool building_place_windows(ProceduralBuilding *building, const CityConfig *config);
-bool building_place_doors(ProceduralBuilding *building, const CityConfig *config);
-bool building_place_balconies(ProceduralBuilding *building, const CityConfig *config);
-bool building_add_details(ProceduralBuilding *building, const CityConfig *config);
+bool building_generate_roof(ProceduralBuilding *building,
+                            const CityConfig *config);
+bool building_place_windows(ProceduralBuilding *building,
+                            const CityConfig *config);
+bool building_place_doors(ProceduralBuilding *building,
+                          const CityConfig *config);
+bool building_place_balconies(ProceduralBuilding *building,
+                              const CityConfig *config);
+bool building_add_details(ProceduralBuilding *building,
+                          const CityConfig *config);
 
 /* =================================================================================================
  *                                    SPECIAL STRUCTURES
@@ -273,28 +282,36 @@ bool building_add_details(ProceduralBuilding *building, const CityConfig *config
  */
 
 // COMPLETED: building_assign_npcs - Assign NPCs to buildings based on type
-bool building_assign_npcs(ProceduralBuilding *building, uint32_t *npc_ids, uint32_t *npc_count);
+bool building_assign_npcs(ProceduralBuilding *building, uint32_t *npc_ids,
+                          uint32_t *npc_count);
 
 // COMPLETED: generate_city_walls - Generate defensive walls around city
-uint32_t generate_city_walls(const CityConfig *config, float center_x, float center_z);
+uint32_t generate_city_walls(const CityConfig *config, float center_x,
+                             float center_z);
 
 // COMPLETED: generate_city_gates - Generate gates in city walls
-uint32_t generate_city_gates(uint32_t wall_id, const float *gate_positions, uint32_t gate_count);
+uint32_t generate_city_gates(uint32_t wall_id, const float *gate_positions,
+                             uint32_t gate_count);
 
 // COMPLETED: generate_castle - Generate castle structure
-uint32_t generate_castle(const CityConfig *config, float position_x, float position_z);
+uint32_t generate_castle(const CityConfig *config, float position_x,
+                         float position_z);
 
 // COMPLETED: generate_temple - Generate temple structure
-uint32_t generate_temple(const CityConfig *config, float position_x, float position_z);
+uint32_t generate_temple(const CityConfig *config, float position_x,
+                         float position_z);
 
 // COMPLETED: generate_market_plaza - Generate market plaza
-uint32_t generate_market_plaza(const CityConfig *config, float center_x, float center_z, float radius);
+uint32_t generate_market_plaza(const CityConfig *config, float center_x,
+                               float center_z, float radius);
 
 // COMPLETED: generate_harbor - Generate harbor with docks
-uint32_t generate_harbor(const CityConfig *config, float shore_x, float shore_z);
+uint32_t generate_harbor(const CityConfig *config, float shore_x,
+                         float shore_z);
 
 // COMPLETED: generate_bridge - Generate bridge structure
-uint32_t generate_bridge(float start_x, float start_z, float end_x, float end_z, float width);
+uint32_t generate_bridge(float start_x, float start_z, float end_x, float end_z,
+                         float width);
 
 // COMPLETED: generate_fountain - Generate fountain structure
 uint32_t generate_fountain(float center_x, float center_z, float radius);
@@ -303,7 +320,8 @@ uint32_t generate_fountain(float center_x, float center_z, float radius);
 uint32_t generate_monument(float center_x, float center_z, float height);
 
 // COMPLETED: generate_graveyard - Generate graveyard with tombstones
-uint32_t generate_graveyard(float center_x, float center_z, float width, float depth);
+uint32_t generate_graveyard(float center_x, float center_z, float width,
+                            float depth);
 
 /* =================================================================================================
  *                                    CITY GENERATOR API
@@ -326,7 +344,8 @@ typedef struct CityGenerator {
 // COMPLETED: city_generator_init - Initialize city generator system
 bool city_generator_init(CityGenerator *generator, const CityConfig *config);
 
-// COMPLETED: city_generator_shutdown - Shutdown city generator and cleanup resources
+// COMPLETED: city_generator_shutdown - Shutdown city generator and cleanup
+// resources
 void city_generator_shutdown(CityGenerator *generator);
 
 // COMPLETED: city_generator_generate - Generate complete city synchronously
@@ -342,10 +361,12 @@ float city_generator_get_progress(const CityGenerator *generator);
 void city_generator_cancel(CityGenerator *generator);
 
 // COMPLETED: city_generator_preview - Generate low-detail preview
-uint32_t city_generator_preview(const CityGenerator *generator, uint32_t detail_level);
+uint32_t city_generator_preview(const CityGenerator *generator,
+                                uint32_t detail_level);
 
 // COMPLETED: city_generator_regenerate_block - Regenerate specific city block
-bool city_generator_regenerate_block(CityGenerator *generator, uint32_t block_id);
+bool city_generator_regenerate_block(CityGenerator *generator,
+                                     uint32_t block_id);
 
 // COMPLETED: city_generator_save - Save city data to file
 bool city_generator_save(const CityGenerator *generator, const char *filename);
@@ -354,7 +375,8 @@ bool city_generator_save(const CityGenerator *generator, const char *filename);
 bool city_generator_load(CityGenerator *generator, const char *filename);
 
 // COMPLETED: city_generator_export_mesh - Export city as mesh
-bool city_generator_export_mesh(const CityGenerator *generator, const char *filename);
+bool city_generator_export_mesh(const CityGenerator *generator,
+                                const char *filename);
 
 // COMPLETED: city_populate_npcs - Populate city with NPCs
 bool city_populate_npcs(CityGenerator *generator, uint32_t target_population);

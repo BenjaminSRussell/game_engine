@@ -1,6 +1,7 @@
 // Screen-Space Ambient Occlusion (SSAO) Implementation
 // Horizon-based SSAO (HBAO+) - fast and high-quality ambient occlusion
-#include "core/logging/unified_logger.h"
+#include "core/logger/unified_logger.h"
+#include "include/rendering/texture_system.h" // For TEXFMT constants
 #include "rendering/frame_graph/frame_graph.h"
 #include "rendering/post_processing/ssao_compute.h"
 #include <math.h>
@@ -24,7 +25,7 @@ typedef struct SSAOContext {
 SSAOContext *ssao_create(u32 width, u32 height) {
   SSAOContext *ctx = malloc(sizeof(SSAOContext));
   if (!ctx) {
-    LOG_ERROR(LOG_CAT_RENDERER, "Failed to allocate SSAO context");
+    LOG_ERROR_CAT(LOG_CAT_RENDERER, "Failed to allocate SSAO context");
     return NULL;
   }
 
@@ -42,12 +43,13 @@ SSAOContext *ssao_create(u32 width, u32 height) {
   // Create compute implementation
   ctx->compute_ctx = ssao_compute_create(width, height);
   if (!ctx->compute_ctx) {
-    LOG_ERROR(LOG_CAT_RENDERER, "Failed to create SSAO compute implementation");
+    LOG_ERROR_CAT(LOG_CAT_RENDERER,
+                  "Failed to create SSAO compute implementation");
     free(ctx);
     return NULL;
   }
 
-  LOG_INFO(LOG_CAT_RENDERER, "SSAO context created: %ux%u", width, height);
+  LOG_INFO_CAT(LOG_CAT_RENDERER, "SSAO context created: %ux%u", width, height);
   return ctx;
 }
 
@@ -61,7 +63,7 @@ void ssao_destroy(SSAOContext *ctx) {
   }
 
   free(ctx);
-  LOG_INFO(LOG_CAT_RENDERER, "SSAO context destroyed");
+  LOG_INFO_CAT(LOG_CAT_RENDERER, "SSAO context destroyed");
 }
 
 // SSAO pass execution callback
@@ -92,8 +94,8 @@ static void ssao_execute_pass(RGPassContext *ctx, void *user_data) {
   // Process SSAO using compute implementation
   ssao_compute_process(data->ctx->compute_ctx, depth_tex, normal_tex);
 
-  LOG_DEBUG(LOG_CAT_RENDERER,
-            "SSAO compute shader executed via ssao_compute_process");
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER,
+                "SSAO compute shader executed via ssao_compute_process");
 }
 
 // SSAO bilateral blur pass for denoising
@@ -110,8 +112,8 @@ static void ssao_blur_execute(RGPassContext *ctx, void *user_data) {
 
   // Bilateral blur is integrated into the compute implementation or handled
   // via its own internal passes if enabled.
-  LOG_DEBUG(LOG_CAT_RENDERER,
-            "SSAO bilateral blur integrated in compute implementation");
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER,
+                "SSAO bilateral blur integrated in compute implementation");
 }
 
 // Add SSAO pass to render graph
@@ -119,7 +121,7 @@ RGResourceHandle ssao_add_to_graph(RenderGraph *rg, SSAOContext *ctx,
                                    RGResourceHandle depth_buffer,
                                    RGResourceHandle normal_buffer) {
   if (!rg || !ctx) {
-    LOG_ERROR("Invalid render graph or SSAO context");
+    LOG_ERROR_CAT(LOG_CAT_RENDERER, "Invalid render graph or SSAO context");
     return RG_INVALID_RESOURCE;
   }
 
@@ -132,14 +134,15 @@ RGResourceHandle ssao_add_to_graph(RenderGraph *rg, SSAOContext *ctx,
   if (ctx->intensity > 2.0f)
     ctx->intensity = 2.0f;
 
-  LOG_DEBUG("SSAO pass added: radius=%.2f, intensity=%.2f", ctx->radius,
-            ctx->intensity);
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER,
+                "SSAO pass added: radius=%.2f, intensity=%.2f", ctx->radius,
+                ctx->intensity);
 
   // Create SSAO output texture
   RGTextureDesc ssao_desc = {.width = ctx->width,
                              .height = ctx->height,
                              .depth = 1,
-                             .format = TEXTURE_FORMAT_R8,
+                             .format = TEXFMT_R8,
                              .usage =
                                  TEXTURE_USAGE_STORAGE | TEXTURE_USAGE_SAMPLED,
                              .name = "SSAO_Output"};
@@ -169,7 +172,7 @@ RGResourceHandle ssao_add_to_graph(RenderGraph *rg, SSAOContext *ctx,
     RGTextureDesc blur_desc = {.width = ctx->width,
                                .height = ctx->height,
                                .depth = 1,
-                               .format = TEXTURE_FORMAT_R8,
+                               .format = TEXFMT_R8,
                                .usage = TEXTURE_USAGE_STORAGE |
                                         TEXTURE_USAGE_SAMPLED,
                                .name = "SSAO_Blurred"};

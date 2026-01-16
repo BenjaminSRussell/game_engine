@@ -14,6 +14,7 @@
 #define WEATHER_SYSTEM_H
 
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 
 #ifdef __cplusplus
@@ -202,13 +203,19 @@ typedef struct TimeOfDaySystem {
 bool time_of_day_init(TimeOfDaySystem *system, float day_length_hours);
 void time_of_day_update(TimeOfDaySystem *system, float delta_time);
 void time_of_day_set_time(TimeOfDaySystem *system, float time);
-bool time_of_day_add_preset(TimeOfDaySystem *system, const char *name, float time, const TimeOfDaySettings *settings);
+bool time_of_day_add_preset(TimeOfDaySystem *system, const char *name,
+                            float time, const TimeOfDaySettings *settings);
 void time_of_day_interpolate(TimeOfDaySystem *system, float time);
-void time_of_day_calculate_sun_position(float time, float *azimuth, float *elevation);
-void time_of_day_calculate_moon_position(float time, float moon_phase, float *azimuth, float *elevation);
-void time_of_day_calculate_sky_colors(float sun_elevation, float *zenith_color, float *horizon_color, float *ambient_color);
+void time_of_day_calculate_sun_position(float time, float *azimuth,
+                                        float *elevation);
+void time_of_day_calculate_moon_position(float time, float moon_phase,
+                                         float *azimuth, float *elevation);
+void time_of_day_calculate_sky_colors(float sun_elevation, float *zenith_color,
+                                      float *horizon_color,
+                                      float *ambient_color);
 void time_of_day_trigger_events(TimeOfDaySystem *system);
-bool time_of_day_serialize(const TimeOfDaySystem *system, char *buffer, size_t buffer_size);
+bool time_of_day_serialize(const TimeOfDaySystem *system, char *buffer,
+                           size_t buffer_size);
 bool time_of_day_deserialize(TimeOfDaySystem *system, const char *buffer);
 
 /* =================================================================================================
@@ -237,15 +244,21 @@ typedef struct VolumetricCloudSettings {
   int32_t light_march_steps;
 } VolumetricCloudSettings;
 
-float cloud_ray_march(const VolumetricCloudSettings *settings, const float *ray_start, const float *ray_dir, float max_distance, float *scattered_light);
-float cloud_density_sample(const VolumetricCloudSettings *settings, float x, float y, float z);
-float cloud_light_march(const VolumetricCloudSettings *settings, const float *start, const float *end, const float *light_dir);
-float cloud_shape_noise(const VolumetricCloudSettings *settings, float x, float y, float z);
+float cloud_ray_march(const VolumetricCloudSettings *settings,
+                      const float *ray_start, const float *ray_dir,
+                      float max_distance, float *scattered_light);
+float cloud_density_sample(const VolumetricCloudSettings *settings, float x,
+                           float y, float z);
+float cloud_light_march(const VolumetricCloudSettings *settings,
+                        const float *start, const float *end,
+                        const float *light_dir);
+float cloud_shape_noise(const VolumetricCloudSettings *settings, float x,
+                        float y, float z);
 void cloud_weather_map(const VolumetricCloudSettings *settings, float time,
                        float *out_map, uint32_t width, uint32_t height);
-void cloud_temporal_reprojection(const float *previous_map,
-                                 float *current_map, uint32_t width,
-                                 uint32_t height, float blend_factor);
+void cloud_temporal_reprojection(const float *previous_map, float *current_map,
+                                 uint32_t width, uint32_t height,
+                                 float blend_factor);
 void cloud_render(const VolumetricCloudSettings *settings,
                   const float *weather_map, uint32_t width, uint32_t height,
                   float *out_rgba);

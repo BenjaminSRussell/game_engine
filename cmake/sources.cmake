@@ -48,8 +48,9 @@ file(GLOB_RECURSE ENGINE_SOURCES
     "src/engine/core/legacy/memory_allocator.c"
     "src/engine/core/legacy/logger.c"
     "src/engine/core/legacy/hot_reload.c"
-    # New unified systems
+    # New unified systems (TODO-0002: Memory Allocator Consolidation)
     "src/engine/core/memory/unified_allocator.c"
+    "src/Runtime/Engine/memory/unified_memory_allocator.c"
     "src/engine/core/logging/unified_logger.c"
     # Core systems
     "src/engine/core/window.c"
@@ -400,6 +401,7 @@ file(GLOB_RECURSE ENGINE_SOURCES
 # Add Backend sources explicitly to exclude Vulkan/OpenGL
 # We do this here instead of in the GLOB_RECURSE above to have fine-grained control
 file(GLOB BACKEND_ROOT_SOURCES "src/engine/backend/*.c")
+list(APPEND ENGINE_SOURCES "src/engine/backend/vulkan_backend.cpp")
 # file(GLOB_RECURSE BACKEND_METAL_SOURCES "src/engine/backend/metal/*.c")
 # list(APPEND ENGINE_SOURCES ${BACKEND_ROOT_SOURCES} ${BACKEND_METAL_SOURCES})
 
@@ -547,10 +549,11 @@ list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/platform/input/.*\\.c$")
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/platform/.*input.*\\.c$")
 
 # Exclude unified allocator due to header redefinition issues
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/core/memory/unified_allocator\\.c$")
+# Re-enabled for TODO-0002: Memory Allocator Consolidation
+# list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/core/memory/unified_allocator\\.c$")
 
 # Exclude logger systems with issues
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/logging/unified_logger\\.c$")
+# list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/logging/unified_logger\\.c$")
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/core/legacy/logger\\.c$")
 # list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/player_damage\\.c$")
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/player_system_update\\.c$")

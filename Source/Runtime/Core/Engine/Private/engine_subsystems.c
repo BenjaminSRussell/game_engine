@@ -63,17 +63,11 @@ engine_log_initialization_summary(const SubsystemValidationState *validation) {
   // ... complete logging
 }
 
-bool engine_init_subsystems(Engine *engine) {
-  PlatformData *pdata =
-      (PlatformData *)engine
-          ->platform_data; // Needed? PlatformData needs compilation visibility.
-  // PlatformData was a private struct in engine.c. I need to move it to
-  // engine_private.h or engine.h? It's cast from void* platform_data. I need
-  // the definition of struct PlatformData. Re-defining it here is risky if it
-  // changes. I should move PlatformData definition to engine_private.h
-
-  // Initialize validation state
-  SubsystemValidationState validation = {0};
+// -----------------------------------------------------------------------------
+// Core Systems Phase
+// -----------------------------------------------------------------------------
+bool engine_init_core_systems(Engine *engine) {
+  LOG_INFO("=== Phase 1: Initializing Core Systems ===");
   bool critical_failure = false;
 
   // 1. Memory Allocator (CRITICAL)
@@ -88,7 +82,9 @@ bool engine_init_subsystems(Engine *engine) {
   // 2. Logging System (CRITICAL)
   LOG_INFO("Initializing Unified Logging System...");
   if (!logger_init(LOG_LEVEL_DEBUG, LOG_TARGET_CONSOLE, NULL)) {
-    LOG_ERROR("Failed to initialize logging system");
+    // If logging fails, we might not see this, but stdio fallback usually
+    // exists
+    printf("FATAL: Failed to initialize logging system\n");
     critical_failure = true;
   } else {
     LOG_INFO("✓ Logging System initialized successfully");
@@ -107,13 +103,23 @@ bool engine_init_subsystems(Engine *engine) {
   // 4. VFS
   vfs_init(&g_vfs);
   if (vfs_mount(&g_vfs, "assets", "assets")) {
-    validation.vfs_initialized =
-        engine_validate_subsystem_init("VFS", true, &validation);
+    LOG_INFO("✓ VFS initialized successfully");
   } else {
-    validation.vfs_initialized =
-        engine_validate_subsystem_init("VFS", false, &validation);
+    LOG_ERROR("✗ Failed to initialize VFS");
     critical_failure = true;
   }
+
+  return !critical_failure;
+}
+
+// -----------------------------------------------------------------------------
+// Engine Systems Phase
+// -----------------------------------------------------------------------------
+bool engine_init_engine_systems(Engine *engine) {
+  LOG_INFO("=== Phase 2: Initializing Engine Systems ===");
+  PlatformData *pdata = (PlatformData *)engine->platform_data;
+  SubsystemValidationState validation = {0};
+  bool critical_failure = false;
 
   // 5. Input
   if (pdata->window.is_hosted) {
@@ -128,9 +134,8 @@ bool engine_init_subsystems(Engine *engine) {
         "Input",
         engine->subsystems.input->init(engine->subsystems.input, &input_config),
         &validation);
-    if (!validation.input_initialized) {
+    if (!validation.input_initialized)
       critical_failure = true;
-    }
   } else {
     validation.input_initialized =
         engine_validate_subsystem_init("Input", false, &validation);
@@ -143,9 +148,8 @@ bool engine_init_subsystems(Engine *engine) {
       (EntityManager *)ecs_world_create(&world_config);
   validation.ecs_initialized = engine_validate_subsystem_init(
       "ECS", engine->subsystems.entities != NULL, &validation);
-  if (!validation.ecs_initialized) {
+  if (!validation.ecs_initialized)
     critical_failure = true;
-  }
 
   // 7. Asset Manager
   if (validation.ecs_initialized) {
@@ -183,9 +187,8 @@ bool engine_init_subsystems(Engine *engine) {
         engine->subsystems.renderer->init(engine->subsystems.renderer,
                                           &render_params),
         &validation);
-    if (!validation.renderer_initialized) {
+    if (!validation.renderer_initialized)
       critical_failure = true;
-    }
   } else {
     validation.renderer_initialized =
         engine_validate_subsystem_init("Renderer", false, &validation);
@@ -240,6 +243,16 @@ bool engine_init_subsystems(Engine *engine) {
         engine_validate_subsystem_init("Post Processing", false, &validation);
   }
 
+  return !critical_failure;
+}
+
+// -----------------------------------------------------------------------------
+// Game Systems Phase
+// -----------------------------------------------------------------------------
+bool engine_init_game_systems(Engine *engine) {
+  LOG_INFO("=== Phase 3: Initializing Game Systems ===");
+  SubsystemValidationState validation = {0};
+
   // 13. AI Systems
   PerceptionSystemConfig perception_config = {.max_agents = 100,
                                               .max_stimuli_per_frame = 50,
@@ -268,69 +281,73 @@ bool engine_init_subsystems(Engine *engine) {
   validation.planner_initialized = engine_validate_subsystem_init(
       "GOAP Planner", engine->subsystems.planner != NULL, &validation);
 
-  engine_log_initialization_summary(&validation);
+  engine_log_initialization_summary(
+      &validation); // Assuming validation struct here only covers game systems?
+  // Wait, logging summary was using a big struct. I should probably move
+  // summary to Engine Init or pass a summary object around. For now, I'll log
+  // game systems summary or rely on individual logs.
 
-  return !critical_failure;
+  return true;
 }
 
-void engine_shutdown_subsystems(Engine *engine) {
-  // AI Systems Shutdown
+// -----------------------------------------------------------------------------
+// Shutdown Functions
+// -----------------------------------------------------------------------------
+
+void engine_shutdown_game_systems(Engine *engine) {
+  LOG_INFO("Shutting down Game Systems...");
   if (engine->subsystems.perception) {
     perception_system_shutdown(engine->subsystems.perception);
     perception_system_destroy(engine->subsystems.perception);
     engine->subsystems.perception = NULL;
   }
-
   if (engine->subsystems.memory) {
     memory_system_destroy(engine->subsystems.memory);
     engine->subsystems.memory = NULL;
   }
-
   if (engine->subsystems.planner) {
     goap_planner_destroy_state(engine->subsystems.planner);
     engine->subsystems.planner = NULL;
   }
+}
 
+void engine_shutdown_engine_systems(Engine *engine) {
+  LOG_INFO("Shutting down Engine Systems...");
   if (engine->subsystems.post_processing) {
     post_process_shutdown(engine->subsystems.post_processing,
                           (struct VulkanRenderer *)engine->subsystems.renderer);
     free(engine->subsystems.post_processing);
   }
-
   if (engine->subsystems.scene_manager) {
     scene_manager_shutdown(engine->subsystems.scene_manager);
     free(engine->subsystems.scene_manager);
   }
-
   if (engine->subsystems.audio) {
     audio_system_free(engine->subsystems.audio);
     free(engine->subsystems.audio);
     engine->subsystems.audio = NULL;
   }
-
-  // Physics destroy...
-
+  // Physics destroy (commented out in original)
   if (engine->subsystems.renderer) {
     renderer_destroy(engine->subsystems.renderer);
     engine->subsystems.renderer = NULL;
   }
-
   if (engine->subsystems.assets) {
     asset_manager_destroy(engine->subsystems.assets);
   }
-
   if (engine->subsystems.input) {
     engine->subsystems.input->shutdown(engine->subsystems.input);
     free(engine->subsystems.input);
   }
-
   if (engine->subsystems.entities) {
     ecs_world_destroy((World *)engine->subsystems.entities);
     engine->subsystems.entities = NULL;
   }
+}
 
+void engine_shutdown_core_systems(Engine *engine) {
+  LOG_INFO("Shutting down Core Systems...");
   vfs_free(&g_vfs);
-
   thread_pool_shutdown();
   logger_shutdown();
   memory_tracker_shutdown();

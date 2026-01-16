@@ -1,276 +1,286 @@
 // Bloom Post-Processing Pipeline Implementation
-// Extracts bright pixels and distributes them across mip pyramid for bloom effect
+// Extracts bright pixels and distributes them across mip pyramid for bloom
+// effect
 #include "bloom.h"
-#include "core/logging/unified_logger.h"
+#include "core/logger/unified_logger.h"
+#include "include/rendering/texture_system.h"
 #include "rendering/frame_graph/frame_graph.h"
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+
+#ifndef INVALID_TEXTURE_ID
+#define INVALID_TEXTURE_ID 0xFFFFFFFF
+#endif
 
 // Bloom context for pipeline state
-typedef struct {
-    BloomSettings settings;
-    RGResourceHandle mip_chain[BLOOM_MAX_MIP_LEVELS];
-    u32 mip_count;
-    bool initialized;
-} BloomContext;
+struct BloomContext {
+  BloomSettings settings;
+  RGResourceHandle mip_chain[BLOOM_MAX_MIP_LEVELS];
+  u32 mip_count;
+  bool initialized;
+};
 
 // Create bloom context
-BloomContext* bloom_create(u32 width, u32 height) {
-    BloomContext *ctx = malloc(sizeof(BloomContext));
-    if (!ctx) {
-        LOG_ERROR("GRAPHICS", "Failed to allocate bloom context");
-        return NULL;
-    }
+BloomContext *bloom_create(u32 width, u32 height) {
+  BloomContext *ctx = malloc(sizeof(BloomContext));
+  if (!ctx) {
+    LOG_ERROR_CAT(LOG_CAT_GRAPHICS, "Failed to allocate bloom context");
+    return NULL;
+  }
 
-    memset(ctx, 0, sizeof(BloomContext));
+  memset(ctx, 0, sizeof(BloomContext));
 
-    // Initialize default settings
-    ctx->settings.threshold = 1.0f;
-    ctx->settings.soft_knee = 0.5f;
-    ctx->settings.intensity = 0.04f;
-    ctx->settings.scatter = 0.7f;
-    ctx->settings.color_shift_r = 1.0f;
-    ctx->settings.color_shift_g = 1.0f;
-    ctx->settings.color_shift_b = 1.0f;
-    ctx->settings.quality = BLOOM_QUALITY_HIGH;
-    ctx->settings.mip_count = BLOOM_DEFAULT_MIP_LEVELS;
-    ctx->settings.enable_anamorphic = false;
-    ctx->settings.enable_lens_dirt = false;
-    ctx->settings.enable_lens_flare = false;
-    ctx->settings.lens_dirt_intensity = 0.1f;
+  // Initialize default settings
+  ctx->settings.threshold = 1.0f;
+  ctx->settings.soft_knee = 0.5f;
+  ctx->settings.intensity = 0.04f;
+  ctx->settings.scatter = 0.7f;
+  ctx->settings.color_shift_r = 1.0f;
+  ctx->settings.color_shift_g = 1.0f;
+  ctx->settings.color_shift_b = 1.0f;
+  ctx->settings.quality = BLOOM_QUALITY_HIGH;
+  ctx->settings.mip_count = BLOOM_DEFAULT_MIP_LEVELS;
+  ctx->settings.enable_anamorphic = false;
+  ctx->settings.enable_lens_dirt = false;
+  ctx->settings.enable_lens_flare = false;
+  ctx->settings.lens_dirt_intensity = 0.1f;
 
-    ctx->mip_count = ctx->settings.mip_count;
-    ctx->initialized = true;
+  ctx->mip_count = ctx->settings.mip_count;
+  ctx->initialized = true;
 
-    LOG_INFO("GRAPHICS", "Bloom context created: %ux%u with %u mips", width, height, ctx->mip_count);
-    return ctx;
+  LOG_INFO_CAT(LOG_CAT_GRAPHICS, "Bloom context created: %ux%u with %u mips",
+               width, height, ctx->mip_count);
+  return ctx;
 }
 
 // Destroy bloom context
 void bloom_destroy(BloomContext *ctx) {
-    if (!ctx) return;
-    free(ctx);
-    LOG_INFO("GRAPHICS", "Bloom context destroyed");
+  if (!ctx)
+    return;
+  free(ctx);
+  LOG_INFO_CAT(LOG_CAT_GRAPHICS, "Bloom context destroyed");
 }
 
 // Update bloom settings
 void bloom_update_settings(BloomContext *ctx, const BloomSettings *settings) {
-    if (!ctx || !settings) return;
-    memcpy(&ctx->settings, settings, sizeof(BloomSettings));
-    ctx->mip_count = settings->mip_count;
-    LOG_DEBUG("GRAPHICS", "Bloom settings updated: threshold=%.2f, intensity=%.4f",
-              settings->threshold, settings->intensity);
+  if (!ctx || !settings)
+    return;
+  memcpy(&ctx->settings, settings, sizeof(BloomSettings));
+  ctx->mip_count = settings->mip_count;
+  LOG_DEBUG_CAT(LOG_CAT_GRAPHICS,
+                "Bloom settings updated: threshold=%.2f, intensity=%.4f",
+                settings->threshold, settings->intensity);
 }
 
 // Bloom threshold pass - extracts bright pixels
 typedef struct {
-    BloomContext *ctx;
-    RGResourceHandle scene_color;
-    RGResourceHandle output;
+  BloomContext *ctx;
+  RGResourceHandle scene_color;
+  RGResourceHandle output;
 } BloomThresholdPassData;
 
 static void bloom_threshold_execute(RGPassContext *ctx, void *user_data) {
-    BloomThresholdPassData *data = (BloomThresholdPassData *)user_data;
-    if (!data || !data->ctx) return;
+  BloomThresholdPassData *data = (BloomThresholdPassData *)user_data;
+  if (!data || !data->ctx)
+    return;
 
-    TextureID input_tex = rg_ctx_get_texture(ctx, data->scene_color);
-    TextureID output_tex = rg_ctx_get_texture(ctx, data->output);
+  TextureID input_tex = rg_ctx_get_texture(ctx, data->scene_color);
+  TextureID output_tex = rg_ctx_get_texture(ctx, data->output);
 
-    if (input_tex == INVALID_TEXTURE_ID || output_tex == INVALID_TEXTURE_ID) {
-        LOG_ERROR("GRAPHICS", "Invalid textures for bloom threshold pass");
-        return;
-    }
+  if (input_tex == INVALID_TEXTURE_ID || output_tex == INVALID_TEXTURE_ID) {
+    LOG_ERROR_CAT(LOG_CAT_GRAPHICS,
+                  "Invalid textures for bloom threshold pass");
+    return;
+  }
 
-    // TODO: Dispatch bloom threshold extraction shader
-    // Shader will:
-    // 1. Sample input scene color
-    // 2. Calculate luminance using standard formula
-    // 3. Apply soft-knee threshold function
-    // 4. Apply color shift
-    // 5. Output bright pixels to temporary texture
+  // TODO: Dispatch bloom threshold extraction shader
+  // Shader will:
+  // 1. Sample input scene color
+  // 2. Calculate luminance using standard formula
+  // 3. Apply soft-knee threshold function
+  // 4. Apply color shift
+  // 5. Output bright pixels to temporary texture
 
-    LOG_DEBUG("GRAPHICS", "Bloom threshold pass executed");
+  LOG_DEBUG_CAT(LOG_CAT_GRAPHICS, "Bloom threshold pass executed");
 }
 
 // Bloom downsample pass
 typedef struct {
-    BloomContext *ctx;
-    RGResourceHandle input;
-    RGResourceHandle output_mips[BLOOM_MAX_MIP_LEVELS];
-    u32 mip_count;
+  BloomContext *ctx;
+  RGResourceHandle input;
+  RGResourceHandle output_mips[BLOOM_MAX_MIP_LEVELS];
+  u32 mip_count;
 } BloomDownsamplePassData;
 
 static void bloom_downsample_execute(RGPassContext *ctx, void *user_data) {
-    BloomDownsamplePassData *data = (BloomDownsamplePassData *)user_data;
-    if (!data || !data->ctx) return;
+  BloomDownsamplePassData *data = (BloomDownsamplePassData *)user_data;
+  if (!data || !data->ctx)
+    return;
 
-    TextureID input_tex = rg_ctx_get_texture(ctx, data->input);
-    if (input_tex == INVALID_TEXTURE_ID) {
-        LOG_ERROR("GRAPHICS", "Invalid input for bloom downsample");
-        return;
-    }
+  TextureID input_tex = rg_ctx_get_texture(ctx, data->input);
+  if (input_tex == INVALID_TEXTURE_ID) {
+    LOG_ERROR_CAT(LOG_CAT_GRAPHICS, "Invalid input for bloom downsample");
+    return;
+  }
 
-    // TODO: Dispatch downsampling compute shader for mip pyramid
-    // Shader will:
-    // 1. Read from input texture
-    // 2. Apply 13-tap tent filter (higher quality than box filter)
-    // 3. Write to mip level 0
-    // 4. Subsequent mips generated by dispatching shader multiple times
-    // 5. Each level uses 4:1 pixel ratio with tent filter
+  // TODO: Dispatch downsampling compute shader for mip pyramid
+  // Shader will:
+  // 1. Read from input texture
+  // 2. Apply 13-tap tent filter (higher quality than box filter)
+  // 3. Write to mip level 0
+  // 4. Subsequent mips generated by dispatching shader multiple times
+  // 5. Each level uses 4:1 pixel ratio with tent filter
 
-    LOG_DEBUG("GRAPHICS", "Bloom downsample executed for %u mips", data->mip_count);
+  LOG_DEBUG_CAT(LOG_CAT_GRAPHICS, "Bloom downsample executed for %u mips",
+                data->mip_count);
 }
 
 // Bloom upsample pass
 typedef struct {
-    BloomContext *ctx;
-    RGResourceHandle mip_chain[BLOOM_MAX_MIP_LEVELS];
-    RGResourceHandle output;
-    u32 mip_count;
+  BloomContext *ctx;
+  RGResourceHandle mip_chain[BLOOM_MAX_MIP_LEVELS];
+  RGResourceHandle output;
+  u32 mip_count;
 } BloomUpsamplePassData;
 
 static void bloom_upsample_execute(RGPassContext *ctx, void *user_data) {
-    BloomUpsamplePassData *data = (BloomUpsamplePassData *)user_data;
-    if (!data || !data->ctx) return;
+  BloomUpsamplePassData *data = (BloomUpsamplePassData *)user_data;
+  if (!data || !data->ctx)
+    return;
 
-    // Get all mip textures
-    TextureID mips[BLOOM_MAX_MIP_LEVELS];
-    for (u32 i = 0; i < data->mip_count; i++) {
-        mips[i] = rg_ctx_get_texture(ctx, data->mip_chain[i]);
-        if (mips[i] == INVALID_TEXTURE_ID) {
-            LOG_ERROR("GRAPHICS", "Invalid mip texture %u for bloom upsample", i);
-            return;
-        }
+  // Get all mip textures
+  TextureID mips[BLOOM_MAX_MIP_LEVELS];
+  for (u32 i = 0; i < data->mip_count; i++) {
+    mips[i] = rg_ctx_get_texture(ctx, data->mip_chain[i]);
+    if (mips[i] == INVALID_TEXTURE_ID) {
+      LOG_ERROR_CAT(LOG_CAT_GRAPHICS,
+                    "Invalid mip texture %u for bloom upsample", i);
+      return;
     }
+  }
 
-    TextureID output_tex = rg_ctx_get_texture(ctx, data->output);
-    if (output_tex == INVALID_TEXTURE_ID) {
-        LOG_ERROR("GRAPHICS", "Invalid output for bloom upsample");
-        return;
-    }
+  TextureID output_tex = rg_ctx_get_texture(ctx, data->output);
+  if (output_tex == INVALID_TEXTURE_ID) {
+    LOG_ERROR_CAT(LOG_CAT_GRAPHICS, "Invalid output for bloom upsample");
+    return;
+  }
 
-    // TODO: Dispatch upsampling compute shader
-    // Shader will:
-    // 1. Start from smallest mip level (highest index)
-    // 2. Upsample using 9-tap tent filter (smooth blending)
-    // 3. Add to next mip level (accumulative blurring)
-    // 4. Continue until mip 0
-    // 5. Write final result to output texture
+  // TODO: Dispatch upsampling compute shader
+  // Shader will:
+  // 1. Start from smallest mip level (highest index)
+  // 2. Upsample using 9-tap tent filter (smooth blending)
+  // 3. Add to next mip level (accumulative blurring)
+  // 4. Continue until mip 0
+  // 5. Write final result to output texture
 
-    LOG_DEBUG("GRAPHICS", "Bloom upsample executed for %u mips", data->mip_count);
+  LOG_DEBUG_CAT(LOG_CAT_GRAPHICS, "Bloom upsample executed for %u mips",
+                data->mip_count);
 }
 
 // Add complete bloom pipeline to render graph
-RGResourceHandle bloom_add_to_graph(RenderGraph *rg,
-                                     BloomContext *ctx,
-                                     RGResourceHandle scene_color) {
-    if (!rg || !ctx) {
-        LOG_ERROR("GRAPHICS", "Invalid render graph or bloom context");
-        return RG_INVALID_RESOURCE;
-    }
+RGResourceHandle bloom_add_to_graph(RenderGraph *rg, BloomContext *ctx,
+                                    RGResourceHandle scene_color) {
+  if (!rg || !ctx) {
+    LOG_ERROR_CAT(LOG_CAT_GRAPHICS, "Invalid render graph or bloom context");
+    return RG_INVALID_RESOURCE;
+  }
 
-    // Step 1: Threshold pass - extract bright pixels
-    RGTextureDesc threshold_desc = {
-        .width = 1920,  // TODO: Get actual resolution
-        .height = 1080,
-        .depth = 1,
-        .format = TEXTURE_FORMAT_RGBA16F,
-        .usage = TEXTURE_USAGE_STORAGE | TEXTURE_USAGE_SAMPLED,
-        .name = "Bloom_Threshold"
-    };
-    RGResourceHandle threshold_output = rg_create_texture(rg, &threshold_desc);
+  // Step 1: Threshold pass - extract bright pixels
+  RGTextureDesc threshold_desc = {.width = 1920, // TODO: Get actual resolution
+                                  .height = 1080,
+                                  .depth = 1,
+                                  .format = TEXFMT_RGBA16F,
+                                  .usage = TEXTURE_USAGE_STORAGE |
+                                           TEXTURE_USAGE_SAMPLED,
+                                  .name = "Bloom_Threshold"};
+  RGResourceHandle threshold_output = rg_create_texture(rg, &threshold_desc);
 
-    BloomThresholdPassData *threshold_data = malloc(sizeof(BloomThresholdPassData));
-    threshold_data->ctx = ctx;
-    threshold_data->scene_color = scene_color;
-    threshold_data->output = threshold_output;
+  BloomThresholdPassData *threshold_data =
+      malloc(sizeof(BloomThresholdPassData));
+  threshold_data->ctx = ctx;
+  threshold_data->scene_color = scene_color;
+  threshold_data->output = threshold_output;
 
-    RGPassDesc threshold_pass_desc = {
-        .name = "Bloom_Threshold",
-        .execute = bloom_threshold_execute,
-        .user_data = threshold_data,
-        .queue_type = RG_QUEUE_COMPUTE_ASYNC,
-        .priority = 90
-    };
-    RGPassHandle threshold_pass = rg_add_pass(rg, &threshold_pass_desc);
-    rg_pass_read(rg, threshold_pass, scene_color);
-    rg_pass_write(rg, threshold_pass, threshold_output);
+  RGPassDesc threshold_pass_desc = {.name = "Bloom_Threshold",
+                                    .execute = bloom_threshold_execute,
+                                    .user_data = threshold_data,
+                                    .queue_type = RG_QUEUE_COMPUTE_ASYNC,
+                                    .priority = 90};
+  RGPassHandle threshold_pass = rg_add_pass(rg, &threshold_pass_desc);
+  rg_pass_read(rg, threshold_pass, scene_color);
+  rg_pass_write(rg, threshold_pass, threshold_output);
 
-    // Step 2: Downsample pass - create mip pyramid
-    RGTextureDesc mip_desc = {
-        .width = 960,   // Half resolution for mip 0
-        .height = 540,
-        .depth = 1,
-        .format = TEXTURE_FORMAT_RGBA16F,
-        .usage = TEXTURE_USAGE_STORAGE | TEXTURE_USAGE_SAMPLED,
-        .name = "Bloom_Mip0"
-    };
-    RGResourceHandle mip_resources[BLOOM_MAX_MIP_LEVELS];
-    mip_resources[0] = rg_create_texture(rg, &mip_desc);
+  // Step 2: Downsample pass - create mip pyramid
+  RGTextureDesc mip_desc = {.width = 960, // Half resolution for mip 0
+                            .height = 540,
+                            .depth = 1,
+                            .format = TEXFMT_RGBA16F,
+                            .usage =
+                                TEXTURE_USAGE_STORAGE | TEXTURE_USAGE_SAMPLED,
+                            .name = "Bloom_Mip0"};
+  RGResourceHandle mip_resources[BLOOM_MAX_MIP_LEVELS];
+  mip_resources[0] = rg_create_texture(rg, &mip_desc);
 
-    for (u32 i = 1; i < ctx->mip_count; i++) {
-        mip_desc.width = MAX(1, mip_desc.width / 2);
-        mip_desc.height = MAX(1, mip_desc.height / 2);
-        char name[32];
-        snprintf(name, sizeof(name), "Bloom_Mip%u", i);
-        mip_desc.name = name;
-        mip_resources[i] = rg_create_texture(rg, &mip_desc);
-    }
+  for (u32 i = 1; i < ctx->mip_count; i++) {
+    mip_desc.width = MAX(1, mip_desc.width / 2);
+    mip_desc.height = MAX(1, mip_desc.height / 2);
+    char name[32];
+    snprintf(name, sizeof(name), "Bloom_Mip%u", i);
+    mip_desc.name = name;
+    mip_resources[i] = rg_create_texture(rg, &mip_desc);
+  }
 
-    BloomDownsamplePassData *downsample_data = malloc(sizeof(BloomDownsamplePassData));
-    downsample_data->ctx = ctx;
-    downsample_data->input = threshold_output;
-    downsample_data->mip_count = ctx->mip_count;
-    for (u32 i = 0; i < ctx->mip_count; i++) {
-        downsample_data->output_mips[i] = mip_resources[i];
-    }
+  BloomDownsamplePassData *downsample_data =
+      malloc(sizeof(BloomDownsamplePassData));
+  downsample_data->ctx = ctx;
+  downsample_data->input = threshold_output;
+  downsample_data->mip_count = ctx->mip_count;
+  for (u32 i = 0; i < ctx->mip_count; i++) {
+    downsample_data->output_mips[i] = mip_resources[i];
+  }
 
-    RGPassDesc downsample_pass_desc = {
-        .name = "Bloom_Downsample",
-        .execute = bloom_downsample_execute,
-        .user_data = downsample_data,
-        .queue_type = RG_QUEUE_COMPUTE_ASYNC,
-        .priority = 85
-    };
-    RGPassHandle downsample_pass = rg_add_pass(rg, &downsample_pass_desc);
-    rg_pass_read(rg, downsample_pass, threshold_output);
-    for (u32 i = 0; i < ctx->mip_count; i++) {
-        rg_pass_write(rg, downsample_pass, mip_resources[i]);
-    }
+  RGPassDesc downsample_pass_desc = {.name = "Bloom_Downsample",
+                                     .execute = bloom_downsample_execute,
+                                     .user_data = downsample_data,
+                                     .queue_type = RG_QUEUE_COMPUTE_ASYNC,
+                                     .priority = 85};
+  RGPassHandle downsample_pass = rg_add_pass(rg, &downsample_pass_desc);
+  rg_pass_read(rg, downsample_pass, threshold_output);
+  for (u32 i = 0; i < ctx->mip_count; i++) {
+    rg_pass_write(rg, downsample_pass, mip_resources[i]);
+  }
 
-    // Step 3: Upsample pass - combine mip pyramid
-    RGTextureDesc final_desc = {
-        .width = 1920,
-        .height = 1080,
-        .depth = 1,
-        .format = TEXTURE_FORMAT_RGBA16F,
-        .usage = TEXTURE_USAGE_STORAGE | TEXTURE_USAGE_SAMPLED,
-        .name = "Bloom_Output"
-    };
-    RGResourceHandle bloom_output = rg_create_texture(rg, &final_desc);
+  // Step 3: Upsample pass - combine mip pyramid
+  RGTextureDesc final_desc = {.width = 1920,
+                              .height = 1080,
+                              .depth = 1,
+                              .format = TEXFMT_RGBA16F,
+                              .usage =
+                                  TEXTURE_USAGE_STORAGE | TEXTURE_USAGE_SAMPLED,
+                              .name = "Bloom_Output"};
+  RGResourceHandle bloom_output = rg_create_texture(rg, &final_desc);
 
-    BloomUpsamplePassData *upsample_data = malloc(sizeof(BloomUpsamplePassData));
-    upsample_data->ctx = ctx;
-    upsample_data->output = bloom_output;
-    upsample_data->mip_count = ctx->mip_count;
-    for (u32 i = 0; i < ctx->mip_count; i++) {
-        upsample_data->mip_chain[i] = mip_resources[i];
-    }
+  BloomUpsamplePassData *upsample_data = malloc(sizeof(BloomUpsamplePassData));
+  upsample_data->ctx = ctx;
+  upsample_data->output = bloom_output;
+  upsample_data->mip_count = ctx->mip_count;
+  for (u32 i = 0; i < ctx->mip_count; i++) {
+    upsample_data->mip_chain[i] = mip_resources[i];
+  }
 
-    RGPassDesc upsample_pass_desc = {
-        .name = "Bloom_Upsample",
-        .execute = bloom_upsample_execute,
-        .user_data = upsample_data,
-        .queue_type = RG_QUEUE_COMPUTE_ASYNC,
-        .priority = 80
-    };
-    RGPassHandle upsample_pass = rg_add_pass(rg, &upsample_pass_desc);
-    for (u32 i = 0; i < ctx->mip_count; i++) {
-        rg_pass_read(rg, upsample_pass, mip_resources[i]);
-    }
-    rg_pass_write(rg, upsample_pass, bloom_output);
+  RGPassDesc upsample_pass_desc = {.name = "Bloom_Upsample",
+                                   .execute = bloom_upsample_execute,
+                                   .user_data = upsample_data,
+                                   .queue_type = RG_QUEUE_COMPUTE_ASYNC,
+                                   .priority = 80};
+  RGPassHandle upsample_pass = rg_add_pass(rg, &upsample_pass_desc);
+  for (u32 i = 0; i < ctx->mip_count; i++) {
+    rg_pass_read(rg, upsample_pass, mip_resources[i]);
+  }
+  rg_pass_write(rg, upsample_pass, bloom_output);
 
-    LOG_INFO("GRAPHICS", "Bloom pipeline added to graph with %u mips", ctx->mip_count);
-    return bloom_output;
+  LOG_INFO_CAT(LOG_CAT_GRAPHICS, "Bloom pipeline added to graph with %u mips",
+               ctx->mip_count);
+  return bloom_output;
 }

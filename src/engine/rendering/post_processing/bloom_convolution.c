@@ -1,6 +1,6 @@
 // Bloom Post-Processing Effect using Separable Gaussian Convolution
 // Fast bloom using hierarchical downsampling and upsampling
-#include "core/logging/unified_logger.h"
+#include "core/logger/unified_logger.h"
 #include "rendering/frame_graph/frame_graph.h"
 #include "rendering/post_processing/bloom_compute.h"
 #include <stdlib.h>

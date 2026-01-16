@@ -1,5 +1,5 @@
 // Source/Runtime/Core/Engine/Private/engine_callbacks.c
-#include "../Private/engine_private.h"
+#include "engine_private.h"
 #include <ai/npc/perception_system.h>
 #include <ai/npc_advanced/memory_system.h>
 #include <core/game_loop.h>

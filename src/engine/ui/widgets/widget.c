@@ -124,6 +124,18 @@ Widget *widget_create(const char *name) {
     return NULL;
   }
 
+  if (!widget_init(widget, name)) {
+    memory_free(widget);
+    return NULL;
+  }
+
+  return widget;
+}
+
+bool widget_init(Widget *widget, const char *name) {
+  if (!widget)
+    return false;
+
   memset(widget, 0, sizeof(Widget));
 
   widget->id = g_widget_id_counter++;
@@ -149,8 +161,8 @@ Widget *widget_create(const char *name) {
   widget->needs_layout = true;
   widget->needs_redraw = true;
 
-  LOG_INFO("Created widget: %s (ID: %u)", name ? name : "unnamed", widget->id);
-  return widget;
+  LOG_INFO("Initialized widget: %s (ID: %u)", widget->name, widget->id);
+  return true;
 }
 
 void widget_destroy(Widget *widget) {

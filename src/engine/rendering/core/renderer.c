@@ -232,7 +232,7 @@ bool renderer_initialize(Renderer *renderer) {
     return false;
 
   if (renderer->is_initialized) {
-    LOG_WARNING("Renderer already initialized");
+    LOG_WARN("Renderer already initialized"); // Fixed LOG_WARNING
     return true;
   }
 
@@ -442,11 +442,7 @@ static bool renderer_validate_window(Window *window) {
     return false;
   }
 
-  // Check if window is properly initialized
-  if (!window->is_valid) {
-    LOG_ERROR("Window is not marked as valid");
-    return false;
-  }
+  // Removed is_valid check as it's not in struct
 
   // Check window dimensions
   if (window->width == 0 || window->height == 0) {
@@ -476,10 +472,12 @@ static bool renderer_validate_framebuffer(Framebuffer *framebuffer) {
     return false;
   }
 
-  // Check framebuffer dimensions
-  if (framebuffer->width == 0 || framebuffer->height == 0) {
-    LOG_ERROR("Framebuffer has invalid dimensions: %ux%u", framebuffer->width,
-              framebuffer->height);
+  // Check framebuffer dimensions using accessors
+  u32 fb_width = framebuffer_get_width(framebuffer);
+  u32 fb_height = framebuffer_get_height(framebuffer);
+
+  if (fb_width == 0 || fb_height == 0) {
+    LOG_ERROR("Framebuffer has invalid dimensions: %ux%u", fb_width, fb_height);
     return false;
   }
 
