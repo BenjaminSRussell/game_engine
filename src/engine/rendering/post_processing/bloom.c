@@ -1,69 +1,16 @@
-// Bloom Post-Processing Pipeline Implementation
-// Extracts bright pixels and distributes them across mip pyramid for bloom effect
-#include "bloom.h"
-#include "core/logging/unified_logger.h"
-#include "rendering/frame_graph/frame_graph.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include "render_graph.h"
+#include "bloom.h"
+#include "logger.h"
 
-// Bloom context for pipeline state
+// Bloom context
 typedef struct {
-    BloomSettings settings;
-    RGResourceHandle mip_chain[BLOOM_MAX_MIP_LEVELS];
     u32 mip_count;
-    bool initialized;
 } BloomContext;
 
-// Create bloom context
-BloomContext* bloom_create(u32 width, u32 height) {
-    BloomContext *ctx = malloc(sizeof(BloomContext));
-    if (!ctx) {
-        LOG_ERROR("GRAPHICS", "Failed to allocate bloom context");
-        return NULL;
-    }
-
-    memset(ctx, 0, sizeof(BloomContext));
-
-    // Initialize default settings
-    ctx->settings.threshold = 1.0f;
-    ctx->settings.soft_knee = 0.5f;
-    ctx->settings.intensity = 0.04f;
-    ctx->settings.scatter = 0.7f;
-    ctx->settings.color_shift_r = 1.0f;
-    ctx->settings.color_shift_g = 1.0f;
-    ctx->settings.color_shift_b = 1.0f;
-    ctx->settings.quality = BLOOM_QUALITY_HIGH;
-    ctx->settings.mip_count = BLOOM_DEFAULT_MIP_LEVELS;
-    ctx->settings.enable_anamorphic = false;
-    ctx->settings.enable_lens_dirt = false;
-    ctx->settings.enable_lens_flare = false;
-    ctx->settings.lens_dirt_intensity = 0.1f;
-
-    ctx->mip_count = ctx->settings.mip_count;
-    ctx->initialized = true;
-
-    LOG_INFO("GRAPHICS", "Bloom context created: %ux%u with %u mips", width, height, ctx->mip_count);
-    return ctx;
-}
-
-// Destroy bloom context
-void bloom_destroy(BloomContext *ctx) {
-    if (!ctx) return;
-    free(ctx);
-    LOG_INFO("GRAPHICS", "Bloom context destroyed");
-}
-
-// Update bloom settings
-void bloom_update_settings(BloomContext *ctx, const BloomSettings *settings) {
-    if (!ctx || !settings) return;
-    memcpy(&ctx->settings, settings, sizeof(BloomSettings));
-    ctx->mip_count = settings->mip_count;
-    LOG_DEBUG("GRAPHICS", "Bloom settings updated: threshold=%.2f, intensity=%.4f",
-              settings->threshold, settings->intensity);
-}
-
-// Bloom threshold pass - extracts bright pixels
+// Bloom threshold pass
 typedef struct {
     BloomContext *ctx;
     RGResourceHandle scene_color;
@@ -74,15 +21,19 @@ static void bloom_threshold_execute(RGPassContext *ctx, void *user_data) {
     BloomThresholdPassData *data = (BloomThresholdPassData *)user_data;
     if (!data || !data->ctx) return;
 
-    TextureID input_tex = rg_ctx_get_texture(ctx, data->scene_color);
-    TextureID output_tex = rg_ctx_get_texture(ctx, data->output);
-
-    if (input_tex == INVALID_TEXTURE_ID || output_tex == INVALID_TEXTURE_ID) {
-        LOG_ERROR("GRAPHICS", "Invalid textures for bloom threshold pass");
+    TextureID scene_tex = rg_ctx_get_texture(ctx, data->scene_color);
+    if (scene_tex == INVALID_TEXTURE_ID) {
+        LOG_ERROR("GRAPHICS", "Invalid input for bloom threshold");
         return;
     }
 
-    // TODO: Dispatch bloom threshold extraction shader
+    TextureID output_tex = rg_ctx_get_texture(ctx, data->output);
+    if (output_tex == INVALID_TEXTURE_ID) {
+        LOG_ERROR("GRAPHICS", "Invalid output for bloom threshold");
+        return;
+    }
+
+    // TODO: Dispatch threshold compute shader
     // Shader will:
     // 1. Sample input scene color
     // 2. Calculate luminance using standard formula
@@ -271,6 +222,5 @@ RGResourceHandle bloom_add_to_graph(RenderGraph *rg,
     }
     rg_pass_write(rg, upsample_pass, bloom_output);
 
-    LOG_INFO("GRAPHICS", "Bloom pipeline added to graph with %u mips", ctx->mip_count);
     return bloom_output;
 }
