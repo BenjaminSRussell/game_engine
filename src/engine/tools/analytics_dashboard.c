@@ -12,12 +12,6 @@
 
 // MARK: - Helper Functions
 
-static u64 get_current_time_ms(void) {
-    struct timespec ts;
-    clock_gettime(CLOCK_MONOTONIC, &ts);
-    return (u64)(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
-}
-
 static Vec4 get_chart_color(u32 index) {
     static const Vec4 colors[] = {
         {1.0f, 0.0f, 0.0f, 1.0f},  // Red
