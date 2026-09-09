@@ -12,7 +12,7 @@ static PhysicsDemo* active_demo = NULL;
 static PhysicsDemo demos[16];
 static int demo_count = 0;
 
-void physics_demo_render_body(Renderer* renderer, RigidBody* body) {
+void physics_demo_render_body(IRenderer* renderer, RigidBody* body) {
     if (!renderer || !body) return;
     
     Vec3 pos = rigid_body_get_position(body);
@@ -23,7 +23,7 @@ void physics_demo_render_body(Renderer* renderer, RigidBody* body) {
     renderer_draw_box(renderer, pos, scale, rotation, (Color){0.2f, 0.6f, 1.0f, 1.0f});
 }
 
-void physics_demo_render_debug_info(Renderer* renderer, PhysicsWorld* world) {
+void physics_demo_render_debug_info(IRenderer* renderer, PhysicsWorld* world) {
     if (!renderer || !world) return;
     
     // Render debug info like collision bounds, velocities, etc.
@@ -35,13 +35,13 @@ void physics_demo_render_debug_info(Renderer* renderer, PhysicsWorld* world) {
     renderer_draw_text(renderer, debug_text, 10, 300, 12);
 }
 
-void renderer_set_text_color(Renderer* renderer, Vec3 color) {
+void renderer_set_text_color(IRenderer* renderer, Vec3 color) {
     if (!renderer) return;
     // Implementation would set text color for subsequent text rendering
     (void)color;
 }
 
-void renderer_draw_text(Renderer* renderer, const char* text, int x, int y, int size) {
+void renderer_draw_text(IRenderer* renderer, const char* text, int x, int y, int size) {
     if (!renderer || !text) return;
     // Implementation would render text at specified position
     (void)x; (void)y; (void)size;
@@ -85,7 +85,7 @@ void physics_demo_update(PhysicsWorld* world, float dt) {
     }
 }
 
-void physics_demo_render(Renderer* renderer, PhysicsWorld* world) {
+void physics_demo_render(IRenderer* renderer, PhysicsWorld* world) {
     if (active_demo && active_demo->render) {
         active_demo->render(renderer, world);
     }
