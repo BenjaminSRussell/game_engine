@@ -274,7 +274,6 @@ file(GLOB_RECURSE ENGINE_SOURCES
     "src/engine/geometry/lod/lod_streaming_priority.c"
     "src/engine/geometry/lod/lod_system.c"
     "src/engine/geometry/lod/screen_size_lod.c"
-    "src/engine/geometry/mesh.c"
     
     # Lighting subdirectory
     "src/engine/lighting/*.c"
