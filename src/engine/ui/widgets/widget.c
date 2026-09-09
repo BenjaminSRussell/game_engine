@@ -544,6 +544,22 @@ void widget_invalidate_redraw(Widget *widget) {
   }
 }
 
+static Widget *widget_find_focused(Widget *widget) {
+  if (!widget)
+    return NULL;
+
+  if (widget->focused)
+    return widget;
+
+  for (uint32_t i = 0; i < widget->child_count; i++) {
+    Widget *found = widget_find_focused(widget->children[i]);
+    if (found)
+      return found;
+  }
+
+  return NULL;
+}
+
 bool widget_can_focus(const Widget *widget) {
   return widget && widget->visible && widget->enabled && widget->focusable;
 }
@@ -560,7 +576,10 @@ bool widget_request_focus(Widget *widget) {
 
   // Release current focus
   if (root) {
-    // TODO: Find currently focused widget and release focus
+    Widget *focused = widget_find_focused(root);
+    if (focused && focused != widget) {
+      widget_release_focus(focused);
+    }
   }
 
   // Set focus to this widget
