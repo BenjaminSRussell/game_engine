@@ -119,12 +119,13 @@ static void projectile_handle_collision(ProjectileInstance *instance,
     }
     break;
 
-  case PROJECTILE_BEHAVIOR_BOUNCE:
+  case PROJECTILE_BEHAVIOR_BOUNCE: {
     // Reflect velocity
     Vec3 reflected = vec3_reflect(proj->velocity, *hit_normal);
     proj->velocity =
         vec3_scale(reflected, vec3(0.8f, 0.8f, 0.8f)); // Energy loss on bounce
     break;
+  }
 
   case PROJECTILE_BEHAVIOR_EXPLODE:
     // Create explosion
