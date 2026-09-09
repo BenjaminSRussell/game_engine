@@ -627,12 +627,12 @@ typedef struct {
 
 typedef enum {
     SIMD_NONE = 0,
-    SIMD_SSE2 = 1,
+    SIMD_SSE2_FEATURE = 1,
     SIMD_SSE3 = 2,
     SIMD_SSE4_1 = 4,
     SIMD_SSE4_2 = 8,
     SIMD_AVX = 16,
-    SIMD_AVX2 = 32,
+    SIMD_AVX2_FEATURE = 32,
     SIMD_NEON_FEATURE = 64
 } SimdFeature;
 
