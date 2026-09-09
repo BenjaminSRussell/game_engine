@@ -7,13 +7,17 @@
 #include <string.h>
 #include <math.h>
 
-// Bloom context for pipeline state
-typedef struct {
+// Bloom context for pipeline state.
+// This must be the *named* struct `BloomContext` so it is consistent with the
+// opaque forward declaration in bloom.h (`typedef struct BloomContext
+// BloomContext;`). Defining an anonymous struct here would be a typedef
+// redefinition with a different type.
+struct BloomContext {
     BloomSettings settings;
     RGResourceHandle mip_chain[BLOOM_MAX_MIP_LEVELS];
     u32 mip_count;
     bool initialized;
-} BloomContext;
+};
 
 // Create bloom context
 BloomContext* bloom_create(u32 width, u32 height) {
