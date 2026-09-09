@@ -451,6 +451,19 @@ endif()
 # Editor subsystem - DISABLED (causes many build errors)
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/editor/.*\\.c$")
 
+# UI Batch Rendering System lives under editor/ui/canvas/ but is a COMPLETE
+# IMPLEMENTATION that must be compiled. The editor/ exclusion above silently
+# removed it, so re-add it here to carve it out of that exclusion (the same
+# exception approach used for svg_importer.c / orthographic_camera.c below).
+list(APPEND ENGINE_SOURCES
+    "src/engine/editor/ui/canvas/ui_batch.c"
+    "src/engine/editor/ui/canvas/ui_batch_gpu.c"
+    "src/engine/editor/ui/canvas/ui_batch_text.c"
+    "src/engine/editor/ui/canvas/ui_batch_effects.c"
+    "src/engine/editor/ui/canvas/ui_batch_optimize.c"
+    "src/engine/editor/ui/canvas/ui_batch_renderer.c"
+)
+
 # Network/Networking subsystems - Disabled due to header include issues
 # Networking system - RE-ENABLED for multiplayer functionality  
 # list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/network/.*\\.c$")
