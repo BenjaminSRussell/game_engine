@@ -5,7 +5,7 @@
 
 #include "rendering/animation/gpu_skinning.h"
 #include "core/memory/unified_allocator.h"
-#include "include/core/logger/unified_logger.h"
+#include "core/logging/unified_logger.h"
 #include <stdlib.h>
 #include <string.h>
 
