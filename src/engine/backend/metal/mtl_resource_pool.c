@@ -7,6 +7,7 @@
  */
 
 #include "mtl_resource_pool.h"
+#include "core/math/types.h"
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
