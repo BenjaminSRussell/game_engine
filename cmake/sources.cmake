@@ -517,8 +517,12 @@ file(GLOB_RECURSE GAME_SOURCES
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/ecs/ecs\\.c$")
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/crafting/recipe\\.c$")
 
-# Exclude Vulkan-specific GPU memory manager
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/core/memory/gpu_memory\\.c$")
+# Exclude Vulkan-specific GPU memory manager on macOS only, matching the
+# platform gating of the Vulkan backend above (Vulkan is disabled on Apple)
+if(APPLE)
+    list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/core/memory/gpu_memory\\.c$")
+    message(STATUS "Vulkan-specific GPU memory manager excluded on macOS")
+endif()
 
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/core/optimization/optimization_systems_complete\\.c$")
 
