@@ -177,39 +177,7 @@ void intersection_generate(RoadNetwork *network, uint32_t node_id);
 void road_decorate(RoadNetwork *network, const CityConfig *config);
 
 /* =================================================================================================
- *                                    CITY BLOCKS
- * =================================================================================================
- */
-
-typedef struct CityBlock {
-  uint32_t id;
-  float vertices[16][2];
-  uint32_t vertex_count;
-  float center[2];
-  float area;
-  ZoneType zone;
-  uint32_t building_ids[32];
-  uint32_t building_count;
-  uint32_t prop_ids[64];
-  uint32_t prop_count;
-} CityBlock;
-
-// City block management functions
-bool block_from_road_polygon(CityBlock *block, const float *road_vertices, 
-                           uint32_t vertex_count);
-bool block_subdivide(CityBlock *parent, CityBlock *children, uint32_t *child_count,
-                     uint32_t max_children, float min_area);
-bool block_assign_zone(CityBlock *block, const CityConfig *config, 
-                       const CityBlock *all_blocks, uint32_t total_blocks);
-bool block_fill_with_buildings(CityBlock *block, ProceduralBuilding *buildings,
-                                uint32_t *building_count, uint32_t max_buildings,
-                                const CityConfig *config);
-bool block_add_courtyard(CityBlock *block, float courtyard_ratio);
-bool block_add_plaza(CityBlock *block, float plaza_size);
-bool block_optimize_layout(CityBlock *block);
-
-/* =================================================================================================
- *                                    BUILDING GENERATION
+ *                                    BUILDING TYPES
  * =================================================================================================
  */
 
@@ -256,6 +224,43 @@ typedef struct ProceduralBuilding {
   uint32_t interior_id;
   bool has_interior;
 } ProceduralBuilding;
+
+/* =================================================================================================
+ *                                    CITY BLOCKS
+ * =================================================================================================
+ */
+
+typedef struct CityBlock {
+  uint32_t id;
+  float vertices[16][2];
+  uint32_t vertex_count;
+  float center[2];
+  float area;
+  ZoneType zone;
+  uint32_t building_ids[32];
+  uint32_t building_count;
+  uint32_t prop_ids[64];
+  uint32_t prop_count;
+} CityBlock;
+
+// City block management functions
+bool block_from_road_polygon(CityBlock *block, const float *road_vertices, 
+                           uint32_t vertex_count);
+bool block_subdivide(CityBlock *parent, CityBlock *children, uint32_t *child_count,
+                     uint32_t max_children, float min_area);
+bool block_assign_zone(CityBlock *block, const CityConfig *config, 
+                       const CityBlock *all_blocks, uint32_t total_blocks);
+bool block_fill_with_buildings(CityBlock *block, ProceduralBuilding *buildings,
+                                uint32_t *building_count, uint32_t max_buildings,
+                                const CityConfig *config);
+bool block_add_courtyard(CityBlock *block, float courtyard_ratio);
+bool block_add_plaza(CityBlock *block, float plaza_size);
+bool block_optimize_layout(CityBlock *block);
+
+/* =================================================================================================
+ *                                    BUILDING GENERATION
+ * =================================================================================================
+ */
 
 // Building generation functions
 bool building_generate_footprint(ProceduralBuilding *building, const CityBlock *block,
