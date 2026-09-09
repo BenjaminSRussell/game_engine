@@ -1,5 +1,5 @@
 #include "ui_animation.h"
-#include <widgets/widget.h>
+#include "widgets/widget.h"
 #include "core/memory/unified_memory_allocator.h"
 #include "core/logger.h"
 #include <math.h>
