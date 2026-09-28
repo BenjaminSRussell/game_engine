@@ -47,7 +47,6 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # Legacy core systems
     "src/engine/core/legacy/memory_allocator.c"
     "src/engine/core/legacy/logger.c"
-    "src/engine/core/legacy/hot_reload.c"
     # New unified systems
     "src/engine/core/memory/unified_allocator.c"
     "src/engine/core/logging/unified_logger.c"
