@@ -1,8 +1,9 @@
 #ifndef LOBBY_SYSTEM_H
 #define LOBBY_SYSTEM_H
 
-#include "../core/core.h"
-#include "include/network/network_types.h"
+#include <stdint.h>
+#include <stdbool.h>
+#include "network/network_types.h"
 
 #define MAX_LOBBY_NAME_LENGTH 64
 #define MAX_PLAYER_NAME_LENGTH 32
