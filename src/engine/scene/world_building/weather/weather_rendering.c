@@ -12,7 +12,7 @@
 
 #include "weather_system.h"
 #include "../../../rendering/render_pipeline.h"
-#include "../../../rendering/material_system.h"
+#include "../../../rendering/materials/material_system.h"
 #include "../../../rendering/gpu_texture.h"
 #include "../../../rendering/shader_compiler.h"
 #include "unified_memory_allocator.h"
