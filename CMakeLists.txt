@@ -517,6 +517,14 @@ endmacro()
 # add_engine_test(test_moltenvk tests/unit/renderer/test_moltenvk.c)
 # add_engine_test(test_async_compute tests/unit/renderer/test_async_compute.c)
 
+# Issue #156: duplicate list entry, not an Engine-linked unit test.
+add_test(
+    NAME geometry_mesh_listed_once
+    COMMAND ${CMAKE_COMMAND}
+        -DSOURCES_CMAKE=${CMAKE_SOURCE_DIR}/cmake/sources.cmake
+        -P ${CMAKE_SOURCE_DIR}/tests/check_geometry_mesh_listed_once.cmake
+)
+
 
 
 
