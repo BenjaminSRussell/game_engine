@@ -53,6 +53,19 @@ static void push_event(LobbySystem* system, LobbyEventType type, const char* msg
     system->event_queue_tail = next;
 }
 
+static void mirror_local_player(LobbySystem* system) {
+    Lobby* lobby;
+    uint32_t i;
+    if (!system || !system->current_lobby || !system->local_player) return;
+    lobby = system->current_lobby;
+    for (i = 0; i < lobby->current_players && i < MAX_LOBBY_PLAYERS; i++) {
+        if (lobby->players[i].id == system->local_player->id) {
+            lobby->players[i] = *system->local_player;
+            return;
+        }
+    }
+}
+
 // ============================================================================
 // Implementation
 // ============================================================================
@@ -95,15 +108,13 @@ static void lobby_update(LobbySystem* system, float delta_time) {
 static uint32_t lobby_create(LobbySystem* system, const char* name, const char* description,
                            LobbyType type, GameMode game_mode, const char* map_name,
                            uint32_t max_players, const char* password) {
-    if (!system) return 0;
+    Lobby* created;
+    if (!system || !name) return 0;
 
-    // Clear existing lobby
-    if (system->current_lobby) {
-        free(system->current_lobby);
-    }
-
-    system->current_lobby = (Lobby*)malloc(sizeof(Lobby));
-    if (!system->current_lobby) return 0;
+    created = (Lobby*)malloc(sizeof(Lobby));
+    if (!created) return 0;
+    if (system->current_lobby) free(system->current_lobby);
+    system->current_lobby = created;
 
     Lobby* l = system->current_lobby;
     memset(l, 0, sizeof(Lobby));
@@ -120,20 +131,21 @@ static uint32_t lobby_create(LobbySystem* system, const char* name, const char* 
         strncpy(l->password, password, 31);
         l->has_password = true;
     }
+    if (system->local_player && system->local_player->id == 0)
+        system->local_player->id = 1;
     l->host_id = system->local_player ? system->local_player->id : 1;
     l->created_time = (uint64_t)time(NULL);
     l->version_compatible = true;
 
-    // Add local player
-    l->current_players = 1;
+    l->current_players = 0;
     if (system->local_player) {
-        // Set local player ID if not set
-        if (system->local_player->id == 0) system->local_player->id = l->host_id; // Simple ID assignment
-
         system->local_player->is_host = true;
         system->local_player->state = PLAYER_STATE_CONNECTED;
         l->players[0] = *system->local_player;
+        l->current_players = 1;
     }
+    if (l->max_players < l->current_players)
+        l->max_players = l->current_players;
 
     system->is_host = true;
     system->is_connected = true;
@@ -144,33 +156,36 @@ static uint32_t lobby_create(LobbySystem* system, const char* name, const char* 
 }
 
 static bool lobby_join(LobbySystem* system, uint32_t lobby_id, const char* password) {
-    if (!system) return false;
+    Lobby* next;
+    (void)password;
+    if (!system || lobby_id == 0) return false;
 
-    // Mock join
-    // In a real system, we would request connection to server/host
-
-    if (system->current_lobby) {
-        free(system->current_lobby);
-    }
-
-    system->current_lobby = (Lobby*)malloc(sizeof(Lobby));
-    if (!system->current_lobby) return false;
-    memset(system->current_lobby, 0, sizeof(Lobby));
-    system->current_lobby->id = lobby_id;
-    system->current_lobby->state = LOBBY_STATE_WAITING;
-    system->current_lobby->max_players = MAX_LOBBY_PLAYERS;
-    system->current_lobby->current_players = 2; // Mock
-
-    system->is_host = false;
-    system->is_connected = true;
-
+    next = (Lobby*)malloc(sizeof(Lobby));
+    if (!next) return false;
+    memset(next, 0, sizeof(Lobby));
+    next->id = lobby_id;
+    next->state = LOBBY_STATE_WAITING;
+    next->max_players = MAX_LOBBY_PLAYERS;
+    next->host_id = 1;
+    next->players[0].id = 1;
+    next->players[0].is_host = true;
+    next->players[0].state = PLAYER_STATE_CONNECTED;
+    strncpy(next->players[0].name, "Host", MAX_PLAYER_NAME_LENGTH - 1);
+    next->current_players = 1;
     if (system->local_player) {
+        if (system->local_player->id == 0 || system->local_player->id == next->host_id)
+            system->local_player->id = 2;
         system->local_player->is_host = false;
         system->local_player->state = PLAYER_STATE_CONNECTED;
+        next->players[next->current_players++] = *system->local_player;
     }
 
-    push_event(system, LOBBY_EVENT_PLAYER_JOINED, "Joined lobby", system->local_player ? system->local_player->id : 0);
-
+    if (system->current_lobby) free(system->current_lobby);
+    system->current_lobby = next;
+    system->is_host = false;
+    system->is_connected = true;
+    push_event(system, LOBBY_EVENT_PLAYER_JOINED, "Joined lobby",
+               system->local_player ? system->local_player->id : 0);
     return true;
 }
 
@@ -186,27 +201,47 @@ static bool lobby_leave(LobbySystem* system) {
 
     if (system->local_player) {
         system->local_player->state = PLAYER_STATE_DISCONNECTED;
+        system->local_player->is_host = false;
     }
 
     return true;
 }
 
 static bool lobby_kick_player(LobbySystem* system, uint32_t player_id) {
+    Lobby* lobby;
+    uint32_t i;
     if (!system || !system->is_host || !system->current_lobby) return false;
-    // Logic to kick player
-    // For now, just fire event
-    push_event(system, LOBBY_EVENT_PLAYER_LEFT, "Player kicked", player_id);
-    return true;
+    if (!system->local_player || player_id == system->local_player->id) return false;
+    lobby = system->current_lobby;
+    for (i = 0; i < lobby->current_players && i < MAX_LOBBY_PLAYERS; i++) {
+        if (lobby->players[i].id != player_id) continue;
+        if (i + 1 < lobby->current_players) {
+            memmove(&lobby->players[i], &lobby->players[i + 1],
+                    (lobby->current_players - i - 1) * sizeof(LobbyPlayer));
+        }
+        lobby->current_players--;
+        memset(&lobby->players[lobby->current_players], 0, sizeof(LobbyPlayer));
+        push_event(system, LOBBY_EVENT_PLAYER_LEFT, "Player kicked", player_id);
+        return true;
+    }
+    return false;
 }
 
 static bool lobby_promote_to_host(LobbySystem* system, uint32_t player_id) {
+    Lobby* lobby;
+    uint32_t i;
+    bool found = false;
     if (!system || !system->is_host || !system->current_lobby) return false;
-    system->current_lobby->host_id = player_id;
-    if (system->local_player && system->local_player->id == player_id) {
-        system->is_host = true;
-    } else {
-        system->is_host = false; // We gave up host
+    lobby = system->current_lobby;
+    for (i = 0; i < lobby->current_players && i < MAX_LOBBY_PLAYERS; i++) {
+        if (lobby->players[i].id == player_id) found = true;
     }
+    if (!found) return false;
+    lobby->host_id = player_id;
+    system->is_host = system->local_player && system->local_player->id == player_id;
+    if (system->local_player) system->local_player->is_host = system->is_host;
+    for (i = 0; i < lobby->current_players && i < MAX_LOBBY_PLAYERS; i++)
+        lobby->players[i].is_host = (lobby->players[i].id == player_id);
     push_event(system, LOBBY_EVENT_HOST_CHANGED, "Host changed", player_id);
     return true;
 }
@@ -259,6 +294,7 @@ static bool lobby_set_ready(LobbySystem* system, bool ready) {
     if (!system || !system->local_player) return false;
 
     system->local_player->state = ready ? PLAYER_STATE_READY : PLAYER_STATE_CONNECTED;
+    mirror_local_player(system);
     push_event(system, ready ? LOBBY_EVENT_PLAYER_READY : LOBBY_EVENT_PLAYER_NOT_READY,
                NULL, system->local_player->id);
     return true;
@@ -272,16 +308,16 @@ static bool lobby_send_chat(LobbySystem* system, const char* message) {
 }
 
 static bool lobby_update_player_info(LobbySystem* system, const char* name) {
-    if (!system || !system->local_player) return false;
+    if (!system || !system->local_player || !name) return false;
     strncpy(system->local_player->name, name, MAX_PLAYER_NAME_LENGTH - 1);
+    system->local_player->name[MAX_PLAYER_NAME_LENGTH - 1] = '\0';
+    mirror_local_player(system);
     return true;
 }
 
 static bool lobby_start_game(LobbySystem* system) {
-    if (!system || !system->is_host) return false;
-    if (system->current_lobby) {
-        system->current_lobby->state = LOBBY_STATE_STARTING;
-    }
+    if (!system || !system->is_host || !system->current_lobby) return false;
+    system->current_lobby->state = LOBBY_STATE_STARTING;
     push_event(system, LOBBY_EVENT_GAME_STARTED, "Game starting", 0);
     return true;
 }
@@ -290,6 +326,8 @@ static bool lobby_set_settings(LobbySystem* system, const char* map_name,
                               GameMode game_mode, uint32_t max_players) {
     if (!system || !system->is_host || !system->current_lobby) return false;
 
+    if (max_players == 0 || max_players > MAX_LOBBY_PLAYERS) return false;
+    if (max_players < system->current_lobby->current_players) return false;
     if (map_name) strncpy(system->current_lobby->map_name, map_name, 63);
     system->current_lobby->game_mode = game_mode;
     system->current_lobby->max_players = max_players;

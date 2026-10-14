@@ -16,6 +16,11 @@ void test_lobby_lifecycle() {
     assert(lobby_id != 0);
     assert(system->current_lobby != NULL);
     assert(system->is_host == true);
+    assert(system->local_player != NULL);
+    assert(system->local_player->id != 0);
+    assert(system->current_lobby->current_players == 1);
+    assert(system->current_lobby->players[0].id == system->local_player->id);
+    assert(system->current_lobby->players[0].is_host == true);
     assert(strcmp(system->current_lobby->name, "Test Lobby") == 0);
 
     // Check Event
@@ -65,6 +70,11 @@ void test_lobby_discovery() {
     assert(system->current_lobby != NULL);
     assert(system->current_lobby->id == results[0].id);
     assert(system->is_host == false);
+    assert(system->current_lobby->current_players == 2);
+    assert(system->local_player->id != 0);
+    assert(system->current_lobby->players[1].id == system->local_player->id);
+    assert(system->current_lobby->players[0].is_host == true);
+    assert(system->current_lobby->players[1].is_host == false);
 
     lobby_destroy_system(system);
     printf("Lobby Discovery Passed.\n");
