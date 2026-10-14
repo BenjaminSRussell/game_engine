@@ -662,6 +662,21 @@ add_test(
         -P ${CMAKE_SOURCE_DIR}/tests/check_projectile_bounce_case.cmake
 )
 
+# TODO-0049: stress the engine DynamicArray and HashMap. Not add_engine_test:
+# that macro links Engine, which does not build on origin/main (missing GLFW,
+# then gpu_profiler.c). The logger .c is not compiled here; it does not build
+# and this test must not rewrite it.
+add_executable(test_data_structure_stress
+    tests/integration/core/data_structure_stress_test.c
+    src/engine/core/containers/dynamic_array.c
+    src/engine/core/containers/hashmap.c
+)
+target_include_directories(test_data_structure_stress PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src
+)
+add_test(NAME test_data_structure_stress COMMAND test_data_structure_stress)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================
