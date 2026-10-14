@@ -30,10 +30,6 @@ void unified_logger_set_config(const LoggerConfig *config) {}
 void unified_logger_set_level(LogLevel level) {}
 void unified_logger_enable_category(LogCategory category, bool enabled) {}
 
-// FABRIK solver stubs
-int animation_fabrik_solver_init(void) { return 0; }
-void animation_fabrik_solver_shutdown(void) {}
-
 // ============================================================================
 // TESTS
 // ============================================================================

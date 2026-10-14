@@ -50,11 +50,13 @@ typedef struct {
   u32 max_iterations;
   f32 precision;
 
+  u32 fabrik_chain_id; // Persistent consolidated-solver chain, or UINT32_MAX
 } IKChain;
 
 typedef struct {
   IKChain chains[MAX_IK_CHAINS];
   u32 chain_count;
+  u32 fabrik_solver_id; // Consolidated FABRIK solver handle, or UINT32_MAX
 
 } IKSystem;
 
@@ -72,7 +74,7 @@ void ik_solve(IKSystem *system, u32 chain_id);
 
 // Solvers
 void ik_solve_two_bone(IKChain *chain);
-void ik_solve_fabrik(IKChain *chain);
+void ik_solve_fabrik(IKSystem *system, IKChain *chain);
 void ik_solve_ccd(IKChain *chain);
 
 #ifdef __cplusplus
