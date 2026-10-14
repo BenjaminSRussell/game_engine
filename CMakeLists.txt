@@ -904,6 +904,21 @@ target_include_directories(test_spell_stats PRIVATE
 )
 add_test(NAME test_spell_stats COMMAND test_spell_stats)
 
+# Invalid visual-script entry nodes must not be dereferenced.
+# Not add_engine_test: that macro links Engine, which does not build on
+# origin/main (missing GLFW, then gpu_profiler.c). Compiles visual_scripting.c
+# directly and stubs the allocator.
+add_executable(test_visual_script_entry
+    tests/visual_script_entry_test.c
+    src/engine/scripting/visual_scripting.c
+)
+target_include_directories(test_visual_script_entry PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+add_test(NAME test_visual_script_entry COMMAND test_visual_script_entry)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================
