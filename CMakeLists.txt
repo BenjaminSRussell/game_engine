@@ -554,6 +554,15 @@ add_test(
         -P ${CMAKE_SOURCE_DIR}/tests/check_procedural_building_order.cmake
 )
 
+# Issue #276: static redefinition, not an Engine-linked unit test.
+add_test(
+    NAME analytics_dashboard_time_ms_not_static
+    COMMAND ${CMAKE_COMMAND}
+        -DDASHBOARD_C=${CMAKE_SOURCE_DIR}/src/engine/tools/analytics_dashboard.c
+        -DUTILS_H=${CMAKE_SOURCE_DIR}/src/engine/include/core/utils.h
+        -P ${CMAKE_SOURCE_DIR}/tests/check_analytics_dashboard_time_ms.cmake
+)
+
 # Issue #157. Not add_engine_test: that macro links Engine and
 # tests/unit/test_framework_unified.c, which is not in the tree. Engine itself
 # does not build here (missing GLFW, then gpu_profiler.c).

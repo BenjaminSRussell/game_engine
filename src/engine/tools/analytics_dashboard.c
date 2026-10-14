@@ -5,6 +5,7 @@
 #include <math/vec3.h>
 #include <math/vec4.h>
 #include "engine/include/math/math_all.h"
+#include "core/utils.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

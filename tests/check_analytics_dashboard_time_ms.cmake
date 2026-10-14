@@ -1,0 +1,66 @@
+# Issue #276: analytics_dashboard.c must call the non-static get_current_time_ms
+# from core/utils.h and must not redefine it as static.
+if(NOT DEFINED DASHBOARD_C)
+    message(FATAL_ERROR "DASHBOARD_C is required")
+endif()
+if(NOT DEFINED UTILS_H)
+    message(FATAL_ERROR "UTILS_H is required")
+endif()
+
+if(NOT EXISTS "${DASHBOARD_C}")
+    message(FATAL_ERROR "dashboard source not found: ${DASHBOARD_C}")
+endif()
+if(NOT EXISTS "${UTILS_H}")
+    message(FATAL_ERROR "utils header not found: ${UTILS_H}")
+endif()
+
+file(STRINGS "${DASHBOARD_C}" _dash_lines)
+set(_static_defs 0)
+set(_calls 0)
+set(_includes_utils 0)
+foreach(_line IN LISTS _dash_lines)
+    string(STRIP "${_line}" _stripped)
+    if(_stripped MATCHES "^//")
+        continue()
+    endif()
+    if(_stripped MATCHES "static[ \t].*get_current_time_ms[ \t]*\\(")
+        math(EXPR _static_defs "${_static_defs} + 1")
+    elseif(_stripped MATCHES "get_current_time_ms[ \t]*\\(")
+        math(EXPR _calls "${_calls} + 1")
+    endif()
+    if(_stripped MATCHES "#include[ \t]+[\"<]core/utils\\.h[\">]")
+        math(EXPR _includes_utils "${_includes_utils} + 1")
+    endif()
+endforeach()
+
+if(NOT _static_defs EQUAL 0)
+    message(FATAL_ERROR
+        "static get_current_time_ms is redefined ${_static_defs} time(s) in ${DASHBOARD_C}")
+endif()
+if(_calls LESS 1)
+    message(FATAL_ERROR
+        "analytics_dashboard.c does not call shared get_current_time_ms")
+endif()
+if(_includes_utils LESS 1)
+    message(FATAL_ERROR
+        "analytics_dashboard.c must include core/utils.h for get_current_time_ms")
+endif()
+
+file(STRINGS "${UTILS_H}" _utils_lines)
+set(_decl 0)
+foreach(_line IN LISTS _utils_lines)
+    string(STRIP "${_line}" _stripped)
+    if(_stripped MATCHES "^//" OR _stripped MATCHES "^static")
+        continue()
+    endif()
+    if(_stripped MATCHES "^u64[ \t]+get_current_time_ms[ \t]*\\([ \t]*void[ \t]*\\)[ \t]*;")
+        math(EXPR _decl "${_decl} + 1")
+    endif()
+endforeach()
+
+if(NOT _decl EQUAL 1)
+    message(FATAL_ERROR
+        "expected one non-static u64 get_current_time_ms(void); in ${UTILS_H}, found ${_decl}")
+endif()
+
+message(STATUS "analytics_dashboard uses shared get_current_time_ms (${_calls} calls)")
