@@ -5,18 +5,13 @@
 #include <math/vec3.h>
 #include <math/vec4.h>
 #include "engine/include/math/math_all.h"
+#include "core/utils.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
 
 // MARK: - Helper Functions
-
-static u64 get_current_time_ms(void) {
-    struct timespec ts;
-    clock_gettime(CLOCK_MONOTONIC, &ts);
-    return (u64)(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
-}
 
 static Vec4 get_chart_color(u32 index) {
     static const Vec4 colors[] = {
