@@ -393,6 +393,7 @@ file(GLOB_RECURSE ENGINE_SOURCES
     "src/engine/gameplay/combat/status_effects.c"
     "src/engine/gameplay/combat/hitbox.c"
     "src/engine/gameplay/combat/projectile.c"
+    "src/engine/gameplay/combat/player_combat.c"
     "src/engine/gameplay/food_system.c"
     "src/engine/gameplay/food_ui.c"
     "src/engine/gameplay/crafting_system.c"
