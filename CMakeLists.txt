@@ -532,6 +532,18 @@ add_executable(test_widget_focus
     src/engine/ui/widgets/widget.c)
 add_test(NAME test_widget_focus COMMAND test_widget_focus)
 
+# Issue #273: ProceduralBuilding must be declared before block_fill_with_buildings.
+# Header-only compile; do not link Engine.
+add_test(
+    NAME procedural_building_declared_before_use
+    COMMAND ${CMAKE_COMMAND}
+        -DHEADER_DIR=${CMAKE_SOURCE_DIR}/src/engine/scene/world/procedural_city
+        -DTEST_SRC=${CMAKE_SOURCE_DIR}/tests/procedural_building_order_test.c
+        -DC_COMPILER=${CMAKE_C_COMPILER}
+        -DOUT_BIN=${CMAKE_BINARY_DIR}/procedural_building_order_check
+        -P ${CMAKE_SOURCE_DIR}/tests/check_procedural_building_order.cmake
+)
+
 
 
 
