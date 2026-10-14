@@ -919,6 +919,21 @@ target_include_directories(test_visual_script_entry PRIVATE
 )
 add_test(NAME test_visual_script_entry COMMAND test_visual_script_entry)
 
+# Player-data encryption, password hashing, and key rotation.
+# Not add_engine_test: that macro links Engine and
+# tests/unit/test_framework_unified.c, which is missing. Engine does not
+# build on origin/main (missing GLFW, then gpu_profiler.c).
+add_executable(test_encryption
+    tests/encryption_test.c
+    src/engine/network/security/encryption.c
+)
+target_include_directories(test_encryption PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+add_test(NAME test_encryption COMMAND test_encryption)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================
