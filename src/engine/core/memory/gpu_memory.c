@@ -162,8 +162,6 @@ bool gpu_memory_create_pool(GPUMemoryAllocator* allocator, MemoryPoolType pool_t
 
     pool->initialized = true;
 
-            pool_type, size / (1024.0 * 1024.0));
-
     return true;
 }
 
@@ -563,9 +561,6 @@ void gpu_memory_log_info(GPUMemoryAllocator* allocator) {
     if (!allocator || !allocator->initialized) {
         return;
     }
-
-            gpu_memory_get_allocated_size(allocator) / (1024.0 * 1024.0));
-            gpu_memory_get_free_size(allocator) / (1024.0 * 1024.0));
 }
 
 void gpu_memory_log_statistics(GPUMemoryAllocator* allocator) {
@@ -576,10 +571,8 @@ void gpu_memory_log_statistics(GPUMemoryAllocator* allocator) {
 
     for (u32 i = 0; i < MEMORY_POOL_COUNT; i++) {
         MemoryPool* pool = &allocator->pools[i];
-        if (pool->initialized) {
-                    i, pool->allocation_count,
-                    pool->allocated_size / (1024.0 * 1024.0),
-                    pool->total_size / (1024.0 * 1024.0));
+        if (!pool->initialized) {
+            continue;
         }
     }
 }
@@ -593,9 +586,8 @@ void gpu_memory_log_fragmentation(GPUMemoryAllocator* allocator) {
     for (u32 i = 0; i < MEMORY_POOL_COUNT; i++) {
         MemoryPool* pool = &allocator->pools[i];
         if (pool->initialized) {
-            f32 ratio = gpu_memory_get_fragmentation_ratio(allocator, (MemoryPoolType)i);
-            u64 largest = gpu_memory_get_largest_free_block(allocator, (MemoryPoolType)i);
-                    i, ratio, largest / (1024.0 * 1024.0));
+            (void)gpu_memory_get_fragmentation_ratio(allocator, (MemoryPoolType)i);
+            (void)gpu_memory_get_largest_free_block(allocator, (MemoryPoolType)i);
         }
     }
 }
@@ -613,8 +605,7 @@ void gpu_memory_log_allocations(GPUMemoryAllocator* allocator) {
         }
 
         for (u32 j = 0; j < pool->allocation_count; j++) {
-            AllocationInfo* alloc = &pool->allocations[j];
-                    alloc->allocation_id, (f32)alloc->size, alloc->offset);
+            (void)pool->allocations[j].allocation_id;
         }
     }
 }
@@ -628,8 +619,6 @@ void gpu_memory_dump_pool_layout(GPUMemoryAllocator* allocator, MemoryPoolType p
     if (!pool->initialized) {
         return;
     }
-
-            pool_type, pool->total_size / (1024.0 * 1024.0));
 
     // Visualize blocks
     for (u32 i = 0; i < pool->allocation_count && i < 32; i++) {

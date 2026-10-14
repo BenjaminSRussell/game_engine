@@ -571,6 +571,15 @@ add_test(
         -P ${CMAKE_SOURCE_DIR}/tests/check_ui_animation_widget_include.cmake
 )
 
+# Issue #179: platform gate for src/engine/core/memory/gpu_memory.c.
+# Script only. add_engine_test would link Engine, which is not buildable here.
+add_test(
+    NAME gpu_memory_platform_gate
+    COMMAND ${CMAKE_COMMAND}
+        -DSOURCE_CMAKE=${CMAKE_SOURCE_DIR}/cmake/sources.cmake
+        -P ${CMAKE_SOURCE_DIR}/tests/cmake/gpu_memory_platform_gate.cmake
+)
+
 # Issue #271: relative include, not an Engine-linked unit test.
 add_test(
     NAME mega_terrain_memory_pool_include
