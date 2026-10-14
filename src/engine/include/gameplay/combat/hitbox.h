@@ -123,4 +123,14 @@ AABB hitbox_get_world_bounds(const HitboxComponent *hitbox);
 // Calculate approximate volume (for damage scaling)
 f32 hitbox_get_volume(const HitboxComponent *hitbox);
 
+// Closest hit along the segment [start, end]. Skips source_entity.
+// Returns false when nothing is hit. Out pointers may be NULL.
+bool hitbox_system_raycast(const Vec3 *start, const Vec3 *end, Entity source_entity,
+                           Vec3 *out_hit_point, Vec3 *out_hit_normal, Entity *out_hit_entity);
+
+// Active hitboxes overlapping the sphere, skipping source_entity.
+// Returns the number of entities written to out_entities.
+u32 hitbox_system_query_sphere(const Vec3 *center, f32 radius, Entity source_entity,
+                               Entity *out_entities, u32 max_entities);
+
 #endif // HITBOX_COMPONENT_H
