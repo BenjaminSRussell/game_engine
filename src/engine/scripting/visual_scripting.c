@@ -132,6 +132,11 @@ static VSNode *follow_flow(VSGraph *graph, VSNode *current_node,
 
 void vs_graph_execute(VSGraph *graph, VSNodeID entry_node_id) {
   VSNode *current = get_node(graph, entry_node_id);
+  /* get_node returns NULL for a null graph or an out-of-range id. */
+  if (!current) {
+    fprintf(stderr, "VS: Invalid entry node %u\n", (unsigned)entry_node_id);
+    return;
+  }
 
   printf("VS: Start execution at node %d (%s)\n", entry_node_id,
          current->title);
