@@ -19,7 +19,7 @@ Widget* ui_image_create(const char* name, uint32_t texture_id) {
 
     UIImageData* data = memory_alloc(sizeof(UIImageData));
     if (!data) {
-        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate UI image data");
+        LOG_ERROR_CAT(LOG_CAT_UI, "Failed to allocate UI image data");
         widget_destroy(widget);
         return NULL;
     }

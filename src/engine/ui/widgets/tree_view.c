@@ -59,7 +59,7 @@ Widget* tree_view_create(const char* name) {
 
     TreeViewData* data = memory_alloc(sizeof(TreeViewData));
     if (!data) {
-        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate TreeView data");
+        LOG_ERROR_CAT(LOG_CAT_UI, "Failed to allocate TreeView data");
         widget_destroy(widget);
         return NULL;
     }

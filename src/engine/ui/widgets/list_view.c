@@ -25,7 +25,7 @@ Widget* list_view_create(const char* name) {
 
     ListViewData* data = memory_alloc(sizeof(ListViewData));
     if (!data) {
-        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate ListView data");
+        LOG_ERROR_CAT(LOG_CAT_UI, "Failed to allocate ListView data");
         widget_destroy(widget);
         return NULL;
     }
