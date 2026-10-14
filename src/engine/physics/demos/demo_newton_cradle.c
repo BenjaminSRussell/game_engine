@@ -1,5 +1,5 @@
 // Physics Demo: Newton's Cradle - Conservation of momentum
-#include "physics_demo_framework.c"
+#include "physics_demo_framework.h"
 #include "engine/include/math/math_all.h"
 #include <stdlib.h>
 
@@ -90,7 +90,7 @@ void newton_cradle_update(PhysicsWorld* world, float dt) {
     }
 }
 
-void newton_cradle_render(Renderer* renderer, PhysicsWorld* world) {
+void newton_cradle_render(IRenderer* renderer, PhysicsWorld* world) {
     // Render strings
     renderer_set_color(renderer, (Vec3){0.5, 0.5, 0.5});
     for (int i = 0; i < 5; i++) {
@@ -129,4 +129,4 @@ void newton_cradle_cleanup(PhysicsWorld* world) {
 }
 
 // Register the demo
-REGISTER_DEMO(Newton Cradle, newton_cradle_init, newton_cradle_update, newton_cradle_render, newton_cradle_cleanup);
+REGISTER_DEMO("Newton Cradle", newton_cradle_init, newton_cradle_update, newton_cradle_render, newton_cradle_cleanup);

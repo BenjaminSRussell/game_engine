@@ -11,40 +11,55 @@
 static PhysicsDemo* active_demo = NULL;
 static PhysicsDemo demos[16];
 static int demo_count = 0;
+static Vec3 g_draw_color = {1.0f, 1.0f, 1.0f};
 
-void physics_demo_render_body(Renderer* renderer, RigidBody* body) {
-    if (!renderer || !body) return;
-    
+extern int physics_world_get_body_count(PhysicsWorld *world);
+
+void physics_demo_render_body(IRenderer* renderer, RigidBody* body) {
+    if (!renderer || !body || !renderer->render_debug_box) return;
+
     Vec3 pos = rigid_body_get_position(body);
     Vec3 scale = {1.0f, 1.0f, 1.0f};
-    Quat rotation = {0, 0, 0, 1}; // Identity quaternion
-    
-    // Render as a simple box for now
-    renderer_draw_box(renderer, pos, scale, rotation, (Color){0.2f, 0.6f, 1.0f, 1.0f});
+    Quat rotation = {0, 0, 0, 1};
+    Vec3 color = {0.2f, 0.6f, 1.0f};
+    renderer->render_debug_box(renderer, pos, scale, rotation, color);
 }
 
-void physics_demo_render_debug_info(Renderer* renderer, PhysicsWorld* world) {
+void physics_demo_render_debug_info(IRenderer* renderer, PhysicsWorld* world) {
     if (!renderer || !world) return;
-    
-    // Render debug info like collision bounds, velocities, etc.
+
     int body_count = physics_world_get_body_count(world);
     char debug_text[256];
     snprintf(debug_text, sizeof(debug_text), "Bodies: %d", body_count);
-    
-    renderer_set_text_color(renderer, (Vec3){1, 1, 1});
+
+    renderer_set_text_color(renderer, (Vec3){1.0f, 1.0f, 1.0f});
     renderer_draw_text(renderer, debug_text, 10, 300, 12);
 }
 
-void renderer_set_text_color(Renderer* renderer, Vec3 color) {
-    if (!renderer) return;
-    // Implementation would set text color for subsequent text rendering
-    (void)color;
+void renderer_set_text_color(IRenderer* renderer, Vec3 color) {
+    (void)renderer;
+    g_draw_color = color;
 }
 
-void renderer_draw_text(Renderer* renderer, const char* text, int x, int y, int size) {
-    if (!renderer || !text) return;
-    // Implementation would render text at specified position
-    (void)x; (void)y; (void)size;
+void renderer_set_color(IRenderer* renderer, Vec3 color) {
+    (void)renderer;
+    g_draw_color = color;
+}
+
+void renderer_draw_text(IRenderer* renderer, const char* text, int x, int y, int size) {
+    if (!renderer || !text || !renderer->render_text) return;
+    Vec2 pos = vec2_create((f32)x, (f32)y);
+    renderer->render_text(renderer, text, pos, (f32)size, g_draw_color);
+}
+
+void renderer_draw_line(IRenderer* renderer, Vec3 start, Vec3 end) {
+    if (!renderer || !renderer->render_debug_line) return;
+    renderer->render_debug_line(renderer, start, end, g_draw_color);
+}
+
+void renderer_draw_sphere(IRenderer* renderer, float radius, Vec3 center) {
+    if (!renderer || !renderer->render_debug_sphere) return;
+    renderer->render_debug_sphere(renderer, center, radius, g_draw_color);
 }
 
 void physics_demo_register(const char* name, 
@@ -85,7 +100,7 @@ void physics_demo_update(PhysicsWorld* world, float dt) {
     }
 }
 
-void physics_demo_render(Renderer* renderer, PhysicsWorld* world) {
+void physics_demo_render(IRenderer* renderer, PhysicsWorld* world) {
     if (active_demo && active_demo->render) {
         active_demo->render(renderer, world);
     }
@@ -108,4 +123,15 @@ int physics_demo_get_count() {
 
 PhysicsDemo* physics_demo_get_all() {
     return demos;
+}
+
+bool physics_demo_framework_init(void) {
+    return true;
+}
+
+void physics_demo_framework_run(void) {
+}
+
+void physics_demo_framework_cleanup(void) {
+    physics_demo_cleanup(NULL);
 }

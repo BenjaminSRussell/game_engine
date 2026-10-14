@@ -1,5 +1,5 @@
 // Physics Demo: Domino Chain - Chain reaction simulation
-#include "physics_demo_framework.c"
+#include "physics_demo_framework.h"
 #include "engine/include/math/math_all.h"
 #include <stdlib.h>
 
@@ -95,7 +95,7 @@ void domino_chain_update(PhysicsWorld* world, float dt) {
     }
 }
 
-void domino_chain_render(Renderer* renderer, PhysicsWorld* world) {
+void domino_chain_render(IRenderer* renderer, PhysicsWorld* world) {
     // Render all dominos
     for (int i = 0; i < domino_count; i++) {
         physics_demo_render_body(renderer, dominos[i]);
@@ -120,4 +120,4 @@ void domino_chain_cleanup(PhysicsWorld* world) {
 }
 
 // Register the demo
-REGISTER_DEMO(Domino Chain, domino_chain_init, domino_chain_update, domino_chain_render, domino_chain_cleanup);
+REGISTER_DEMO("Domino Chain", domino_chain_init, domino_chain_update, domino_chain_render, domino_chain_cleanup);

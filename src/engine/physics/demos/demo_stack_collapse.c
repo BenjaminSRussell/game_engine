@@ -81,7 +81,7 @@ void stack_collapse_update(PhysicsWorld* world, float dt) {
     }
 }
 
-void stack_collapse_render(Renderer* renderer, PhysicsWorld* world) {
+void stack_collapse_render(IRenderer* renderer, PhysicsWorld* world) {
     // Render all boxes
     for (int i = 0; i < box_count; i++) {
         physics_demo_render_body(renderer, boxes[i]);

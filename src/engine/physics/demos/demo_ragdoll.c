@@ -1,5 +1,5 @@
 // Physics Demo: Ragdoll Physics - Character simulation with constraints
-#include "physics_demo_framework.c"
+#include "physics_demo_framework.h"
 #include "engine/include/math/math_all.h"
 #include <stdlib.h>
 
@@ -199,48 +199,11 @@ void ragdoll_update(PhysicsWorld* world, float dt) {
     }
 }
 
-void ragdoll_render(Renderer* renderer, PhysicsWorld* world) {
-    // Render ragdoll parts
+void ragdoll_render(IRenderer* renderer, PhysicsWorld* world) {
     for (int i = 0; i < part_count; i++) {
-        // Color code different body parts
-        Vec3 color;
-        switch (i) {
-            case RAGDOLL_HEAD:
-                color = (Vec3){0.8, 0.6, 0.4}; // Skin color
-                break;
-            case RAGDOLL_CHEST:
-            case RAGDOLL_PELVIS:
-                color = (Vec3){0.2, 0.3, 0.6}; // Blue shirt
-                break;
-            default:
-                color = (Vec3){0.3, 0.5, 0.2}; // Green pants
-                break;
-        }
-        
-        Vec3 pos = rigid_body_get_position(ragdoll_parts[i]);
-        Quat rot = rigid_body_get_rotation(ragdoll_parts[i]);
-        Shape* shape = rigid_body_get_shape(ragdoll_parts[i]);
-        
-        renderer_push_matrix(renderer);
-        renderer_translate(renderer, pos);
-        renderer_rotate_quat(renderer, rot);
-        
-        switch (shape->type) {
-            case SHAPE_BOX:
-                renderer_draw_box(renderer, shape->box.size, color);
-                break;
-            case SHAPE_SPHERE:
-                renderer_draw_sphere(renderer, shape->sphere.radius, color);
-                break;
-            default:
-                renderer_draw_box(renderer, (Vec3){0.1, 0.1, 0.1}, color);
-                break;
-        }
-        
-        renderer_pop_matrix(renderer);
+        physics_demo_render_body(renderer, ragdoll_parts[i]);
     }
-    
-    // Render constraints as lines
+
     renderer_set_color(renderer, (Vec3){1, 0, 0});
     for (int i = 0; i < constraint_count; i++) {
         Vec3 anchor_a, anchor_b;
@@ -274,4 +237,4 @@ void ragdoll_cleanup(PhysicsWorld* world) {
 }
 
 // Register the demo
-REGISTER_DEMO(Ragdoll Physics, ragdoll_init, ragdoll_update, ragdoll_render, ragdoll_cleanup);
+REGISTER_DEMO("Ragdoll Physics", ragdoll_init, ragdoll_update, ragdoll_render, ragdoll_cleanup);

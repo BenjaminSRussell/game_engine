@@ -589,6 +589,21 @@ add_test(
         -P ${CMAKE_SOURCE_DIR}/tests/ui_batch_sources_in_engine.cmake
 )
 
+# Issue #282: physics demo callbacks take IRenderer. Does not link Engine:
+# physics/*.c is filtered out of ENGINE_SOURCES, and this test stubs the two
+# physics symbols the framework calls so it can run without the Engine target.
+add_executable(test_physics_demo_irenderer
+    tests/check_physics_demo_irenderer.c
+    src/engine/physics/demos/physics_demo_framework.c
+)
+target_include_directories(test_physics_demo_irenderer PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src/engine/physics/demos
+)
+add_test(NAME test_physics_demo_irenderer COMMAND test_physics_demo_irenderer)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================
