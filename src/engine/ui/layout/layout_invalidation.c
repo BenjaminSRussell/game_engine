@@ -89,6 +89,7 @@ LayoutInvalidationSystem* layout_invalidation_create(void) {
     system->frame_counter = 0;
     system->enable_aggressive_caching = false;
     system->enable_generation_tracking = true;
+    system->enable_debug = false;
     system->max_queue_size = 1024;
     system->max_cache_entries = 512;
     system->cache_eviction_threshold = 0.9f;

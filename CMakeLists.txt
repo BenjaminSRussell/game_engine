@@ -677,6 +677,24 @@ target_include_directories(test_data_structure_stress PRIVATE
 )
 add_test(NAME test_data_structure_stress COMMAND test_data_structure_stress)
 
+# Issues #125, #126, #163, #261. Not add_engine_test: that macro links Engine,
+# which does not build here (missing GLFW, then gpu_profiler.c).
+add_executable(test_ui_layout
+    tests/ui_layout_integration_test.c
+    src/engine/ui/layout/flexbox_layout.c
+    src/engine/ui/layout/grid_layout.c
+    src/engine/ui/layout/layout_solver.c
+    src/engine/ui/layout/layout_invalidation.c
+    src/engine/platform/time_system.c
+)
+target_include_directories(test_ui_layout PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src/engine/ui/layout
+    ${CMAKE_SOURCE_DIR}/src
+)
+add_test(NAME test_ui_layout COMMAND test_ui_layout)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================
