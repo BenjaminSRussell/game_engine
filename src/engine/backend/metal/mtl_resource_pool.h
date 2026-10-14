@@ -30,6 +30,9 @@ typedef struct metal_pool_stats {
     uint32_t pooled_buffers;
     uint32_t active_textures;
     uint32_t pooled_textures;
+    uint32_t buffers_freed;
+    uint32_t textures_freed;
+    uint32_t total_cleanups;
 } metal_pool_stats_t;
 
 /* ============================================================================

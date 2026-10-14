@@ -542,6 +542,17 @@ add_test(
         -P ${CMAKE_SOURCE_DIR}/tests/check_weather_material_include.cmake
 )
 
+# Issue #266: mtl_resource_pool.c uses u32; fail if the typedef include is missing.
+# Syntax-only so this does not link Engine (the library build still stops on
+# the pre-existing GLFW / gpu_profiler errors).
+add_test(
+    NAME mtl_resource_pool_u32
+    COMMAND ${CMAKE_C_COMPILER} -fsyntax-only -std=c11
+        -I${CMAKE_SOURCE_DIR}/src/engine/include
+        -I${CMAKE_SOURCE_DIR}/src/engine
+        ${CMAKE_SOURCE_DIR}/src/engine/backend/metal/mtl_resource_pool.c
+)
+
 # Issue #273: ProceduralBuilding must be declared before block_fill_with_buildings.
 # Header-only compile; do not link Engine.
 add_test(
