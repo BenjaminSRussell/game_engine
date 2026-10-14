@@ -22,6 +22,8 @@ void gas_give_ability(AbilitySystemComponent *comp, GameplayAbility *ability) {
   comp->abilities[comp->ability_count].ability = ability;
   comp->abilities[comp->ability_count].is_active = false;
   comp->abilities[comp->ability_count].cooldown_remaining = 0.0f;
+  comp->abilities[comp->ability_count].stats.activation_count = 0;
+  comp->abilities[comp->ability_count].stats.total_active_time = 0.0f;
   comp->ability_count++;
 }
 
@@ -86,6 +88,7 @@ bool gas_try_activate_ability(AbilitySystemComponent *comp,
         }
 
         spec->is_active = true;
+        spec->stats.activation_count++;
         ability->on_activate(comp->owner_actor, spec);
         return true;
       }
@@ -124,8 +127,12 @@ void gas_destroy_component(AbilitySystemComponent *comp) {
 void gas_update(AbilitySystemComponent *comp, f32 delta_time) {
   if (!comp) return;
 
-  // Update ability cooldowns
+  // Update ability cooldowns and active time
   for (u32 i = 0; i < comp->ability_count; i++) {
+    if (comp->abilities[i].is_active) {
+      comp->abilities[i].stats.total_active_time += delta_time;
+    }
+
     if (comp->abilities[i].cooldown_remaining > 0.0f) {
       comp->abilities[i].cooldown_remaining -= delta_time;
       if (comp->abilities[i].cooldown_remaining < 0.0f) {
@@ -265,5 +272,19 @@ bool gas_can_activate(AbilitySystemComponent *comp, const char *ability_name) {
   }
 
   LOGW("Ability '%s' not found", ability_name);
+  return false;
+}
+
+bool gas_get_ability_stats(AbilitySystemComponent *comp, const char *ability_name,
+                           AbilityStats *out_stats) {
+  if (!comp || !ability_name || !out_stats) return false;
+
+  for (u32 i = 0; i < comp->ability_count; i++) {
+    if (comp->abilities[i].ability &&
+        strcmp(comp->abilities[i].ability->name, ability_name) == 0) {
+      *out_stats = comp->abilities[i].stats;
+      return true;
+    }
+  }
   return false;
 }
