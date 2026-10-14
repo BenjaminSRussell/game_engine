@@ -768,6 +768,21 @@ target_include_directories(test_ui_system PRIVATE
 )
 add_test(NAME test_ui_system COMMAND test_ui_system)
 
+# Motion matching pose search by velocity, trajectory, and feet.
+# Not add_engine_test: that macro links Engine, which does not build on
+# origin/main (missing GLFW, then gpu_profiler.c). Compiles the database directly.
+add_executable(test_motion_matching
+    tests/motion_matching_test.c
+    src/engine/animation/motion_matching/motion_database.c
+)
+target_include_directories(test_motion_matching PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+target_link_libraries(test_motion_matching PRIVATE m)
+add_test(NAME test_motion_matching COMMAND test_motion_matching)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================
