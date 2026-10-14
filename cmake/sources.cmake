@@ -450,10 +450,10 @@ endif()
 # Editor subsystem - DISABLED (causes many build errors)
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/editor/.*\\.c$")
 
-# UI Batch Rendering System lives under editor/ui/canvas/ but is a COMPLETE
-# IMPLEMENTATION that must be compiled. The editor/ exclusion above silently
-# removed it, so re-add it here to carve it out of that exclusion (the same
-# exception approach used for svg_importer.c / orthographic_camera.c below).
+# UI Batch Rendering System lives under editor/ui/canvas/ but must be compiled.
+# The editor/ exclusion above removes these paths, so append them again after
+# that filter. The svg_importer / orthographic_camera lines below are further
+# excludes, not inclusions — do not copy them as an exception.
 list(APPEND ENGINE_SOURCES
     "src/engine/editor/ui/canvas/ui_batch.c"
     "src/engine/editor/ui/canvas/ui_batch_gpu.c"
@@ -609,3 +609,20 @@ include(cmake/recovered_sources.cmake)
 message(STATUS "ENGINE_SOURCES count: ${ENGINE_SOURCES}")
 message(STATUS "GAME_SOURCES count: ${GAME_SOURCES}")
 message(STATUS "LEGACY_TEST_SOURCES count: ${LEGACY_TEST_SOURCES}")
+
+# Issue #177: later filters must not drop the UI batch sources re-added above.
+set(_UI_BATCH_REQUIRED_SOURCES
+    "src/engine/editor/ui/canvas/ui_batch.c"
+    "src/engine/editor/ui/canvas/ui_batch_gpu.c"
+    "src/engine/editor/ui/canvas/ui_batch_text.c"
+    "src/engine/editor/ui/canvas/ui_batch_effects.c"
+    "src/engine/editor/ui/canvas/ui_batch_optimize.c"
+    "src/engine/editor/ui/canvas/ui_batch_renderer.c"
+)
+foreach(_ui_batch_src IN LISTS _UI_BATCH_REQUIRED_SOURCES)
+    if(NOT _ui_batch_src IN_LIST ENGINE_SOURCES)
+        message(FATAL_ERROR "Issue #177: ${_ui_batch_src} is missing from ENGINE_SOURCES")
+    endif()
+endforeach()
+unset(_ui_batch_src)
+unset(_UI_BATCH_REQUIRED_SOURCES)
