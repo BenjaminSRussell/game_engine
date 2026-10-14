@@ -525,6 +525,13 @@ add_test(
         -P ${CMAKE_SOURCE_DIR}/tests/check_geometry_mesh_listed_once.cmake
 )
 
+# Issue #127. add_engine_test links Engine plus tests/unit/test_framework_unified.c,
+# which is not in the tree, so this target compiles widget.c directly.
+add_executable(test_widget_focus
+    tests/unit/ui/widget_focus_test.c
+    src/engine/ui/widgets/widget.c)
+add_test(NAME test_widget_focus COMMAND test_widget_focus)
+
 
 
 
