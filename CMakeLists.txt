@@ -1041,3 +1041,15 @@ message(STATUS "Physics demos configured: physics_demos")
 #     ${CMAKE_SOURCE_DIR}/src/engine
 # )
 # message(STATUS "Verification target added: test_crafting")
+
+# Issue #443: do not open assets/shaders/spv/ when that directory is absent.
+# The real shaders are the GLSL compute sources. Not add_engine_test: that
+# macro links Engine, which does not build on origin/main (missing GLFW, then
+# gpu_profiler.c:80).
+add_test(
+    NAME particle_shader_spv_missing
+    COMMAND ${CMAKE_COMMAND}
+        -DPARTICLE_C=${CMAKE_SOURCE_DIR}/src/engine/core/services/particle_system_gpu.c
+        -DSHADER_DIR=${CMAKE_SOURCE_DIR}/assets/shaders
+        -P ${CMAKE_SOURCE_DIR}/tests/check_particle_shader_spv_missing.cmake
+)
