@@ -544,10 +544,22 @@ add_test(
         -P ${CMAKE_SOURCE_DIR}/tests/check_procedural_building_order.cmake
 )
 
-
-
-
-
+# Issue #157. Not add_engine_test: that macro links Engine and
+# tests/unit/test_framework_unified.c, which is not in the tree. Engine itself
+# does not build here (missing GLFW, then gpu_profiler.c).
+add_executable(test_hot_reload
+    tests/unit/core/hot_reload_legacy_removed.c
+    src/engine/core/hot_reload.c
+    src/engine/core/containers/hashmap.c
+)
+target_include_directories(test_hot_reload PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src
+)
+target_compile_definitions(test_hot_reload PRIVATE
+    "ENGINE_SOURCE_DIR=\"${CMAKE_SOURCE_DIR}\""
+)
+add_test(NAME test_hot_reload COMMAND test_hot_reload)
 
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
