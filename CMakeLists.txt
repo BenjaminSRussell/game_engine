@@ -532,6 +532,16 @@ add_executable(test_widget_focus
     src/engine/ui/widgets/widget.c)
 add_test(NAME test_widget_focus COMMAND test_widget_focus)
 
+# Issue #272: include path resolves to the live material system.
+# Not an Engine-linked unit test (Engine does not build on this host).
+add_test(
+    NAME weather_material_include_resolves
+    COMMAND ${CMAKE_COMMAND}
+        -DWEATHER_C=${CMAKE_SOURCE_DIR}/src/engine/scene/world_building/weather/weather_rendering.c
+        -DCANONICAL_HEADER=${CMAKE_SOURCE_DIR}/src/engine/materials/material_system.h
+        -P ${CMAKE_SOURCE_DIR}/tests/check_weather_material_include.cmake
+)
+
 # Issue #273: ProceduralBuilding must be declared before block_fill_with_buildings.
 # Header-only compile; do not link Engine.
 add_test(
