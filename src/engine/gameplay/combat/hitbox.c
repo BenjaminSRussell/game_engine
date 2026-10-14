@@ -462,23 +462,23 @@ void hitbox_system_update(World *world, f32 delta_time) {
   }
 }
 
-void hitbox_handle_collision(World *world, HitboxInstance *a, HitboxInstance *b, const HitboxCollision *collision) {
+static void hitbox_handle_collision(World *world, HitboxInstance *a, HitboxInstance *b, const HitboxCollision *collision) {
   if (!world || !a || !b || !collision) return;
 
   LOGD("Hitbox collision: entity %u hit entity %u", a->entity.id, b->entity.id);
 
-  // Apply damage if this is a trigger hitbox (e.g., attack hitbox)
+  // Apply damage if this is a trigger hitbox (e.g., attack hitbox).
+  // Melee stores amount, type, and source on DamageComponent. Projectiles emit their own events.
   if (a->hitbox.is_trigger) {
     // Check if this hitbox has already hit target b
     if (!hitbox_has_hit_entity(a->entity, b->entity)) {
-      // Calculate damage with multiplier
-      f32 base_damage = 10.0f;
+      DamageComponent *dmg = ecs_get_component(world, a->entity, DAMAGE_COMPONENT_ID);
+      f32 base_damage = dmg ? dmg->base_damage : 10.0f;
       f32 final_damage = base_damage * a->hitbox.damage_multiplier;
-
-      // Create damage event from hitbox owner to target
-      Entity source = a->entity;
+      DamageType type = dmg ? dmg->damage_type : DAMAGE_TYPE_PHYSICAL;
+      Entity source = dmg ? dmg->source_entity : a->entity;
       Entity target = b->entity;
-      damage_event_create(source, target, final_damage, DAMAGE_TYPE_PHYSICAL);
+      damage_event_create(source, target, final_damage, type);
 
       // Mark that this hitbox has hit target b
       hitbox_mark_hit_entity(a->entity, b->entity);
@@ -492,14 +492,13 @@ void hitbox_handle_collision(World *world, HitboxInstance *a, HitboxInstance *b,
   if (b->hitbox.is_trigger) {
     // Check if this hitbox has already hit target a
     if (!hitbox_has_hit_entity(b->entity, a->entity)) {
-      // Calculate damage with multiplier
-      f32 base_damage = 10.0f;
+      DamageComponent *dmg = ecs_get_component(world, b->entity, DAMAGE_COMPONENT_ID);
+      f32 base_damage = dmg ? dmg->base_damage : 10.0f;
       f32 final_damage = base_damage * b->hitbox.damage_multiplier;
-
-      // Create damage event from hitbox owner to target
-      Entity source = b->entity;
+      DamageType type = dmg ? dmg->damage_type : DAMAGE_TYPE_PHYSICAL;
+      Entity source = dmg ? dmg->source_entity : b->entity;
       Entity target = a->entity;
-      damage_event_create(source, target, final_damage, DAMAGE_TYPE_PHYSICAL);
+      damage_event_create(source, target, final_damage, type);
 
       // Mark that this hitbox has hit target a
       hitbox_mark_hit_entity(b->entity, a->entity);
