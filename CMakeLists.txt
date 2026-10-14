@@ -1071,3 +1071,24 @@ message(STATUS "Physics demos configured: physics_demos")
 #     ${CMAKE_SOURCE_DIR}/src/engine
 # )
 # message(STATUS "Verification target added: test_crafting")
+
+# Issue #423: transition_update calls transition_complete before its definition.
+# Not add_engine_test: that macro links Engine, which does not build on
+# origin/main (missing GLFW, then gpu_profiler.c:80). -include stddef.h lets
+# this target parse weather_system.h; the missing size_t include is issue #260.
+add_executable(test_weather_transition_complete
+    tests/weather_transition_complete_test.c
+    src/engine/scene/world_building/weather/weather_impl.c
+)
+target_include_directories(test_weather_transition_complete PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/scene/world_building/weather
+    ${CMAKE_SOURCE_DIR}/src/engine/include/core/memory
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+target_compile_options(test_weather_transition_complete PRIVATE
+    -include stddef.h
+    -Werror=implicit-function-declaration
+)
+add_test(NAME test_weather_transition_complete COMMAND test_weather_transition_complete)

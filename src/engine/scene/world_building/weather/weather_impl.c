@@ -413,6 +413,8 @@ bool weather_zone_blend(const WeatherZone *zone, const float position[3],
  * =================================================================================================
  */
 
+bool transition_complete(WeatherTransition *transition);
+
 bool transition_start(WeatherTransition *transition, WeatherType from_weather, 
                     WeatherType to_weather, float duration) {
     if (!transition || duration <= 0.0f) return false;
