@@ -731,6 +731,21 @@ target_compile_definitions(test_ik_fabrik PRIVATE _GNU_SOURCE)
 target_link_libraries(test_ik_fabrik PRIVATE m)
 add_test(NAME test_ik_fabrik COMMAND test_ik_fabrik)
 
+# Food cooking recipes. Not add_engine_test: that macro links Engine, which
+# does not build on origin/main (missing GLFW, then gpu_profiler.c).
+add_executable(test_food_recipe
+    tests/food_recipe_test.c
+    src/engine/gameplay/food_system.c
+    src/engine/gameplay/crafting_system.c
+    src/engine/gameplay/inventory/item_db.c
+)
+target_include_directories(test_food_recipe PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+add_test(NAME test_food_recipe COMMAND test_food_recipe)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================

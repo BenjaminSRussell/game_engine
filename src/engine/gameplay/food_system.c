@@ -1,6 +1,8 @@
-#include "food_system.h"
+#include "gameplay/food_system.h"
 #include "gameplay/crafting_system.h"
+#include "gameplay/inventory/item_database.h"
 #include "core/common/memory/allocator.h"
+#include "core/utils.h"
 #include "engine/include/core/logger.h"
 #include <string.h>
 #include <stdlib.h>
@@ -35,6 +37,7 @@ typedef struct food_item {
     uint32_t preparation_time_ms;
     bool requires_cooking;
     uint32_t cooked_item_id;
+    bool crafting_recipe_registered;
     bool is_perishable;
     uint32_t spoil_time_ms;
     
@@ -85,7 +88,7 @@ static void apply_nutrients(uint32_t player_id, const food_item_t* food);
 static void update_nutrition_status(uint32_t player_id, float delta_time);
 static float calculate_nutrition_bonus(const character_nutrition_t* nutrition);
 static float calculate_calories(const food_item_t* food);
-static void register_furnace_recipe(food_item_t* food);
+static bool register_furnace_recipe(food_item_t* food);
 
 bool food_system_init(void) {
     if (g_food_system.initialized) {
@@ -139,7 +142,24 @@ uint32_t food_add_item(const char* name, const char* description,
     
     g_food_system.food_count++;
     log_debug("Added food item: %s (ID: %u)", name, food->item_id);
-    
+
+    // Keep the item database in sync when it has been initialized.
+    // item_database_register preserves the caller id (see item_db.c).
+    Item item_def = {0};
+    item_def.id = food->item_id;
+    item_def.name = food->name;
+    item_def.description = food->description;
+    item_def.type = ITEM_TYPE_CONSUMABLE;
+    item_def.flags = ITEM_FLAG_CONSUMABLE;
+    if (food->stack_size > 1) {
+        item_def.flags |= ITEM_FLAG_STACKABLE;
+    }
+    item_def.max_stack_size = food->stack_size;
+    item_def.weight = food->weight;
+    item_def.sell_value = 10;
+    item_def.data.consumable.healing = food->health_restore;
+    item_database_register(&item_def);
+
     return food->item_id;
 }
 
@@ -302,17 +322,64 @@ void food_register_furnace_recipes(void) {
 
         // If food requires cooking and has a defined cooked version
         if (food->requires_cooking && food->cooked_item_id != 0) {
-            register_furnace_recipe(food);
-            count++;
+            if (register_furnace_recipe(food)) {
+                count++;
+            }
         }
     }
 
     log_info("Registered %u furnace recipes from food system", count);
 }
 
-static void register_furnace_recipe(food_item_t* food) {
+bool food_set_cooking_recipe(uint32_t raw_item_id, uint32_t cooked_item_id,
+                             uint32_t station_type, uint32_t cook_time_ms) {
+    if (!g_food_system.initialized) {
+        return false;
+    }
+
+    food_item_t* raw_food = get_food_item(raw_item_id);
+    food_item_t* cooked_food = get_food_item(cooked_item_id);
+    if (!raw_food || !cooked_food) {
+        LOG_ERROR_CAT(LOG_CAT_GAME, "Cannot create cooking recipe: food items not found");
+        return false;
+    }
+
+    raw_food->requires_cooking = true;
+    raw_food->cooked_item_id = cooked_item_id;
+    raw_food->preparation_time_ms = cook_time_ms;
+
+    char recipe_name[64];
+    snprintf(recipe_name, sizeof(recipe_name), "Cook %s", raw_food->name);
+
+    uint32_t recipe_id = crafting_add_recipe(recipe_name, cook_time_ms, station_type, 1, 5.0f);
+    if (recipe_id == 0) {
+        LOG_ERROR_CAT(LOG_CAT_GAME, "Failed to create cooking recipe for %s", raw_food->name);
+        return false;
+    }
+
+    if (!crafting_add_recipe_ingredient(recipe_id, raw_item_id, 1, true)) {
+        LOG_ERROR_CAT(LOG_CAT_GAME, "Failed to add ingredient to cooking recipe %u", recipe_id);
+        return false;
+    }
+
+    if (!crafting_add_recipe_result(recipe_id, cooked_item_id, 1, 1.0f)) {
+        LOG_ERROR_CAT(LOG_CAT_GAME, "Failed to add result to cooking recipe %u", recipe_id);
+        return false;
+    }
+
+    crafting_discover_recipe(recipe_id);
+    raw_food->crafting_recipe_registered = true;
+    LOG_DEBUG_CAT(LOG_CAT_GAME, "Created cooking recipe %u: %s -> %s",
+                  recipe_id, raw_food->name, cooked_food->name);
+    return true;
+}
+
+static bool register_furnace_recipe(food_item_t* food) {
     if (!food || !food->requires_cooking || food->cooked_item_id == 0) {
-        return;
+        return false;
+    }
+    if (food->crafting_recipe_registered) {
+        return false;
     }
 
     char recipe_name[64];
@@ -328,15 +395,19 @@ static void register_furnace_recipe(food_item_t* food) {
         10.0f // Some XP reward
     );
 
-    if (recipe_id != 0) {
-        // Add ingredient (1x Raw Food)
-        crafting_add_recipe_ingredient(recipe_id, food->item_id, 1, true);
-
-        // Add result (1x Cooked Food)
-        crafting_add_recipe_result(recipe_id, food->cooked_item_id, 1, 1.0f);
-
-        log_debug("Registered furnace recipe: %s", recipe_name);
+    if (recipe_id == 0) {
+        return false;
     }
+
+    // Add ingredient (1x Raw Food)
+    crafting_add_recipe_ingredient(recipe_id, food->item_id, 1, true);
+
+    // Add result (1x Cooked Food)
+    crafting_add_recipe_result(recipe_id, food->cooked_item_id, 1, 1.0f);
+
+    food->crafting_recipe_registered = true;
+    log_debug("Registered furnace recipe: %s", recipe_name);
+    return true;
 }
 
 void food_update_player(uint32_t player_id, float delta_time) {
