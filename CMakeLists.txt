@@ -654,6 +654,14 @@ target_include_directories(test_physics_demo_irenderer PRIVATE
 )
 add_test(NAME test_physics_demo_irenderer COMMAND test_physics_demo_irenderer)
 
+# Issue #278: case label must open a block before the reflected declaration.
+add_test(
+    NAME projectile_bounce_case_is_compound
+    COMMAND ${CMAKE_COMMAND}
+        -DPROJECTILE_C=${CMAKE_SOURCE_DIR}/src/engine/gameplay/combat/projectile.c
+        -P ${CMAKE_SOURCE_DIR}/tests/check_projectile_bounce_case.cmake
+)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================

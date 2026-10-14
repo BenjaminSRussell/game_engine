@@ -1,0 +1,52 @@
+# Issue #278: case PROJECTILE_BEHAVIOR_BOUNCE must open a compound statement
+# before any declaration. A declaration directly after the case label is a
+# C11/gnu11 syntax error ("expected expression").
+if(NOT DEFINED PROJECTILE_C)
+    message(FATAL_ERROR "PROJECTILE_C is required")
+endif()
+
+if(NOT EXISTS "${PROJECTILE_C}")
+    message(FATAL_ERROR "projectile source not found: ${PROJECTILE_C}")
+endif()
+
+file(STRINGS "${PROJECTILE_C}" _lines)
+set(_seen FALSE)
+set(_ok FALSE)
+foreach(_line IN LISTS _lines)
+    string(STRIP "${_line}" _stripped)
+    if(NOT _seen)
+        if(_stripped MATCHES "^case[ \t]+PROJECTILE_BEHAVIOR_BOUNCE[ \t]*:")
+            set(_seen TRUE)
+            string(REGEX REPLACE "^case[ \t]+PROJECTILE_BEHAVIOR_BOUNCE[ \t]*:" "" _rest "${_stripped}")
+            string(STRIP "${_rest}" _rest)
+            if(_rest MATCHES "^\\{")
+                set(_ok TRUE)
+            elseif(NOT _rest STREQUAL "")
+                message(FATAL_ERROR
+                    "PROJECTILE_BEHAVIOR_BOUNCE is followed by '${_rest}' instead of '{'")
+            endif()
+        endif()
+        continue()
+    endif()
+    if(_ok)
+        break()
+    endif()
+    if(_stripped STREQUAL "" OR _stripped MATCHES "^//")
+        continue()
+    endif()
+    if(_stripped MATCHES "^\\{")
+        set(_ok TRUE)
+        break()
+    endif()
+    message(FATAL_ERROR
+        "PROJECTILE_BEHAVIOR_BOUNCE is followed by '${_stripped}' instead of a compound statement")
+endforeach()
+
+if(NOT _seen)
+    message(FATAL_ERROR "PROJECTILE_BEHAVIOR_BOUNCE case not found in ${PROJECTILE_C}")
+endif()
+if(NOT _ok)
+    message(FATAL_ERROR "PROJECTILE_BEHAVIOR_BOUNCE case never opens a compound statement")
+endif()
+
+message(STATUS "PROJECTILE_BEHAVIOR_BOUNCE case opens a compound statement")
