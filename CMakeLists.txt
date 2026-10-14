@@ -569,6 +569,16 @@ add_test(
         -P ${CMAKE_SOURCE_DIR}/tests/check_mega_terrain_memory_pool_include.cmake
 )
 
+# Issue #177: editor exclude must not drop UI batch sources from the Engine target.
+# Script test, not add_engine_test: that macro links Engine, which does not build
+# on origin/main (missing GLFW, then gpu_profiler.c).
+add_test(
+    NAME ui_batch_sources_in_engine
+    COMMAND ${CMAKE_COMMAND}
+        -DENGINE_BUILD_MAKE=${CMAKE_BINARY_DIR}/CMakeFiles/Engine.dir/build.make
+        -P ${CMAKE_SOURCE_DIR}/tests/ui_batch_sources_in_engine.cmake
+)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================
