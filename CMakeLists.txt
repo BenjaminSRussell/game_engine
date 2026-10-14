@@ -844,6 +844,21 @@ target_include_directories(test_ui_animation_sequence PRIVATE
 target_link_libraries(test_ui_animation_sequence PRIVATE m)
 add_test(NAME test_ui_animation_sequence COMMAND test_ui_animation_sequence)
 
+# Lobby state, players, mock discovery/join, and events.
+# Not add_engine_test: that macro links Engine, which does not build on
+# origin/main (missing GLFW, then gpu_profiler.c). Compiles lobby_system.c
+# directly and does not wrap transport RPC or entity-destroy packets.
+add_executable(test_network_lobby
+    tests/network_lobby_test.c
+    src/engine/network/matchmaking/lobby_system.c
+)
+target_include_directories(test_network_lobby PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+add_test(NAME test_network_lobby COMMAND test_network_lobby)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================
