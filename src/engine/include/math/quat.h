@@ -16,6 +16,7 @@
 Quat quat_from_axis_angle(Vec3 axis, f32 angle);
 Quat quat_look_rotation(Vec3 direction, Vec3 up);
 Quat quat_from_euler(f32 pitch, f32 yaw, f32 roll);
+Vec3 quat_to_euler(Quat q);
 Quat quat_mul(Quat a, Quat b);
 Quat quat_normalize(Quat q);
 Quat quat_conjugate(Quat q);

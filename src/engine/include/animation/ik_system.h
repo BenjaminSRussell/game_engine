@@ -12,7 +12,7 @@
 
 typedef enum {
   IK_SOLVER_TWO_BONE, // Leg/arm IK
-  IK_SOLVER_FABR IK,  // Full body IK
+  IK_SOLVER_FABRIK,   // Full body IK
   IK_SOLVER_CCD,      // Cyclic coordinate descent
   IK_SOLVER_LIMB      // Specialized limb IK
 } IKSolverType;
@@ -22,6 +22,12 @@ typedef struct {
   Vec3 position;
   Quat rotation;
   f32 length;
+
+  // Constraints
+  bool constraints_enabled;
+  Vec3 min_angles; // Euler angles in radians (pitch, yaw, roll)
+  Vec3 max_angles; // Euler angles in radians (pitch, yaw, roll)
+  f32 stiffness;   // Resistance to movement (0.0 - 1.0)
 } IKBone;
 
 typedef struct {
@@ -34,7 +40,8 @@ typedef struct {
   Vec3 target_position;
   Quat target_rotation;
 
-  Vec3 pole_vector; // For two-bone IK
+  Vec3 pole_vector;         // For two-bone IK and CCD
+  bool pole_vector_enabled; // Whether to use the pole vector
   f32 blend_weight;
 
   bool position_enabled;

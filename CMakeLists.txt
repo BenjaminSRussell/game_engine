@@ -695,6 +695,23 @@ target_include_directories(test_ui_layout PRIVATE
 )
 add_test(NAME test_ui_layout COMMAND test_ui_layout)
 
+# CCD IK with joint constraints and pole vectors. Not add_engine_test: that
+# macro links Engine, which does not build on origin/main (missing GLFW, then
+# gpu_profiler.c). This target compiles the IK sources directly.
+add_executable(test_ik_ccd
+    tests/ik_ccd_test.c
+    src/engine/animation/ik_system.c
+    src/engine/math/linear_algebra/quaternions/quat/quat_core.c
+)
+target_include_directories(test_ik_ccd PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src
+)
+target_compile_definitions(test_ik_ccd PRIVATE _GNU_SOURCE)
+target_link_libraries(test_ik_ccd PRIVATE m)
+add_test(NAME test_ik_ccd COMMAND test_ik_ccd)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================
