@@ -64,6 +64,7 @@ void network_replication_server_update(void);
 void network_replication_client_update(void);
 void network_replication_create_snapshot(void);
 void network_replication_broadcast_snapshot(void);
+void network_replication_notify_destroy(uint32_t entity_id);
 void network_replication_compress_snapshot(ReplicationSnapshot *snapshot);
 bool network_replication_decompress_snapshot(ReplicationSnapshot *snapshot,
                                              const uint8_t *compressed_data);
@@ -290,6 +291,33 @@ bool network_replication_process_snapshot(const uint8_t *packet_data,
   return true;
 }
 
+bool network_replication_process_destroy(const uint8_t *packet_data, uint32_t packet_size) {
+  if (!packet_data || packet_size < sizeof(PacketHeader) + 4) {
+    return false;
+  }
+
+  // Skip header
+  const uint8_t *data = packet_data + sizeof(PacketHeader);
+
+  uint32_t entity_id = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
+
+  // Remove from client states
+  for (uint32_t i = 0; i < g_replication.client_state_count; i++) {
+    if (g_replication.client_states[i].entity_id == entity_id) {
+      // Remove
+      if (i < g_replication.client_state_count - 1) {
+        g_replication.client_states[i] =
+            g_replication.client_states[g_replication.client_state_count - 1];
+      }
+      g_replication.client_state_count--;
+      LOG_DEBUG("Processed destroy for entity %u", entity_id);
+      return true;
+    }
+  }
+
+  return false;
+}
+
 bool network_replication_decompress_snapshot(ReplicationSnapshot *snapshot,
                                              const uint8_t *compressed_data) {
   if (!snapshot || !compressed_data)
@@ -460,6 +488,9 @@ void network_replication_remove_entity(uint32_t entity_id) {
   if (!g_replication.is_server)
     return;
 
+  // Notify clients about destruction before removing
+  network_replication_notify_destroy(entity_id);
+
   // Find and remove entity
   for (uint32_t i = 0; i < g_replication.server_entity_count; i++) {
     if (g_replication.server_entities[i].entity_id == entity_id) {
@@ -475,6 +506,24 @@ void network_replication_remove_entity(uint32_t entity_id) {
       return;
     }
   }
+}
+
+void network_replication_notify_destroy(uint32_t entity_id) {
+  if (!g_replication.is_server)
+    return;
+
+  uint8_t data[4];
+  data[0] = (entity_id >> 24) & 0xFF;
+  data[1] = (entity_id >> 16) & 0xFF;
+  data[2] = (entity_id >> 8) & 0xFF;
+  data[3] = entity_id & 0xFF;
+
+  // Header is handled by network_server_broadcast if using Packet logic?
+  // network_server_broadcast takes (Type, Data, Size).
+  // It builds the packet.
+
+  network_server_broadcast(PACKET_TYPE_ENTITY_DESTROY, data, 4);
+  LOG_DEBUG("Broadcasted destroy for entity %u", entity_id);
 }
 
 void network_replication_update_entity(uint32_t entity_id, uint32_t field_mask,

@@ -21,6 +21,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <time.h>
+#include "include/network/network_types.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -31,16 +32,6 @@ extern "C" {
  * ============================================================================ */
 
 typedef uint32_t ConnectionID;
-typedef uint16_t PacketType;
-
-/* Connection states */
-typedef enum {
-    CONNECTION_STATE_DISCONNECTED = 0,
-    CONNECTION_STATE_CONNECTING,
-    CONNECTION_STATE_CONNECTED,
-    CONNECTION_STATE_RECONNECTING,
-    CONNECTION_STATE_DISCONNECTING,
-} ConnectionState;
 
 /* Packet delivery types */
 typedef enum {
@@ -60,6 +51,8 @@ typedef struct {
     uint32_t bytes_sent;
     uint32_t bytes_received;
     float latency_ms;
+    float packet_loss;
+    float jitter_ms;
     struct timespec connect_time;
 } ConnectionInfo;
 
@@ -71,11 +64,11 @@ typedef struct {
     PacketDeliveryType delivery_type;
     uint32_t sequence_number;
     struct timespec timestamp;
-} Packet;
+} TransportPacket;
 
 /* Callback types */
 typedef void (*ConnectionStateChangeCallback)(ConnectionID connection_id, ConnectionState old_state, ConnectionState new_state, void* user_data);
-typedef void (*PacketReceivedCallback)(ConnectionID connection_id, const Packet* packet, void* user_data);
+typedef void (*PacketReceivedCallback)(ConnectionID connection_id, const TransportPacket* packet, void* user_data);
 typedef void (*DisconnectionCallback)(ConnectionID connection_id, const char* reason, void* user_data);
 
 /* Connection manager context */
@@ -113,22 +106,28 @@ int connection_manager_get_info(
     ConnectionInfo* info
 );
 
+void connection_manager_set_bandwidth_limit(
+    ConnectionManager* manager,
+    ConnectionID connection_id,
+    uint32_t bytes_per_second
+);
+
 /* Packet operations */
 int connection_manager_send_packet(
     ConnectionManager* manager,
     ConnectionID connection_id,
-    const Packet* packet
+    const TransportPacket* packet
 );
 
 int connection_manager_receive_packets(
     ConnectionManager* manager,
     ConnectionID connection_id,
-    Packet** packets,
+    TransportPacket** packets,
     uint32_t* packet_count
 );
 
-void connection_manager_free_packet(Packet* packet);
-void connection_manager_free_packets(Packet* packets, uint32_t count);
+void connection_manager_free_packet(TransportPacket* packet);
+void connection_manager_free_packets(TransportPacket* packets, uint32_t count);
 
 /* Callbacks */
 void connection_manager_set_state_change_callback(
