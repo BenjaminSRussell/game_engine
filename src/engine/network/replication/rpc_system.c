@@ -30,14 +30,14 @@ void rpc_register(const char *name, RPCHandler handler) {
   g_rpc_count++;
 }
 
-bool rpc_dispatch(const char *name, uint32_t sender_id, void *data,
+bool rpc_dispatch(const char *name, uint32_t sender_id, uint32_t request_id, void *data,
                   uint32_t size) {
   if (!name)
     return false;
 
   for (uint32_t i = 0; i < g_rpc_count; i++) {
     if (strcmp(g_rpc_registry[i].name, name) == 0) {
-      g_rpc_registry[i].handler(sender_id, data, size);
+      g_rpc_registry[i].handler(sender_id, request_id, data, size);
       return true;
     }
   }
@@ -46,6 +46,9 @@ bool rpc_dispatch(const char *name, uint32_t sender_id, void *data,
 }
 
 void rpc_send(const char *name, void *data, uint32_t size) {
+  (void)name;
+  (void)data;
+  (void)size;
   // In a real implementation:
   // 1. Pack RPC name, sender_id, and data into a packet
   // 2. Send packet through the transport layer (e.g. Reliable UDP)
