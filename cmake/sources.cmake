@@ -50,6 +50,8 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # "src/engine/core/legacy/hot_reload.c"  # Removed: empty // Disabled stub. Real impl is src/engine/core/hot_reload.c
     # New unified systems
     "src/engine/core/memory/unified_allocator.c"
+    # Vulkan GPU memory manager. Compiled on non-Apple; Apple exclusion is below.
+    "src/engine/core/memory/gpu_memory.c"
     "src/engine/core/logging/unified_logger.c"
     # Core systems
     "src/engine/core/window.c"
@@ -529,8 +531,14 @@ file(GLOB_RECURSE GAME_SOURCES
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/ecs/ecs\\.c$")
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/crafting/recipe\\.c$")
 
-# Exclude Vulkan-specific GPU memory manager
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/core/memory/gpu_memory\\.c$")
+# Vulkan-specific GPU memory manager follows the Vulkan backend gate above:
+# listed in ENGINE_SOURCES, dropped only on Apple (Metal, Vulkan disabled).
+if(APPLE)
+    list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/core/memory/gpu_memory\\.c$")
+    message(STATUS "Vulkan-specific GPU memory manager excluded on macOS")
+else()
+    message(STATUS "Vulkan-specific GPU memory manager included for non-Apple platform")
+endif()
 
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/core/optimization/optimization_systems_complete\\.c$")
 

@@ -10,7 +10,16 @@
 #include <common.h>
 #include <time.h>
 
+#if defined(__has_include)
+#  if __has_include(<vulkan/vulkan.h>)
+#    include <vulkan/vulkan.h>
+#  endif
+#endif
+// In-tree stub lacks VkDevice and the memory API. Skip it when the real
+// headers were included so the typedefs are not redefined.
+#if !defined(VULKAN_CORE_H_) && !defined(VULKAN_H_)
 #include <include/rendering/vulkan.h>
+#endif
 
 // Forward declarations
 typedef struct GPUMemoryAllocator GPUMemoryAllocator;
