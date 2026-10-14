@@ -72,7 +72,32 @@ static float ease_in_out_bounce(float t) {
                     : (1 + ease_out_bounce(2 * t - 1)) / 2;
 }
 
-static float apply_easing(float t, UIEasingType type) {
+static float cubic_bezier_component(float t, float p0, float p1, float p2, float p3) {
+    float u = 1.0f - t;
+    return u * u * u * p0 + 3.0f * u * u * t * p1 + 3.0f * u * t * t * p2 + t * t * t * p3;
+}
+
+static float solve_cubic_bezier_x(float x, float x1, float x2) {
+    float t = x;
+    for (int i = 0; i < 8; i++) {
+        float x_est = cubic_bezier_component(t, 0.0f, x1, x2, 1.0f);
+        float slope = (3.0f * (1.0f - t) * (1.0f - t) * x1)
+            + (6.0f * (1.0f - t) * t * (x2 - x1))
+            + (3.0f * t * t * (1.0f - x2));
+        if (fabsf(slope) < 1e-6f) break;
+        t -= (x_est - x) / slope;
+        if (t < 0.0f) t = 0.0f;
+        if (t > 1.0f) t = 1.0f;
+    }
+    return t;
+}
+
+static float evaluate_cubic_bezier(float time, float x1, float y1, float x2, float y2) {
+    float t = solve_cubic_bezier_x(time, x1, x2);
+    return cubic_bezier_component(t, 0.0f, y1, y2, 1.0f);
+}
+
+static float apply_easing(float t, UIEasingType type, const UIAnimation* anim) {
     switch (type) {
         case UI_EASE_LINEAR: return ease_linear(t);
         case UI_EASE_IN_QUAD: return ease_in_quad(t);
@@ -87,6 +112,12 @@ static float apply_easing(float t, UIEasingType type) {
         case UI_EASE_IN_BOUNCE: return ease_in_bounce(t);
         case UI_EASE_OUT_BOUNCE: return ease_out_bounce(t);
         case UI_EASE_IN_OUT_BOUNCE: return ease_in_out_bounce(t);
+        case UI_EASE_CUSTOM_BEZIER:
+            if (anim) {
+                return evaluate_cubic_bezier(t, anim->bezier_p1_x, anim->bezier_p1_y,
+                                             anim->bezier_p2_x, anim->bezier_p2_y);
+            }
+            return t;
         default: return t;
     }
 }
@@ -123,7 +154,7 @@ void ui_animation_shutdown(void) {
 UIAnimation* ui_animation_create(Widget* target, UIAnimationProperty property, float duration) {
     UIAnimation* anim = MALLOC(sizeof(UIAnimation));
     if (!anim) {
-        LOG_ERROR(LOG_CAT_ANIMATION, "Failed to allocate UIAnimation");
+        LOG_ERROR_CAT(LOG_CAT_ANIMATION, "Failed to allocate UIAnimation");
         return NULL;
     }
     memset(anim, 0, sizeof(UIAnimation));
@@ -132,6 +163,7 @@ UIAnimation* ui_animation_create(Widget* target, UIAnimationProperty property, f
     anim->property = property;
     anim->duration = duration;
     anim->easing = UI_EASE_LINEAR;
+    anim->mode = UI_ANIM_MODE_TWEEN;
     anim->is_playing = false;
     anim->is_finished = false;
     anim->auto_destroy = false;
@@ -145,6 +177,11 @@ UIAnimation* ui_animation_create(Widget* target, UIAnimationProperty property, f
 
 void ui_animation_destroy(UIAnimation* anim) {
     if (!anim) return;
+
+    if (anim->keyframes) {
+        FREE(anim->keyframes);
+        anim->keyframes = NULL;
+    }
 
     // Remove from list
     if (g_active_animations == anim) {
@@ -164,14 +201,13 @@ void ui_animation_destroy(UIAnimation* anim) {
 
 void ui_animation_destroy_all(void) {
     while (g_active_animations) {
-        UIAnimation* next = g_active_animations->next;
-        memory_free(g_active_animations);
-        g_active_animations = next;
+        ui_animation_destroy(g_active_animations);
     }
 }
 
 void ui_animation_set_float(UIAnimation* anim, float start, float end) {
     if (anim) {
+        anim->mode = UI_ANIM_MODE_TWEEN;
         anim->values.f.start = start;
         anim->values.f.end = end;
     }
@@ -179,6 +215,7 @@ void ui_animation_set_float(UIAnimation* anim, float start, float end) {
 
 void ui_animation_set_vec2(UIAnimation* anim, Vec2 start, Vec2 end) {
     if (anim) {
+        anim->mode = UI_ANIM_MODE_TWEEN;
         anim->values.v2.start = start;
         anim->values.v2.end = end;
     }
@@ -186,6 +223,7 @@ void ui_animation_set_vec2(UIAnimation* anim, Vec2 start, Vec2 end) {
 
 void ui_animation_set_vec4(UIAnimation* anim, Vec4 start, Vec4 end) {
     if (anim) {
+        anim->mode = UI_ANIM_MODE_TWEEN;
         anim->values.v4.start = start;
         anim->values.v4.end = end;
     }
@@ -193,6 +231,91 @@ void ui_animation_set_vec4(UIAnimation* anim, Vec4 start, Vec4 end) {
 
 void ui_animation_set_easing(UIAnimation* anim, UIEasingType easing) {
     if (anim) anim->easing = easing;
+}
+
+void ui_animation_set_bezier_curve(UIAnimation* anim, float p1x, float p1y, float p2x, float p2y) {
+    if (!anim) return;
+    anim->easing = UI_EASE_CUSTOM_BEZIER;
+    anim->bezier_p1_x = p1x;
+    anim->bezier_p1_y = p1y;
+    anim->bezier_p2_x = p2x;
+    anim->bezier_p2_y = p2y;
+}
+
+void ui_animation_bind_float(UIAnimation* anim, float* target) {
+    if (!anim) return;
+    anim->property = UI_ANIM_CUSTOM_FLOAT;
+    anim->custom_target = target;
+}
+
+void ui_animation_bind_vec2(UIAnimation* anim, Vec2* target) {
+    if (!anim) return;
+    anim->property = UI_ANIM_CUSTOM_VEC2;
+    anim->custom_target = target;
+}
+
+void ui_animation_bind_vec4(UIAnimation* anim, Vec4* target) {
+    if (!anim) return;
+    anim->property = UI_ANIM_CUSTOM_VEC4;
+    anim->custom_target = target;
+}
+
+static bool ensure_keyframes_capacity(UIAnimation* anim, uint32_t needed) {
+    if (anim->keyframe_capacity >= needed && (anim->keyframes || needed == 0)) {
+        return true;
+    }
+    uint32_t new_cap = anim->keyframe_capacity == 0 ? 4 : anim->keyframe_capacity * 2;
+    if (new_cap < needed) new_cap = needed;
+    UIKeyframe* grown = (UIKeyframe*)REALLOC(anim->keyframes, new_cap * sizeof(UIKeyframe));
+    if (!grown) {
+        LOG_ERROR_CAT(LOG_CAT_ANIMATION, "Failed to resize keyframes buffer");
+        return false;
+    }
+    anim->keyframes = grown;
+    anim->keyframe_capacity = new_cap;
+    return true;
+}
+
+static void insert_keyframe(UIAnimation* anim, UIKeyframe frame) {
+    if (!ensure_keyframes_capacity(anim, anim->keyframe_count + 1)) return;
+    uint32_t i = anim->keyframe_count;
+    while (i > 0 && anim->keyframes[i - 1].time > frame.time) {
+        anim->keyframes[i] = anim->keyframes[i - 1];
+        i--;
+    }
+    anim->keyframes[i] = frame;
+    anim->keyframe_count++;
+    anim->mode = UI_ANIM_MODE_KEYFRAME;
+}
+
+void ui_animation_add_keyframe_float(UIAnimation* anim, float time, float value, UIEasingType easing) {
+    if (!anim) return;
+    UIKeyframe frame;
+    memset(&frame, 0, sizeof(frame));
+    frame.time = time;
+    frame.value.f = value;
+    frame.easing = easing;
+    insert_keyframe(anim, frame);
+}
+
+void ui_animation_add_keyframe_vec2(UIAnimation* anim, float time, Vec2 value, UIEasingType easing) {
+    if (!anim) return;
+    UIKeyframe frame;
+    memset(&frame, 0, sizeof(frame));
+    frame.time = time;
+    frame.value.v2 = value;
+    frame.easing = easing;
+    insert_keyframe(anim, frame);
+}
+
+void ui_animation_add_keyframe_vec4(UIAnimation* anim, float time, Vec4 value, UIEasingType easing) {
+    if (!anim) return;
+    UIKeyframe frame;
+    memset(&frame, 0, sizeof(frame));
+    frame.time = time;
+    frame.value.v4 = value;
+    frame.easing = easing;
+    insert_keyframe(anim, frame);
 }
 
 void ui_animation_set_delay(UIAnimation* anim, float delay) {
@@ -244,6 +367,157 @@ void ui_animation_cancel(UIAnimation* anim) {
     ui_animation_destroy(anim);
 }
 
+
+static int property_rank(UIAnimationProperty property) {
+    switch (property) {
+        case UI_ANIM_POSITION:
+        case UI_ANIM_SIZE:
+        case UI_ANIM_CUSTOM_VEC2:
+            return 2;
+        case UI_ANIM_BACKGROUND_COLOR:
+        case UI_ANIM_TEXT_COLOR:
+        case UI_ANIM_BORDER_COLOR:
+        case UI_ANIM_CUSTOM_VEC4:
+            return 4;
+        default:
+            return 1;
+    }
+}
+
+static void apply_float_value(UIAnimation* anim, float val) {
+    if (anim->property == UI_ANIM_CUSTOM_FLOAT) {
+        if (anim->custom_target) *(float*)anim->custom_target = val;
+        return;
+    }
+    if (!anim->target) return;
+    switch (anim->property) {
+        case UI_ANIM_OPACITY:
+            widget_set_opacity(anim->target, val);
+            break;
+        case UI_ANIM_POSITION_X: {
+            Vec2 pos = widget_get_position(anim->target);
+            pos.x = val;
+            widget_set_position(anim->target, pos);
+            break;
+        }
+        case UI_ANIM_POSITION_Y: {
+            Vec2 pos = widget_get_position(anim->target);
+            pos.y = val;
+            widget_set_position(anim->target, pos);
+            break;
+        }
+        case UI_ANIM_WIDTH: {
+            Vec2 size = widget_get_size(anim->target);
+            size.x = val;
+            widget_set_size(anim->target, size);
+            break;
+        }
+        case UI_ANIM_HEIGHT: {
+            Vec2 size = widget_get_size(anim->target);
+            size.y = val;
+            widget_set_size(anim->target, size);
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+static void apply_vec2_value(UIAnimation* anim, Vec2 val) {
+    if (anim->property == UI_ANIM_CUSTOM_VEC2) {
+        if (anim->custom_target) *(Vec2*)anim->custom_target = val;
+        return;
+    }
+    if (!anim->target) return;
+    switch (anim->property) {
+        case UI_ANIM_POSITION:
+            widget_set_position(anim->target, val);
+            break;
+        case UI_ANIM_SIZE:
+            widget_set_size(anim->target, val);
+            break;
+        default:
+            break;
+    }
+}
+
+static void apply_vec4_value(UIAnimation* anim, Vec4 val) {
+    if (anim->property == UI_ANIM_CUSTOM_VEC4) {
+        if (anim->custom_target) *(Vec4*)anim->custom_target = val;
+        return;
+    }
+    if (!anim->target) return;
+    switch (anim->property) {
+        case UI_ANIM_BACKGROUND_COLOR:
+            widget_set_background_color(anim->target, val);
+            break;
+        case UI_ANIM_TEXT_COLOR:
+            widget_set_text_color(anim->target, val);
+            break;
+        case UI_ANIM_BORDER_COLOR:
+            widget_set_border_color(anim->target, val);
+            break;
+        default:
+            break;
+    }
+}
+
+static void apply_ui_tween(UIAnimation* anim, float eased_t) {
+    int rank = property_rank(anim->property);
+    if (rank == 2) {
+        apply_vec2_value(anim, ui_vec2_lerp_custom(anim->values.v2.start, anim->values.v2.end, eased_t));
+    } else if (rank == 4) {
+        apply_vec4_value(anim, ui_vec4_lerp_custom(anim->values.v4.start, anim->values.v4.end, eased_t));
+    } else {
+        apply_float_value(anim, ui_lerp(anim->values.f.start, anim->values.f.end, eased_t));
+    }
+}
+
+static void apply_keyframe_sample(UIAnimation* anim, const UIKeyframe* sample) {
+    int rank = property_rank(anim->property);
+    if (rank == 2) apply_vec2_value(anim, sample->value.v2);
+    else if (rank == 4) apply_vec4_value(anim, sample->value.v4);
+    else apply_float_value(anim, sample->value.f);
+}
+
+static void apply_ui_keyframes(UIAnimation* anim, float final_t) {
+    if (!anim->keyframes || anim->keyframe_count == 0) return;
+    UIKeyframe* frames = anim->keyframes;
+    uint32_t count = anim->keyframe_count;
+    if (count == 1 || final_t <= frames[0].time) {
+        apply_keyframe_sample(anim, &frames[0]);
+        return;
+    }
+    if (final_t >= frames[count - 1].time) {
+        apply_keyframe_sample(anim, &frames[count - 1]);
+        return;
+    }
+
+    uint32_t idx = 0;
+    for (uint32_t i = 0; i + 1 < count; i++) {
+        if (final_t >= frames[i].time && final_t <= frames[i + 1].time) {
+            idx = i;
+            break;
+        }
+    }
+    UIKeyframe* k1 = &frames[idx];
+    UIKeyframe* k2 = &frames[idx + 1];
+    float span = k2->time - k1->time;
+    if (span <= 0.0001f) span = 0.0001f;
+    float segment_t = (final_t - k1->time) / span;
+    if (segment_t < 0.0f) segment_t = 0.0f;
+    if (segment_t > 1.0f) segment_t = 1.0f;
+    float eased = apply_easing(segment_t, k2->easing, anim);
+    int rank = property_rank(anim->property);
+    if (rank == 2) {
+        apply_vec2_value(anim, ui_vec2_lerp_custom(k1->value.v2, k2->value.v2, eased));
+    } else if (rank == 4) {
+        apply_vec4_value(anim, ui_vec4_lerp_custom(k1->value.v4, k2->value.v4, eased));
+    } else {
+        apply_float_value(anim, ui_lerp(k1->value.f, k2->value.f, eased));
+    }
+}
+
 void ui_animation_update(float delta_time) {
     UIAnimation* curr = g_active_animations;
     UIAnimation* prev = NULL;
@@ -285,66 +559,10 @@ void ui_animation_update(float delta_time) {
                 if (final_t < 0.0f) final_t = 0.0f;
                 if (final_t > 1.0f) final_t = 1.0f;
 
-                float eased_t = apply_easing(final_t, curr->easing);
-
-                // Apply value to widget
-                if (curr->target) {
-                    switch (curr->property) {
-                        case UI_ANIM_OPACITY: {
-                            float val = ui_lerp(curr->values.f.start, curr->values.f.end, eased_t);
-                            widget_set_opacity(curr->target, val);
-                            break;
-                        }
-                        case UI_ANIM_POSITION_X: {
-                            Vec2 pos = widget_get_position(curr->target);
-                            pos.x = ui_lerp(curr->values.f.start, curr->values.f.end, eased_t);
-                            widget_set_position(curr->target, pos);
-                            break;
-                        }
-                        case UI_ANIM_POSITION_Y: {
-                            Vec2 pos = widget_get_position(curr->target);
-                            pos.y = ui_lerp(curr->values.f.start, curr->values.f.end, eased_t);
-                            widget_set_position(curr->target, pos);
-                            break;
-                        }
-                        case UI_ANIM_POSITION: {
-                            Vec2 val = ui_vec2_lerp_custom(curr->values.v2.start, curr->values.v2.end, eased_t);
-                            widget_set_position(curr->target, val);
-                            break;
-                        }
-                        case UI_ANIM_WIDTH: {
-                            Vec2 size = widget_get_size(curr->target);
-                            size.x = ui_lerp(curr->values.f.start, curr->values.f.end, eased_t);
-                            widget_set_size(curr->target, size);
-                            break;
-                        }
-                        case UI_ANIM_HEIGHT: {
-                            Vec2 size = widget_get_size(curr->target);
-                            size.y = ui_lerp(curr->values.f.start, curr->values.f.end, eased_t);
-                            widget_set_size(curr->target, size);
-                            break;
-                        }
-                        case UI_ANIM_SIZE: {
-                            Vec2 val = ui_vec2_lerp_custom(curr->values.v2.start, curr->values.v2.end, eased_t);
-                            widget_set_size(curr->target, val);
-                            break;
-                        }
-                        case UI_ANIM_BACKGROUND_COLOR: {
-                            Vec4 val = ui_vec4_lerp_custom(curr->values.v4.start, curr->values.v4.end, eased_t);
-                            widget_set_background_color(curr->target, val);
-                            break;
-                        }
-                        case UI_ANIM_TEXT_COLOR: {
-                            Vec4 val = ui_vec4_lerp_custom(curr->values.v4.start, curr->values.v4.end, eased_t);
-                            widget_set_text_color(curr->target, val);
-                            break;
-                        }
-                        case UI_ANIM_BORDER_COLOR: {
-                            Vec4 val = ui_vec4_lerp_custom(curr->values.v4.start, curr->values.v4.end, eased_t);
-                            widget_set_border_color(curr->target, val);
-                            break;
-                        }
-                    }
+                if (curr->mode == UI_ANIM_MODE_KEYFRAME) {
+                    apply_ui_keyframes(curr, final_t);
+                } else {
+                    apply_ui_tween(curr, apply_easing(final_t, curr->easing, curr));
                 }
 
                 if (cycle_complete && curr->on_complete) {

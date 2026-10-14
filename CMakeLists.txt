@@ -797,6 +797,22 @@ target_include_directories(test_player_attack_entity PRIVATE
 )
 add_test(NAME test_player_attack_entity COMMAND test_player_attack_entity)
 
+# UI animation keyframes, tweens, and cubic bezier.
+# Not add_engine_test: that macro links Engine, which does not build here
+# (missing GLFW, then gpu_profiler.c).
+add_executable(test_ui_animation_features
+    tests/ui_animation_features_test.c
+    src/engine/ui/ui_animation.c
+    src/engine/ui/widgets/widget.c
+)
+target_include_directories(test_ui_animation_features PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+target_link_libraries(test_ui_animation_features PRIVATE m)
+add_test(NAME test_ui_animation_features COMMAND test_ui_animation_features)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================

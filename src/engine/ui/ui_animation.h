@@ -5,6 +5,7 @@
 #include "include/math/vec2.h"
 #include "include/math/vec4.h"
 #include <stdbool.h>
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -24,7 +25,8 @@ typedef enum {
     UI_EASE_IN_OUT_ELASTIC,
     UI_EASE_IN_BOUNCE,
     UI_EASE_OUT_BOUNCE,
-    UI_EASE_IN_OUT_BOUNCE
+    UI_EASE_IN_OUT_BOUNCE,
+    UI_EASE_CUSTOM_BEZIER
 } UIEasingType;
 
 // Properties that can be animated
@@ -38,7 +40,10 @@ typedef enum {
     UI_ANIM_SIZE,
     UI_ANIM_BACKGROUND_COLOR,
     UI_ANIM_TEXT_COLOR,
-    UI_ANIM_BORDER_COLOR
+    UI_ANIM_BORDER_COLOR,
+    UI_ANIM_CUSTOM_FLOAT,
+    UI_ANIM_CUSTOM_VEC2,
+    UI_ANIM_CUSTOM_VEC4
 } UIAnimationProperty;
 
 // Transition types for screens
@@ -56,17 +61,41 @@ typedef struct Widget Widget;
 typedef struct UIAnimation UIAnimation;
 typedef void (*UIAnimationCallback)(UIAnimation* anim, void* user_data);
 
+typedef enum {
+    UI_ANIM_MODE_TWEEN,
+    UI_ANIM_MODE_KEYFRAME
+} UIAnimationMode;
+
+typedef struct {
+    float time;
+    union {
+        float f;
+        Vec2 v2;
+        Vec4 v4;
+    } value;
+    UIEasingType easing;
+} UIKeyframe;
+
 struct UIAnimation {
     Widget* target;
     UIAnimationProperty property;
+    UIAnimationMode mode;
+    void* custom_target;
     UIEasingType easing;
+    float bezier_p1_x, bezier_p1_y;
+    float bezier_p2_x, bezier_p2_y;
 
-    // Storage for start/end values
+    // Tween start/end. Kept separate from keyframe storage so the two modes
+    // do not alias the same bytes.
     union {
         struct { float start; float end; } f;
         struct { Vec2 start; Vec2 end; } v2;
         struct { Vec4 start; Vec4 end; } v4;
     } values;
+
+    UIKeyframe* keyframes;
+    uint32_t keyframe_count;
+    uint32_t keyframe_capacity;
 
     float duration;
     float elapsed;
@@ -100,6 +129,13 @@ void ui_animation_set_float(UIAnimation* anim, float start, float end);
 void ui_animation_set_vec2(UIAnimation* anim, Vec2 start, Vec2 end);
 void ui_animation_set_vec4(UIAnimation* anim, Vec4 start, Vec4 end);
 void ui_animation_set_easing(UIAnimation* anim, UIEasingType easing);
+void ui_animation_set_bezier_curve(UIAnimation* anim, float p1x, float p1y, float p2x, float p2y);
+void ui_animation_bind_float(UIAnimation* anim, float* target);
+void ui_animation_bind_vec2(UIAnimation* anim, Vec2* target);
+void ui_animation_bind_vec4(UIAnimation* anim, Vec4* target);
+void ui_animation_add_keyframe_float(UIAnimation* anim, float time, float value, UIEasingType easing);
+void ui_animation_add_keyframe_vec2(UIAnimation* anim, float time, Vec2 value, UIEasingType easing);
+void ui_animation_add_keyframe_vec4(UIAnimation* anim, float time, Vec4 value, UIEasingType easing);
 void ui_animation_set_delay(UIAnimation* anim, float delay);
 void ui_animation_set_loop(UIAnimation* anim, bool loop, bool ping_pong);
 void ui_animation_set_callback(UIAnimation* anim, UIAnimationCallback callback, void* user_data);
