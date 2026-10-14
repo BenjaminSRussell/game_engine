@@ -64,7 +64,17 @@ typedef struct ui_rendering_ui_batch_internal {
     size_t data_size;
     bool initialized;
     bool dirty;
+    bool gpu_uploaded;
     uint64_t frame_updated;
+    ui_rendering_vertex_t* vertices;
+    uint32_t vertex_count;
+    uint32_t vertex_capacity;
+    uint32_t* indices;
+    uint32_t index_count;
+    uint32_t index_capacity;
+    ui_rendering_draw_command_t* commands;
+    uint32_t command_count;
+    uint32_t command_capacity;
 } ui_rendering_ui_batch_internal_t;
 
 typedef struct ui_rendering_ui_batch_context {
@@ -97,7 +107,41 @@ static void ui_rendering_ui_batch_cleanup_internal(ui_rendering_ui_batch_interna
         free(item->data);
         item->data = NULL;
     }
+    free(item->vertices);
+    free(item->indices);
+    free(item->commands);
+    item->vertices = NULL;
+    item->indices = NULL;
+    item->commands = NULL;
+    item->vertex_count = 0;
+    item->vertex_capacity = 0;
+    item->index_count = 0;
+    item->index_capacity = 0;
+    item->command_count = 0;
+    item->command_capacity = 0;
+    item->data_size = 0;
     item->initialized = false;
+    item->gpu_uploaded = false;
+}
+
+static int ui_rendering_ui_batch_grow(void** ptr, uint32_t* capacity, uint32_t need, size_t elem) {
+    if (need <= *capacity) {
+        return 0;
+    }
+    uint32_t next = *capacity ? *capacity : 8u;
+    while (next < need) {
+        if (next > UINT32_MAX / 2u) {
+            return -1;
+        }
+        next *= 2u;
+    }
+    void* grown = realloc(*ptr, (size_t)next * elem);
+    if (!grown) {
+        return -1;
+    }
+    *ptr = grown;
+    *capacity = next;
+    return 0;
 }
 
 /* ============================================================================
@@ -264,6 +308,107 @@ int ui_rendering_ui_batch_process_pending(void) {
     }
 
     return processed;
+}
+
+int ui_rendering_ui_batch_add_geometry(ui_rendering_ui_batch_handle_t handle,
+                                       const ui_rendering_vertex_t* vertices,
+                                       uint32_t vertex_count,
+                                       const uint32_t* indices,
+                                       uint32_t index_count) {
+    if (!ui_rendering_ui_batch_is_valid(handle) || !vertices || vertex_count == 0) {
+        return -1;
+    }
+    if (index_count > 0 && !indices) {
+        return -1;
+    }
+
+    ui_rendering_ui_batch_internal_t* item = &g_ui_batch_ctx.items[handle.id];
+    if (item->vertex_count > UINT32_MAX - vertex_count ||
+        item->index_count > UINT32_MAX - index_count ||
+        item->command_count == UINT32_MAX) {
+        return -1;
+    }
+
+    if (ui_rendering_ui_batch_grow((void**)&item->vertices, &item->vertex_capacity,
+                                   item->vertex_count + vertex_count,
+                                   sizeof(ui_rendering_vertex_t)) != 0) {
+        return -1;
+    }
+    if (index_count > 0 &&
+        ui_rendering_ui_batch_grow((void**)&item->indices, &item->index_capacity,
+                                   item->index_count + index_count, sizeof(uint32_t)) != 0) {
+        return -1;
+    }
+    if (ui_rendering_ui_batch_grow((void**)&item->commands, &item->command_capacity,
+                                   item->command_count + 1u,
+                                   sizeof(ui_rendering_draw_command_t)) != 0) {
+        return -1;
+    }
+
+    uint32_t vertex_base = item->vertex_count;
+    memcpy(item->vertices + vertex_base, vertices, (size_t)vertex_count * sizeof(ui_rendering_vertex_t));
+    item->vertex_count += vertex_count;
+
+    uint32_t index_base = item->index_count;
+    for (uint32_t i = 0; i < index_count; i++) {
+        item->indices[index_base + i] = indices[i] + vertex_base;
+    }
+    item->index_count += index_count;
+
+    ui_rendering_draw_command_t* cmd = &item->commands[item->command_count++];
+    memset(cmd, 0, sizeof(*cmd));
+    cmd->vertex_offset = vertex_base;
+    cmd->vertex_count = vertex_count;
+    cmd->index_offset = index_base;
+    cmd->index_count = index_count;
+
+    item->dirty = true;
+    item->gpu_uploaded = false;
+    item->data_size = (size_t)item->vertex_count * sizeof(ui_rendering_vertex_t) +
+                      (size_t)item->index_count * sizeof(uint32_t);
+    return 0;
+}
+
+int ui_rendering_ui_batch_get_vertex_buffer(ui_rendering_ui_batch_handle_t handle,
+                                            const ui_rendering_vertex_t** out_vertices,
+                                            uint32_t* out_count) {
+    if (!out_vertices || !out_count || !ui_rendering_ui_batch_is_valid(handle)) {
+        return -1;
+    }
+    const ui_rendering_ui_batch_internal_t* item = &g_ui_batch_ctx.items[handle.id];
+    *out_vertices = item->vertices;
+    *out_count = item->vertex_count;
+    return 0;
+}
+
+int ui_rendering_ui_batch_get_index_buffer(ui_rendering_ui_batch_handle_t handle,
+                                           const uint32_t** out_indices,
+                                           uint32_t* out_count) {
+    if (!out_indices || !out_count || !ui_rendering_ui_batch_is_valid(handle)) {
+        return -1;
+    }
+    const ui_rendering_ui_batch_internal_t* item = &g_ui_batch_ctx.items[handle.id];
+    *out_indices = item->indices;
+    *out_count = item->index_count;
+    return 0;
+}
+
+int ui_rendering_ui_batch_get_draw_commands(ui_rendering_ui_batch_handle_t handle,
+                                            ui_rendering_draw_command_t** out_commands,
+                                            uint32_t* out_count) {
+    if (!out_commands || !out_count || !ui_rendering_ui_batch_is_valid(handle)) {
+        return -1;
+    }
+    ui_rendering_ui_batch_internal_t* item = &g_ui_batch_ctx.items[handle.id];
+    *out_commands = item->commands;
+    *out_count = item->command_count;
+    return 0;
+}
+
+void ui_rendering_ui_batch_mark_gpu_uploaded(ui_rendering_ui_batch_handle_t handle) {
+    if (ui_rendering_ui_batch_is_valid(handle)) {
+        g_ui_batch_ctx.items[handle.id].gpu_uploaded = true;
+    }
 }
 
 uint32_t ui_rendering_ui_batch_get_count(void) {
