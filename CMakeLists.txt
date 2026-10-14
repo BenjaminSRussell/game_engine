@@ -948,6 +948,21 @@ target_include_directories(test_network_protocol PRIVATE
 )
 add_test(NAME test_network_protocol COMMAND test_network_protocol)
 
+# Quaternion core math in quat_core.c. Not add_engine_test: that macro links
+# Engine and tests/unit/test_framework_unified.c, which is missing. Engine
+# does not build on origin/main (missing GLFW, then gpu_profiler.c).
+add_executable(test_quat_core
+    tests/quat_core_test.c
+    src/engine/math/linear_algebra/quaternions/quat/quat_core.c
+)
+target_include_directories(test_quat_core PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src
+)
+target_link_libraries(test_quat_core PRIVATE m)
+add_test(NAME test_quat_core COMMAND test_quat_core)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================
