@@ -813,6 +813,21 @@ target_include_directories(test_ui_animation_features PRIVATE
 target_link_libraries(test_ui_animation_features PRIVATE m)
 add_test(NAME test_ui_animation_features COMMAND test_ui_animation_features)
 
+# Order-independent spell combinations (Fire+Fire, Fire+Water).
+# Not add_engine_test: that macro links Engine, which does not build on
+# origin/main (missing GLFW, then gpu_profiler.c). Compiles spell_system.c
+# directly and stubs the logger.
+add_executable(test_spell_combination
+    tests/spell_combination_test.c
+    src/engine/gameplay/magic/spell_system.c
+)
+target_include_directories(test_spell_combination PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+add_test(NAME test_spell_combination COMMAND test_spell_combination)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================
