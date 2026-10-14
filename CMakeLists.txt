@@ -591,6 +591,17 @@ target_compile_definitions(test_hot_reload PRIVATE
 )
 add_test(NAME test_hot_reload COMMAND test_hot_reload)
 
+# Issue #255: SimdFeature enumerators must survive -DSIMD_SSE2/-DSIMD_AVX2.
+# Not an Engine-linked test; Engine still fails earlier on missing GLFW.
+function(add_simd_feature_enum_test target include_dir)
+    add_executable(${target} tests/check_simd_feature_enum.c)
+    target_include_directories(${target} PRIVATE ${include_dir})
+    target_compile_definitions(${target} PRIVATE SIMD_SSE2 SIMD_AVX2)
+    add_test(NAME ${target} COMMAND ${target})
+endfunction()
+add_simd_feature_enum_test(test_simd_feature_enum ${CMAKE_SOURCE_DIR}/src/engine/include)
+add_simd_feature_enum_test(test_simd_feature_enum_alt ${CMAKE_SOURCE_DIR}/src/include)
+
 # Issue #280: local widget header must be a quoted include. Script test,
 # not add_engine_test: that macro links Engine, which does not build on
 # origin/main (missing GLFW, then gpu_profiler.c).
