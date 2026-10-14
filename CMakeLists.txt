@@ -874,6 +874,21 @@ target_include_directories(test_network_replication PRIVATE
 )
 add_test(NAME test_network_replication COMMAND test_network_replication)
 
+# IPv6 addresses, RLE, fragmentation, and a free RPC_ACK id.
+# Not add_engine_test: that macro links Engine, which does not build
+# (missing GLFW, then gpu_profiler.c).
+add_executable(test_network_mvp
+    tests/network_mvp_test.c
+    src/engine/network/packet.c
+    src/engine/network/rpc_system.c
+)
+target_include_directories(test_network_mvp PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+add_test(NAME test_network_mvp COMMAND test_network_mvp)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================

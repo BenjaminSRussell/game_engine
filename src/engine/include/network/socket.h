@@ -8,8 +8,21 @@
 // Opaque socket handle
 typedef struct NetSocket NetSocket;
 
-// Create UDP socket (non-blocking)
+// Socket statistics
+typedef struct {
+    uint64_t bytes_sent;
+    uint64_t bytes_received;
+    uint64_t packets_sent;
+    uint64_t packets_received;
+    uint32_t send_errors;
+    uint32_t receive_errors;
+} NetSocketStats;
+
+// Create UDP socket (non-blocking, IPv4)
 NetSocket *socket_create(uint16_t port);
+
+// Create UDP socket with specific type (IPv4 or IPv6)
+NetSocket *socket_create_typed(uint16_t port, NetAddressType type);
 
 // Close and free socket
 void socket_close(NetSocket *sock);
@@ -25,5 +38,8 @@ int socket_receive(NetSocket *sock, NetAddress *from, void *buffer,
 
 // Get last error message
 const char *socket_get_error(void);
+
+// Get socket statistics
+void socket_get_stats(const NetSocket *sock, NetSocketStats *stats);
 
 #endif // SOCKET_H

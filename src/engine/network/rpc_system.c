@@ -92,19 +92,19 @@ static bool write_rpc_packet(Packet *packet, const char *name, uint32_t req_id, 
 
 void rpc_register(const char *name, RPCHandler handler) {
     if (!name || !handler) {
-        log_error("RPC register: invalid parameters");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC register: invalid parameters");
         return;
     }
     
     if (rpc_count >= MAX_RPC_FUNCTIONS) {
-        log_error("RPC register: maximum RPC functions reached");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC register: maximum RPC functions reached");
         return;
     }
     
     // Check if already registered
     for (uint32_t i = 0; i < rpc_count; i++) {
         if (strcmp(rpc_functions[i].name, name) == 0) {
-            log_warn("RPC register: function '%s' already registered, updating handler", name);
+            LOG_WARN_CAT(LOG_CAT_NETWORK, "RPC register: function '%s' already registered, updating handler", name);
             rpc_functions[i].handler = handler;
             return;
         }
@@ -117,12 +117,12 @@ void rpc_register(const char *name, RPCHandler handler) {
     rpc_functions[rpc_count].active = true;
     rpc_count++;
     
-    log_info("RPC registered: %s", name);
+    LOG_INFO_CAT(LOG_CAT_NETWORK, "RPC registered: %s", name);
 }
 
 bool rpc_dispatch(const char *name, uint32_t sender_id, uint32_t request_id, void *data, uint32_t size) {
     if (!name) {
-        log_error("RPC dispatch: invalid name");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC dispatch: invalid name");
         return false;
     }
     
@@ -136,14 +136,14 @@ bool rpc_dispatch(const char *name, uint32_t sender_id, uint32_t request_id, voi
     }
     
     if (!handler) {
-        log_error("RPC dispatch: function '%s' not found", name);
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC dispatch: function '%s' not found", name);
         return false;
     }
     
     // Call the handler
     handler(sender_id, request_id, data, size);
     
-    log_debug("RPC dispatched: %s from client %u (req: %u)", name, sender_id, request_id);
+    LOG_DEBUG_CAT(LOG_CAT_NETWORK, "RPC dispatched: %s from client %u (req: %u)", name, sender_id, request_id);
     return true;
 }
 
@@ -169,97 +169,97 @@ void rpc_params_from_data(Packet *params, const void *data, uint32_t size) {
 
 void rpc_send(const char *name, void *data, uint32_t size) {
     if (!name) {
-        log_error("RPC send: invalid name");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC send: invalid name");
         return;
     }
     
     Packet packet;
     if (!write_rpc_packet(&packet, name, 0, data, size, 0)) {
-        log_error("RPC send: failed to serialize packet");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC send: failed to serialize packet");
         return;
     }
 
     if (network_client_send(PACKET_TYPE_RPC, packet.buffer, packet.length) != 0) {
-        log_error("RPC send: failed to send packet");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC send: failed to send packet");
         return;
     }
     
-    log_debug("RPC sent: %s (%u bytes)", name, size);
+    LOG_DEBUG_CAT(LOG_CAT_NETWORK, "RPC sent: %s (%u bytes)", name, size);
 }
 
 // Server-side RPC broadcast to all clients
 void rpc_broadcast(const char *name, void *data, uint32_t size) {
     if (!name) {
-        log_error("RPC broadcast: invalid name");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC broadcast: invalid name");
         return;
     }
     
     Packet packet;
     if (!write_rpc_packet(&packet, name, 0, data, size, 0)) {
-        log_error("RPC broadcast: failed to serialize packet");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC broadcast: failed to serialize packet");
         return;
     }
 
     if (network_server_broadcast(PACKET_TYPE_RPC, packet.buffer, packet.length) != 0) {
-        log_error("RPC broadcast: failed to broadcast packet");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC broadcast: failed to broadcast packet");
         return;
     }
     
-    log_debug("RPC broadcast: %s (%u bytes)", name, size);
+    LOG_DEBUG_CAT(LOG_CAT_NETWORK, "RPC broadcast: %s (%u bytes)", name, size);
 }
 
 // Server-side RPC send to specific client
 void rpc_send_to_client(uint32_t client_id, const char *name, void *data, uint32_t size) {
     if (!name) {
-        log_error("RPC send_to_client: invalid name");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC send_to_client: invalid name");
         return;
     }
     
     Packet packet;
     if (!write_rpc_packet(&packet, name, 0, data, size, 0)) {
-        log_error("RPC send_to_client: failed to serialize packet");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC send_to_client: failed to serialize packet");
         return;
     }
 
     if (network_server_send_to_client(client_id, PACKET_TYPE_RPC, packet.buffer, packet.length) != 0) {
-        log_error("RPC send_to_client: failed to send packet to client %u", client_id);
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC send_to_client: failed to send packet to client %u", client_id);
         return;
     }
     
-    log_debug("RPC sent to client %u: %s (%u bytes)", client_id, name, size);
+    LOG_DEBUG_CAT(LOG_CAT_NETWORK, "RPC sent to client %u: %s (%u bytes)", client_id, name, size);
 }
 
 // Process incoming RPC packet
 void rpc_process_packet(uint32_t sender_id, const void *packet_data, uint16_t packet_size) {
     if (!packet_data || packet_size < sizeof(PacketHeader)) {
-        log_error("RPC process: invalid packet data");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC process: invalid packet data");
         return;
     }
     
     // Read packet
     Packet packet;
     if (!packet_init_read(&packet, packet_data, packet_size)) {
-        log_error("RPC process: failed to read packet");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC process: failed to read packet");
         return;
     }
     
     uint8_t flags = 0;
     if (!packet_read_u8(&packet, &flags)) {
-        log_error("RPC process: failed to read flags");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC process: failed to read flags");
         return;
     }
 
     // Read RPC name
     char rpc_name[RPC_NAME_MAX_LENGTH];
     if (!packet_read_string(&packet, rpc_name, sizeof(rpc_name))) {
-        log_error("RPC process: failed to read RPC name");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC process: failed to read RPC name");
         return;
     }
 
     // Read Request ID
     uint32_t request_id = 0;
     if (!packet_read_u32(&packet, &request_id)) {
-        log_error("RPC process: failed to read Request ID");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC process: failed to read Request ID");
         return;
     }
 
@@ -268,7 +268,7 @@ void rpc_process_packet(uint32_t sender_id, const void *packet_data, uint16_t pa
         for (int i=0; i<MAX_RELIABLE_RPC; ++i) {
             if (pending_reliable[i].active && pending_reliable[i].request_id == request_id) {
                 pending_reliable[i].active = false;
-                log_debug("RPC reliable: ACK received for ID %u", request_id);
+                LOG_DEBUG_CAT(LOG_CAT_NETWORK, "RPC reliable: ACK received for ID %u", request_id);
                 break;
             }
         }
@@ -281,9 +281,9 @@ void rpc_process_packet(uint32_t sender_id, const void *packet_data, uint16_t pa
         Packet ack;
         if (write_rpc_packet(&ack, "__ACK__", request_id, NULL, 0, 0)) {
             if (sender_id == 0) {
-                network_client_send(PACKET_TYPE_RPC, ack.buffer, ack.length);
+                network_client_send(PACKET_TYPE_RPC_ACK, ack.buffer, ack.length);
             } else {
-                network_server_send_to_client(sender_id, PACKET_TYPE_RPC, ack.buffer, ack.length);
+                network_server_send_to_client(sender_id, PACKET_TYPE_RPC_ACK, ack.buffer, ack.length);
             }
         }
     }
@@ -292,18 +292,18 @@ void rpc_process_packet(uint32_t sender_id, const void *packet_data, uint16_t pa
     uint8_t rpc_data[1024];
     uint16_t rpc_data_size = 0;
     if (!packet_read_u16(&packet, &rpc_data_size)) {
-         log_error("RPC process: failed to read data size");
+         LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC process: failed to read data size");
          return;
     }
     
     if (rpc_data_size > sizeof(rpc_data)) {
-        log_error("RPC process: data too large");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC process: data too large");
         return;
     }
     
     if (rpc_data_size > 0) {
         if (packet.read_pos + rpc_data_size > packet.length) {
-            log_error("RPC process: incomplete data");
+            LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC process: incomplete data");
             return;
         }
         memcpy(rpc_data, &packet.buffer[packet.read_pos], rpc_data_size);
@@ -323,7 +323,7 @@ void rpc_update(float delta_time) {
                 pending_reliable[i].time_since_sent = 0;
                 pending_reliable[i].retries++;
                 if (pending_reliable[i].retries > MAX_RETRIES) {
-                    log_warn("RPC reliable: failed to send after retries (ID: %u)", pending_reliable[i].request_id);
+                    LOG_WARN_CAT(LOG_CAT_NETWORK, "RPC reliable: failed to send after retries (ID: %u)", pending_reliable[i].request_id);
                     pending_reliable[i].active = false;
                 } else {
                     // Resend
@@ -333,7 +333,7 @@ void rpc_update(float delta_time) {
                     } else {
                         network_server_send_to_client(pending_reliable[i].target_client_id, PACKET_TYPE_RPC, pending_reliable[i].packet.buffer, len);
                     }
-                    log_debug("RPC reliable: resending ID %u", pending_reliable[i].request_id);
+                    LOG_DEBUG_CAT(LOG_CAT_NETWORK, "RPC reliable: resending ID %u", pending_reliable[i].request_id);
                 }
             }
         }
@@ -357,7 +357,7 @@ static void enqueue_reliable_packet(Packet *packet, uint32_t req_id, uint32_t ta
         pending_reliable[slot].target_client_id = target_client_id;
         memcpy(&pending_reliable[slot].packet, packet, sizeof(Packet));
     } else {
-        log_error("RPC reliable: max pending reached");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC reliable: max pending reached");
     }
 }
 
@@ -367,19 +367,19 @@ void rpc_send_reliable(const char *name, void *data, uint32_t size) {
     if (req_id == 0) req_id = next_request_id++;
 
     if (!write_rpc_packet(&packet, name, req_id, data, size, RPC_FLAG_RELIABLE)) {
-        log_error("RPC reliable: failed to serialize packet");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC reliable: failed to serialize packet");
         return;
     }
 
     enqueue_reliable_packet(&packet, req_id, 0); // 0 = Server
 
     if (network_client_send(PACKET_TYPE_RPC, packet.buffer, packet.length) != 0) {
-        log_error("RPC reliable: failed to send packet");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC reliable: failed to send packet");
     }
 }
 
 void rpc_broadcast_reliable(const char *name, void *data, uint32_t size) {
-    log_warn("RPC reliable broadcast not fully implemented (unreliable fallback)");
+    LOG_WARN_CAT(LOG_CAT_NETWORK, "RPC reliable broadcast not fully implemented (unreliable fallback)");
     rpc_broadcast(name, data, size);
 }
 
@@ -389,14 +389,14 @@ void rpc_send_to_client_reliable(uint32_t client_id, const char *name, void *dat
     if (req_id == 0) req_id = next_request_id++;
 
     if (!write_rpc_packet(&packet, name, req_id, data, size, RPC_FLAG_RELIABLE)) {
-        log_error("RPC reliable: failed to serialize packet");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC reliable: failed to serialize packet");
         return;
     }
 
     enqueue_reliable_packet(&packet, req_id, client_id);
 
     if (network_server_send_to_client(client_id, PACKET_TYPE_RPC, packet.buffer, packet.length) != 0) {
-        log_error("RPC reliable: failed to send packet to client %u", client_id);
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC reliable: failed to send packet to client %u", client_id);
     }
 }
 
@@ -414,7 +414,7 @@ uint32_t rpc_call(const char *name, Packet *params, RpcCallback callback, void *
         }
 
         if (slot == -1) {
-            log_error("RPC call: max pending requests reached");
+            LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC call: max pending requests reached");
             return 0;
         }
 
@@ -428,7 +428,7 @@ uint32_t rpc_call(const char *name, Packet *params, RpcCallback callback, void *
     Packet packet;
     // Use params buffer as data payload. Use write_pos as length since params might not be finalized.
     if (!write_rpc_packet(&packet, name, req_id, params ? params->buffer : NULL, params ? params->write_pos : 0, RPC_FLAG_RELIABLE)) {
-        log_error("RPC call: failed to serialize packet");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC call: failed to serialize packet");
         if (callback) {
             for (int i = 0; i < MAX_PENDING_REQUESTS; ++i) {
                 if (pending_requests[i].active && pending_requests[i].request_id == req_id) {
@@ -444,7 +444,7 @@ uint32_t rpc_call(const char *name, Packet *params, RpcCallback callback, void *
     enqueue_reliable_packet(&packet, req_id, 0); // Assume server target for now
 
     if (network_client_send(PACKET_TYPE_RPC, packet.buffer, packet.length) != 0) {
-        log_error("RPC call: failed to send packet");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC call: failed to send packet");
         // Pending request remains active for retry via rpc_update
     }
 
@@ -454,7 +454,7 @@ uint32_t rpc_call(const char *name, Packet *params, RpcCallback callback, void *
 void rpc_reply(uint32_t target_id, uint32_t request_id, Packet *results) {
     Packet packet;
     if (!write_rpc_packet(&packet, "__RESPONSE__", request_id, results ? results->buffer : NULL, results ? results->write_pos : 0, 0)) {
-        log_error("RPC reply: failed to serialize packet");
+        LOG_ERROR_CAT(LOG_CAT_NETWORK, "RPC reply: failed to serialize packet");
         return;
     }
 
@@ -476,7 +476,7 @@ void rpc_init(void) {
     // Register internal response handler
     rpc_register("__RESPONSE__", rpc_response_handler);
 
-    log_info("RPC system initialized");
+    LOG_INFO_CAT(LOG_CAT_NETWORK, "RPC system initialized");
 }
 
 // Shutdown RPC system
@@ -485,7 +485,7 @@ void rpc_shutdown(void) {
     rpc_count = 0;
     memset(pending_requests, 0, sizeof(pending_requests));
     memset(pending_reliable, 0, sizeof(pending_reliable));
-    log_info("RPC system shutdown");
+    LOG_INFO_CAT(LOG_CAT_NETWORK, "RPC system shutdown");
 }
 
 // TODO: MVP PATH - Add RPC statistics and monitoring
