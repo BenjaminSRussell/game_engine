@@ -1092,3 +1092,17 @@ target_compile_options(test_weather_transition_complete PRIVATE
     -Werror=implicit-function-declaration
 )
 add_test(NAME test_weather_transition_complete COMMAND test_weather_transition_complete)
+
+# Issue #442. Raw GLSL must not be passed to Vulkan as SPIR-V.
+# Not add_engine_test: that macro links Engine, which does not build
+# on origin/main (missing GLFW, then gpu_profiler.c:80).
+add_executable(test_vulkan_shader_fallback
+    tests/vulkan_shader_fallback_test.c
+    src/engine/backend/vulkan/vulkan_pipeline.c
+)
+target_include_directories(test_vulkan_shader_fallback PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+add_test(NAME test_vulkan_shader_fallback COMMAND test_vulkan_shader_fallback)
