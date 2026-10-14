@@ -561,6 +561,16 @@ target_compile_definitions(test_hot_reload PRIVATE
 )
 add_test(NAME test_hot_reload COMMAND test_hot_reload)
 
+# Issue #280: local widget header must be a quoted include. Script test,
+# not add_engine_test: that macro links Engine, which does not build on
+# origin/main (missing GLFW, then gpu_profiler.c).
+add_test(
+    NAME ui_animation_widget_include
+    COMMAND ${CMAKE_COMMAND}
+        -DUI_ANIMATION_C=${CMAKE_SOURCE_DIR}/src/engine/ui/ui_animation.c
+        -P ${CMAKE_SOURCE_DIR}/tests/check_ui_animation_widget_include.cmake
+)
+
 # Issue #271: relative include, not an Engine-linked unit test.
 add_test(
     NAME mega_terrain_memory_pool_include
