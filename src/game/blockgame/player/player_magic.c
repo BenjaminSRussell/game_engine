@@ -420,6 +420,11 @@ bool player_cast_spell(PlayerSystem *system, SpellType spell, Vec3 target) {
         particle_emit_burst(g_particle_system, PARTICLE_TYPE_DUST, transform->position, vec3(0.0f, -1.0f, 0.0f), 2.0f, 20, 1.0f);
     }
     break;
+  case SPELL_FREEZE:
+    if (g_particle_system) {
+        particle_emit_burst(g_particle_system, PARTICLE_TYPE_WATER_SPLASH, transform->position, direction, 1.5f, 15, 0.8f);
+    }
+    break;
   default:
     break;
   }
