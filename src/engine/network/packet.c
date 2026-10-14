@@ -449,23 +449,22 @@ bool packet_compress(Packet *packet) {
     }
 
     uint16_t header_size = sizeof(PacketHeader);
+    if (packet->length < header_size)
+        return false;
+
     uint8_t *payload = &packet->buffer[header_size];
     uint16_t payload_size = packet->length - header_size;
 
     if (payload_size == 0) return true;
 
-    uint8_t *dest_buffer = malloc(MAX_PACKET_SIZE);
+    // Output must stay strictly smaller than the payload, so this buffer cannot overflow.
+    uint8_t *dest_buffer = malloc(payload_size);
     if (!dest_buffer) return false;
 
     uint16_t read_idx = 0;
     uint16_t write_idx = 0;
 
     while (read_idx < payload_size) {
-        if (write_idx >= MAX_PACKET_SIZE) {
-             free(dest_buffer);
-             return false; // Expanded instead of compressed
-        }
-
         // Look for repeat run
         uint16_t run_len = 1;
         while (read_idx + run_len < payload_size && run_len < 129 &&
@@ -474,8 +473,11 @@ bool packet_compress(Packet *packet) {
         }
 
         if (run_len >= 2) {
-             // Repeat run
-             // (len - 2) + 128
+             if ((uint32_t)write_idx + 2 >= payload_size) {
+                 free(dest_buffer);
+                 return false;
+             }
+             // Repeat run: (len - 2) + 128
              dest_buffer[write_idx++] = (uint8_t)((run_len - 2) + 128);
              dest_buffer[write_idx++] = payload[read_idx];
              read_idx += run_len;
@@ -491,6 +493,11 @@ bool packet_compress(Packet *packet) {
                   lit_len++;
              }
 
+             if (lit_len == 0 ||
+                 (uint32_t)write_idx + 1u + lit_len >= payload_size) {
+                 free(dest_buffer);
+                 return false;
+             }
              dest_buffer[write_idx++] = (uint8_t)(lit_len - 1);
              memcpy(&dest_buffer[write_idx], &payload[read_idx], lit_len);
              write_idx += lit_len;
@@ -537,6 +544,10 @@ bool packet_decompress(Packet *packet) {
 
         if (ctrl >= 128) {
             // Repeat run
+            if (read_idx >= src_size) {
+                 free(dest_buffer);
+                 return false;
+            }
             uint16_t len = (ctrl - 128) + 2;
             uint8_t val = src[read_idx++];
 

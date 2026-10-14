@@ -95,6 +95,19 @@ static void test_rle_roundtrip(void) {
   assert(packet.length == sizeof(PacketHeader) + sizeof(original));
   assert(memcmp(&packet.buffer[sizeof(PacketHeader)], original, sizeof(original)) ==
          0);
+
+  for (int i = 0; i < (int)sizeof(original); i++)
+    original[i] = (uint8_t)(i * 17u);
+  packet_init_write(&packet, PACKET_TYPE_WORLD_UPDATE, 0);
+  memcpy(&packet.buffer[packet.write_pos], original, sizeof(original));
+  packet.write_pos = (uint16_t)(packet.write_pos + sizeof(original));
+  packet_finalize(&packet);
+  {
+    uint16_t before = packet.length;
+    assert(!packet_compress(&packet));
+    assert(packet.length == before);
+    assert((packet_get_header(&packet).flags & NET_PACKET_FLAG_COMPRESSED) == 0);
+  }
 }
 
 static void test_fragment_roundtrip(void) {

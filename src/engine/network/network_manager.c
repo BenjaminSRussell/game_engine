@@ -10,6 +10,7 @@
 #include "include/network/packet.h"
 #include "include/network/rpc_system.h"
 #include "include/network/socket.h"
+#include <arpa/inet.h>
 #include <netinet/in.h>
 #include <stdlib.h>
 #include <string.h>
@@ -477,6 +478,9 @@ int network_update(float delta_time) {
 
   if (!g_network.is_running || !g_network.socket)
     return -1;
+
+  if (!g_network.is_server)
+    g_network.time_since_last_packet += delta_time;
 
   while (1) {
     Packet packet;
