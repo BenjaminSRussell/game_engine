@@ -46,7 +46,7 @@ static void ensure_capacity(TextFieldData* data, uint32_t required_capacity) {
             new_capacity = required_capacity;
         }
 
-        char* new_text = MALLOC_UI(new_capacity);
+        char* new_text = memory_alloc(new_capacity);
         if (data->text) {
             if (new_text) {
                 strcpy(new_text, data->text);
@@ -120,7 +120,7 @@ Widget* text_field_create(const char* name, const char* initial_text) {
     Widget* widget = widget_create(name);
     if (!widget) return NULL;
 
-    TextFieldData* data = MALLOC_UI(sizeof(TextFieldData));
+    TextFieldData* data = memory_alloc(sizeof(TextFieldData));
     if (!data) {
         widget_destroy(widget);
         return NULL;
@@ -128,7 +128,7 @@ Widget* text_field_create(const char* name, const char* initial_text) {
 
     // Initialize data
     data->buffer_capacity = INITIAL_BUFFER_CAPACITY;
-    data->text = MALLOC_UI(data->buffer_capacity);
+    data->text = memory_alloc(data->buffer_capacity);
     if (!data->text) {
         FREE(data);
         widget_destroy(widget);
@@ -309,7 +309,7 @@ void text_field_set_placeholder(Widget* widget, const char* placeholder) {
     }
 
     if (placeholder) {
-        data->placeholder = string_duplicate(placeholder);
+        data->placeholder = strdup(placeholder);
     } else {
         data->placeholder = NULL;
     }
