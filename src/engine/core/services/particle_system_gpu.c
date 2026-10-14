@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 
 /**
  * =================================================================================================
@@ -1669,9 +1670,36 @@ static VkShaderModule create_shader_module(VkDevice device, const char* filename
     long length = ftell(file);
     fseek(file, 0, SEEK_SET);
 
-    char* buffer = (char*)malloc(length);
-    fread(buffer, 1, length, file);
+    /* GLSL sources are not shader modules. Reject them before Vulkan sees the bytes. */
+    if (length < 4 || (length % 4) != 0) {
+        fprintf(stderr, "Shader file %s is not SPIR-V (size %ld)\n", filename, length);
+        fclose(file);
+        return VK_NULL_HANDLE;
+    }
+
+    char* buffer = (char*)malloc((size_t)length);
+    if (!buffer) {
+        fclose(file);
+        return VK_NULL_HANDLE;
+    }
+    if (fread(buffer, 1, (size_t)length, file) != (size_t)length) {
+        fprintf(stderr, "Failed to read shader file: %s\n", filename);
+        free(buffer);
+        fclose(file);
+        return VK_NULL_HANDLE;
+    }
     fclose(file);
+
+    {
+        const unsigned char *bytes = (const unsigned char *)buffer;
+        if (bytes[0] != 0x03 || bytes[1] != 0x02 || bytes[2] != 0x23 || bytes[3] != 0x07) {
+            fprintf(stderr,
+                    "Shader file %s is not SPIR-V bytecode; refusing to create a module\n",
+                    filename);
+            free(buffer);
+            return VK_NULL_HANDLE;
+        }
+    }
 
     VkShaderModuleCreateInfo create_info = {0};
     create_info.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
@@ -1687,6 +1715,43 @@ static VkShaderModule create_shader_module(VkDevice device, const char* filename
 
     free(buffer);
     return shader_module;
+}
+
+/* Real compute shaders are assets/shaders/particle_simulate.comp and
+ * particle_emission.comp. assets/shaders/spv/ is not in the repo. Do not
+ * invent SPIR-V, and do not pass the GLSL sources to vkCreateShaderModule.
+ * When the spv directory is absent, fail before creating a module. */
+static VkShaderModule load_particle_compute_shader(VkDevice device,
+                                                   const char *source_path,
+                                                   const char *spv_filename) {
+    struct stat st;
+    char spv_path[512];
+
+    if (!source_path || stat(source_path, &st) != 0 || !S_ISREG(st.st_mode)) {
+        fprintf(stderr, "GPU particle shader source missing: %s\n",
+                source_path ? source_path : "(null)");
+        return VK_NULL_HANDLE;
+    }
+
+    if (stat("assets/shaders/spv", &st) != 0 || !S_ISDIR(st.st_mode)) {
+        fprintf(stderr,
+                "GPU particle compute shaders: assets/shaders/spv/ is absent; "
+                "not loading a module from %s\n",
+                source_path);
+        return VK_NULL_HANDLE;
+    }
+
+    if (!spv_filename || spv_filename[0] == '\0') {
+        return VK_NULL_HANDLE;
+    }
+    snprintf(spv_path, sizeof(spv_path), "assets/shaders/spv/%s", spv_filename);
+    if (stat(spv_path, &st) != 0 || !S_ISREG(st.st_mode)) {
+        fprintf(stderr, "GPU particle SPIR-V missing: %s (source %s)\n",
+                spv_path, source_path);
+        return VK_NULL_HANDLE;
+    }
+
+    return create_shader_module(device, spv_path);
 }
 
 bool gpu_particle_create_descriptor_sets(GPUParticleSystem* system) {
@@ -1778,8 +1843,14 @@ bool gpu_particle_create_pipelines(GPUParticleSystem* system) {
     system->emission_layout = system->simulation_layout;
 
     // 3. Create Pipelines
-    VkShaderModule sim_shader = create_shader_module(system->device, "assets/shaders/spv/particle_simulate.comp.spv");
-    VkShaderModule emit_shader = create_shader_module(system->device, "assets/shaders/spv/particle_emission.comp.spv");
+    VkShaderModule sim_shader = load_particle_compute_shader(
+        system->device,
+        "assets/shaders/particle_simulate.comp",
+        "particle_simulate.comp.spv");
+    VkShaderModule emit_shader = load_particle_compute_shader(
+        system->device,
+        "assets/shaders/particle_emission.comp",
+        "particle_emission.comp.spv");
 
     if (!sim_shader || !emit_shader) {
         if (sim_shader) vkDestroyShaderModule(system->device, sim_shader, NULL);
@@ -2106,9 +2177,36 @@ static VkShaderModule create_shader_module(VkDevice device, const char* filename
     long length = ftell(file);
     fseek(file, 0, SEEK_SET);
 
-    char* buffer = (char*)malloc(length);
-    fread(buffer, 1, length, file);
+    /* GLSL sources are not shader modules. Reject them before Vulkan sees the bytes. */
+    if (length < 4 || (length % 4) != 0) {
+        fprintf(stderr, "Shader file %s is not SPIR-V (size %ld)\n", filename, length);
+        fclose(file);
+        return VK_NULL_HANDLE;
+    }
+
+    char* buffer = (char*)malloc((size_t)length);
+    if (!buffer) {
+        fclose(file);
+        return VK_NULL_HANDLE;
+    }
+    if (fread(buffer, 1, (size_t)length, file) != (size_t)length) {
+        fprintf(stderr, "Failed to read shader file: %s\n", filename);
+        free(buffer);
+        fclose(file);
+        return VK_NULL_HANDLE;
+    }
     fclose(file);
+
+    {
+        const unsigned char *bytes = (const unsigned char *)buffer;
+        if (bytes[0] != 0x03 || bytes[1] != 0x02 || bytes[2] != 0x23 || bytes[3] != 0x07) {
+            fprintf(stderr,
+                    "Shader file %s is not SPIR-V bytecode; refusing to create a module\n",
+                    filename);
+            free(buffer);
+            return VK_NULL_HANDLE;
+        }
+    }
 
     VkShaderModuleCreateInfo create_info = {0};
     create_info.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
@@ -2220,8 +2318,14 @@ bool gpu_particle_create_pipelines(GPUParticleSystem* system) {
     system->emission_layout = system->simulation_layout;
 
     // 3. Create Pipelines
-    VkShaderModule sim_shader = create_shader_module(system->device, "assets/shaders/spv/particle_simulate.comp.spv");
-    VkShaderModule emit_shader = create_shader_module(system->device, "assets/shaders/spv/particle_emission.comp.spv");
+    VkShaderModule sim_shader = load_particle_compute_shader(
+        system->device,
+        "assets/shaders/particle_simulate.comp",
+        "particle_simulate.comp.spv");
+    VkShaderModule emit_shader = load_particle_compute_shader(
+        system->device,
+        "assets/shaders/particle_emission.comp",
+        "particle_emission.comp.spv");
 
     if (sim_shader == VK_NULL_HANDLE || emit_shader == VK_NULL_HANDLE) {
         if (sim_shader) vkDestroyShaderModule(system->device, sim_shader, NULL);
