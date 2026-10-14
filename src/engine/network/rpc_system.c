@@ -49,6 +49,7 @@ static uint32_t next_request_id = 1;
 
 // Internal handler for responses
 static void rpc_response_handler(uint32_t sender_id, uint32_t request_id, void *data, uint32_t size) {
+    (void)sender_id;
     for (int i = 0; i < MAX_PENDING_REQUESTS; ++i) {
         if (pending_requests[i].active && pending_requests[i].request_id == request_id) {
             if (pending_requests[i].callback) {
@@ -63,11 +64,30 @@ static void rpc_response_handler(uint32_t sender_id, uint32_t request_id, void *
     }
 }
 
-static void write_rpc_packet(Packet *packet, const char *name, uint32_t req_id, const void *data, uint32_t size, uint8_t flags) {
-    packet_init_write(packet, PACKET_TYPE_RPC, flags);
-    packet_write_string(packet, name);
-    packet_write_u32(packet, req_id);
-    packet_write_bytes(packet, data, size);
+// network_*_send wraps this buffer in a PacketHeader and forces flags to 0.
+// The body therefore starts at byte 0: flags, name, request id, then bytes.
+static bool write_rpc_packet(Packet *packet, const char *name, uint32_t req_id, const void *data, uint32_t size, uint8_t flags) {
+    if (!packet || !name || size > 65535u || (size > 0 && !data)) {
+        return false;
+    }
+
+    memset(packet, 0, sizeof(*packet));
+    if (!packet_write_u8(packet, flags) ||
+        !packet_write_string(packet, name) ||
+        !packet_write_u32(packet, req_id)) {
+        return false;
+    }
+
+    if (size > 0) {
+        if (!packet_write_bytes(packet, data, (uint16_t)size)) {
+            return false;
+        }
+    } else if (!packet_write_u16(packet, 0)) {
+        return false;
+    }
+
+    packet->length = packet->write_pos;
+    return true;
 }
 
 void rpc_register(const char *name, RPCHandler handler) {
@@ -154,10 +174,12 @@ void rpc_send(const char *name, void *data, uint32_t size) {
     }
     
     Packet packet;
-    write_rpc_packet(&packet, name, 0, data, size, 0);
-    
-    uint16_t packet_size = packet_finalize(&packet);
-    if (network_client_send(PACKET_TYPE_RPC, packet.buffer, packet_size) != 0) {
+    if (!write_rpc_packet(&packet, name, 0, data, size, 0)) {
+        log_error("RPC send: failed to serialize packet");
+        return;
+    }
+
+    if (network_client_send(PACKET_TYPE_RPC, packet.buffer, packet.length) != 0) {
         log_error("RPC send: failed to send packet");
         return;
     }
@@ -173,10 +195,12 @@ void rpc_broadcast(const char *name, void *data, uint32_t size) {
     }
     
     Packet packet;
-    write_rpc_packet(&packet, name, 0, data, size, 0);
-    
-    uint16_t packet_size = packet_finalize(&packet);
-    if (network_server_broadcast(PACKET_TYPE_RPC, packet.buffer, packet_size) != 0) {
+    if (!write_rpc_packet(&packet, name, 0, data, size, 0)) {
+        log_error("RPC broadcast: failed to serialize packet");
+        return;
+    }
+
+    if (network_server_broadcast(PACKET_TYPE_RPC, packet.buffer, packet.length) != 0) {
         log_error("RPC broadcast: failed to broadcast packet");
         return;
     }
@@ -192,10 +216,12 @@ void rpc_send_to_client(uint32_t client_id, const char *name, void *data, uint32
     }
     
     Packet packet;
-    write_rpc_packet(&packet, name, 0, data, size, 0);
-    
-    uint16_t packet_size = packet_finalize(&packet);
-    if (network_server_send_to_client(client_id, PACKET_TYPE_RPC, packet.buffer, packet_size) != 0) {
+    if (!write_rpc_packet(&packet, name, 0, data, size, 0)) {
+        log_error("RPC send_to_client: failed to serialize packet");
+        return;
+    }
+
+    if (network_server_send_to_client(client_id, PACKET_TYPE_RPC, packet.buffer, packet.length) != 0) {
         log_error("RPC send_to_client: failed to send packet to client %u", client_id);
         return;
     }
@@ -217,7 +243,11 @@ void rpc_process_packet(uint32_t sender_id, const void *packet_data, uint16_t pa
         return;
     }
     
-    PacketHeader header = packet_get_header(&packet);
+    uint8_t flags = 0;
+    if (!packet_read_u8(&packet, &flags)) {
+        log_error("RPC process: failed to read flags");
+        return;
+    }
 
     // Read RPC name
     char rpc_name[RPC_NAME_MAX_LENGTH];
@@ -235,7 +265,6 @@ void rpc_process_packet(uint32_t sender_id, const void *packet_data, uint16_t pa
 
     // Handle ACKs
     if (strcmp(rpc_name, "__ACK__") == 0) {
-        // Find in pending reliable and remove
         for (int i=0; i<MAX_RELIABLE_RPC; ++i) {
             if (pending_reliable[i].active && pending_reliable[i].request_id == request_id) {
                 pending_reliable[i].active = false;
@@ -246,33 +275,22 @@ void rpc_process_packet(uint32_t sender_id, const void *packet_data, uint16_t pa
         return;
     }
 
-    // Send ACK if reliable flag is set
-    if (header.flags & RPC_FLAG_RELIABLE) {
+    // Client ids start at 1, so sender 0 is the server and the reply goes out
+    // through the client socket. Any other sender is a client of this server.
+    if (flags & RPC_FLAG_RELIABLE) {
         Packet ack;
-        // ACK payload: None (request_id in header matches)
-        // Wait, write_rpc_packet writes request_id.
-        // We use request_id as the ID to ack.
-        write_rpc_packet(&ack, "__ACK__", request_id, NULL, 0, 0);
-        uint16_t len = packet_finalize(&ack);
-        if (sender_id == 0) {
-             // Received from server? We are client?
-             // Not enough info here (sender_id 0 usually means server).
-             // Assume we send back to sender.
-             // If we are server, we send to sender_id.
-             // If we are client, we send to server (network_client_send).
-             // We need to know if we are server or client.
-             // network_manager has `g_network.is_server`.
-             // But rpc_system doesn't access it directly properly?
-             // Assume sender_id=0 means server.
-             network_client_send(PACKET_TYPE_RPC, ack.buffer, len);
-        } else {
-             network_server_send_to_client(sender_id, PACKET_TYPE_RPC, ack.buffer, len);
+        if (write_rpc_packet(&ack, "__ACK__", request_id, NULL, 0, 0)) {
+            if (sender_id == 0) {
+                network_client_send(PACKET_TYPE_RPC, ack.buffer, ack.length);
+            } else {
+                network_server_send_to_client(sender_id, PACKET_TYPE_RPC, ack.buffer, ack.length);
+            }
         }
     }
     
     // Read RPC data
     uint8_t rpc_data[1024];
-    uint16_t rpc_data_size;
+    uint16_t rpc_data_size = 0;
     if (!packet_read_u16(&packet, &rpc_data_size)) {
          log_error("RPC process: failed to read data size");
          return;
@@ -283,17 +301,17 @@ void rpc_process_packet(uint32_t sender_id, const void *packet_data, uint16_t pa
         return;
     }
     
-    // Manual read of bytes
-    if (packet.read_pos + rpc_data_size > packet.length) {
-        log_error("RPC process: incomplete data");
-        return;
+    if (rpc_data_size > 0) {
+        if (packet.read_pos + rpc_data_size > packet.length) {
+            log_error("RPC process: incomplete data");
+            return;
+        }
+        memcpy(rpc_data, &packet.buffer[packet.read_pos], rpc_data_size);
+        packet.read_pos += rpc_data_size;
     }
-    
-    memcpy(rpc_data, &packet.buffer[packet.read_pos], rpc_data_size);
-    packet.read_pos += rpc_data_size;
 
     // Dispatch the RPC
-    rpc_dispatch(rpc_name, sender_id, request_id, rpc_data, rpc_data_size);
+    rpc_dispatch(rpc_name, sender_id, request_id, rpc_data_size ? rpc_data : NULL, rpc_data_size);
 }
 
 // Stubs for new features
@@ -348,12 +366,14 @@ void rpc_send_reliable(const char *name, void *data, uint32_t size) {
     uint32_t req_id = next_request_id++;
     if (req_id == 0) req_id = next_request_id++;
 
-    write_rpc_packet(&packet, name, req_id, data, size, RPC_FLAG_RELIABLE);
-    uint16_t packet_size = packet_finalize(&packet);
+    if (!write_rpc_packet(&packet, name, req_id, data, size, RPC_FLAG_RELIABLE)) {
+        log_error("RPC reliable: failed to serialize packet");
+        return;
+    }
 
     enqueue_reliable_packet(&packet, req_id, 0); // 0 = Server
 
-    if (network_client_send(PACKET_TYPE_RPC, packet.buffer, packet_size) != 0) {
+    if (network_client_send(PACKET_TYPE_RPC, packet.buffer, packet.length) != 0) {
         log_error("RPC reliable: failed to send packet");
     }
 }
@@ -368,12 +388,14 @@ void rpc_send_to_client_reliable(uint32_t client_id, const char *name, void *dat
     uint32_t req_id = next_request_id++;
     if (req_id == 0) req_id = next_request_id++;
 
-    write_rpc_packet(&packet, name, req_id, data, size, RPC_FLAG_RELIABLE);
-    uint16_t packet_size = packet_finalize(&packet);
+    if (!write_rpc_packet(&packet, name, req_id, data, size, RPC_FLAG_RELIABLE)) {
+        log_error("RPC reliable: failed to serialize packet");
+        return;
+    }
 
     enqueue_reliable_packet(&packet, req_id, client_id);
 
-    if (network_server_send_to_client(client_id, PACKET_TYPE_RPC, packet.buffer, packet_size) != 0) {
+    if (network_server_send_to_client(client_id, PACKET_TYPE_RPC, packet.buffer, packet.length) != 0) {
         log_error("RPC reliable: failed to send packet to client %u", client_id);
     }
 }
@@ -405,15 +427,23 @@ uint32_t rpc_call(const char *name, Packet *params, RpcCallback callback, void *
 
     Packet packet;
     // Use params buffer as data payload. Use write_pos as length since params might not be finalized.
-    // Use RELIABLE flag for rpc_call
-    write_rpc_packet(&packet, name, req_id, params ? params->buffer : NULL, params ? params->write_pos : 0, RPC_FLAG_RELIABLE);
-
-    uint16_t packet_size = packet_finalize(&packet);
+    if (!write_rpc_packet(&packet, name, req_id, params ? params->buffer : NULL, params ? params->write_pos : 0, RPC_FLAG_RELIABLE)) {
+        log_error("RPC call: failed to serialize packet");
+        if (callback) {
+            for (int i = 0; i < MAX_PENDING_REQUESTS; ++i) {
+                if (pending_requests[i].active && pending_requests[i].request_id == req_id) {
+                    pending_requests[i].active = false;
+                    break;
+                }
+            }
+        }
+        return 0;
+    }
 
     // Enqueue for reliability
     enqueue_reliable_packet(&packet, req_id, 0); // Assume server target for now
 
-    if (network_client_send(PACKET_TYPE_RPC, packet.buffer, packet_size) != 0) {
+    if (network_client_send(PACKET_TYPE_RPC, packet.buffer, packet.length) != 0) {
         log_error("RPC call: failed to send packet");
         // Pending request remains active for retry via rpc_update
     }
@@ -423,14 +453,15 @@ uint32_t rpc_call(const char *name, Packet *params, RpcCallback callback, void *
 
 void rpc_reply(uint32_t target_id, uint32_t request_id, Packet *results) {
     Packet packet;
-    write_rpc_packet(&packet, "__RESPONSE__", request_id, results ? results->buffer : NULL, results ? results->write_pos : 0, 0);
-
-    uint16_t packet_size = packet_finalize(&packet);
+    if (!write_rpc_packet(&packet, "__RESPONSE__", request_id, results ? results->buffer : NULL, results ? results->write_pos : 0, 0)) {
+        log_error("RPC reply: failed to serialize packet");
+        return;
+    }
 
     if (target_id == 0) {
-        network_client_send(PACKET_TYPE_RPC, packet.buffer, packet_size);
+        network_client_send(PACKET_TYPE_RPC, packet.buffer, packet.length);
     } else {
-        network_server_send_to_client(target_id, PACKET_TYPE_RPC, packet.buffer, packet_size);
+        network_server_send_to_client(target_id, PACKET_TYPE_RPC, packet.buffer, packet.length);
     }
 }
 
