@@ -701,6 +701,7 @@ add_test(NAME test_ui_layout COMMAND test_ui_layout)
 add_executable(test_ik_ccd
     tests/ik_ccd_test.c
     src/engine/animation/ik_system.c
+    src/engine/animation/ik/fabrik_consolidated.c
     src/engine/math/linear_algebra/quaternions/quat/quat_core.c
 )
 target_include_directories(test_ik_ccd PRIVATE
@@ -711,6 +712,24 @@ target_include_directories(test_ik_ccd PRIVATE
 target_compile_definitions(test_ik_ccd PRIVATE _GNU_SOURCE)
 target_link_libraries(test_ik_ccd PRIVATE m)
 add_test(NAME test_ik_ccd COMMAND test_ik_ccd)
+
+# FABRIK root pinning and persistent chains. Not add_engine_test: that macro
+# links Engine, which does not build on origin/main (missing GLFW, then
+# gpu_profiler.c). Compiles the IK sources directly, same as test_ik_ccd.
+add_executable(test_ik_fabrik
+    tests/ik_fabrik_test.c
+    src/engine/animation/ik_system.c
+    src/engine/animation/ik/fabrik_consolidated.c
+    src/engine/math/linear_algebra/quaternions/quat/quat_core.c
+)
+target_include_directories(test_ik_fabrik PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src
+)
+target_compile_definitions(test_ik_fabrik PRIVATE _GNU_SOURCE)
+target_link_libraries(test_ik_fabrik PRIVATE m)
+add_test(NAME test_ik_fabrik COMMAND test_ik_fabrik)
 
 # ===========================================
 # G-Buffer & Deferred Rendering Tests

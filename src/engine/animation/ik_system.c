@@ -18,6 +18,7 @@ IKSystem *ik_system_create(void) {
     }
     
     memset(system, 0, sizeof(IKSystem));
+    system->fabrik_solver_id = UINT32_MAX;
     
     // Initialize FABRIK solver
     if (animation_fabrik_solver_init() != 0) {
@@ -26,8 +27,18 @@ IKSystem *ik_system_create(void) {
         return NULL;
     }
     
-    // Initialize simple FABRIK
+    // Initialize simple FABRIK (kept; consolidated solver is used for chains)
     fabrik_init();
+
+    animation_fabrik_solver_handle_t handle;
+    animation_fabrik_solver_desc_t desc = {0};
+    if (animation_fabrik_solver_create(&handle, &desc) != 0) {
+        LOG_ERROR_CAT(LOG_CAT_ANIMATION, "Failed to create FABRIK solver instance");
+        animation_fabrik_solver_shutdown();
+        free(system);
+        return NULL;
+    }
+    system->fabrik_solver_id = handle.id;
     
     log_info("IK system created successfully");
     return system;
@@ -35,6 +46,11 @@ IKSystem *ik_system_create(void) {
 
 void ik_system_destroy(IKSystem *system) {
     if (!system) return;
+
+    if (system->fabrik_solver_id != UINT32_MAX) {
+        animation_fabrik_solver_handle_t handle = {system->fabrik_solver_id};
+        animation_fabrik_solver_destroy(handle);
+    }
     
     // Shutdown FABRIK solvers
     animation_fabrik_solver_shutdown();
@@ -60,6 +76,7 @@ u32 ik_add_chain(IKSystem *system, const char *name, IKSolverType solver) {
     chain->rotation_enabled = false;
     chain->max_iterations = 10;
     chain->precision = 0.001f;
+    chain->fabrik_chain_id = UINT32_MAX;
     
     // Initialize target to origin
     chain->target_position = (Vec3){0, 0, 0};
@@ -88,7 +105,7 @@ void ik_solve(IKSystem *system, u32 chain_id) {
             ik_solve_two_bone(chain);
             break;
         case IK_SOLVER_FABRIK:
-            ik_solve_fabrik(chain);
+            ik_solve_fabrik(system, chain);
             break;
         case IK_SOLVER_CCD:
             ik_solve_ccd(chain);
@@ -159,39 +176,46 @@ void ik_solve_two_bone(IKChain *chain) {
     }
 }
 
-void ik_solve_fabrik(IKChain *chain) {
-    if (!chain || chain->bone_count < 2) return;
-    
-    // Use the consolidated FABRIK implementation
-    // Create positions array for FABRIK
+void ik_solve_fabrik(IKSystem *system, IKChain *chain) {
+    if (!system || !chain || chain->bone_count < 2 ||
+        chain->bone_count > MAX_IK_CHAIN_LENGTH) {
+        return;
+    }
+
+    animation_fabrik_solver_handle_t handle = {system->fabrik_solver_id};
+
     Vec3 positions[MAX_IK_CHAIN_LENGTH];
     for (u32 i = 0; i < chain->bone_count; i++) {
         positions[i] = chain->bones[i].position;
     }
-    
-    // Create a FABRIK chain using the simple implementation
-    u32 chain_id = fabrik_create_chain(positions, chain->bone_count);
-    if (chain_id == UINT32_MAX) {
-        log_error("Failed to create FABRIK chain");
+
+    if (chain->fabrik_chain_id == UINT32_MAX) {
+        chain->fabrik_chain_id = animation_fabrik_solver_add_chain(
+            handle, positions, chain->bone_count);
+        if (chain->fabrik_chain_id == UINT32_MAX) {
+            LOG_ERROR_CAT(LOG_CAT_ANIMATION, "Failed to add FABRIK chain");
+            return;
+        }
+
+        for (u32 i = 1; i < chain->bone_count - 1; i++) {
+            animation_fabrik_solver_set_joint_constraint(
+                handle, chain->fabrik_chain_id, i, 45.0f, 135.0f);
+        }
+    } else if (animation_fabrik_solver_set_chain_positions(
+                   handle, chain->fabrik_chain_id, positions,
+                   chain->bone_count) != 0) {
+        LOG_ERROR_CAT(LOG_CAT_ANIMATION, "Failed to update FABRIK chain positions");
         return;
     }
-    
-    // Add constraints if needed
-    for (u32 i = 1; i < chain->bone_count - 1; i++) {
-        // Add simple angle constraints (45 degrees min, 135 degrees max)
-        fabrik_add_constraint(chain_id, i, 45.0f, 135.0f);
-    }
-    
-    // Solve for target
-    fabrik_solve(chain_id, &chain->target_position, chain->max_iterations);
-    
-    // Update bone positions from FABRIK result
+
+    (void)animation_fabrik_solver_solve_chain(
+        handle, chain->fabrik_chain_id, &chain->target_position,
+        (int)chain->max_iterations);
+
     for (u32 i = 0; i < chain->bone_count; i++) {
-        chain->bones[i].position = fabrik_get_joint_position(chain_id, i);
+        chain->bones[i].position = animation_fabrik_solver_get_joint_position(
+            handle, chain->fabrik_chain_id, i);
     }
-    
-    // Clean up
-    fabrik_destroy_chain(chain_id);
 }
 
 void ik_solve_ccd(IKChain *chain) {
