@@ -919,6 +919,21 @@ target_include_directories(test_visual_script_entry PRIVATE
 )
 add_test(NAME test_visual_script_entry COMMAND test_visual_script_entry)
 
+# Light create, lookup, destroy, and packed enumeration.
+# Not add_engine_test: that macro links Engine, which does not build on
+# origin/main (missing GLFW, then gpu_profiler.c). Compiles light_system.c
+# directly.
+add_executable(test_light_system
+    tests/light_system_test.c
+    src/engine/lighting/light_system.c
+)
+target_include_directories(test_light_system PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+add_test(NAME test_light_system COMMAND test_light_system)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================

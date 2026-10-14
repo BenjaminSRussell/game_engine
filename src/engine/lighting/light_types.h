@@ -2,7 +2,6 @@
 #define LIGHT_TYPES_H
 
 #include "../include/math/vec3.h"
-#include <simd/simd.h>
 #include <stdbool.h>
 #include <stdint.h>
 
