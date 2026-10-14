@@ -904,6 +904,26 @@ target_include_directories(test_spell_stats PRIVATE
 )
 add_test(NAME test_spell_stats COMMAND test_spell_stats)
 
+# Image, ListView, and TreeView widgets. Not add_engine_test: that macro links
+# Engine, which does not build here (missing GLFW, then gpu_profiler.c).
+# Compiles the widget sources directly. Does not touch the UI renderer.
+add_executable(test_ui_widgets_image_list_tree
+    tests/ui_widgets_image_list_tree_test.c
+    src/engine/ui/widgets/ui_image.c
+    src/engine/ui/widgets/list_view.c
+    src/engine/ui/widgets/tree_view.c
+    src/engine/ui/widgets/scroll_view.c
+    src/engine/ui/widgets/ui_label.c
+    src/engine/ui/widgets/widget.c
+)
+target_include_directories(test_ui_widgets_image_list_tree PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+target_link_libraries(test_ui_widgets_image_list_tree PRIVATE m)
+add_test(NAME test_ui_widgets_image_list_tree COMMAND test_ui_widgets_image_list_tree)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================
