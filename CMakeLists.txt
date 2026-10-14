@@ -561,6 +561,14 @@ target_compile_definitions(test_hot_reload PRIVATE
 )
 add_test(NAME test_hot_reload COMMAND test_hot_reload)
 
+# Issue #271: relative include, not an Engine-linked unit test.
+add_test(
+    NAME mega_terrain_memory_pool_include
+    COMMAND ${CMAKE_COMMAND}
+        -DTERRAIN_SOURCE=${CMAKE_SOURCE_DIR}/src/engine/scene/world/terrain_mega/mega_terrain_advanced.c
+        -P ${CMAKE_SOURCE_DIR}/tests/check_mega_terrain_memory_pool_include.cmake
+)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================

@@ -12,7 +12,7 @@
 
 #include "mega_terrain.h"
 #include "../../../rendering/gpu_memory.h"
-#include "../../../core/memory_pool.h"
+#include "../../../core/memory/memory_pool.h"
 #include "../../../core/config_system.h"
 #include "../../../procedural/noise/fast_noise_lite.h"
 #include <math.h>
