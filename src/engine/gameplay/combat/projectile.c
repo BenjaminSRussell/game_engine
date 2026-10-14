@@ -57,18 +57,39 @@ static Vec3 calculate_homing_direction(const Vec3 *current_pos,
 static bool projectile_raycast(const Vec3 *start, const Vec3 *end,
                                Entity source_entity, Vec3 *out_hit_point,
                                Vec3 *out_hit_normal, Entity *out_hit_entity) {
-  // Simplified raycast - would integrate with physics system
-  // For now, we'll just check if we hit the ground (y = 0)
+  if (!start || !end) return false;
+
+  bool hit_ground = false;
+  Vec3 ground_hit_point = vec3_zero();
   if (start->y > 0.0f && end->y <= 0.0f) {
-    // Calculate intersection with ground plane
     f32 t = start->y / (start->y - end->y);
-    out_hit_point->x = start->x + t * (end->x - start->x);
-    out_hit_point->y = 0.0f;
-    out_hit_point->z = start->z + t * (end->z - start->z);
-    out_hit_normal->x = 0.0f;
-    out_hit_normal->y = 1.0f;
-    out_hit_normal->z = 0.0f;
-    *out_hit_entity = INVALID_ENTITY;
+    ground_hit_point.x = start->x + t * (end->x - start->x);
+    ground_hit_point.y = 0.0f;
+    ground_hit_point.z = start->z + t * (end->z - start->z);
+    hit_ground = true;
+  }
+
+  Vec3 entity_hit_point = vec3_zero();
+  Vec3 entity_hit_normal = vec3(0.0f, 1.0f, 0.0f);
+  Entity entity_hit = INVALID_ENTITY;
+  bool hit_entity = hitbox_system_raycast(start, end, source_entity, &entity_hit_point,
+                                          &entity_hit_normal, &entity_hit);
+
+  if (hit_entity) {
+    f32 entity_dist_sq = vec3_distance_sq(*start, entity_hit_point);
+    f32 ground_dist_sq = hit_ground ? vec3_distance_sq(*start, ground_hit_point) : 1.0e30f;
+    if (entity_dist_sq < ground_dist_sq) {
+      if (out_hit_point) *out_hit_point = entity_hit_point;
+      if (out_hit_normal) *out_hit_normal = entity_hit_normal;
+      if (out_hit_entity) *out_hit_entity = entity_hit;
+      return true;
+    }
+  }
+
+  if (hit_ground) {
+    if (out_hit_point) *out_hit_point = ground_hit_point;
+    if (out_hit_normal) *out_hit_normal = vec3(0.0f, 1.0f, 0.0f);
+    if (out_hit_entity) *out_hit_entity = INVALID_ENTITY;
     return true;
   }
 
@@ -77,17 +98,16 @@ static bool projectile_raycast(const Vec3 *start, const Vec3 *end,
 
 static void projectile_apply_explosion(const Vec3 *position, f32 radius,
                                        f32 damage, Entity source) {
-  // Find all entities in explosion radius
-  // This would integrate with the hitbox system
+  if (!position) return;
+
   LOGD("Explosion at (%.2f, %.2f, %.2f) radius %.2f damage %.1f", position->x,
        position->y, position->z, radius, damage);
 
-  // For now, just log the explosion
-  // In a full implementation, this would:
-  // 1. Query for entities in radius using hitbox system
-  // 2. Apply damage with falloff if enabled
-  // 3. Apply knockback forces
-  // 4. Create visual effects
+  Entity hit_entities[64];
+  u32 hit_count = hitbox_system_query_sphere(position, radius, source, hit_entities, 64);
+  for (u32 i = 0; i < hit_count; i++) {
+    damage_event_create(source, hit_entities[i], damage, DAMAGE_TYPE_FIRE);
+  }
 }
 
 static void projectile_handle_collision(ProjectileInstance *instance,
@@ -210,9 +230,7 @@ static void projectile_update_physics(ProjectileInstance *instance,
                    vec3(proj->max_speed, proj->max_speed, proj->max_speed));
   }
 
-  // Update position
-  proj->last_position =
-      proj->last_position; // Would get from transform component
+  // Integrate from the previous position. The old self-assignment never moved.
   Vec3 new_position = vec3_add(
       proj->last_position,
       vec3_scale(proj->velocity, vec3(delta_time, delta_time, delta_time)));
@@ -239,8 +257,16 @@ static void projectile_update_physics(ProjectileInstance *instance,
                            &hit_point, &hit_normal, &hit_entity)) {
       projectile_handle_collision(instance, &hit_point, &hit_normal,
                                   hit_entity);
+      if (proj->behavior == PROJECTILE_BEHAVIOR_BOUNCE) {
+        // Leave the surface so the next segment does not re-hit it.
+        new_position = vec3_add(hit_point, vec3_mul(hit_normal, 0.01f));
+      } else if (proj->behavior != PROJECTILE_BEHAVIOR_PIERCE) {
+        new_position = hit_point;
+      }
     }
   }
+
+  proj->last_position = new_position;
 
   // Update age
   proj->age += delta_time;

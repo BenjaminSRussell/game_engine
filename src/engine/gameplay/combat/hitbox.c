@@ -6,6 +6,7 @@
 #include <include/ecs/ecs.h>
 #include <include/math/vec3.h>
 #include <include/math/aabb.h>
+#include <include/math/ray.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -611,4 +612,134 @@ void hitbox_deactivate(HitboxComponent *hitbox) {
 void hitbox_set_active(HitboxComponent *hitbox, bool active) {
   if (hitbox)
     hitbox->active = active;
+}
+
+static bool hitbox_skip_source(Entity entity, Entity source_entity) {
+  return source_entity.id != 0 && entity.id == source_entity.id;
+}
+
+bool hitbox_system_raycast(const Vec3 *start, const Vec3 *end, Entity source_entity,
+                           Vec3 *out_hit_point, Vec3 *out_hit_normal, Entity *out_hit_entity) {
+  if (!g_hitbox_system.is_initialized || !start || !end) return false;
+
+  f32 max_dist = vec3_distance(*start, *end);
+  if (max_dist < 1e-4f) return false;
+
+  Ray ray = ray_from_points(*start, *end);
+  f32 closest_t = max_dist;
+  bool hit_anything = false;
+  Vec3 best_point = vec3_zero();
+  Vec3 best_normal = vec3(0.0f, 1.0f, 0.0f);
+  Entity best_entity = INVALID_ENTITY;
+
+  for (u32 i = 0; i < g_hitbox_system.instance_count; i++) {
+    HitboxInstance *instance = &g_hitbox_system.instances[i];
+    HitboxComponent *hitbox = &instance->hitbox;
+
+    if (!instance->is_active || !hitbox->active) continue;
+    if (hitbox_skip_source(instance->entity, source_entity)) continue;
+
+    f32 t = -1.0f;
+    bool hit = false;
+    Vec3 origin = *start;
+
+    switch (hitbox->shape) {
+      case HITBOX_SHAPE_SPHERE: {
+        f32 radius = hitbox->data.sphere.radius;
+        f32 dist_sq = vec3_distance_sq(origin, hitbox->world_position);
+        if (dist_sq <= radius * radius) {
+          hit = true;
+          t = 0.0f;
+        } else {
+          hit = ray_intersects_sphere(ray, hitbox->world_position, radius, &t);
+        }
+        break;
+      }
+      case HITBOX_SHAPE_BOX: {
+        AABB box;
+        box.min = vec3_sub(hitbox->world_position, hitbox->data.box.half_extents);
+        box.max = vec3_add(hitbox->world_position, hitbox->data.box.half_extents);
+        bool inside = origin.x >= box.min.x && origin.x <= box.max.x &&
+                      origin.y >= box.min.y && origin.y <= box.max.y &&
+                      origin.z >= box.min.z && origin.z <= box.max.z;
+        if (inside) {
+          hit = true;
+          t = 0.0f;
+        } else {
+          hit = ray_intersects_aabb(ray, box, &t);
+        }
+        break;
+      }
+      case HITBOX_SHAPE_CAPSULE: {
+        f32 bound = hitbox->data.capsule.radius + hitbox->data.capsule.height * 0.5f;
+        f32 dist_sq = vec3_distance_sq(origin, hitbox->world_position);
+        if (dist_sq <= bound * bound) {
+          hit = true;
+          t = 0.0f;
+        } else {
+          hit = ray_intersects_sphere(ray, hitbox->world_position, bound, &t);
+        }
+        break;
+      }
+      default:
+        break;
+    }
+
+    if (!hit || t < 0.0f || t > closest_t) continue;
+
+    closest_t = t;
+    hit_anything = true;
+    best_point = ray_at(ray, t);
+    best_entity = instance->entity;
+    best_normal = vec3_normalize(vec3_sub(best_point, hitbox->world_position));
+    if (vec3_length_sq(best_normal) < 1e-8f) {
+      best_normal = vec3(0.0f, 1.0f, 0.0f);
+    }
+  }
+
+  if (!hit_anything) return false;
+
+  if (out_hit_point) *out_hit_point = best_point;
+  if (out_hit_normal) *out_hit_normal = best_normal;
+  if (out_hit_entity) *out_hit_entity = best_entity;
+  return true;
+}
+
+u32 hitbox_system_query_sphere(const Vec3 *center, f32 radius, Entity source_entity,
+                               Entity *out_entities, u32 max_entities) {
+  if (!g_hitbox_system.is_initialized || !center || !out_entities || max_entities == 0 || radius < 0.0f) {
+    return 0;
+  }
+
+  u32 count = 0;
+  for (u32 i = 0; i < g_hitbox_system.instance_count; i++) {
+    HitboxInstance *instance = &g_hitbox_system.instances[i];
+    HitboxComponent *hitbox = &instance->hitbox;
+
+    if (!instance->is_active || !hitbox->active) continue;
+    if (hitbox_skip_source(instance->entity, source_entity)) continue;
+
+    bool collision = false;
+    switch (hitbox->shape) {
+      case HITBOX_SHAPE_SPHERE:
+        collision = sphere_vs_sphere(center, radius, &hitbox->world_position, hitbox->data.sphere.radius);
+        break;
+      case HITBOX_SHAPE_BOX:
+        collision = sphere_vs_box(center, radius, &hitbox->world_position, &hitbox->data.box.half_extents);
+        break;
+      case HITBOX_SHAPE_CAPSULE:
+        collision = capsule_vs_sphere(&hitbox->world_position, hitbox->data.capsule.radius,
+                                      hitbox->data.capsule.height, center, radius);
+        break;
+      default:
+        break;
+    }
+
+    if (!collision) continue;
+
+    out_entities[count++] = instance->entity;
+    if (count >= max_entities) break;
+  }
+
+  return count;
 }
