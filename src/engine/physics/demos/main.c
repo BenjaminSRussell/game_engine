@@ -1,5 +1,5 @@
 // Physics Demos Main Entry Point
-#include "physics_demo_framework.c"
+#include "physics_demo_framework.h"
 #include "engine/include/core/logger.h"
 #include <stdlib.h>
 

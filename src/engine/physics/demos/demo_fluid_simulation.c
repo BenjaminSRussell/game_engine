@@ -1,7 +1,9 @@
 // Physics Demo: Fluid Simulation - Particle-based fluid dynamics
-#include "physics_demo_framework.c"
+#include "physics_demo_framework.h"
 #include "engine/include/math/math_all.h"
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define MAX_PARTICLES 500
 #define PARTICLE_RADIUS 0.05f
@@ -264,7 +266,7 @@ void fluid_simulation_update(PhysicsWorld* world, float dt) {
     }
 }
 
-void fluid_simulation_render(Renderer* renderer, PhysicsWorld* world) {
+void fluid_simulation_render(IRenderer* renderer, PhysicsWorld* world) {
     // Render container walls
     for (int i = 0; i < 5; i++) {
         physics_demo_render_body(renderer, container_walls[i]);
@@ -317,4 +319,4 @@ void fluid_simulation_cleanup(PhysicsWorld* world) {
 }
 
 // Register the demo
-REGISTER_DEMO(Fluid Simulation, fluid_simulation_init, fluid_simulation_update, fluid_simulation_render, fluid_simulation_cleanup);
+REGISTER_DEMO("Fluid Simulation", fluid_simulation_init, fluid_simulation_update, fluid_simulation_render, fluid_simulation_cleanup);

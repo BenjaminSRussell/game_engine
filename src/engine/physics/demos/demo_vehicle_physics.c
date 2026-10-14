@@ -1,6 +1,7 @@
 // Physics Demo: Vehicle Physics - Car simulation with wheels and suspension
-#include "physics_demo_framework.c"
+#include "physics_demo_framework.h"
 #include "engine/include/math/math_all.h"
+#include <stdio.h>
 #include <stdlib.h>
 
 static RigidBody* car_body;
@@ -146,7 +147,7 @@ void vehicle_physics_update(PhysicsWorld* world, float dt) {
     }
 }
 
-void vehicle_physics_render(Renderer* renderer, PhysicsWorld* world) {
+void vehicle_physics_render(IRenderer* renderer, PhysicsWorld* world) {
     // Render car body
     physics_demo_render_body(renderer, car_body);
     
@@ -210,4 +211,4 @@ void vehicle_physics_cleanup(PhysicsWorld* world) {
 }
 
 // Register the demo
-REGISTER_DEMO(Vehicle Physics, vehicle_physics_init, vehicle_physics_update, vehicle_physics_render, vehicle_physics_cleanup);
+REGISTER_DEMO("Vehicle Physics", vehicle_physics_init, vehicle_physics_update, vehicle_physics_render, vehicle_physics_cleanup);
