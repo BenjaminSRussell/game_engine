@@ -61,10 +61,30 @@ u32 net_register_object(NetReplicationSystem *net, void *object,
   return net_id;
 }
 
+static u32 net_property_wire_size(NetPropertyType type) {
+  switch (type) {
+  case NET_PROP_BOOL:
+    return (u32)sizeof(bool);
+  case NET_PROP_INT:
+    return (u32)sizeof(int);
+  case NET_PROP_FLOAT:
+    return (u32)sizeof(f32);
+  case NET_PROP_VEC3:
+    return (u32)sizeof(Vec3);
+  case NET_PROP_QUAT:
+    return (u32)sizeof(f32) * 4;
+  case NET_PROP_STRING:
+    return 256;
+  default:
+    return 0;
+  }
+}
+
 void net_add_property(NetReplicationSystem *net, u32 net_id, const char *name,
                       NetPropertyType type, u32 offset,
                       ReplicationFlags flags) {
-  if (!net || net_id >= net->object_count)
+  u32 size;
+  if (!net || !name || net_id >= net->object_count)
     return;
 
   ReplicatedObject *obj = &net->objects[net_id];
@@ -75,35 +95,15 @@ void net_add_property(NetReplicationSystem *net, u32 net_id, const char *name,
 
   NetProperty *prop = &obj->properties[obj->property_count++];
   strncpy(prop->name, name, sizeof(prop->name) - 1);
+  prop->name[sizeof(prop->name) - 1] = '\0';
   prop->type = type;
   prop->offset = offset;
   prop->flags = flags;
   prop->condition = NULL;
   prop->dirty = true;
 
-  // Allocate storage for last value (delta compression)
-  u32 size = 0;
-  switch (type) {
-  case NET_PROP_BOOL:
-    size = sizeof(bool);
-    break;
-  case NET_PROP_INT:
-    size = sizeof(int);
-    break;
-  case NET_PROP_FLOAT:
-    size = sizeof(f32);
-    break;
-  case NET_PROP_VEC3:
-    size = sizeof(Vec3);
-    break;
-  case NET_PROP_QUAT:
-    size = sizeof(f32) * 4;
-    break;
-  case NET_PROP_STRING:
-    size = 256;
-    break;
-  }
-  prop->last_value = calloc(1, size);
+  size = net_property_wire_size(type);
+  prop->last_value = size > 0 ? calloc(1, size) : NULL;
 
   LOG_INFO("Added replicated property '%s' to netID=%u", name, net_id);
 }
@@ -111,7 +111,7 @@ void net_add_property(NetReplicationSystem *net, u32 net_id, const char *name,
 void net_register_rpc(NetReplicationSystem *net, u32 net_id,
                       const char *rpc_name,
                       void (*handler)(void *object, void *data)) {
-  if (!net || net_id >= net->object_count)
+  if (!net || !rpc_name || net_id >= net->object_count)
     return;
 
   ReplicatedObject *obj = &net->objects[net_id];
@@ -146,91 +146,117 @@ void net_replicate_objects(NetReplicationSystem *net, f32 delta_time,
                            void *(*get_packet_buffer)(u32 size),
                            void (*send_packet)(u32 client_id, void *data,
                                                u32 size)) {
+  bool *changed = NULL;
+  bool any_sent = false;
+  enum { kPacketCap = 8192 };
+
   if (!net || net->authority != NET_AUTHORITY_SERVER)
     return;
+  if (!get_packet_buffer || !send_packet)
+    return;
 
-  // Bandwidth management
   net->second_accumulator += delta_time;
   if (net->second_accumulator >= 1.0f) {
     net->bytes_sent_this_second = 0;
     net->second_accumulator = 0.0f;
   }
 
-  // For each client
-  for (u32 client = 0; client < NET_MAX_CLIENTS; client++) {
-    if (client == net->local_client_id)
-      continue; // Don't replicate to self
+  if (net->object_count > 0) {
+    changed = (bool *)calloc(
+        (size_t)net->object_count * NET_MAX_PROPERTIES_PER_OBJECT, sizeof(bool));
+    if (!changed)
+      return;
+  }
 
-    // Build packet for this client
+  for (u32 i = 0; i < net->object_count; i++) {
+    ReplicatedObject *obj = &net->objects[i];
+    if (!obj->object_ptr)
+      continue;
+    for (u32 j = 0; j < obj->property_count; j++) {
+      NetProperty *prop = &obj->properties[j];
+      u32 size = net_property_wire_size(prop->type);
+      void *current = (u8 *)obj->object_ptr + prop->offset;
+      bool send = true;
+      if (size == 0)
+        continue;
+      /* Dirty forces the first send, including values that match the zero baseline. */
+      if (net->enable_delta_compression && !prop->dirty && prop->last_value)
+        send = memcmp(current, prop->last_value, size) != 0;
+      changed[(size_t)i * NET_MAX_PROPERTIES_PER_OBJECT + j] = send;
+    }
+  }
+
+  for (u32 client = 0; client < NET_MAX_CLIENTS; client++) {
     u32 packet_size = 0;
-    void *packet = get_packet_buffer(8192);
-    if (!packet)
+    void *packet;
+    u8 *write_ptr;
+
+    if (client == net->local_client_id)
       continue;
 
-    u8 *write_ptr = (u8 *)packet;
+    packet = get_packet_buffer(kPacketCap);
+    if (!packet)
+      continue;
+    write_ptr = (u8 *)packet;
 
-    // Replicate relevant objects
     for (u32 i = 0; i < net->object_count; i++) {
       ReplicatedObject *obj = &net->objects[i];
+      u8 *header;
+      u8 *cursor;
+      u32 payload = 0;
 
-      if (!obj->is_relevant[client])
+      if (!obj->is_relevant[client] || !obj->object_ptr)
         continue;
+      if (packet_size + sizeof(u32) > kPacketCap)
+        break;
 
-      // Write object header
-      *(u32 *)write_ptr = obj->net_id;
-      write_ptr += sizeof(u32);
-      packet_size += sizeof(u32);
-
-      // Write dirty properties
+      header = write_ptr;
+      cursor = write_ptr + sizeof(u32);
       for (u32 j = 0; j < obj->property_count; j++) {
-        NetProperty *prop = &obj->properties[j];
-
-        if (!prop->dirty)
+        u32 size;
+        if (!changed[(size_t)i * NET_MAX_PROPERTIES_PER_OBJECT + j])
           continue;
-
-        // Get current value from object
-        void *current_value = (u8 *)obj->object_ptr + prop->offset;
-
-        // Delta compression check
-        bool changed = true;
-        if (net->enable_delta_compression && prop->last_value) {
-          changed = memcmp(current_value, prop->last_value,
-                           prop->type == NET_PROP_VEC3 ? sizeof(Vec3)
-                                                       : sizeof(f32)) != 0;
-        }
-
-        if (changed) {
-          // Write property ID
-          *write_ptr++ = (u8)j;
-          packet_size++;
-
-          // Write value based on type
-          u32 size = 0;
-          switch (prop->type) {
-          case NET_PROP_FLOAT:
-            size = sizeof(f32);
-            memcpy(write_ptr, current_value, size);
-            break;
-          case NET_PROP_VEC3:
-            size = sizeof(Vec3);
-            memcpy(write_ptr, current_value, size);
-            break;
-            // ... other types
-          }
-          write_ptr += size;
-          packet_size += size;
-
-          // Update last value
-          memcpy(prop->last_value, current_value, size);
-        }
+        size = net_property_wire_size(obj->properties[j].type);
+        if (packet_size + sizeof(u32) + payload + 1u + size > kPacketCap)
+          break;
+        *cursor++ = (u8)j;
+        memcpy(cursor, (u8 *)obj->object_ptr + obj->properties[j].offset, size);
+        cursor += size;
+        payload += 1u + size;
       }
+      if (payload == 0)
+        continue;
+      memcpy(header, &obj->net_id, sizeof(obj->net_id));
+      write_ptr = cursor;
+      packet_size += (u32)sizeof(u32) + payload;
     }
 
-    // Send packet
-    if (packet_size > 0 && net->bytes_sent_this_second + packet_size <
+    if (packet_size > 0 && net->bytes_sent_this_second + packet_size <=
                                net->bytes_per_second_limit) {
       send_packet(client, packet, packet_size);
       net->bytes_sent_this_second += packet_size;
+      any_sent = true;
     }
   }
+
+  /* One baseline per tick. Updating it inside the client loop hid the delta from everyone else. */
+  if (any_sent) {
+    for (u32 i = 0; i < net->object_count; i++) {
+      ReplicatedObject *obj = &net->objects[i];
+      if (!obj->object_ptr)
+        continue;
+      for (u32 j = 0; j < obj->property_count; j++) {
+        NetProperty *prop = &obj->properties[j];
+        u32 size;
+        if (!changed[(size_t)i * NET_MAX_PROPERTIES_PER_OBJECT + j])
+          continue;
+        size = net_property_wire_size(prop->type);
+        if (prop->last_value && size > 0)
+          memcpy(prop->last_value, (u8 *)obj->object_ptr + prop->offset, size);
+        prop->dirty = false;
+      }
+    }
+  }
+
+  free(changed);
 }
