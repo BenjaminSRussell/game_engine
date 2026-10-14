@@ -246,6 +246,7 @@ struct Widget {
 
 /* Widget Management */
 Widget* widget_create(const char* name);
+bool widget_init(Widget* widget, const char* name);
 void widget_destroy(Widget* widget);
 void widget_add_child(Widget* parent, Widget* child);
 void widget_remove_child(Widget* parent, Widget* child);

@@ -126,7 +126,7 @@ static bool button_handle_event_impl(Widget* widget, UIEvent* event) {
 Button* button_create(const char* name, const char* label) {
     Button* button = memory_alloc(sizeof(Button));
     if (!button) {
-        LOG_ERROR(LOG_CAT_UI, "Failed to allocate button");
+        LOG_ERROR_CAT(LOG_CAT_UI, "Failed to allocate button");
         return NULL;
     }
 

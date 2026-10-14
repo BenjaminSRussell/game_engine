@@ -84,6 +84,10 @@ void ui_renderer_set_antialiasing_mode(UIRenderer* renderer, UIAntialiasingMode 
 void ui_renderer_set_gpu_backend(UIRenderer* renderer, UIGPUBackend backend);
 void ui_renderer_set_z_sort_mode(UIRenderer* renderer, UIZSortMode mode);
 
+// Clipping
+void ui_renderer_push_clip_rect(UIRenderer* renderer, Rect rect);
+void ui_renderer_pop_clip_rect(UIRenderer* renderer);
+
 // Submission and rendering
 void ui_renderer_submit_element(UIRenderer* renderer,
                                 const LayoutNode* element,

@@ -746,6 +746,28 @@ target_include_directories(test_food_recipe PRIVATE
 )
 add_test(NAME test_food_recipe COMMAND test_food_recipe)
 
+# TabWidget, UI atlas packing, and renderer batching/clipping.
+# Not add_engine_test: that macro links Engine, which does not build here
+# (missing GLFW, then gpu_profiler.c). ui_types.h and math/rect.h both define
+# Rect, so the atlas/renderer cases and the tab cases are separate TUs.
+add_executable(test_ui_system
+    tests/ui_system_test_runner.c
+    tests/ui_atlas_renderer_test.c
+    tests/ui_tab_widget_test.c
+    src/engine/ui/ui_atlas.c
+    src/engine/ui/ui_renderer.c
+    src/engine/ui/widgets/tab_widget.c
+    src/engine/ui/widgets/button.c
+    src/engine/ui/widgets/widget.c
+    src/engine/core/containers/hashmap.c
+)
+target_include_directories(test_ui_system PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+add_test(NAME test_ui_system COMMAND test_ui_system)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================
