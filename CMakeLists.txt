@@ -934,6 +934,20 @@ target_include_directories(test_encryption PRIVATE
 )
 add_test(NAME test_encryption COMMAND test_encryption)
 
+# Wire header encode/decode and checksum validation.
+# Not add_engine_test: that macro links Engine, which does not build
+# (missing GLFW, then gpu_profiler.c). Compiles network_protocol.c directly.
+add_executable(test_network_protocol
+    tests/network_protocol_test.c
+    src/engine/network/protocol/network_protocol.c
+)
+target_include_directories(test_network_protocol PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+add_test(NAME test_network_protocol COMMAND test_network_protocol)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================

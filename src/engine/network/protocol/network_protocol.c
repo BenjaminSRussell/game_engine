@@ -1,5 +1,6 @@
 #include "network/protocol/network_protocol.h"
 #include "include/core/logger.h"
+#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -23,6 +24,9 @@ typedef struct {
 } FragmentContext;
 
 static FragmentContext g_fragment_contexts[32];
+
+static uint16_t packet_wire_checksum(const PacketHeader *header, const void *data,
+                                     uint16_t data_size);
 
 NetworkProtocol* protocol_create(const ProtocolConfig* config, bool is_server) {
     NetworkProtocol* protocol = malloc(sizeof(NetworkProtocol));
@@ -241,9 +245,8 @@ bool protocol_send_packet(NetworkProtocol* protocol, uint32_t connection_id, Mes
         memcpy(packet.data, data, data_size);
     }
     
-    // Calculate checksum
-    packet.header.checksum = calculate_checksum(&packet.header, sizeof(PacketHeader) - sizeof(uint16_t));
-    packet.header.checksum = calculate_checksum(packet.data, data_size) ^ packet.header.checksum;
+    // Checksum covers the header bytes before the checksum field, then the payload.
+    packet.header.checksum = packet_wire_checksum(&packet.header, packet.data, data_size);
     
     packet.to_address = conn->address;
     
@@ -373,6 +376,12 @@ uint16_t calculate_checksum(const void* data, size_t size) {
     return (uint16_t)(~sum);
 }
 
+static uint16_t packet_wire_checksum(const PacketHeader *header, const void *data,
+                                     uint16_t data_size) {
+    uint16_t header_sum = calculate_checksum(header, offsetof(PacketHeader, checksum));
+    return (uint16_t)(calculate_checksum(data, data_size) ^ header_sum);
+}
+
 bool validate_packet(const NetworkPacket* packet) {
     if (!packet) return false;
     
@@ -386,12 +395,61 @@ bool validate_packet(const NetworkPacket* packet) {
         return false;
     }
     
-    // Validate checksum
+    // Validate checksum. The stored checksum field is not part of the span.
     uint16_t expected_checksum = packet->header.checksum;
-    uint16_t calculated_checksum = calculate_checksum(&packet->header, sizeof(PacketHeader) - sizeof(uint16_t));
-    calculated_checksum = calculate_checksum(packet->data, packet->header.data_size) ^ calculated_checksum;
-    
+    uint16_t calculated_checksum = packet_wire_checksum(&packet->header, packet->data,
+                                                        packet->header.data_size);
+
     return expected_checksum == calculated_checksum;
+}
+
+static void write_u16_le(uint8_t *p, uint16_t value) {
+    p[0] = (uint8_t)(value & 0xFFu);
+    p[1] = (uint8_t)((value >> 8) & 0xFFu);
+}
+
+static void write_u32_le(uint8_t *p, uint32_t value) {
+    p[0] = (uint8_t)(value & 0xFFu);
+    p[1] = (uint8_t)((value >> 8) & 0xFFu);
+    p[2] = (uint8_t)((value >> 16) & 0xFFu);
+    p[3] = (uint8_t)((value >> 24) & 0xFFu);
+}
+
+static uint16_t read_u16_le(const uint8_t *p) {
+    return (uint16_t)(p[0] | ((uint16_t)p[1] << 8));
+}
+
+static uint32_t read_u32_le(const uint8_t *p) {
+    return (uint32_t)p[0] | ((uint32_t)p[1] << 8) | ((uint32_t)p[2] << 16) |
+           ((uint32_t)p[3] << 24);
+}
+
+void serialize_packet_header(const PacketHeader *header, uint8_t *buffer) {
+    if (!header || !buffer) return;
+
+    buffer[0] = header->protocol_version;
+    buffer[1] = header->message_type;
+    write_u16_le(buffer + 2, header->sequence_number);
+    write_u16_le(buffer + 4, header->ack_number);
+    write_u32_le(buffer + 6, header->timestamp);
+    buffer[10] = header->flags;
+    write_u16_le(buffer + 11, header->data_size);
+    write_u16_le(buffer + 13, header->checksum);
+}
+
+bool deserialize_packet_header(const uint8_t *buffer, PacketHeader *header) {
+    if (!buffer || !header) return false;
+
+    memset(header, 0, sizeof(*header));
+    header->protocol_version = buffer[0];
+    header->message_type = buffer[1];
+    header->sequence_number = read_u16_le(buffer + 2);
+    header->ack_number = read_u16_le(buffer + 4);
+    header->timestamp = read_u32_le(buffer + 6);
+    header->flags = buffer[10];
+    header->data_size = read_u16_le(buffer + 11);
+    header->checksum = read_u16_le(buffer + 13);
+    return true;
 }
 
 NetworkAddress parse_address(const char* address_string) {
