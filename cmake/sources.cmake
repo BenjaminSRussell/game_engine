@@ -33,7 +33,7 @@ file(GLOB_RECURSE ENGINE_SOURCES
     "src/engine/assets/asset_loader.c"
     
     # Audio subdirectory - including legacy implementations
-    "src/engine/audio/legacy/audio_core.c"
+    "src/engine/audio/audio_core.c"
     # Audio subdirectory - disabled due to struct definition mismatches
     # "src/engine/audio/*.c"
     # "src/engine/audio/audio_system.c"
@@ -105,13 +105,13 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # Platform subdirectory - DISABLED swift_bridge due to function call issues
     # "src/engine/platform/swift_bridge.c"
     
-    # Input system
-    "src/engine/input/input_system.c"
-    "src/engine/input/input_profiles.c"
+    # Input system - compiled via the "src/engine/platform/input/*.c" glob below
+    # "src/engine/input/input_system.c"  # Removed: dead duplicate, real file is in src/engine/platform/input/
+    # "src/engine/input/input_profiles.c"  # Removed: file does not exist anywhere
     
     # Engine subsystems
     "src/engine/engine.c"
-    "src/engine/assets/asset_manager.c"
+    "src/engine/core/resource/asset_manager.c"
     
     # Renderer and scene systems
     "src/engine/rendering/core/renderer.c"
@@ -336,7 +336,7 @@ file(GLOB_RECURSE ENGINE_SOURCES
     
     # Platform subdirectory - DISABLED due to swift_bridge issues (except input system)
     "src/engine/platform/input/*.c"
-    "src/engine/platform/memory/memory_manager.c"
+    # "src/engine/platform/memory/memory_manager.c"  # Removed: file does not exist anywhere
     # "src/engine/platform/*.c"
     
     # Post-processing subdirectory
