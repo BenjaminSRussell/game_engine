@@ -4,7 +4,7 @@
 // Provides high-performance TAA using GPU compute shaders
 
 #include "rendering/post_processing/taa_compute.h"
-#include "core/logger/unified_logger.h"
+#include "core/logging/unified_logger.h"
 #include "core/memory/unified_allocator.h"
 #include "rendering/core/texture.h"
 #include <stdlib.h>
