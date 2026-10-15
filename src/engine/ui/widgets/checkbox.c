@@ -138,11 +138,12 @@ UICheckBox* ui_checkbox_create(const char* name, const char* label, bool checked
 
     Widget* base = widget_create(name ? name : "CheckBox");
     if (!base) {
-        free(box);
+        FREE(box);
         return NULL;
     }
 
     memcpy(box, base, sizeof(Widget));
+    FREE(base); // shell only: name and children now belong to box
 
     box->checked = checked;
     box->label = label ? strdup(label) : NULL;
@@ -180,13 +181,13 @@ void ui_checkbox_destroy(UICheckBox* checkbox) {
     }
 
     if (checkbox->base.children) {
-        free(checkbox->base.children);
+        FREE(checkbox->base.children);
     }
     if (checkbox->base.name) {
         free(checkbox->base.name);
     }
 
-    free(checkbox);
+    FREE(checkbox);
 }
 
 void ui_checkbox_set_checked(UICheckBox* checkbox, bool checked) {

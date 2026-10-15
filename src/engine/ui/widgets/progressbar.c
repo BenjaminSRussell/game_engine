@@ -87,11 +87,12 @@ UIProgressBar* ui_progressbar_create(const char* name) {
 
     Widget* base = widget_create(name ? name : "ProgressBar");
     if (!base) {
-        free(bar);
+        FREE(bar);
         return NULL;
     }
 
     memcpy(bar, base, sizeof(Widget));
+    FREE(base); // shell only: name and children now belong to bar
 
     bar->value = 0.0f;
     bar->min_value = 0.0f;
@@ -129,13 +130,13 @@ void ui_progressbar_destroy(UIProgressBar* bar) {
     }
 
     if (bar->base.children) {
-        free(bar->base.children);
+        FREE(bar->base.children);
     }
     if (bar->base.name) {
         free(bar->base.name);
     }
 
-    free(bar);
+    FREE(bar);
 }
 
 void ui_progressbar_set_value(UIProgressBar* bar, float value) {

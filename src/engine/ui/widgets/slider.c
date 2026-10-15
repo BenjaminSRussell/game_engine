@@ -221,11 +221,12 @@ UISlider* ui_slider_create(const char* name, float value, float min, float max, 
 
     Widget* base = widget_create(name ? name : "Slider");
     if (!base) {
-        free(slider);
+        FREE(slider);
         return NULL;
     }
 
     memcpy(slider, base, sizeof(Widget));
+    FREE(base); // shell only: name and children now belong to slider
 
     slider->value = ui_clamp(value, min, max);
     slider->min_value = min;
@@ -271,13 +272,13 @@ void ui_slider_destroy(UISlider* slider) {
     }
 
     if (slider->base.children) {
-        free(slider->base.children);
+        FREE(slider->base.children);
     }
     if (slider->base.name) {
         free(slider->base.name);
     }
 
-    free(slider);
+    FREE(slider);
 }
 
 void ui_slider_set_value(UISlider* slider, float value) {

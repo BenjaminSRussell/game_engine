@@ -71,7 +71,7 @@ static void ui_context_menu_destroy_impl(Widget* widget) {
     for (uint32_t i = 0; i < widget->child_count; i++) {
         Widget* child = widget->children[i];
         if (child->user_data) {
-            free(child->user_data);
+            FREE(child->user_data);
             child->user_data = NULL;
         }
     }
@@ -103,11 +103,12 @@ UIContextMenu* ui_context_menu_create(const char* name) {
 
     Widget* base = widget_create(name ? name : "ContextMenu");
     if (!base) {
-        free(menu);
+        FREE(menu);
         return NULL;
     }
 
     memcpy(menu, base, sizeof(Widget));
+    FREE(base); // shell only: name and children now belong to menu
 
     menu->active = false;
     menu->width = 150.0f;
@@ -136,13 +137,13 @@ void ui_context_menu_destroy(UIContextMenu* menu) {
     }
 
     if (menu->base.children) {
-        free(menu->base.children);
+        FREE(menu->base.children);
     }
     if (menu->base.name) {
         free(menu->base.name);
     }
 
-    free(menu);
+    FREE(menu);
 }
 
 void ui_context_menu_add_item(UIContextMenu* menu, int id, const char* label) {

@@ -175,11 +175,12 @@ UIRadioButton* ui_radio_button_create(const char* name, const char* label, int g
 
     Widget* base = widget_create(name ? name : "RadioButton");
     if (!base) {
-        free(radio);
+        FREE(radio);
         return NULL;
     }
 
     memcpy(radio, base, sizeof(Widget));
+    FREE(base); // shell only: name and children now belong to radio
 
     radio->selected = false;
     radio->group_id = group_id;
@@ -217,13 +218,13 @@ void ui_radio_button_destroy(UIRadioButton* radio) {
     }
 
     if (radio->base.children) {
-        free(radio->base.children);
+        FREE(radio->base.children);
     }
     if (radio->base.name) {
         free(radio->base.name);
     }
 
-    free(radio);
+    FREE(radio);
 }
 
 void ui_radio_button_set_selected(UIRadioButton* radio, bool selected) {
