@@ -9,6 +9,7 @@
 #define NET_MAX_REPLICATED_OBJECTS 10000
 #define NET_MAX_PROPERTIES_PER_OBJECT 64
 #define NET_MAX_CLIENTS 64
+#define NET_MAX_STRING_PROPERTY_BYTES 256
 
 // Replication flags
 typedef enum {
@@ -25,7 +26,7 @@ typedef enum {
   NET_PROP_FLOAT,
   NET_PROP_VEC3,
   NET_PROP_QUAT,
-  NET_PROP_STRING
+  NET_PROP_STRING // registered with net_add_string_property only
 } NetPropertyType;
 
 // Replicated property
@@ -33,6 +34,7 @@ typedef struct {
   char name[64];
   NetPropertyType type;
   u32 offset; // Offset in struct
+  u32 capacity; // NET_PROP_STRING: bytes in the char field, NUL included
   ReplicationFlags flags;
 
   // Condition (when to replicate)
@@ -102,6 +104,11 @@ void net_unregister_object(NetReplicationSystem *net, u32 net_id);
 // Property setup
 void net_add_property(NetReplicationSystem *net, u32 net_id, const char *name,
                       NetPropertyType type, u32 offset, ReplicationFlags flags);
+// String property: replicates the text in a char field of `capacity` bytes.
+// Refused when capacity is 0 or above NET_MAX_STRING_PROPERTY_BYTES.
+void net_add_string_property(NetReplicationSystem *net, u32 net_id,
+                             const char *name, u32 offset, u32 capacity,
+                             ReplicationFlags flags);
 
 // RPC (Remote Procedure Call)
 void net_register_rpc(NetReplicationSystem *net, u32 net_id,

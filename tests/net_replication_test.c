@@ -369,10 +369,103 @@ static void test_bandwidth(void) {
   net_replication_destroy(net);
 }
 
+typedef struct {
+  char name[8];
+  u32 guard;
+} Named;
+
+static bool packet_has_byte(const SentPacket *pkt, u8 value) {
+  for (u32 i = 0; i < pkt->size; i++) {
+    if (pkt->data[i] == value)
+      return true;
+  }
+  return false;
+}
+
+/* String fields send their characters only, and never bytes past the field. */
+static void test_string_property(void) {
+  NetReplicationSystem *net;
+  Named named;
+  Named full;
+  SentPacket *pkt;
+  u16 wire_len = 0;
+  u32 id;
+
+  memset(&named, 0, sizeof(named));
+  memset(&full, 0, sizeof(full));
+  strcpy(named.name, "abc");
+  named.guard = 0xA5A5A5A5u;
+  memcpy(full.name, "abcdefgh", sizeof(full.name));
+  full.guard = 0xA5A5A5A5u;
+
+  net = net_replication_create(NET_AUTHORITY_SERVER, 0);
+  id = net_register_object(net, &named, 1);
+  net_add_string_property(net, id, "name", offsetof(Named, name),
+                          sizeof(named.name), REPLICATE_ALWAYS);
+  if (net->objects[id].property_count != 1 ||
+      net->objects[id].properties[0].type != NET_PROP_STRING)
+    fail("string property registered");
+
+  /* A plain add of the string type, and out-of-range capacities, are refused. */
+  net_add_property(net, id, "plain", NET_PROP_STRING, 0, REPLICATE_ALWAYS);
+  net_add_string_property(net, id, "zero", 0, 0, REPLICATE_ALWAYS);
+  net_add_string_property(net, id, "huge", 0, NET_MAX_STRING_PROPERTY_BYTES + 1,
+                          REPLICATE_ALWAYS);
+  if (net->objects[id].property_count != 1)
+    fail("string refusals");
+
+  reset_capture();
+  net_replicate_objects(net, 0.016f, get_packet_buffer, send_packet);
+  if (g_sent_count != NET_MAX_CLIENTS - 1)
+    fail("string initial send");
+  pkt = find_sent(1);
+  if (!pkt || pkt->size != sizeof(u32) + 1 + sizeof(u16) + 3)
+    fail("string packet size");
+  if (pkt->data[sizeof(u32)] != 0)
+    fail("string property index");
+  memcpy(&wire_len, pkt->data + sizeof(u32) + 1, sizeof(wire_len));
+  if (wire_len != 3 || memcmp(pkt->data + sizeof(u32) + 1 + sizeof(u16), "abc", 3) != 0)
+    fail("string bytes");
+  if (packet_has_byte(pkt, 0xA5))
+    fail("string sent bytes past its NUL");
+
+  /* Changing the text resends it; an unchanged field sends nothing. */
+  strcpy(named.name, "xy");
+  reset_capture();
+  net_replicate_objects(net, 0.016f, get_packet_buffer, send_packet);
+  pkt = find_sent(1);
+  if (!pkt || pkt->size != sizeof(u32) + 1 + sizeof(u16) + 2)
+    fail("string change size");
+  memcpy(&wire_len, pkt->data + sizeof(u32) + 1, sizeof(wire_len));
+  if (wire_len != 2 || memcmp(pkt->data + sizeof(u32) + 3, "xy", 2) != 0)
+    fail("string change bytes");
+  reset_capture();
+  net_replicate_objects(net, 0.016f, get_packet_buffer, send_packet);
+  if (g_sent_count != 0)
+    fail("string resent unchanged");
+  net_replication_destroy(net);
+
+  /* A full field with no NUL sends exactly its capacity. */
+  net = net_replication_create(NET_AUTHORITY_SERVER, 0);
+  id = net_register_object(net, &full, 1);
+  net_add_string_property(net, id, "name", offsetof(Named, name),
+                          sizeof(full.name), REPLICATE_ALWAYS);
+  reset_capture();
+  net_replicate_objects(net, 0.016f, get_packet_buffer, send_packet);
+  pkt = find_sent(1);
+  if (!pkt || pkt->size != sizeof(u32) + 1 + sizeof(u16) + sizeof(full.name))
+    fail("full string size");
+  if (memcmp(pkt->data + sizeof(u32) + 3, "abcdefgh", sizeof(full.name)) != 0 ||
+      packet_has_byte(pkt, 0xA5))
+    fail("full string bytes");
+  net_replication_destroy(net);
+}
+
 int main(void) {
   test_registration();
   test_replication();
   test_bandwidth();
+  test_string_property();
   printf("net_replication tests passed\n");
   return 0;
 }

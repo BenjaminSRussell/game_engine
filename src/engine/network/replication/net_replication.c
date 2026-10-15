@@ -73,39 +73,97 @@ static u32 net_property_wire_size(NetPropertyType type) {
     return (u32)sizeof(Vec3);
   case NET_PROP_QUAT:
     return (u32)sizeof(f32) * 4;
-  case NET_PROP_STRING:
-    return 256;
   default:
-    return 0;
+    return 0; // NET_PROP_STRING is sized per property, see net_property_payload_size
   }
 }
 
-void net_add_property(NetReplicationSystem *net, u32 net_id, const char *name,
-                      NetPropertyType type, u32 offset,
-                      ReplicationFlags flags) {
+// Bytes of object memory a property owns: the delta compare and baseline copy.
+static u32 net_property_storage_size(const NetProperty *prop) {
+  return prop->type == NET_PROP_STRING ? prop->capacity
+                                       : net_property_wire_size(prop->type);
+}
+
+// Characters before the first NUL, and never past the field's capacity.
+static u32 net_string_length(const u8 *field, u32 capacity) {
+  u32 length = 0;
+  while (length < capacity && field[length] != '\0')
+    length++;
+  return length;
+}
+
+// Wire bytes for one property value. A string is a u16 length, then the characters.
+static u32 net_property_payload_size(const NetProperty *prop, const u8 *field) {
+  if (prop->type == NET_PROP_STRING)
+    return (u32)sizeof(u16) + net_string_length(field, prop->capacity);
+  return net_property_wire_size(prop->type);
+}
+
+static void net_write_payload(u8 *cursor, const NetProperty *prop,
+                              const u8 *field) {
+  u32 size = net_property_payload_size(prop, field);
+  if (prop->type == NET_PROP_STRING) {
+    u16 length = (u16)(size - sizeof(u16));
+    memcpy(cursor, &length, sizeof(length));
+    memcpy(cursor + sizeof(length), field, length);
+  } else {
+    memcpy(cursor, field, size);
+  }
+}
+
+static void net_register_property(NetReplicationSystem *net, u32 net_id,
+                                  const char *name, NetPropertyType type,
+                                  u32 offset, u32 capacity,
+                                  ReplicationFlags flags) {
+  NetProperty *prop;
+  ReplicatedObject *obj;
   u32 size;
   if (!net || !name || net_id >= net->object_count)
     return;
 
-  ReplicatedObject *obj = &net->objects[net_id];
+  obj = &net->objects[net_id];
   if (obj->property_count >= NET_MAX_PROPERTIES_PER_OBJECT) {
     LOG_ERROR("Cannot add property '%s': limit reached", name);
     return;
   }
 
-  NetProperty *prop = &obj->properties[obj->property_count++];
+  prop = &obj->properties[obj->property_count++];
   strncpy(prop->name, name, sizeof(prop->name) - 1);
   prop->name[sizeof(prop->name) - 1] = '\0';
   prop->type = type;
   prop->offset = offset;
+  prop->capacity = capacity;
   prop->flags = flags;
   prop->condition = NULL;
   prop->dirty = true;
 
-  size = net_property_wire_size(type);
+  size = net_property_storage_size(prop);
   prop->last_value = size > 0 ? calloc(1, size) : NULL;
 
   LOG_INFO("Added replicated property '%s' to netID=%u", name, net_id);
+}
+
+void net_add_property(NetReplicationSystem *net, u32 net_id, const char *name,
+                      NetPropertyType type, u32 offset,
+                      ReplicationFlags flags) {
+  if (type == NET_PROP_STRING) {
+    LOG_ERROR("Cannot add property '%s' as NET_PROP_STRING: use net_add_string_property",
+              name ? name : "(null)");
+    return;
+  }
+  net_register_property(net, net_id, name, type, offset, 0, flags);
+}
+
+void net_add_string_property(NetReplicationSystem *net, u32 net_id,
+                             const char *name, u32 offset, u32 capacity,
+                             ReplicationFlags flags) {
+  if (capacity == 0 || capacity > NET_MAX_STRING_PROPERTY_BYTES) {
+    LOG_ERROR("Cannot add string property '%s': capacity %u is outside 1..%u",
+              name ? name : "(null)", capacity, NET_MAX_STRING_PROPERTY_BYTES);
+    return;
+  }
+  net_register_property(net, net_id, name, NET_PROP_STRING, offset, capacity,
+                        flags);
 }
 
 void net_register_rpc(NetReplicationSystem *net, u32 net_id,
@@ -174,7 +232,7 @@ void net_replicate_objects(NetReplicationSystem *net, f32 delta_time,
       continue;
     for (u32 j = 0; j < obj->property_count; j++) {
       NetProperty *prop = &obj->properties[j];
-      u32 size = net_property_wire_size(prop->type);
+      u32 size = net_property_storage_size(prop);
       void *current = (u8 *)obj->object_ptr + prop->offset;
       bool send = true;
       if (size == 0)
@@ -213,14 +271,16 @@ void net_replicate_objects(NetReplicationSystem *net, f32 delta_time,
       header = write_ptr;
       cursor = write_ptr + sizeof(u32);
       for (u32 j = 0; j < obj->property_count; j++) {
+        const NetProperty *prop = &obj->properties[j];
+        const u8 *field = (const u8 *)obj->object_ptr + prop->offset;
         u32 size;
         if (!changed[(size_t)i * NET_MAX_PROPERTIES_PER_OBJECT + j])
           continue;
-        size = net_property_wire_size(obj->properties[j].type);
+        size = net_property_payload_size(prop, field);
         if (packet_size + sizeof(u32) + payload + 1u + size > kPacketCap)
           break;
         *cursor++ = (u8)j;
-        memcpy(cursor, (u8 *)obj->object_ptr + obj->properties[j].offset, size);
+        net_write_payload(cursor, prop, field);
         cursor += size;
         payload += 1u + size;
       }
@@ -250,7 +310,7 @@ void net_replicate_objects(NetReplicationSystem *net, f32 delta_time,
         u32 size;
         if (!changed[(size_t)i * NET_MAX_PROPERTIES_PER_OBJECT + j])
           continue;
-        size = net_property_wire_size(prop->type);
+        size = net_property_storage_size(prop);
         if (prop->last_value && size > 0)
           memcpy(prop->last_value, (u8 *)obj->object_ptr + prop->offset, size);
         prop->dirty = false;
