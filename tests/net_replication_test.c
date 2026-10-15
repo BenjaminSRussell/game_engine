@@ -577,6 +577,50 @@ static void test_relevancy_return(void) {
   net_replication_destroy(net);
 }
 
+/* Fixed-size payloads: bool, int and quaternion bytes reach the wire unchanged. */
+typedef struct {
+  bool flag;
+  int count;
+  f32 orientation[4];
+} Scalars;
+
+static void test_scalar_payloads(void) {
+  NetReplicationSystem *net;
+  Scalars scalars;
+  ExpectProp props[3];
+  u32 id;
+
+  memset(&scalars, 0, sizeof(scalars));
+  scalars.flag = true;
+  scalars.count = -7;
+  scalars.orientation[0] = 0.5f;
+  scalars.orientation[1] = 0.25f;
+  scalars.orientation[2] = 0.125f;
+  scalars.orientation[3] = 1.0f;
+
+  net = net_replication_create(NET_AUTHORITY_SERVER, 0);
+  id = net_register_object(net, &scalars, 1);
+  net_add_property(net, id, "flag", NET_PROP_BOOL, offsetof(Scalars, flag), REPLICATE_ALWAYS);
+  net_add_property(net, id, "count", NET_PROP_INT, offsetof(Scalars, count), REPLICATE_ALWAYS);
+  net_add_property(net, id, "orientation", NET_PROP_QUAT,
+                   offsetof(Scalars, orientation), REPLICATE_ALWAYS);
+
+  props[0].index = 0;
+  props[0].bytes = &scalars.flag;
+  props[0].size = sizeof(scalars.flag);
+  props[1].index = 1;
+  props[1].bytes = &scalars.count;
+  props[1].size = sizeof(scalars.count);
+  props[2].index = 2;
+  props[2].bytes = scalars.orientation;
+  props[2].size = sizeof(scalars.orientation);
+
+  reset_capture();
+  net_replicate_objects(net, 0.016f, get_packet_buffer, send_packet);
+  expect_remote_packets(0, id, props, 3);
+  net_replication_destroy(net);
+}
+
 int main(void) {
   test_registration();
   test_replication();
@@ -585,6 +629,7 @@ int main(void) {
   test_throttled_delta();
   test_null_buffer_delta();
   test_relevancy_return();
+  test_scalar_payloads();
   printf("net_replication tests passed\n");
   return 0;
 }
