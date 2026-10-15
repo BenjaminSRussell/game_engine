@@ -1,4 +1,4 @@
-#include "../../include/math/mat4.h"
+#include <math/math_all.h>
 #include <math.h>
 
 Mat4 mat4_ortho(float left, float right, float bottom, float top, float near_z,
@@ -22,15 +22,17 @@ Mat4 mat4_look_at(Vec3 eye, Vec3 target, Vec3 up) {
   Vec3 s = vec3_normalize(vec3_cross(f, up));
   Vec3 u = vec3_cross(s, f);
 
+  /* mat4_mul_vec4 does x' = m00*x + m10*y + m20*z + m30, so the camera
+     right/up/-forward axes belong in those columns, not across rows. */
   Mat4 result = mat4_identity();
   result.m00 = s.x;
-  result.m01 = s.y;
-  result.m02 = s.z;
-  result.m10 = u.x;
+  result.m10 = s.y;
+  result.m20 = s.z;
+  result.m01 = u.x;
   result.m11 = u.y;
-  result.m12 = u.z;
-  result.m20 = -f.x;
-  result.m21 = -f.y;
+  result.m21 = u.z;
+  result.m02 = -f.x;
+  result.m12 = -f.y;
   result.m22 = -f.z;
   result.m30 = -vec3_dot(s, eye);
   result.m31 = -vec3_dot(u, eye);
