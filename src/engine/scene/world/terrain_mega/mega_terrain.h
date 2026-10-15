@@ -25,6 +25,7 @@
 #define TERRAIN_MAX_HEIGHT 8192.0f // Maximum terrain height
 #define TERRAIN_LOD_LEVELS 6       // Number of LOD levels
 #define TERRAIN_MAX_CHUNKS 4096    // Max loaded chunks
+#define TERRAIN_TREE_CELL_SIZE 8.0f // Meters per candidate tree cell (TODO-26608)
 
 // TODO(AGENT_WORLD_1): Make chunk size configurable [Difficulty: 4]
 // TODO(AGENT_WORLD_1): Add support for larger worlds [Difficulty: 6]
@@ -63,6 +64,7 @@ typedef struct TerrainChunk {
   uint32_t mesh_id;
   uint32_t material_id;
   uint32_t neighbor_chunks[4]; // N, E, S, W
+  uint32_t tree_count;         // Trees placed by biome vegetation (TODO-26608)
 } TerrainChunk;
 
 // TODO(AGENT_WORLD_1): Implement chunk allocation pooling [Difficulty: 5]
@@ -130,7 +132,7 @@ typedef struct BiomeDefinition {
   float altitude_min, altitude_max;
   uint32_t surface_material;
   uint32_t vegetation_set;
-  float tree_density;
+  float tree_density; // Fraction of a chunk's tree cells that get a tree (0..1)
   float grass_density;
   float rock_density;
 } BiomeDefinition;
@@ -176,6 +178,11 @@ typedef struct TerrainSystem {
   TerrainStreamingState streaming;
   BiomeDefinition biomes[BIOME_COUNT];
 } TerrainSystem;
+
+// Biome hooks: vegetation placement (TODO-26608) fills TerrainChunk.tree_count
+// for the loaded chunk containing (x, z); weather and audio (TODO-26609/26610)
+// are still stubs.
+void terrain_update_biome_effects(TerrainSystem *system, float x, float z);
 
 // TODO(AGENT_WORLD_1): Implement terrain_system_init [Difficulty: 5]
 // TODO(AGENT_WORLD_1): Implement terrain_system_shutdown [Difficulty: 4]

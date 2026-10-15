@@ -38,12 +38,15 @@ bool terrain_system_init(TerrainSystem *system, const TerrainConfig *config) {
   system->streaming.unload_radius = 1200.0f;
   system->streaming.max_chunks_per_frame = 4;
 
-  // Initialize biome database (TODO-26605)
+  // Initialize biome database (TODO-26605). Zeroed first so a biome with no
+  // tree_density set below has no trees, not an indeterminate value.
+  memset(system->biomes, 0, sizeof(system->biomes));
   // PLAINS
   system->biomes[BIOME_PLAINS].temperature_min = 0.4f;
   system->biomes[BIOME_PLAINS].temperature_max = 0.7f;
   system->biomes[BIOME_PLAINS].moisture_min = 0.3f;
   system->biomes[BIOME_PLAINS].moisture_max = 0.6f;
+  system->biomes[BIOME_PLAINS].tree_density = 0.10f;
   snprintf(system->biomes[BIOME_PLAINS].name, 32, "Plains");
 
   // DESERT
@@ -58,6 +61,7 @@ bool terrain_system_init(TerrainSystem *system, const TerrainConfig *config) {
   system->biomes[BIOME_MOUNTAIN].altitude_max = 1.0f;
   system->biomes[BIOME_MOUNTAIN].temperature_min = 0.0f;
   system->biomes[BIOME_MOUNTAIN].temperature_max = 0.3f;
+  system->biomes[BIOME_MOUNTAIN].tree_density = 0.05f;
   snprintf(system->biomes[BIOME_MOUNTAIN].name, 32, "Mountain");
 
   // SNOW
@@ -295,6 +299,11 @@ static void terrain_chunk_load_async(TerrainSystem *system,
 
   // For now, call it synchronously until we have a stable job system hook
   terrain_chunk_load_job(chunk);
+
+  // Place this chunk's biome vegetation, sampled at the chunk center (TODO-26608)
+  terrain_update_biome_effects(system,
+                               (chunk->chunk_x + 0.5f) * TERRAIN_CHUNK_SIZE,
+                               (chunk->chunk_z + 0.5f) * TERRAIN_CHUNK_SIZE);
 }
 
 static void terrain_chunk_unload(TerrainSystem *system, TerrainChunk *chunk) {
@@ -342,13 +351,38 @@ BiomeType terrain_get_biome_at(TerrainSystem *system, float x, float z) {
   return BIOME_PLAINS;
 }
 
+// Trees for one chunk from a biome's tree_density: one candidate per
+// TERRAIN_TREE_CELL_SIZE cell, density clamped to [0, 1] (TODO-26608).
+static uint32_t terrain_biome_tree_count(float tree_density) {
+  if (!(tree_density > 0.0f))
+    return 0;
+  if (tree_density > 1.0f)
+    tree_density = 1.0f;
+  const float cells_per_side = TERRAIN_CHUNK_SIZE / TERRAIN_TREE_CELL_SIZE;
+  return (uint32_t)(tree_density * cells_per_side * cells_per_side + 0.5f);
+}
+
 // Biome-specific hooks (TODO-26608, 26609, 26610)
 void terrain_update_biome_effects(TerrainSystem *system, float x, float z) {
+  if (!system)
+    return;
+
   BiomeType biome = terrain_get_biome_at(system, x, z);
   BiomeDefinition *def = &system->biomes[biome];
 
-  // TODO: Implement biome-specific vegetation placement (TODO-26608)
-  // if (def->tree_density > 0) { ... }
+  // Vegetation placement (TODO-26608): the loaded chunk containing (x, z) gets
+  // the tree count for its biome. The count is set, not added to, so repeated
+  // calls for the same chunk give the same result.
+  int32_t chunk_x = (int32_t)floorf(x / TERRAIN_CHUNK_SIZE);
+  int32_t chunk_z = (int32_t)floorf(z / TERRAIN_CHUNK_SIZE);
+  for (uint32_t i = 0; i < system->chunk_count; i++) {
+    TerrainChunk *chunk = &system->chunks[i];
+    if (chunk->is_loaded && chunk->chunk_x == chunk_x &&
+        chunk->chunk_z == chunk_z) {
+      chunk->tree_count = terrain_biome_tree_count(def->tree_density);
+      break;
+    }
+  }
 
   // TODO: Implement biome-specific weather (TODO-26609)
   // if (biome == BIOME_SNOW) { start_snowing(); }
