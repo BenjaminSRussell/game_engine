@@ -212,6 +212,14 @@ u32 prediction_get_frames_to_resimulate(ClientPrediction *pred,
                                         PredictionFrame *frames,
                                         u32 max_frames);
 
+void prediction_clear_history(ClientPrediction *pred);
+void prediction_update_smoothing(ClientPrediction *pred, f32 delta_time);
+Vec3 prediction_get_smoothed_position(ClientPrediction *pred, u32 entity_id);
+void prediction_set_network_quality(ClientPrediction *pred, f32 rtt,
+                                    f32 packet_loss);
+void prediction_get_stats(ClientPrediction *pred, f32 *accuracy, f32 *rtt,
+                          f32 *packet_loss, u32 *mispredictions);
+
 #ifdef __cplusplus
 }
 #endif

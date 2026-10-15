@@ -26,9 +26,6 @@ void prediction_predict_full_state(ClientPrediction *pred, uint32_t entity_id,
 void prediction_rollback_and_replay_full_state(ClientPrediction *pred,
                                                uint32_t entity_id,
                                                uint32_t confirmed_frame);
-Vec3 prediction_predict_position(ClientPrediction *pred, uint32_t entity_id,
-                                 Vec3 current_pos, Vec3 current_vel,
-                                 Vec3 current_acc, float delta_time);
 
 // Helper functions (Internal pointer-based implementations to avoid conflict
 // with Math Library value-based functions)
@@ -344,6 +341,33 @@ void prediction_add_frame_with_input(ClientPrediction *pred, uint32_t frame,
   if (pred->count < MAX_PREDICTION_HISTORY) {
     pred->count++;
   }
+}
+
+// Semi-implicit Euler: v' = v + a*dt, p' = p + v'*dt.
+// Stores the result on the entity so a later rollback step continues from it.
+Vec3 prediction_predict_position(ClientPrediction *pred, uint32_t entity_id,
+                                 Vec3 current_pos, Vec3 current_vel,
+                                 Vec3 current_acc, float delta_time) {
+  if (!pred)
+    return current_pos;
+
+  EntityPrediction *entity = get_entity_prediction(pred, entity_id);
+  if (!entity)
+    return current_pos;
+
+  Vec3 new_vel = current_vel;
+  new_vel.x += current_acc.x * delta_time;
+  new_vel.y += current_acc.y * delta_time;
+  new_vel.z += current_acc.z * delta_time;
+
+  Vec3 new_pos = current_pos;
+  new_pos.x += new_vel.x * delta_time;
+  new_pos.y += new_vel.y * delta_time;
+  new_pos.z += new_vel.z * delta_time;
+
+  entity->predicted_position = new_pos;
+  entity->predicted_velocity = new_vel;
+  return new_pos;
 }
 
 // Enhanced prediction functions
