@@ -2,8 +2,38 @@
 #define ATMOSPHERE_LUT_PARAMETERIZATION_H
 
 #include "../../../include/math/math_all.h"
-#include <simd/simd.h>
 #include <stdbool.h>
+
+#if defined(__APPLE__)
+#include <simd/simd.h>
+#else
+/* Linux CI has no Apple simd. Struct layout matches the .x/.y/.z uses below. */
+#include <math.h>
+
+typedef struct {
+  float x;
+  float y;
+} simd_float2;
+
+typedef struct {
+  float x;
+  float y;
+  float z;
+} simd_float3;
+
+/* Only the camera-volume prototype needs this; that function is not defined. */
+typedef struct {
+  float m[16];
+} simd_float4x4;
+
+static inline float simd_dot(simd_float3 a, simd_float3 b) {
+  return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+
+static inline float simd_length(simd_float3 a) {
+  return sqrtf(simd_dot(a, a));
+}
+#endif
 
 #ifndef ATM_PI
 #define ATM_PI 3.14159265359f
