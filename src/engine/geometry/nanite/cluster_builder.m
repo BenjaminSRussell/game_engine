@@ -358,8 +358,15 @@ cluster_mesh_t *cluster_mesh_build(id<MTLDevice> device,
     cluster_count += next_level_count;
   }
 
-  // 5. Create GPU buffers
-  cluster_mesh_t *mesh = (cluster_mesh_t *)malloc(sizeof(cluster_mesh_t));
+  // 5. Create GPU buffers. Zero the struct so cluster_mesh_free can
+  // release optional buffers that this build does not fill in.
+  cluster_mesh_t *mesh = (cluster_mesh_t *)calloc(1, sizeof(cluster_mesh_t));
+  if (!mesh) {
+    free(sort_entries);
+    free(sorted_indices);
+    free(clusters);
+    return NULL;
+  }
   mesh->cluster_count = cluster_count;
   mesh->total_triangles = tri_count;
 
