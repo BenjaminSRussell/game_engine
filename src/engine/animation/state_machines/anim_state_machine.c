@@ -666,8 +666,8 @@ void anim_sm_update(AnimStateMachine* sm, f32 dt) {
                      layer->active_transition->on_transition_end(sm, sm->context_data);
                  }
 
-                 LOG_INFO(LOG_CAT_ANIMATION, "Transition Finished: State %u -> State %u",
-                          prev->id, current->id);
+                 LOG_INFO_CAT(LOG_CAT_ANIMATION, "Transition Finished: State %u -> State %u",
+                              prev->id, current->id);
 
                  layer->active_transition = NULL;
              }
@@ -730,7 +730,7 @@ void anim_sm_update(AnimStateMachine* sm, f32 dt) {
                      if (layer->active_transition && layer->active_transition->on_transition_interrupt) {
                          layer->active_transition->on_transition_interrupt(sm, sm->context_data);
                      }
-                     LOG_INFO(LOG_CAT_ANIMATION, "Transition Interrupted: To State %u", best_trans->to_state_id);
+                     LOG_INFO_CAT(LOG_CAT_ANIMATION, "Transition Interrupted: To State %u", best_trans->to_state_id);
                 }
 
                 // Update state IDs
@@ -742,8 +742,8 @@ void anim_sm_update(AnimStateMachine* sm, f32 dt) {
                 layer->transition_duration = best_trans->duration;
                 layer->active_transition = best_trans;
 
-                LOG_INFO(LOG_CAT_ANIMATION, "Transition Started: State %u -> State %u (Duration: %.2f)",
-                          check_from_state, best_trans->to_state_id, best_trans->duration);
+                LOG_INFO_CAT(LOG_CAT_ANIMATION, "Transition Started: State %u -> State %u (Duration: %.2f)",
+                              check_from_state, best_trans->to_state_id, best_trans->duration);
 
                 // Consume triggers
                 consume_triggers(sm, best_trans);
