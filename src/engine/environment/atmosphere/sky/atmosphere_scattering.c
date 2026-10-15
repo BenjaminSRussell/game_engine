@@ -194,10 +194,13 @@ simd_float3 atm_optical_depth(simd_float3 origin, simd_float3 direction,
   simd_float3 optical_depth = {0.0f, 0.0f, 0.0f};
 
   float t = 0.0f;
-  float dt = max_distance / (float)num_samples;
+  /* Ray positions are kilometers. Coefficients are m^-1, so the step used
+   * for extinction is converted to meters. */
+  float dt_km = max_distance / (float)num_samples;
+  float dt_m = dt_km * 1000.0f;
 
   for (int i = 0; i < num_samples; ++i) {
-    simd_float3 p = origin + direction * (t + 0.5f * dt);
+    simd_float3 p = origin + direction * (t + 0.5f * dt_km);
     float r = simd_length(p);
     float alt = r - planet_radius;
 
@@ -219,15 +222,15 @@ simd_float3 atm_optical_depth(simd_float3 origin, simd_float3 direction,
 
     optical_depth.x += (rho_r * coeffs.rayleigh.x + rho_m * coeffs.mie +
                         rho_o * coeffs.ozone.x) *
-                       dt;
+                       dt_m;
     optical_depth.y += (rho_r * coeffs.rayleigh.y + rho_m * coeffs.mie +
                         rho_o * coeffs.ozone.y) *
-                       dt;
+                       dt_m;
     optical_depth.z += (rho_r * coeffs.rayleigh.z + rho_m * coeffs.mie +
                         rho_o * coeffs.ozone.z) *
-                       dt;
+                       dt_m;
 
-    t += dt;
+    t += dt_km;
   }
 
   return optical_depth;
@@ -254,14 +257,16 @@ simd_float3 atm_combined_scattering(simd_float3 view_origin,
                    1.0f}; // Transmittance from view_origin to current sample
 
   float t = 0.0f;
-  float dt = max_distance / (float)num_samples;
+  /* Same km position / m^-1 coefficient split as atm_optical_depth. */
+  float dt_km = max_distance / (float)num_samples;
+  float dt_m = dt_km * 1000.0f;
 
   float cos_theta = simd_dot(view_dir, sun_dir);
   float phase_r = atm_rayleigh_phase(cos_theta);
   float phase_m = atm_mie_phase_hg(cos_theta, 0.8f); // Default g=0.8
 
   for (int i = 0; i < num_samples; ++i) {
-    simd_float3 p = view_origin + view_dir * (t + 0.5f * dt);
+    simd_float3 p = view_origin + view_dir * (t + 0.5f * dt_km);
     float r = simd_length(p);
     float alt = r - planet_radius;
 
@@ -280,8 +285,9 @@ simd_float3 atm_combined_scattering(simd_float3 view_origin,
     extinction.z =
         rho_r * coeffs.rayleigh.z + rho_m * coeffs.mie + rho_o * coeffs.ozone.z;
 
-    simd_float3 segment_T = {expf(-extinction.x * dt), expf(-extinction.y * dt),
-                             expf(-extinction.z * dt)};
+    simd_float3 segment_T = {expf(-extinction.x * dt_m),
+                             expf(-extinction.y * dt_m),
+                             expf(-extinction.z * dt_m)};
 
     // Update accumulated transmittance
     simd_float3 T_next = {T.x * segment_T.x, T.y * segment_T.y,
@@ -315,13 +321,13 @@ simd_float3 atm_combined_scattering(simd_float3 view_origin,
     S.z = T_sun.z *
           (rho_r * coeffs.rayleigh.z * phase_r + rho_m * coeffs.mie * phase_m);
 
-    // L += T * S * dt
-    L.x += T.x * S.x * dt;
-    L.y += T.y * S.y * dt;
-    L.z += T.z * S.z * dt;
+    /* L += T * S * ds, with ds in meters so beta (m^-1) stays consistent. */
+    L.x += T.x * S.x * dt_m;
+    L.y += T.y * S.y * dt_m;
+    L.z += T.z * S.z * dt_m;
 
     T = T_next;
-    t += dt;
+    t += dt_km;
   }
 
   return L;

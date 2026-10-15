@@ -34,7 +34,19 @@ float atm_distance_to_atmosphere_boundary(simd_float3 pos, simd_float3 dir,
     *intersect_ground = false;
 
   if (det_ground >= 0.0f) {
-    float t_ground = (-b - sqrtf(det_ground)) * 0.5f;
+    float sqrt_det = sqrtf(det_ground);
+    float t_near = (-b - sqrt_det) * 0.5f;
+    float t_far = (-b + sqrt_det) * 0.5f;
+    /* A camera on the ground sphere always has a root at t=0 (the ray
+     * origin). That is not a forward hit. Looking into the planet, the
+     * other root is still ground and must occlude the path to space. */
+    const float t_eps = 1.0e-4f;
+    float t_ground = -1.0f;
+    if (t_near > t_eps)
+      t_ground = t_near;
+    else if (t_far > t_eps)
+      t_ground = t_far;
+
     if (t_ground > 0.0f && (dist_to_top < 0.0f || t_ground < dist_to_top)) {
       if (intersect_ground)
         *intersect_ground = true;
