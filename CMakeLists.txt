@@ -919,6 +919,21 @@ target_include_directories(test_visual_script_entry PRIVATE
 )
 add_test(NAME test_visual_script_entry COMMAND test_visual_script_entry)
 
+# Lumen surface atlas shelf packing.
+# Not add_engine_test: that macro links Engine, which does not build on
+# origin/main (missing GLFW, then gpu_profiler.c). Compiles surface_atlas.c
+# directly and stubs the lightmap packer and logger.
+add_executable(test_surface_atlas
+    tests/surface_atlas_test.c
+    src/engine/lighting/lumen/surface_cache/surface_atlas.c
+)
+target_include_directories(test_surface_atlas PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+add_test(NAME test_surface_atlas COMMAND test_surface_atlas)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================
