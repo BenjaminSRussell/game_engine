@@ -963,6 +963,20 @@ target_include_directories(test_quat_core PRIVATE
 target_link_libraries(test_quat_core PRIVATE m)
 add_test(NAME test_quat_core COMMAND test_quat_core)
 
+# Property replication, relevancy, and delta snapshots.
+# Not add_engine_test: that macro links Engine, which does not build
+# (missing GLFW, then gpu_profiler.c). Compiles net_replication.c directly.
+add_executable(test_net_replication
+    tests/net_replication_test.c
+    src/engine/network/replication/net_replication.c
+)
+target_include_directories(test_net_replication PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+add_test(NAME test_net_replication COMMAND test_net_replication)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================
