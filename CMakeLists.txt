@@ -1149,3 +1149,17 @@ target_include_directories(test_vulkan_shader_fallback PRIVATE
     ${CMAKE_SOURCE_DIR}/src
 )
 add_test(NAME test_vulkan_shader_fallback COMMAND test_vulkan_shader_fallback)
+
+# Item database registration and lookup by id and name.
+# Not add_engine_test: that macro links Engine, which does not build on
+# origin/main (missing GLFW, then gpu_profiler.c). Compiles item_db.c directly.
+add_executable(test_item_db
+    tests/item_db_test.c
+    src/engine/gameplay/inventory/item_db.c
+)
+target_include_directories(test_item_db PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+add_test(NAME test_item_db COMMAND test_item_db)
