@@ -2,6 +2,9 @@
 // Per-client delta snapshots, ownership, and distance relevancy.
 // network_server_* / network_client_send add the only PacketHeader.
 // Snapshot body byte 0 is flags. Entity destroy is a 4-byte id.
+// TODO: REPLICATION - Implement adaptive replication rate based on bandwidth
+// TODO: REPLICATION - Add replication for complex data types (arrays, structs)
+// TODO: REPLICATION - Implement replication conflict resolution
 #include "include/network/network_replication.h"
 #include "include/core/logger.h"
 #include "include/network/network_manager.h"
@@ -689,3 +692,8 @@ void network_replication_get_statistics(uint32_t *out_server_entities,
   if (out_compression_enabled)
     *out_compression_enabled = g_replication.compression_enabled;
 }
+
+// TODO: REPLICATION - Add replication bandwidth monitoring and throttling
+// TODO: REPLICATION - Implement replication debugging and visualization tools
+// TODO: REPLICATION - Add replication for entity creation/destruction events
+// TODO: REPLICATION - Implement replication rollback and state synchronization
