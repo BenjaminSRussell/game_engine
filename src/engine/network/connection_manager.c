@@ -70,6 +70,7 @@ typedef struct {
     ConnectionID id;
     int socket;
     struct sockaddr_in peer_address;
+    char remote_address[64];
     ConnectionState state;
     uint32_t packets_sent;
     uint32_t packets_received;
@@ -720,6 +721,7 @@ ConnectionID connection_manager_connect(
 
     conn->id = manager->next_connection_id++;
     conn->socket = sock;
+    snprintf(conn->remote_address, sizeof(conn->remote_address), "%s", address);
     conn->next_sequence_number = 1; /* Start at 1 to avoid confusion with 0 initialization */
     conn->timeout_ms = timeout_ms ? timeout_ms : DEFAULT_TIMEOUT_MS;
     clock_gettime(CLOCK_MONOTONIC, &conn->connect_time);
@@ -799,6 +801,7 @@ int connection_manager_get_info(
     pthread_mutex_lock(&conn->lock);
 
     info->id = conn->id;
+    info->remote_address = conn->remote_address;
     info->remote_port = ntohs(conn->peer_address.sin_port);
     info->state = conn->state;
     info->packets_sent = conn->packets_sent;
