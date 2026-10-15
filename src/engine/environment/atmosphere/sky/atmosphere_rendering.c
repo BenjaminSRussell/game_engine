@@ -566,17 +566,15 @@ void atmosphere_update(float delta_time) {
   // Update scattering and lighting based on sun position
   float sun_elevation = asinf(g_atmosphere.sun_direction[1]) * 180.0f / M_PI;
 
-  // Adjust scattering intensity based on sun elevation
-  if (sun_elevation < 0.0f) {
-    // Night time - reduce scattering, add moon contribution
+  // Civil twilight starts at SOLAR_ELEVATION_MIN. Checking `< 0` first
+  // made the ramp below unreachable for every negative elevation.
+  if (sun_elevation < SOLAR_ELEVATION_MIN) {
     g_atmosphere.scattering_intensity = 0.1f;
-  } else if (sun_elevation < SOLAR_ELEVATION_MIN) {
-    // Twilight period
+  } else if (sun_elevation < 0.0f) {
     float twilight_factor =
         (sun_elevation - SOLAR_ELEVATION_MIN) / (-SOLAR_ELEVATION_MIN);
     g_atmosphere.scattering_intensity = 0.1f + 0.9f * twilight_factor;
   } else {
-    // Day time
     g_atmosphere.scattering_intensity = 1.0f;
   }
 }

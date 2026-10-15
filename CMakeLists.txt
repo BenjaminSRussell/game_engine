@@ -1120,3 +1120,19 @@ target_include_directories(test_vulkan_shader_fallback PRIVATE
     ${CMAKE_SOURCE_DIR}/src
 )
 add_test(NAME test_vulkan_shader_fallback COMMAND test_vulkan_shader_fallback)
+
+# Issue #338: atmosphere scattering, time of day, and space view.
+# Not add_engine_test: that macro links Engine, which does not build on
+# origin/main (missing GLFW, then gpu_profiler.c:80). Compiles
+# atmosphere_rendering.c directly.
+add_executable(test_atmosphere_rendering
+    tests/atmosphere_rendering_test.c
+    src/engine/environment/atmosphere/sky/atmosphere_rendering.c
+)
+target_include_directories(test_atmosphere_rendering PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+target_link_libraries(test_atmosphere_rendering PRIVATE m)
+add_test(NAME test_atmosphere_rendering COMMAND test_atmosphere_rendering)
