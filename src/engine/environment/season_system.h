@@ -8,8 +8,8 @@ typedef enum {
     SEASON_WINTER
 } Season;
 
-void season_system_init();
+void season_system_init(void);
 void season_system_update(float dt);
-Season get_current_season();
+Season get_current_season(void);
 
 #endif // SEASON_SYSTEM_H
