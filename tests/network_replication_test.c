@@ -1,3 +1,7 @@
+/* Keep assert() active in every build type. A Release build defines NDEBUG,
+ * which would turn these checks into no-ops and let the test pass vacuously. */
+#undef NDEBUG
+
 #include "include/core/logger.h"
 #include "include/network/network_manager.h"
 #include "include/network/network_replication.h"
