@@ -345,7 +345,7 @@ uint32_t font_library_load_font(FontLibrary *library, const char *file_path, flo
     
     // Initialize atlas storage
     font->max_atlases = 8;
-    font->atlases = (FontAtlas *)calloc(font->max_atlases, sizeof(FontAtlas));
+    font->atlases = (AdvancedFontAtlas *)calloc(font->max_atlases, sizeof(AdvancedFontAtlas));
     if (!font->atlases) {
         free(font->kerning_pairs);
         free(font->glyphs);
@@ -435,7 +435,7 @@ AdvancedFont *font_library_get_font(FontLibrary *library, uint32_t font_id) {
     return library->fonts[font_id].initialized ? &library->fonts[font_id] : NULL;
 }
 
-AdvancedGlyph *font_get_glyph(AdvancedFont *font, uint32_t codepoint) {
+AdvancedGlyph *advanced_font_get_glyph(AdvancedFont *font, uint32_t codepoint) {
     if (!font || !font->initialized) return NULL;
     
     // Simple linear search for now - in production, use a hash map or binary search
@@ -454,7 +454,7 @@ AdvancedGlyph *font_get_glyph(AdvancedFont *font, uint32_t codepoint) {
     return NULL;
 }
 
-float font_get_kerning(AdvancedFont *font, uint32_t left_codepoint, uint32_t right_codepoint) {
+float advanced_font_get_kerning(AdvancedFont *font, uint32_t left_codepoint, uint32_t right_codepoint) {
     if (!font || !font->initialized) return 0.0f;
     
     // Simple linear search for now
@@ -481,7 +481,7 @@ float font_get_text_width(AdvancedFont *font, const char *text, size_t text_leng
         uint32_t codepoint = utf8_decode(&p, &remaining);
         if (codepoint == 0) break;
         
-        AdvancedGlyph *glyph = font_get_glyph(font, codepoint);
+        AdvancedGlyph *glyph = advanced_font_get_glyph(font, codepoint);
         if (!glyph) {
             prev_codepoint = codepoint;
             continue;
@@ -489,7 +489,7 @@ float font_get_text_width(AdvancedFont *font, const char *text, size_t text_leng
         
         // Add kerning
         if (prev_codepoint != 0) {
-            total_width += font_get_kerning(font, prev_codepoint, codepoint);
+            total_width += advanced_font_get_kerning(font, prev_codepoint, codepoint);
         }
         
         // Add advance width
@@ -567,7 +567,7 @@ bool sdf_renderer_add_text(SDFRenderer *renderer, AdvancedFont *font, const char
             continue;
         }
         
-        AdvancedGlyph *glyph = font_get_glyph(font, codepoint);
+        AdvancedGlyph *glyph = advanced_font_get_glyph(font, codepoint);
         if (!glyph) {
             prev_codepoint = codepoint;
             continue;
@@ -575,7 +575,7 @@ bool sdf_renderer_add_text(SDFRenderer *renderer, AdvancedFont *font, const char
         
         // Add kerning
         if (prev_codepoint != 0) {
-            current_x += font_get_kerning(font, prev_codepoint, codepoint) * scale;
+            current_x += advanced_font_get_kerning(font, prev_codepoint, codepoint) * scale;
         }
         
         // Add glyph to batch (simplified - in production, you'd add to vertex buffers)
@@ -784,11 +784,11 @@ bool text_layout_calculate(TextLayout *layout) {
         }
         
         if (i < unicode_text->length) {
-            AdvancedGlyph *glyph = font_get_glyph(font, codepoint);
+            AdvancedGlyph *glyph = advanced_font_get_glyph(font, codepoint);
             if (glyph) {
                 current_line_width += glyph->advance_x;
                 if (i > line_start) {
-                    current_line_width += font_get_kerning(font, unicode_text->codepoints[i-1], codepoint);
+                    current_line_width += advanced_font_get_kerning(font, unicode_text->codepoints[i-1], codepoint);
                 }
             }
         }
@@ -961,13 +961,13 @@ void text_renderer_get_stats(TextRenderer *renderer, TextRendererStats *stats) {
     memset(stats, 0, sizeof(TextRendererStats));
     
     stats->total_glyphs_rendered = renderer->total_glyphs_rendered;
-    stats->total_text_shaped = renderer->total_text_shaped;
+    stats->total_glyphs_shaped = renderer->total_text_shaped;
     stats->cache_hits = renderer->cache_hits;
     stats->cache_misses = renderer->cache_misses;
     
     if (renderer->sdf_renderer) {
         stats->total_glyphs_rendered = renderer->sdf_renderer->triangles_rendered;
-        stats->total_text_shaped = renderer->sdf_renderer->draw_calls;
+        stats->total_glyphs_shaped = renderer->sdf_renderer->draw_calls;
     }
 }
 

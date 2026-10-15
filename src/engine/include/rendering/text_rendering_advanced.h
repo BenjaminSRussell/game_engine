@@ -114,7 +114,7 @@ typedef struct FontMetrics {
     float strikethrough_thickness;
 } FontMetrics;
 
-typedef struct FontAtlas {
+typedef struct AdvancedFontAtlas {
     uint32_t texture_id;
     uint32_t width, height;
     uint32_t format;  // RGBA8, RGB8, etc.
@@ -127,7 +127,7 @@ typedef struct FontAtlas {
     } *regions;
     uint32_t region_count;
     uint32_t region_capacity;
-} FontAtlas;
+} AdvancedFontAtlas;
 
 typedef struct AdvancedFont {
     char name[128];
@@ -151,7 +151,7 @@ typedef struct AdvancedFont {
     uint32_t kerning_count;
     uint32_t kerning_capacity;
     
-    FontAtlas *atlases;
+    AdvancedFontAtlas *atlases;
     uint32_t atlas_count;
     uint32_t max_atlases;
     
@@ -190,7 +190,7 @@ typedef struct FontLibrary {
     uint32_t default_sdf_font_id;
     
     // Font loading cache
-    struct {
+    struct FontCacheEntry {
         char path[512];
         uint32_t font_id;
         uint64_t last_access;
@@ -218,8 +218,8 @@ bool font_library_set_fallback_chain(FontLibrary *library, uint32_t font_id,
                                     const uint32_t *fallback_ids, uint32_t count);
 
 /* Font metrics and glyph access */
-AdvancedGlyph *font_get_glyph(AdvancedFont *font, uint32_t codepoint);
-float font_get_kerning(AdvancedFont *font, uint32_t left_codepoint, uint32_t right_codepoint);
+AdvancedGlyph *advanced_font_get_glyph(AdvancedFont *font, uint32_t codepoint);
+float advanced_font_get_kerning(AdvancedFont *font, uint32_t left_codepoint, uint32_t right_codepoint);
 bool font_get_glyph_bounds(AdvancedFont *font, uint32_t codepoint, float *out_x, float *out_y, 
                           float *out_width, float *out_height);
 float font_get_text_width(AdvancedFont *font, const char *text, size_t text_length);
@@ -370,7 +370,7 @@ typedef struct TextLayout {
     
     // Results
     TextMetrics metrics;
-    struct {
+    struct TextLine {
         uint32_t start_offset;
         uint32_t end_offset;
         float x, y, width, height;
@@ -493,7 +493,6 @@ typedef enum ScriptType {
     SCRIPT_KHMER,
     SCRIPT_LAO,
     SCRIPT_MYANMAR,
-    SCRIPT_SINHALA,
     SCRIPT_UNKNOWN
 } ScriptType;
 
