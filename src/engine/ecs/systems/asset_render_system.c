@@ -2,6 +2,7 @@
 #include "ecs/ecs.h"
 #include "ecs/component_ids.h"
 #include "ecs/components/transform.h"
+#include "math/quat.h"
 #include "ecs/components/asset_instance_component.h"
 #include "include/core/resource/asset_instance.h"
 #include "core/asset_manager.h"
@@ -18,6 +19,24 @@
 // Global references (Phase 3 - will be passed via system context in future refactor)
 static World *g_world = NULL;
 static AssetManager *g_asset_manager = NULL;
+static AssetRenderSubmitFn g_submit_fn = NULL;
+static void *g_submit_user_data = NULL;
+
+// World matrix for a transform: T * R * S, column-major.
+static void asset_render_build_matrix(const TransformComponent *t, float out[16]) {
+    Mat4 rotation = quat_to_mat4(t->rotation);
+    const float scale[3] = {t->scale.x, t->scale.y, t->scale.z};
+    for (int col = 0; col < 3; col++) {
+        for (int row = 0; row < 3; row++) {
+            out[col * 4 + row] = rotation.m[col][row] * scale[col];  // R * S scales each column
+        }
+        out[col * 4 + 3] = 0.0f;
+    }
+    out[12] = t->position.x;
+    out[13] = t->position.y;
+    out[14] = t->position.z;
+    out[15] = 1.0f;
+}
 
 void asset_render_system_init(World *world, AssetManager *manager) {
     g_world = world;
@@ -79,13 +98,14 @@ void asset_render_system_update(float dt) {
             continue;
         }
         
-        // TODO: Submit to renderer
-        // For now, we just validate the linkage is working
-        // Future implementation:
-        //   Mat4 transform_matrix = transform_build_matrix(transform);
-        //   renderer_submit_mesh(instance->source_asset, &transform_matrix, asset_comp->render_flags);
-        
-        rendered_count++;
+        // Hand the visible instance to the renderer. Nothing is submitted until
+        // a callback is registered with asset_render_system_set_submit_callback().
+        if (g_submit_fn) {
+            float transform_matrix[16];
+            asset_render_build_matrix(transform, transform_matrix);
+            g_submit_fn(instance->source_asset, transform_matrix, asset_comp->render_flags, g_submit_user_data);
+            rendered_count++;
+        }
     }
     
     ecs_query_destroy(g_world, query);
@@ -100,8 +120,15 @@ void asset_render_system_update(float dt) {
     }
 }
 
+void asset_render_system_set_submit_callback(AssetRenderSubmitFn fn, void *user_data) {
+    g_submit_fn = fn;
+    g_submit_user_data = user_data;
+}
+
 void asset_render_system_shutdown() {
     g_world = NULL;
     g_asset_manager = NULL;
+    g_submit_fn = NULL;
+    g_submit_user_data = NULL;
     LOG_INFO("[AssetRenderSystem] Shutdown");
 }
