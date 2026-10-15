@@ -1149,3 +1149,17 @@ target_include_directories(test_vulkan_shader_fallback PRIVATE
     ${CMAKE_SOURCE_DIR}/src
 )
 add_test(NAME test_vulkan_shader_fallback COMMAND test_vulkan_shader_fallback)
+
+# Entity lifetime, components, system order, and world lookup.
+# Not add_engine_test: that macro links Engine, which does not build
+# on origin/main (missing GLFW, then gpu_profiler.c:80).
+add_executable(test_ecs_system_impl
+    tests/ecs_system_impl_test.c
+    src/engine/ecs/ecs_system_impl.c
+)
+target_include_directories(test_ecs_system_impl PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src
+)
+add_test(NAME test_ecs_system_impl COMMAND test_ecs_system_impl)
