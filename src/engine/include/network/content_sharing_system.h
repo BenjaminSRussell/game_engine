@@ -43,7 +43,7 @@ typedef struct {
   // File information
   char file_path[256];
   u64 file_size;
-  char checksum[64]; // SHA-256 hash
+  char checksum[65]; // SHA-256 hex digest plus NUL
 
   // Statistics
   u32 download_count;
