@@ -1,4 +1,4 @@
-#include "../../include/math/mat4.h"
+#include <math/mat4.h>
 #include <math.h>
 
 Mat4 mat4_ortho(float left, float right, float bottom, float top, float near_z,
