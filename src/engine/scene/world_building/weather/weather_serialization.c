@@ -12,6 +12,8 @@
 
 #include "weather_system.h"
 #include "unified_memory_allocator.h"
+#include <limits.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -30,8 +32,6 @@
 // Forward declarations for internal helpers
 static bool serialize_weather_parameters_json(const WeatherParameters* params, char* buffer, size_t buffer_size);
 static bool deserialize_weather_parameters_json(WeatherParameters* params, const char* json_data);
-static bool serialize_weather_parameters_binary(const WeatherParameters* params, uint8_t* buffer, size_t* size);
-static bool deserialize_weather_parameters_binary(WeatherParameters* params, const uint8_t* buffer, size_t size);
 
 static bool serialize_time_of_day_json(const TimeOfDaySystem* system, char* buffer, size_t buffer_size);
 static bool deserialize_time_of_day_json(TimeOfDaySystem* system, const char* json_data);
@@ -56,6 +56,25 @@ static size_t json_write_array_float(char* buffer, size_t buffer_size, size_t of
 // CRC32 for data integrity
 static uint32_t calculate_crc32(const uint8_t* data, size_t size);
 
+// Declared before use: json_write_uint is called by the writers above its definition.
+static size_t json_write_uint(char* buffer, size_t buffer_size, size_t offset, const char* key, unsigned int value);
+
+// JSON readers, emitter and binary payload helpers (defined later in this file)
+static bool weather_type_is_valid(int value);
+static size_t json_remove_trailing_comma(char* buffer, size_t buffer_size, size_t offset);
+static size_t json_emit(char* buffer, size_t buffer_size, size_t offset, const char* format, ...);
+static bool parse_json_int(const char* json, const char* key, int* out);
+static bool parse_json_uint(const char* json, const char* key, uint32_t* out);
+static bool parse_json_float(const char* json, const char* key, float* out);
+static bool parse_json_bool(const char* json, const char* key, bool* out);
+static bool parse_json_string(const char* json, const char* key, char* out, size_t out_size);
+static bool parse_json_float3(const char* json, const char* key, float out[3]);
+static bool parse_json_array_float(const char* json, const char* key, float* out, size_t count);
+static bool extract_json_object(const char* json, char* out, size_t out_size);
+static bool extract_json_array_element(const char* json, size_t index, char* out, size_t out_size);
+static bool serialize_weather_manager_data(const WeatherManager* manager, uint8_t* buffer, size_t size);
+static bool deserialize_weather_manager_data(WeatherManager* manager, const uint8_t* buffer, size_t size);
+
 /**
  * Serialize weather manager to JSON format
  * Returns: true on success, false on failure
@@ -69,88 +88,92 @@ bool weather_manager_serialize(const WeatherManager* manager, char* buffer, size
     size_t offset = 0;
     
     // Write header
-    offset += snprintf(buffer + offset, buffer_size - offset, 
+    offset = json_emit(buffer, buffer_size, offset, 
         "{\n  \"version\": %d,\n", WEATHER_SERIALIZATION_VERSION);
     
     // Write current weather
-    offset += json_write_int(buffer, buffer_size, offset, "current_weather", manager->current_weather);
+    offset = json_write_int(buffer, buffer_size, offset, "current_weather", manager->current_weather);
     
     // Write weather presets
-    offset += snprintf(buffer + offset, buffer_size - offset, "  \"weather_presets\": [\n");
+    offset = json_emit(buffer, buffer_size, offset, "  \"weather_presets\": [\n");
     for (int i = 0; i < 15; i++) {
         char preset_buffer[4096];
         if (serialize_weather_parameters_json(&manager->weather_presets[i], preset_buffer, sizeof(preset_buffer))) {
-            offset += snprintf(buffer + offset, buffer_size - offset, "    %s%s\n", 
+            offset = json_emit(buffer, buffer_size, offset, "    %s%s\n", 
                 preset_buffer, (i < 14) ? "," : "");
         }
     }
-    offset += snprintf(buffer + offset, buffer_size - offset, "  ],\n");
+    offset = json_emit(buffer, buffer_size, offset, "  ],\n");
     
     // Write transition state
-    offset += snprintf(buffer + offset, buffer_size - offset, "  \"transition\": {\n");
-    offset += json_write_int(buffer, buffer_size, offset, "    from_weather", manager->transition.from_weather);
-    offset += json_write_int(buffer, buffer_size, offset, "    to_weather", manager->transition.to_weather);
-    offset += json_write_float(buffer, buffer_size, offset, "    duration", manager->transition.duration);
-    offset += json_write_float(buffer, buffer_size, offset, "    progress", manager->transition.progress);
-    offset += json_write_bool(buffer, buffer_size, offset, "    is_active", manager->transition.is_active);
-    offset += snprintf(buffer + offset, buffer_size - offset, "  },\n");
+    offset = json_emit(buffer, buffer_size, offset, "  \"transition\": {\n");
+    offset = json_write_int(buffer, buffer_size, offset, "from_weather", manager->transition.from_weather);
+    offset = json_write_int(buffer, buffer_size, offset, "to_weather", manager->transition.to_weather);
+    offset = json_write_float(buffer, buffer_size, offset, "duration", manager->transition.duration);
+    offset = json_write_float(buffer, buffer_size, offset, "progress", manager->transition.progress);
+    offset = json_write_bool(buffer, buffer_size, offset, "is_active", manager->transition.is_active);
+    offset = json_remove_trailing_comma(buffer, buffer_size, offset);
+    offset = json_emit(buffer, buffer_size, offset, "  },\n");
     
     // Write time of day system
     char time_buffer[8192];
     if (serialize_time_of_day_json(&manager->time_of_day, time_buffer, sizeof(time_buffer))) {
-        offset += snprintf(buffer + offset, buffer_size - offset, "  \"time_of_day\": %s,\n", time_buffer);
+        offset = json_emit(buffer, buffer_size, offset, "  \"time_of_day\": %s,\n", time_buffer);
     }
     
     // Write volumetric clouds
     char cloud_buffer[4096];
     if (serialize_volumetric_clouds_json(&manager->clouds, cloud_buffer, sizeof(cloud_buffer))) {
-        offset += snprintf(buffer + offset, buffer_size - offset, "  \"clouds\": %s,\n", cloud_buffer);
+        offset = json_emit(buffer, buffer_size, offset, "  \"clouds\": %s,\n", cloud_buffer);
     }
     
     // Write precipitation system
     char precip_buffer[2048];
     if (serialize_precipitation_json(&manager->precipitation, precip_buffer, sizeof(precip_buffer))) {
-        offset += snprintf(buffer + offset, buffer_size - offset, "  \"precipitation\": %s,\n", precip_buffer);
+        offset = json_emit(buffer, buffer_size, offset, "  \"precipitation\": %s,\n", precip_buffer);
     }
     
     // Write lightning system
     char lightning_buffer[2048];
     if (serialize_lightning_json(&manager->lightning, lightning_buffer, sizeof(lightning_buffer))) {
-        offset += snprintf(buffer + offset, buffer_size - offset, "  \"lightning\": %s,\n", lightning_buffer);
+        offset = json_emit(buffer, buffer_size, offset, "  \"lightning\": %s,\n", lightning_buffer);
     }
     
     // Write weather zones
-    offset += snprintf(buffer + offset, buffer_size - offset, "  \"zones\": [\n");
+    offset = json_emit(buffer, buffer_size, offset, "  \"zones\": [\n");
     for (uint32_t i = 0; i < manager->zone_count; i++) {
         const WeatherZone* zone = &manager->zones[i];
-        offset += snprintf(buffer + offset, buffer_size - offset, "    {\n");
-        offset += json_write_uint(buffer, buffer_size, offset, "      id", zone->id);
-        offset += json_write_string(buffer, buffer_size, offset, "      name", zone->name);
-        offset += json_write_float3(buffer, buffer_size, offset, "      bounds_min", zone->bounds_min);
-        offset += json_write_float3(buffer, buffer_size, offset, "      bounds_max", zone->bounds_max);
-        offset += json_write_float(buffer, buffer_size, offset, "      blend_distance", zone->blend_distance);
-        offset += json_write_int(buffer, buffer_size, offset, "      forced_weather", zone->forced_weather);
-        offset += json_write_bool(buffer, buffer_size, offset, "      override_global", zone->override_global);
-        offset += snprintf(buffer + offset, buffer_size - offset, "    }%s\n", (i < manager->zone_count - 1) ? "," : "");
+        offset = json_emit(buffer, buffer_size, offset, "    {\n");
+        offset = json_write_uint(buffer, buffer_size, offset, "id", zone->id);
+        offset = json_write_string(buffer, buffer_size, offset, "name", zone->name);
+        offset = json_write_float3(buffer, buffer_size, offset, "bounds_min", zone->bounds_min);
+        offset = json_write_float3(buffer, buffer_size, offset, "bounds_max", zone->bounds_max);
+        offset = json_write_float(buffer, buffer_size, offset, "blend_distance", zone->blend_distance);
+        offset = json_write_int(buffer, buffer_size, offset, "forced_weather", zone->forced_weather);
+        offset = json_write_bool(buffer, buffer_size, offset, "override_global", zone->override_global);
+        offset = json_remove_trailing_comma(buffer, buffer_size, offset);
+        offset = json_emit(buffer, buffer_size, offset, "    }%s\n", (i < manager->zone_count - 1) ? "," : "");
     }
-    offset += snprintf(buffer + offset, buffer_size - offset, "  ],\n");
+    offset = json_emit(buffer, buffer_size, offset, "  ],\n");
     
     // Write auto weather settings
-    offset += snprintf(buffer + offset, buffer_size - offset, "  \"auto_weather\": {\n");
-    offset += json_write_bool(buffer, buffer_size, offset, "    enabled", manager->auto_weather_enabled);
-    offset += json_write_float(buffer, buffer_size, offset, "    change_interval", manager->weather_change_interval);
-    offset += json_write_float(buffer, buffer_size, offset, "    next_change", manager->next_weather_change);
-    offset += json_write_array_float(buffer, buffer_size, offset, "    probabilities", manager->weather_probabilities, 15);
-    offset += snprintf(buffer + offset, buffer_size - offset, "  },\n");
+    offset = json_emit(buffer, buffer_size, offset, "  \"auto_weather\": {\n");
+    offset = json_write_bool(buffer, buffer_size, offset, "enabled", manager->auto_weather_enabled);
+    offset = json_write_float(buffer, buffer_size, offset, "change_interval", manager->weather_change_interval);
+    offset = json_write_float(buffer, buffer_size, offset, "next_change", manager->next_weather_change);
+    offset = json_write_array_float(buffer, buffer_size, offset, "probabilities", manager->weather_probabilities, 15);
+    offset = json_remove_trailing_comma(buffer, buffer_size, offset);
+    offset = json_emit(buffer, buffer_size, offset, "  },\n");
     
     // Write seasonal settings
-    offset += snprintf(buffer + offset, buffer_size - offset, "  \"seasonal\": {\n");
-    offset += json_write_bool(buffer, buffer_size, offset, "    enabled", manager->seasonal_weather);
-    offset += json_write_uint(buffer, buffer_size, offset, "    current_season", manager->current_season);
-    offset += snprintf(buffer + offset, buffer_size - offset, "  }\n");
+    offset = json_emit(buffer, buffer_size, offset, "  \"seasonal\": {\n");
+    offset = json_write_bool(buffer, buffer_size, offset, "enabled", manager->seasonal_weather);
+    offset = json_write_uint(buffer, buffer_size, offset, "current_season", manager->current_season);
+    offset = json_remove_trailing_comma(buffer, buffer_size, offset);
+    offset = json_emit(buffer, buffer_size, offset, "  }\n");
     
     // Close JSON
-    offset += snprintf(buffer + offset, buffer_size - offset, "}\n");
+    offset = json_emit(buffer, buffer_size, offset, "}\n");
     
     return offset < buffer_size;
 }
@@ -181,7 +204,7 @@ bool weather_manager_deserialize(WeatherManager* manager, const char* json_data)
     
     // Parse current weather
     int current_weather = 0;
-    if (parse_json_int(json_data, "current_weather", &current_weather)) {
+    if (parse_json_int(json_data, "current_weather", &current_weather) && weather_type_is_valid(current_weather)) {
         manager->current_weather = (WeatherType)current_weather;
     }
     
@@ -202,8 +225,14 @@ bool weather_manager_deserialize(WeatherManager* manager, const char* json_data)
     // Parse transition state
     const char* transition_start = strstr(json_data, "\"transition\":");
     if (transition_start) {
-        parse_json_int(transition_start, "from_weather", (int*)&manager->transition.from_weather);
-        parse_json_int(transition_start, "to_weather", (int*)&manager->transition.to_weather);
+        int from_weather = 0;
+        if (parse_json_int(transition_start, "from_weather", &from_weather) && weather_type_is_valid(from_weather)) {
+            manager->transition.from_weather = (WeatherType)from_weather;
+        }
+        int to_weather = 0;
+        if (parse_json_int(transition_start, "to_weather", &to_weather) && weather_type_is_valid(to_weather)) {
+            manager->transition.to_weather = (WeatherType)to_weather;
+        }
         parse_json_float(transition_start, "duration", &manager->transition.duration);
         parse_json_float(transition_start, "progress", &manager->transition.progress);
         parse_json_bool(transition_start, "is_active", &manager->transition.is_active);
@@ -250,11 +279,11 @@ bool weather_manager_deserialize(WeatherManager* manager, const char* json_data)
     if (zones_start) {
         zones_start = strchr(zones_start, '[');
         if (zones_start) {
+            // Count array elements. Counting '{' would also count the objects after the zone array.
             uint32_t zone_count = 0;
-            const char* zone_ptr = zones_start;
-            while ((zone_ptr = strchr(zone_ptr, '{')) != NULL) {
+            char zone_probe[1024];
+            while (extract_json_array_element(zones_start, zone_count, zone_probe, sizeof(zone_probe))) {
                 zone_count++;
-                zone_ptr++;
             }
             
             if (zone_count > 0) {
@@ -269,7 +298,10 @@ bool weather_manager_deserialize(WeatherManager* manager, const char* json_data)
                             parse_json_float3(zone_json, "bounds_min", manager->zones[i].bounds_min);
                             parse_json_float3(zone_json, "bounds_max", manager->zones[i].bounds_max);
                             parse_json_float(zone_json, "blend_distance", &manager->zones[i].blend_distance);
-                            parse_json_int(zone_json, "forced_weather", (int*)&manager->zones[i].forced_weather);
+                            int forced_weather = 0;
+                            if (parse_json_int(zone_json, "forced_weather", &forced_weather) && weather_type_is_valid(forced_weather)) {
+                                manager->zones[i].forced_weather = (WeatherType)forced_weather;
+                            }
                             parse_json_bool(zone_json, "override_global", &manager->zones[i].override_global);
                         }
                     }
@@ -330,13 +362,13 @@ bool weather_manager_serialize_binary(const WeatherManager* manager, uint8_t* bu
     uint32_t* crc_ptr = (uint32_t*)(buffer + offset);
     offset += sizeof(uint32_t);
     
-    // Serialize main weather manager structure
-    if (!serialize_weather_manager_data(manager, buffer + offset, *size - offset)) {
+    // Serialize main weather manager structure: exactly the payload the reader expects
+    if (!serialize_weather_manager_data(manager, buffer + offset, required_size - offset)) {
         return false;
     }
     
-    // Calculate and write CRC32
-    uint32_t crc = calculate_crc32(buffer + sizeof(uint32_t) * 3, *size - sizeof(uint32_t) * 3);
+    // Calculate and write CRC32 over the payload (not over the caller's buffer capacity)
+    uint32_t crc = calculate_crc32(buffer + offset, required_size - offset);
     *crc_ptr = crc;
     
     *size = required_size;
@@ -375,7 +407,13 @@ bool weather_manager_deserialize_binary(WeatherManager* manager, const uint8_t* 
     uint32_t stored_crc = *(uint32_t*)(buffer + offset);
     offset += sizeof(uint32_t);
     
-    uint32_t calculated_crc = calculate_crc32(buffer + offset, size - offset);
+    // The payload is always sizeof(WeatherManager) bytes; bytes after it are ignored.
+    const size_t payload_size = sizeof(WeatherManager);
+    if (size - offset < payload_size) {
+        return false;
+    }
+    
+    uint32_t calculated_crc = calculate_crc32(buffer + offset, payload_size);
     if (stored_crc != calculated_crc) {
         fprintf(stderr, "Weather data CRC32 mismatch: expected 0x%08X, got 0x%08X\n", 
                 stored_crc, calculated_crc);
@@ -383,7 +421,7 @@ bool weather_manager_deserialize_binary(WeatherManager* manager, const uint8_t* 
     }
     
     // Deserialize main data
-    if (!deserialize_weather_manager_data(manager, buffer + offset, size - offset)) {
+    if (!deserialize_weather_manager_data(manager, buffer + offset, payload_size)) {
         return false;
     }
     
@@ -397,46 +435,46 @@ static bool serialize_weather_parameters_json(const WeatherParameters* params, c
     }
     
     size_t offset = 0;
-    offset += snprintf(buffer + offset, buffer_size - offset, "{\n");
+    offset = json_emit(buffer, buffer_size, offset, "{\n");
     
-    offset += json_write_int(buffer, buffer_size, offset, "      type", params->type);
-    offset += json_write_string(buffer, buffer_size, offset, "      name", params->name);
-    offset += json_write_float3(buffer, buffer_size, offset, "      sky_color", params->sky_color);
-    offset += json_write_float3(buffer, buffer_size, offset, "      horizon_color", params->horizon_color);
-    offset += json_write_float(buffer, buffer_size, offset, "      cloud_coverage", params->cloud_coverage);
-    offset += json_write_float(buffer, buffer_size, offset, "      cloud_speed", params->cloud_speed);
-    offset += json_write_float(buffer, buffer_size, offset, "      cloud_height", params->cloud_height);
-    offset += json_write_uint(buffer, buffer_size, offset, "      cloud_texture", params->cloud_texture);
+    offset = json_write_int(buffer, buffer_size, offset, "type", params->type);
+    offset = json_write_string(buffer, buffer_size, offset, "name", params->name);
+    offset = json_write_float3(buffer, buffer_size, offset, "sky_color", params->sky_color);
+    offset = json_write_float3(buffer, buffer_size, offset, "horizon_color", params->horizon_color);
+    offset = json_write_float(buffer, buffer_size, offset, "cloud_coverage", params->cloud_coverage);
+    offset = json_write_float(buffer, buffer_size, offset, "cloud_speed", params->cloud_speed);
+    offset = json_write_float(buffer, buffer_size, offset, "cloud_height", params->cloud_height);
+    offset = json_write_uint(buffer, buffer_size, offset, "cloud_texture", params->cloud_texture);
     
-    offset += json_write_bool(buffer, buffer_size, offset, "      has_precipitation", params->has_precipitation);
-    offset += json_write_float(buffer, buffer_size, offset, "      precipitation_intensity", params->precipitation_intensity);
-    offset += json_write_uint(buffer, buffer_size, offset, "      precipitation_texture", params->precipitation_texture);
-    offset += json_write_float(buffer, buffer_size, offset, "      precipitation_size", params->precipitation_size);
-    offset += json_write_float(buffer, buffer_size, offset, "      precipitation_speed", params->precipitation_speed);
-    offset += json_write_bool(buffer, buffer_size, offset, "      precipitation_affects_water", params->precipitation_affects_water);
+    offset = json_write_bool(buffer, buffer_size, offset, "has_precipitation", params->has_precipitation);
+    offset = json_write_float(buffer, buffer_size, offset, "precipitation_intensity", params->precipitation_intensity);
+    offset = json_write_uint(buffer, buffer_size, offset, "precipitation_texture", params->precipitation_texture);
+    offset = json_write_float(buffer, buffer_size, offset, "precipitation_size", params->precipitation_size);
+    offset = json_write_float(buffer, buffer_size, offset, "precipitation_speed", params->precipitation_speed);
+    offset = json_write_bool(buffer, buffer_size, offset, "precipitation_affects_water", params->precipitation_affects_water);
     
-    offset += json_write_float(buffer, buffer_size, offset, "      fog_density", params->fog_density);
-    offset += json_write_float(buffer, buffer_size, offset, "      fog_height_falloff", params->fog_height_falloff);
-    offset += json_write_float3(buffer, buffer_size, offset, "      fog_color", params->fog_color);
-    offset += json_write_float(buffer, buffer_size, offset, "      fog_start_distance", params->fog_start_distance);
-    offset += json_write_float(buffer, buffer_size, offset, "      fog_end_distance", params->fog_end_distance);
+    offset = json_write_float(buffer, buffer_size, offset, "fog_density", params->fog_density);
+    offset = json_write_float(buffer, buffer_size, offset, "fog_height_falloff", params->fog_height_falloff);
+    offset = json_write_float3(buffer, buffer_size, offset, "fog_color", params->fog_color);
+    offset = json_write_float(buffer, buffer_size, offset, "fog_start_distance", params->fog_start_distance);
+    offset = json_write_float(buffer, buffer_size, offset, "fog_end_distance", params->fog_end_distance);
     
-    offset += json_write_float(buffer, buffer_size, offset, "      sun_intensity_multiplier", params->sun_intensity_multiplier);
-    offset += json_write_float(buffer, buffer_size, offset, "      ambient_intensity_multiplier", params->ambient_intensity_multiplier);
-    offset += json_write_float(buffer, buffer_size, offset, "      shadow_intensity_multiplier", params->shadow_intensity_multiplier);
+    offset = json_write_float(buffer, buffer_size, offset, "sun_intensity_multiplier", params->sun_intensity_multiplier);
+    offset = json_write_float(buffer, buffer_size, offset, "ambient_intensity_multiplier", params->ambient_intensity_multiplier);
+    offset = json_write_float(buffer, buffer_size, offset, "shadow_intensity_multiplier", params->shadow_intensity_multiplier);
     
-    offset += json_write_float(buffer, buffer_size, offset, "      wind_speed", params->wind_speed);
-    offset += json_write_float3(buffer, buffer_size, offset, "      wind_direction", params->wind_direction);
-    offset += json_write_float(buffer, buffer_size, offset, "      wind_gustiness", params->wind_gustiness);
+    offset = json_write_float(buffer, buffer_size, offset, "wind_speed", params->wind_speed);
+    offset = json_write_float3(buffer, buffer_size, offset, "wind_direction", params->wind_direction);
+    offset = json_write_float(buffer, buffer_size, offset, "wind_gustiness", params->wind_gustiness);
     
-    offset += json_write_string(buffer, buffer_size, offset, "      ambient_sound", params->ambient_sound);
-    offset += json_write_float(buffer, buffer_size, offset, "      ambient_volume", params->ambient_volume);
+    offset = json_write_string(buffer, buffer_size, offset, "ambient_sound", params->ambient_sound);
+    offset = json_write_float(buffer, buffer_size, offset, "ambient_volume", params->ambient_volume);
     
-    offset += json_write_float(buffer, buffer_size, offset, "      visibility_range", params->visibility_range);
-    offset += json_write_float(buffer, buffer_size, offset, "      movement_speed_modifier", params->movement_speed_modifier);
-    offset += json_write_float(buffer, buffer_size, offset, "      fire_extinguish_rate", params->fire_extinguish_rate);
+    offset = json_write_float(buffer, buffer_size, offset, "visibility_range", params->visibility_range);
+    offset = json_write_float(buffer, buffer_size, offset, "movement_speed_modifier", params->movement_speed_modifier);
+    offset = json_write_float(buffer, buffer_size, offset, "fire_extinguish_rate", params->fire_extinguish_rate);
     
-    offset += snprintf(buffer + offset - 2, buffer_size - offset + 2, "\n    }");
+    offset = json_emit(buffer, buffer_size, offset - 2, "\n    }");
     
     return offset < buffer_size;
 }
@@ -496,45 +534,779 @@ static uint32_t calculate_crc32(const uint8_t* data, size_t size) {
     return crc ^ 0xFFFFFFFF;
 }
 
+// Writes formatted text at `offset` and returns the new offset (absolute, like the json_write_*
+// helpers). Nothing is written once offset reaches buffer_size, and the result may exceed
+// buffer_size when the text is truncated, so callers test `offset < buffer_size` at the end.
+static size_t json_vemit(char* buffer, size_t buffer_size, size_t offset, const char* format, va_list args) {
+    if (offset >= buffer_size) {
+        return offset;
+    }
+    int written = vsnprintf(buffer + offset, buffer_size - offset, format, args);
+    if (written < 0) {
+        return buffer_size;
+    }
+    return offset + (size_t)written;
+}
+
+static size_t json_emit(char* buffer, size_t buffer_size, size_t offset, const char* format, ...) {
+    va_list args;
+    va_start(args, format);
+    size_t next = json_vemit(buffer, buffer_size, offset, format, args);
+    va_end(args);
+    return next;
+}
+
 // Utility functions for JSON writing
 static size_t json_write_string(char* buffer, size_t buffer_size, size_t offset, const char* key, const char* value) {
-    return offset + snprintf(buffer + offset, buffer_size - offset, "  \"%s\": \"%s\",\n", key, value);
+    return json_emit(buffer, buffer_size, offset, "  \"%s\": \"%s\",\n", key, value);
 }
 
 static size_t json_write_float(char* buffer, size_t buffer_size, size_t offset, const char* key, float value) {
-    return offset + snprintf(buffer + offset, buffer_size - offset, "  \"%s\": %.6f,\n", key, value);
+    return json_emit(buffer, buffer_size, offset, "  \"%s\": %.6f,\n", key, value);
 }
 
 static size_t json_write_int(char* buffer, size_t buffer_size, size_t offset, const char* key, int value) {
-    return offset + snprintf(buffer + offset, buffer_size - offset, "  \"%s\": %d,\n", key, value);
+    return json_emit(buffer, buffer_size, offset, "  \"%s\": %d,\n", key, value);
 }
 
 static size_t json_write_uint(char* buffer, size_t buffer_size, size_t offset, const char* key, unsigned int value) {
-    return offset + snprintf(buffer + offset, buffer_size - offset, "  \"%s\": %u,\n", key, value);
+    return json_emit(buffer, buffer_size, offset, "  \"%s\": %u,\n", key, value);
 }
 
 static size_t json_write_bool(char* buffer, size_t buffer_size, size_t offset, const char* key, bool value) {
-    return offset + snprintf(buffer + offset, buffer_size - offset, "  \"%s\": %s,\n", key, value ? "true" : "false");
+    return json_emit(buffer, buffer_size, offset, "  \"%s\": %s,\n", key, value ? "true" : "false");
 }
 
 static size_t json_write_float3(char* buffer, size_t buffer_size, size_t offset, const char* key, const float* values) {
-    return offset + snprintf(buffer + offset, buffer_size - offset, "  \"%s\": [%.6f, %.6f, %.6f],\n", key, values[0], values[1], values[2]);
+    return json_emit(buffer, buffer_size, offset, "  \"%s\": [%.6f, %.6f, %.6f],\n", key, values[0], values[1], values[2]);
 }
 
 static size_t json_write_array_float(char* buffer, size_t buffer_size, size_t offset, const char* key, const float* values, size_t count) {
-    offset += snprintf(buffer + offset, buffer_size - offset, "  \"%s\": [", key);
+    offset = json_emit(buffer, buffer_size, offset, "  \"%s\": [", key);
     for (size_t i = 0; i < count; i++) {
-        offset += snprintf(buffer + offset, buffer_size - offset, "%.6f%s", values[i], (i < count - 1) ? ", " : "");
+        offset = json_emit(buffer, buffer_size, offset, "%.6f%s", values[i], (i < count - 1) ? ", " : "");
     }
-    return offset + snprintf(buffer + offset, buffer_size - offset, "],\n");
+    return json_emit(buffer, buffer_size, offset, "],\n");
 }
 
-// Note: The following functions would need to be implemented for complete functionality:
-// - parse_json_int, parse_json_float, parse_json_bool, parse_json_string, parse_json_float3, etc.
-// - extract_json_object, extract_json_array_element
-// - serialize/deserialize functions for TimeOfDaySystem, VolumetricCloudSettings, PrecipitationSystem, LightningSystem
-// - serialize/deserialize_weather_manager_data for binary format
-// 
-// These would follow similar patterns to the examples shown above, with proper error handling
-// and validation. The implementation would be quite extensive but follows the established
-// patterns of professional serialization systems.
+/* ==================================================================================================
+ * JSON reading
+ *
+ * The writers above emit a fixed layout with unescaped strings, so the readers scan the text
+ * directly. No JSON library is linked into the engine: src/engine/core/json.c is not in the build.
+ * A key matches only a direct member of the object being searched, so a key that also appears in
+ * a nested object cannot be mistaken for the outer one.
+ * ================================================================================================== */
+
+static bool weather_type_is_valid(int value) {
+    return value >= 0 && value <= (int)WEATHER_SLEET;
+}
+
+static bool json_is_delimiter(char c) {
+    return c == '\0' || c == ',' || c == '}' || c == ']' || c == ' ' || c == '\t' ||
+           c == '\n' || c == '\r';
+}
+
+static const char* json_skip_ws(const char* p) {
+    while (*p == ' ' || *p == '\t' || *p == '\n' || *p == '\r') {
+        p++;
+    }
+    return p;
+}
+
+// p points at an opening quote. Returns the position after the closing quote, or NULL.
+static const char* json_skip_string(const char* p) {
+    if (*p != '"') {
+        return NULL;
+    }
+    for (p++; *p != '"'; p++) {
+        if (*p == '\0') {
+            return NULL;
+        }
+        if (*p == '\\' && p[1] != '\0') {
+            p++;
+        }
+    }
+    return p + 1;
+}
+
+// p points at a JSON value. Returns the position after it, or NULL if it is malformed.
+static const char* json_skip_value(const char* p) {
+    p = json_skip_ws(p);
+    if (*p == '"') {
+        return json_skip_string(p);
+    }
+    if (*p == '{' || *p == '[') {
+        int depth = 0;
+        while (*p != '\0') {
+            if (*p == '"') {
+                p = json_skip_string(p);
+                if (!p) {
+                    return NULL;
+                }
+                continue;
+            }
+            if (*p == '{' || *p == '[') {
+                depth++;
+            } else if (*p == '}' || *p == ']') {
+                if (--depth == 0) {
+                    return p + 1;
+                }
+            }
+            p++;
+        }
+        return NULL;
+    }
+    const char* start = p;
+    while (!json_is_delimiter(*p)) {
+        p++;
+    }
+    return (p == start) ? NULL : p;
+}
+
+// If json starts with a "name": pair, returns the position of the value after the colon.
+// Otherwise returns the first non-space position of json.
+static const char* json_value_start(const char* json) {
+    const char* p = json_skip_ws(json);
+    if (*p != '"') {
+        return p;
+    }
+    p = json_skip_string(p);
+    if (!p) {
+        return NULL;
+    }
+    p = json_skip_ws(p);
+    if (*p != ':') {
+        return NULL;
+    }
+    return json_skip_ws(p + 1);
+}
+
+// Returns the value of `key` among the direct members of an object. json may point at the object,
+// or at a "name": pair whose value is that object. Returns NULL if the key is absent.
+static const char* json_find_member(const char* json, const char* key) {
+    if (!json || !key) {
+        return NULL;
+    }
+    const char* p = json_value_start(json);
+    if (!p || *p != '{') {
+        return NULL;
+    }
+    size_t key_length = strlen(key);
+    p = json_skip_ws(p + 1);
+    while (*p != '\0' && *p != '}') {
+        const char* name_end = json_skip_string(p);
+        if (!name_end) {
+            return NULL;
+        }
+        bool match = (size_t)(name_end - p - 2) == key_length &&
+                     strncmp(p + 1, key, key_length) == 0;
+        p = json_skip_ws(name_end);
+        if (*p != ':') {
+            return NULL;
+        }
+        p = json_skip_ws(p + 1);
+        if (match) {
+            return p;
+        }
+        p = json_skip_value(p);
+        if (!p) {
+            return NULL;
+        }
+        p = json_skip_ws(p);
+        if (*p == ',') {
+            p = json_skip_ws(p + 1);
+        }
+    }
+    return NULL;
+}
+
+static bool parse_json_int(const char* json, const char* key, int* out) {
+    const char* value = json_find_member(json, key);
+    if (!value || !out) {
+        return false;
+    }
+    char* end = NULL;
+    long parsed = strtol(value, &end, 10);
+    if (end == value || !json_is_delimiter(*end) || parsed < INT_MIN || parsed > INT_MAX) {
+        return false;
+    }
+    *out = (int)parsed;
+    return true;
+}
+
+static bool parse_json_uint(const char* json, const char* key, uint32_t* out) {
+    const char* value = json_find_member(json, key);
+    if (!value || !out || *value == '-') {
+        return false;
+    }
+    char* end = NULL;
+    unsigned long long parsed = strtoull(value, &end, 10);
+    if (end == value || !json_is_delimiter(*end) || parsed > UINT32_MAX) {
+        return false;
+    }
+    *out = (uint32_t)parsed;
+    return true;
+}
+
+static bool parse_json_float(const char* json, const char* key, float* out) {
+    const char* value = json_find_member(json, key);
+    if (!value || !out) {
+        return false;
+    }
+    char* end = NULL;
+    float parsed = strtof(value, &end);
+    if (end == value || !json_is_delimiter(*end)) {
+        return false;
+    }
+    *out = parsed;
+    return true;
+}
+
+static bool parse_json_bool(const char* json, const char* key, bool* out) {
+    const char* value = json_find_member(json, key);
+    if (!value || !out) {
+        return false;
+    }
+    if (strncmp(value, "true", 4) == 0 && json_is_delimiter(value[4])) {
+        *out = true;
+        return true;
+    }
+    if (strncmp(value, "false", 5) == 0 && json_is_delimiter(value[5])) {
+        *out = false;
+        return true;
+    }
+    return false;
+}
+
+// Copies a string value. Backslash escapes keep the escaped character. The output is written only
+// if the whole string fits, so a rejected value leaves out unchanged.
+static bool parse_json_string(const char* json, const char* key, char* out, size_t out_size) {
+    const char* value = json_find_member(json, key);
+    if (!value || !out || out_size == 0 || *value != '"') {
+        return false;
+    }
+    size_t length = 0;
+    for (const char* p = value + 1; *p != '"'; p++) {
+        if (*p == '\0') {
+            return false;
+        }
+        if (*p == '\\' && p[1] != '\0') {
+            p++;
+        }
+        if (++length >= out_size) {
+            return false;
+        }
+    }
+    size_t n = 0;
+    for (const char* p = value + 1; *p != '"'; p++) {
+        if (*p == '\\' && p[1] != '\0') {
+            p++;
+        }
+        out[n++] = *p;
+    }
+    out[n] = '\0';
+    return true;
+}
+
+// Reads `count` comma-separated floats starting at p. Stores them in out if out is not NULL.
+// Returns the position after the last value, or NULL if the text does not hold them.
+static const char* json_read_floats(const char* p, float* out, size_t count) {
+    p = json_skip_ws(p);
+    for (size_t i = 0; i < count; i++) {
+        char* end = NULL;
+        float value = strtof(p, &end);
+        if (end == p) {
+            return NULL;
+        }
+        if (out) {
+            out[i] = value;
+        }
+        p = json_skip_ws(end);
+        if (i + 1 < count) {
+            if (*p != ',') {
+                return NULL;
+            }
+            p = json_skip_ws(p + 1);
+        }
+    }
+    return p;
+}
+
+// Reads a JSON array of exactly `count` floats. Validates the whole array before writing to out.
+static bool parse_json_array_float(const char* json, const char* key, float* out, size_t count) {
+    const char* value = json_find_member(json, key);
+    if (!value || !out || *value != '[') {
+        return false;
+    }
+    const char* end = json_read_floats(value + 1, NULL, count);
+    if (!end || *end != ']') {
+        return false;
+    }
+    json_read_floats(value + 1, out, count);
+    return true;
+}
+
+static bool parse_json_float3(const char* json, const char* key, float out[3]) {
+    return parse_json_array_float(json, key, out, 3);
+}
+
+// Copies the object that json starts (or that a "name": pair before it holds) into out.
+static bool extract_json_object(const char* json, char* out, size_t out_size) {
+    if (!json || !out || out_size == 0) {
+        return false;
+    }
+    const char* start = json_value_start(json);
+    if (!start || *start != '{') {
+        return false;
+    }
+    const char* end = json_skip_value(start);
+    if (!end) {
+        return false;
+    }
+    size_t length = (size_t)(end - start);
+    if (length >= out_size) {
+        return false;
+    }
+    memcpy(out, start, length);
+    out[length] = '\0';
+    return true;
+}
+
+// Copies element `index` of the array that json starts (or that a "name": pair before it holds).
+// Returns false if there is no such element.
+static bool extract_json_array_element(const char* json, size_t index, char* out, size_t out_size) {
+    if (!json || !out || out_size == 0) {
+        return false;
+    }
+    const char* p = json_value_start(json);
+    if (!p || *p != '[') {
+        return false;
+    }
+    p = json_skip_ws(p + 1);
+    for (size_t i = 0; *p != ']'; i++) {
+        if (*p == '\0') {
+            return false;
+        }
+        const char* end = json_skip_value(p);
+        if (!end) {
+            return false;
+        }
+        if (i == index) {
+            size_t length = (size_t)(end - p);
+            if (length >= out_size) {
+                return false;
+            }
+            memcpy(out, p, length);
+            out[length] = '\0';
+            return true;
+        }
+        p = json_skip_ws(end);
+        if (*p == ',') {
+            p = json_skip_ws(p + 1);
+        } else if (*p != ']') {
+            return false;
+        }
+    }
+    return false;
+}
+
+// ==================================================================================================
+// JSON writing for the subsystem objects
+//
+// Each member is written as `"key": value,`. An object is closed by json_close_object, which turns
+// the final comma into the closing brace. Floats use %.9g, which round-trips a float exactly.
+// ==================================================================================================
+
+// Removes the comma that ends the last member, so a closing brace can follow. Returns the new offset.
+static size_t json_remove_trailing_comma(char* buffer, size_t buffer_size, size_t offset) {
+    if (offset >= 2 && offset <= buffer_size && buffer[offset - 2] == ',' && buffer[offset - 1] == '\n') {
+        buffer[offset - 2] = '\n';
+        return offset - 1;
+    }
+    return offset;
+}
+
+// Appends formatted text at *offset. Returns false, leaving *offset unchanged, if it does not fit.
+static bool json_append(char* buffer, size_t buffer_size, size_t* offset, const char* format, ...) {
+    va_list args;
+    va_start(args, format);
+    size_t next = json_vemit(buffer, buffer_size, *offset, format, args);
+    va_end(args);
+    if (next >= buffer_size) {
+        return false;
+    }
+    *offset = next;
+    return true;
+}
+
+static bool json_close_object(char* buffer, size_t buffer_size, size_t* offset) {
+    if (*offset == 0 || *offset >= buffer_size) {
+        return false;
+    }
+    if (buffer[*offset - 1] == ',') {
+        buffer[*offset - 1] = '}';
+        buffer[*offset] = '\0';
+        return true;
+    }
+    return json_append(buffer, buffer_size, offset, "}");
+}
+
+static bool json_put_bool(char* buffer, size_t buffer_size, size_t* offset, const char* key, bool value) {
+    return json_append(buffer, buffer_size, offset, "\"%s\": %s,", key, value ? "true" : "false");
+}
+
+static bool json_put_int(char* buffer, size_t buffer_size, size_t* offset, const char* key, int value) {
+    return json_append(buffer, buffer_size, offset, "\"%s\": %d,", key, value);
+}
+
+static bool json_put_uint(char* buffer, size_t buffer_size, size_t* offset, const char* key, unsigned int value) {
+    return json_append(buffer, buffer_size, offset, "\"%s\": %u,", key, value);
+}
+
+static bool json_put_float(char* buffer, size_t buffer_size, size_t* offset, const char* key, float value) {
+    return json_append(buffer, buffer_size, offset, "\"%s\": %.9g,", key, (double)value);
+}
+
+static bool json_put_floats(char* buffer, size_t buffer_size, size_t* offset, const char* key,
+                            const float* values, size_t count) {
+    if (!json_append(buffer, buffer_size, offset, "\"%s\": [", key)) {
+        return false;
+    }
+    for (size_t i = 0; i < count; i++) {
+        if (i > 0 && !json_append(buffer, buffer_size, offset, ", ")) {
+            return false;
+        }
+        if (!json_append(buffer, buffer_size, offset, "%.9g", (double)values[i])) {
+            return false;
+        }
+    }
+    return json_append(buffer, buffer_size, offset, "],");
+}
+
+// ==================================================================================================
+// Subsystem serializers
+//
+// Persisted: every plain-data member. Not persisted: pointers and callbacks (process-local),
+// time-of-day presets (pointer-owned; neither format writes them), and lightning bolts (transient
+// render state; weather_manager_init owns their buffer). Zones are written by weather_manager_serialize.
+// ==================================================================================================
+
+static bool json_put_time_settings(char* buffer, size_t buffer_size, size_t* offset, const char* key,
+                                   const TimeOfDaySettings* s) {
+    return json_append(buffer, buffer_size, offset, "\"%s\": {", key) &&
+           json_put_float(buffer, buffer_size, offset, "sun_azimuth", s->sun_azimuth) &&
+           json_put_float(buffer, buffer_size, offset, "sun_elevation", s->sun_elevation) &&
+           json_put_floats(buffer, buffer_size, offset, "sun_color", s->sun_color, 3) &&
+           json_put_float(buffer, buffer_size, offset, "sun_intensity", s->sun_intensity) &&
+           json_put_float(buffer, buffer_size, offset, "sun_disk_size", s->sun_disk_size) &&
+           json_put_float(buffer, buffer_size, offset, "moon_azimuth", s->moon_azimuth) &&
+           json_put_float(buffer, buffer_size, offset, "moon_elevation", s->moon_elevation) &&
+           json_put_floats(buffer, buffer_size, offset, "moon_color", s->moon_color, 3) &&
+           json_put_float(buffer, buffer_size, offset, "moon_intensity", s->moon_intensity) &&
+           json_put_float(buffer, buffer_size, offset, "moon_phase", s->moon_phase) &&
+           json_put_floats(buffer, buffer_size, offset, "zenith_color", s->zenith_color, 3) &&
+           json_put_floats(buffer, buffer_size, offset, "horizon_color", s->horizon_color, 3) &&
+           json_put_floats(buffer, buffer_size, offset, "ground_color", s->ground_color, 3) &&
+           json_put_float(buffer, buffer_size, offset, "star_intensity", s->star_intensity) &&
+           json_put_float(buffer, buffer_size, offset, "atmosphere_thickness", s->atmosphere_thickness) &&
+           json_put_floats(buffer, buffer_size, offset, "ambient_color", s->ambient_color, 3) &&
+           json_put_float(buffer, buffer_size, offset, "ambient_intensity", s->ambient_intensity) &&
+           json_put_floats(buffer, buffer_size, offset, "fog_color", s->fog_color, 3) &&
+           json_put_floats(buffer, buffer_size, offset, "shadow_color", s->shadow_color, 3) &&
+           json_close_object(buffer, buffer_size, offset) &&
+           json_append(buffer, buffer_size, offset, ",");
+}
+
+static void deserialize_time_settings_json(TimeOfDaySettings* s, const char* json) {
+    parse_json_float(json, "sun_azimuth", &s->sun_azimuth);
+    parse_json_float(json, "sun_elevation", &s->sun_elevation);
+    parse_json_float3(json, "sun_color", s->sun_color);
+    parse_json_float(json, "sun_intensity", &s->sun_intensity);
+    parse_json_float(json, "sun_disk_size", &s->sun_disk_size);
+    parse_json_float(json, "moon_azimuth", &s->moon_azimuth);
+    parse_json_float(json, "moon_elevation", &s->moon_elevation);
+    parse_json_float3(json, "moon_color", s->moon_color);
+    parse_json_float(json, "moon_intensity", &s->moon_intensity);
+    parse_json_float(json, "moon_phase", &s->moon_phase);
+    parse_json_float3(json, "zenith_color", s->zenith_color);
+    parse_json_float3(json, "horizon_color", s->horizon_color);
+    parse_json_float3(json, "ground_color", s->ground_color);
+    parse_json_float(json, "star_intensity", &s->star_intensity);
+    parse_json_float(json, "atmosphere_thickness", &s->atmosphere_thickness);
+    parse_json_float3(json, "ambient_color", s->ambient_color);
+    parse_json_float(json, "ambient_intensity", &s->ambient_intensity);
+    parse_json_float3(json, "fog_color", s->fog_color);
+    parse_json_float3(json, "shadow_color", s->shadow_color);
+}
+
+static bool serialize_time_of_day_json(const TimeOfDaySystem* system, char* buffer, size_t buffer_size) {
+    if (!system || !buffer || buffer_size == 0) {
+        return false;
+    }
+    size_t offset = 0;
+    bool ok = json_append(buffer, buffer_size, &offset, "{") &&
+              json_put_float(buffer, buffer_size, &offset, "current_time", system->current_time) &&
+              json_put_float(buffer, buffer_size, &offset, "time_scale", system->time_scale) &&
+              json_put_bool(buffer, buffer_size, &offset, "is_paused", system->is_paused) &&
+              json_put_uint(buffer, buffer_size, &offset, "day", system->day) &&
+              json_put_uint(buffer, buffer_size, &offset, "month", system->month) &&
+              json_put_uint(buffer, buffer_size, &offset, "year", system->year) &&
+              json_put_float(buffer, buffer_size, &offset, "day_length_hours", system->day_length_hours) &&
+              json_put_time_settings(buffer, buffer_size, &offset, "current_settings", &system->current_settings);
+    return ok && json_close_object(buffer, buffer_size, &offset);
+}
+
+static bool deserialize_time_of_day_json(TimeOfDaySystem* system, const char* json_data) {
+    if (!system || !json_data) {
+        return false;
+    }
+    parse_json_float(json_data, "current_time", &system->current_time);
+    parse_json_float(json_data, "time_scale", &system->time_scale);
+    parse_json_bool(json_data, "is_paused", &system->is_paused);
+    parse_json_uint(json_data, "day", &system->day);
+    parse_json_uint(json_data, "month", &system->month);
+    parse_json_uint(json_data, "year", &system->year);
+    parse_json_float(json_data, "day_length_hours", &system->day_length_hours);
+    const char* settings = json_find_member(json_data, "current_settings");
+    if (settings) {
+        deserialize_time_settings_json(&system->current_settings, settings);
+    }
+    return true;
+}
+
+static bool serialize_volumetric_clouds_json(const VolumetricCloudSettings* clouds, char* buffer, size_t buffer_size) {
+    if (!clouds || !buffer || buffer_size == 0) {
+        return false;
+    }
+    size_t offset = 0;
+    bool ok = json_append(buffer, buffer_size, &offset, "{") &&
+              json_put_bool(buffer, buffer_size, &offset, "enabled", clouds->enabled) &&
+              json_put_float(buffer, buffer_size, &offset, "coverage", clouds->coverage) &&
+              json_put_float(buffer, buffer_size, &offset, "cloud_type", clouds->cloud_type) &&
+              json_put_float(buffer, buffer_size, &offset, "density", clouds->density) &&
+              json_put_float(buffer, buffer_size, &offset, "altitude_min", clouds->altitude_min) &&
+              json_put_float(buffer, buffer_size, &offset, "altitude_max", clouds->altitude_max) &&
+              json_put_float(buffer, buffer_size, &offset, "detail_scale", clouds->detail_scale) &&
+              json_put_float(buffer, buffer_size, &offset, "weather_scale", clouds->weather_scale) &&
+              json_put_float(buffer, buffer_size, &offset, "wind_speed", clouds->wind_speed) &&
+              json_put_floats(buffer, buffer_size, &offset, "wind_direction", clouds->wind_direction, 2) &&
+              json_put_float(buffer, buffer_size, &offset, "light_absorption", clouds->light_absorption) &&
+              json_put_float(buffer, buffer_size, &offset, "ambient_occlusion", clouds->ambient_occlusion) &&
+              json_put_float(buffer, buffer_size, &offset, "shadow_strength", clouds->shadow_strength) &&
+              json_put_uint(buffer, buffer_size, &offset, "shape_noise", clouds->shape_noise) &&
+              json_put_uint(buffer, buffer_size, &offset, "detail_noise", clouds->detail_noise) &&
+              json_put_uint(buffer, buffer_size, &offset, "weather_map", clouds->weather_map) &&
+              json_put_int(buffer, buffer_size, &offset, "ray_march_steps", clouds->ray_march_steps) &&
+              json_put_int(buffer, buffer_size, &offset, "light_march_steps", clouds->light_march_steps);
+    return ok && json_close_object(buffer, buffer_size, &offset);
+}
+
+static bool deserialize_volumetric_clouds_json(VolumetricCloudSettings* clouds, const char* json_data) {
+    if (!clouds || !json_data) {
+        return false;
+    }
+    parse_json_bool(json_data, "enabled", &clouds->enabled);
+    parse_json_float(json_data, "coverage", &clouds->coverage);
+    parse_json_float(json_data, "cloud_type", &clouds->cloud_type);
+    parse_json_float(json_data, "density", &clouds->density);
+    parse_json_float(json_data, "altitude_min", &clouds->altitude_min);
+    parse_json_float(json_data, "altitude_max", &clouds->altitude_max);
+    parse_json_float(json_data, "detail_scale", &clouds->detail_scale);
+    parse_json_float(json_data, "weather_scale", &clouds->weather_scale);
+    parse_json_float(json_data, "wind_speed", &clouds->wind_speed);
+    parse_json_array_float(json_data, "wind_direction", clouds->wind_direction, 2);
+    parse_json_float(json_data, "light_absorption", &clouds->light_absorption);
+    parse_json_float(json_data, "ambient_occlusion", &clouds->ambient_occlusion);
+    parse_json_float(json_data, "shadow_strength", &clouds->shadow_strength);
+    parse_json_uint(json_data, "shape_noise", &clouds->shape_noise);
+    parse_json_uint(json_data, "detail_noise", &clouds->detail_noise);
+    parse_json_uint(json_data, "weather_map", &clouds->weather_map);
+    parse_json_int(json_data, "ray_march_steps", &clouds->ray_march_steps);
+    parse_json_int(json_data, "light_march_steps", &clouds->light_march_steps);
+    return true;
+}
+
+static bool serialize_precipitation_json(const PrecipitationSystem* precipitation, char* buffer, size_t buffer_size) {
+    if (!precipitation || !buffer || buffer_size == 0) {
+        return false;
+    }
+    size_t offset = 0;
+    bool ok = json_append(buffer, buffer_size, &offset, "{") &&
+              json_put_bool(buffer, buffer_size, &offset, "active", precipitation->active) &&
+              json_put_int(buffer, buffer_size, &offset, "type", (int)precipitation->type) &&
+              json_put_float(buffer, buffer_size, &offset, "intensity", precipitation->intensity) &&
+              json_put_float(buffer, buffer_size, &offset, "precipitation_amount", precipitation->precipitation_amount) &&
+              json_put_float(buffer, buffer_size, &offset, "precipitation_rate", precipitation->precipitation_rate) &&
+              json_put_uint(buffer, buffer_size, &offset, "particle_buffer", precipitation->particle_buffer) &&
+              json_put_uint(buffer, buffer_size, &offset, "max_particles", precipitation->max_particles) &&
+              json_put_uint(buffer, buffer_size, &offset, "active_particles", precipitation->active_particles) &&
+              json_put_uint(buffer, buffer_size, &offset, "particle_texture", precipitation->particle_texture) &&
+              json_put_float(buffer, buffer_size, &offset, "particle_size", precipitation->particle_size) &&
+              json_put_float(buffer, buffer_size, &offset, "streak_length", precipitation->streak_length) &&
+              json_put_float(buffer, buffer_size, &offset, "opacity", precipitation->opacity) &&
+              json_put_float(buffer, buffer_size, &offset, "fall_speed", precipitation->fall_speed) &&
+              json_put_float(buffer, buffer_size, &offset, "wind_influence", precipitation->wind_influence) &&
+              json_put_float(buffer, buffer_size, &offset, "collision_offset", precipitation->collision_offset) &&
+              json_put_bool(buffer, buffer_size, &offset, "spawn_splashes", precipitation->spawn_splashes) &&
+              json_put_uint(buffer, buffer_size, &offset, "splash_texture", precipitation->splash_texture) &&
+              json_put_float(buffer, buffer_size, &offset, "splash_rate", precipitation->splash_rate) &&
+              json_put_float(buffer, buffer_size, &offset, "splash_size", precipitation->splash_size);
+    return ok && json_close_object(buffer, buffer_size, &offset);
+}
+
+static bool deserialize_precipitation_json(PrecipitationSystem* precipitation, const char* json_data) {
+    if (!precipitation || !json_data) {
+        return false;
+    }
+    int type = 0;
+    if (parse_json_int(json_data, "type", &type) && weather_type_is_valid(type)) {
+        precipitation->type = (WeatherType)type;
+    }
+    parse_json_bool(json_data, "active", &precipitation->active);
+    parse_json_float(json_data, "intensity", &precipitation->intensity);
+    parse_json_float(json_data, "precipitation_amount", &precipitation->precipitation_amount);
+    parse_json_float(json_data, "precipitation_rate", &precipitation->precipitation_rate);
+    parse_json_uint(json_data, "particle_buffer", &precipitation->particle_buffer);
+    parse_json_uint(json_data, "max_particles", &precipitation->max_particles);
+    parse_json_uint(json_data, "active_particles", &precipitation->active_particles);
+    parse_json_uint(json_data, "particle_texture", &precipitation->particle_texture);
+    parse_json_float(json_data, "particle_size", &precipitation->particle_size);
+    parse_json_float(json_data, "streak_length", &precipitation->streak_length);
+    parse_json_float(json_data, "opacity", &precipitation->opacity);
+    parse_json_float(json_data, "fall_speed", &precipitation->fall_speed);
+    parse_json_float(json_data, "wind_influence", &precipitation->wind_influence);
+    parse_json_float(json_data, "collision_offset", &precipitation->collision_offset);
+    parse_json_bool(json_data, "spawn_splashes", &precipitation->spawn_splashes);
+    parse_json_uint(json_data, "splash_texture", &precipitation->splash_texture);
+    parse_json_float(json_data, "splash_rate", &precipitation->splash_rate);
+    parse_json_float(json_data, "splash_size", &precipitation->splash_size);
+    return true;
+}
+
+static bool serialize_lightning_json(const LightningSystem* lightning, char* buffer, size_t buffer_size) {
+    if (!lightning || !buffer || buffer_size == 0) {
+        return false;
+    }
+    size_t offset = 0;
+    bool ok = json_append(buffer, buffer_size, &offset, "{") &&
+              json_put_float(buffer, buffer_size, &offset, "strike_frequency", lightning->strike_frequency) &&
+              json_put_float(buffer, buffer_size, &offset, "next_strike_time", lightning->next_strike_time) &&
+              json_put_float(buffer, buffer_size, &offset, "strike_interval_min", lightning->strike_interval_min) &&
+              json_put_float(buffer, buffer_size, &offset, "strike_interval_max", lightning->strike_interval_max) &&
+              json_put_float(buffer, buffer_size, &offset, "bolt_lifetime", lightning->bolt_lifetime) &&
+              json_put_float(buffer, buffer_size, &offset, "flash_duration", lightning->flash_duration) &&
+              json_put_bool(buffer, buffer_size, &offset, "trigger_thunder", lightning->trigger_thunder);
+    return ok && json_close_object(buffer, buffer_size, &offset);
+}
+
+static bool deserialize_lightning_json(LightningSystem* lightning, const char* json_data) {
+    if (!lightning || !json_data) {
+        return false;
+    }
+    parse_json_float(json_data, "strike_frequency", &lightning->strike_frequency);
+    parse_json_float(json_data, "next_strike_time", &lightning->next_strike_time);
+    parse_json_float(json_data, "strike_interval_min", &lightning->strike_interval_min);
+    parse_json_float(json_data, "strike_interval_max", &lightning->strike_interval_max);
+    parse_json_float(json_data, "bolt_lifetime", &lightning->bolt_lifetime);
+    parse_json_float(json_data, "flash_duration", &lightning->flash_duration);
+    parse_json_bool(json_data, "trigger_thunder", &lightning->trigger_thunder);
+    return true;
+}
+
+static bool deserialize_weather_parameters_json(WeatherParameters* params, const char* json_data) {
+    if (!params || !json_data) {
+        return false;
+    }
+    int type = 0;
+    if (parse_json_int(json_data, "type", &type) && weather_type_is_valid(type)) {
+        params->type = (WeatherType)type;
+    }
+    parse_json_string(json_data, "name", params->name, sizeof(params->name));
+    parse_json_float3(json_data, "sky_color", params->sky_color);
+    parse_json_float3(json_data, "horizon_color", params->horizon_color);
+    parse_json_float(json_data, "cloud_coverage", &params->cloud_coverage);
+    parse_json_float(json_data, "cloud_speed", &params->cloud_speed);
+    parse_json_float(json_data, "cloud_height", &params->cloud_height);
+    parse_json_uint(json_data, "cloud_texture", &params->cloud_texture);
+    parse_json_bool(json_data, "has_precipitation", &params->has_precipitation);
+    parse_json_float(json_data, "precipitation_intensity", &params->precipitation_intensity);
+    parse_json_uint(json_data, "precipitation_texture", &params->precipitation_texture);
+    parse_json_float(json_data, "precipitation_size", &params->precipitation_size);
+    parse_json_float(json_data, "precipitation_speed", &params->precipitation_speed);
+    parse_json_bool(json_data, "precipitation_affects_water", &params->precipitation_affects_water);
+    parse_json_float(json_data, "fog_density", &params->fog_density);
+    parse_json_float(json_data, "fog_height_falloff", &params->fog_height_falloff);
+    parse_json_float3(json_data, "fog_color", params->fog_color);
+    parse_json_float(json_data, "fog_start_distance", &params->fog_start_distance);
+    parse_json_float(json_data, "fog_end_distance", &params->fog_end_distance);
+    parse_json_float(json_data, "sun_intensity_multiplier", &params->sun_intensity_multiplier);
+    parse_json_float(json_data, "ambient_intensity_multiplier", &params->ambient_intensity_multiplier);
+    parse_json_float(json_data, "shadow_intensity_multiplier", &params->shadow_intensity_multiplier);
+    parse_json_float(json_data, "wind_speed", &params->wind_speed);
+    parse_json_float3(json_data, "wind_direction", params->wind_direction);
+    parse_json_float(json_data, "wind_gustiness", &params->wind_gustiness);
+    parse_json_string(json_data, "ambient_sound", params->ambient_sound, sizeof(params->ambient_sound));
+    parse_json_float(json_data, "ambient_volume", &params->ambient_volume);
+    parse_json_float(json_data, "visibility_range", &params->visibility_range);
+    parse_json_float(json_data, "movement_speed_modifier", &params->movement_speed_modifier);
+    parse_json_float(json_data, "fire_extinguish_rate", &params->fire_extinguish_rate);
+    return true;
+}
+
+// ==================================================================================================
+// Binary payload
+//
+// The payload is the WeatherManager struct as it lies in memory, so it has a fixed size. Pointers
+// and callbacks are process-local: they are cleared when saving and never restored from the file.
+// Zones (JSON only) and time-of-day presets (neither format) are therefore not in the payload.
+// ==================================================================================================
+
+static void clear_process_local_state(WeatherManager* manager) {
+    manager->zones = NULL;
+    manager->zone_count = 0;
+    manager->time_of_day.presets = NULL;
+    manager->time_of_day.preset_count = 0;
+    manager->time_of_day.on_sunrise = NULL;
+    manager->time_of_day.on_sunset = NULL;
+    manager->time_of_day.on_midnight = NULL;
+    manager->time_of_day.on_noon = NULL;
+    manager->lightning.bolts = NULL;
+    manager->lightning.bolt_count = 0;
+    manager->lightning.max_bolts = 0;
+}
+
+static bool serialize_weather_manager_data(const WeatherManager* manager, uint8_t* buffer, size_t size) {
+    if (!manager || !buffer || size < sizeof(WeatherManager)) {
+        return false;
+    }
+    WeatherManager snapshot;
+    memset(&snapshot, 0, sizeof(snapshot));
+    memcpy(&snapshot, manager, sizeof(snapshot));
+    clear_process_local_state(&snapshot);
+    memcpy(buffer, &snapshot, sizeof(snapshot));
+    return true;
+}
+
+static bool deserialize_weather_manager_data(WeatherManager* manager, const uint8_t* buffer, size_t size) {
+    if (!manager || !buffer || size < sizeof(WeatherManager)) {
+        return false;
+    }
+    WeatherManager snapshot;
+    memcpy(&snapshot, buffer, sizeof(snapshot));
+    if (!weather_type_is_valid((int)snapshot.current_weather) ||
+        !weather_type_is_valid((int)snapshot.transition.from_weather) ||
+        !weather_type_is_valid((int)snapshot.transition.to_weather)) {
+        return false;
+    }
+
+    // Initialise first (this allocates the lightning bolt buffer), then keep that buffer.
+    weather_manager_init(manager);
+    LightningBolt* bolts = manager->lightning.bolts;
+    uint32_t max_bolts = manager->lightning.max_bolts;
+    *manager = snapshot;
+    clear_process_local_state(manager);
+    manager->lightning.bolts = bolts;
+    manager->lightning.max_bolts = max_bolts;
+    return true;
+}
