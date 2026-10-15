@@ -9,6 +9,8 @@
 #define NETWORK_PROTOCOL_VERSION 1
 #define MAX_PACKET_SIZE 1400 // UDP safe packet size
 #define MAX_MESSAGE_TYPES 64
+// Packed little-endian PacketHeader on the wire (no struct padding).
+#define PACKET_HEADER_WIRE_SIZE 15
 
 // Message types
 typedef enum {
