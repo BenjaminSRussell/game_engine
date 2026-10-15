@@ -20,10 +20,7 @@ let package = Package(
         .executableTarget(
             name: "EngineEditor",
             dependencies: [],
-            path: "src/editor/SwiftUI",
-            resources: [
-                .process("Resources")
-            ]
+            path: "src/editor/SwiftUI"
         ),
     ]
 )
