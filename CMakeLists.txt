@@ -1149,3 +1149,18 @@ target_include_directories(test_vulkan_shader_fallback PRIVATE
     ${CMAKE_SOURCE_DIR}/src
 )
 add_test(NAME test_vulkan_shader_fallback COMMAND test_vulkan_shader_fallback)
+
+# Issue #332: visible asset instances are counted; hidden or incomplete ones are not.
+# Not add_engine_test: that macro links Engine, which does not build on
+# origin/main (missing GLFW, then gpu_profiler.c:80). Compiles
+# asset_render_system.c directly and stubs the ECS query and asset lookup.
+add_executable(test_asset_render_system
+    tests/asset_render_system_test.c
+    src/engine/ecs/systems/asset_render_system.c
+)
+target_include_directories(test_asset_render_system PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+add_test(NAME test_asset_render_system COMMAND test_asset_render_system)
