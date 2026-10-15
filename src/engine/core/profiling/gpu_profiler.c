@@ -13,6 +13,9 @@
 // INTERNAL STRUCTURES
 // ============================================================================
 
+// Query index of a marker whose end has not been recorded yet.
+#define GPU_PROFILE_QUERY_NONE 0xFFFFFFFFu
+
 typedef struct GPUProfileEntry {
     char name[64];
     u64 timestamp_start;
@@ -20,6 +23,9 @@ typedef struct GPUProfileEntry {
     u32 frame_index;
     GPUProfileCategory category;
     f32 duration_ms;
+    u32 begin_query;  // query index the begin was issued with
+    u32 end_query;    // query index the end was issued with (GPU_PROFILE_QUERY_NONE until ended)
+    bool resolved;    // timestamps were read back and counted in the statistics
 } GPUProfileEntry;
 
 typedef struct GPUProfilerContext {
@@ -77,12 +83,12 @@ static const char* category_names[GPU_PROFILE_CATEGORY_COUNT] = {
 // ============================================================================
 
 GPUProfilerContext* gpu_profiler_create(u32 max_queries_per_frame, u32 frame_delay) {
-    LOG_INFO(LOG_CAT_GRAPHICS, "Creating GPU profiler (queries: %u, delay: %u)", 
+    LOG_INFO_CAT(LOG_CAT_GRAPHICS, "Creating GPU profiler (queries: %u, delay: %u)", 
              max_queries_per_frame, frame_delay);
     
     GPUProfilerContext* ctx = MALLOC_PERSISTENT(sizeof(GPUProfilerContext));
     if (!ctx) {
-        LOG_ERROR(LOG_CAT_GRAPHICS, "Failed to allocate GPU profiler context");
+        LOG_ERROR_CAT(LOG_CAT_GRAPHICS, "Failed to allocate GPU profiler context");
         return NULL;
     }
     
@@ -95,7 +101,7 @@ GPUProfilerContext* gpu_profiler_create(u32 max_queries_per_frame, u32 frame_del
     // Allocate entries storage
     ctx->entries = MALLOC_PERSISTENT(ctx->entry_capacity * sizeof(GPUProfileEntry));
     if (!ctx->entries) {
-        LOG_ERROR(LOG_CAT_GRAPHICS, "Failed to allocate GPU profiler entries");
+        LOG_ERROR_CAT(LOG_CAT_GRAPHICS, "Failed to allocate GPU profiler entries");
         FREE(ctx);
         return NULL;
     }
@@ -103,7 +109,7 @@ GPUProfilerContext* gpu_profiler_create(u32 max_queries_per_frame, u32 frame_del
     // Allocate timestamp buffer
     ctx->timestamp_buffer = MALLOC_TEMP(max_queries_per_frame * 2 * sizeof(u64));
     if (!ctx->timestamp_buffer) {
-        LOG_ERROR(LOG_CAT_GRAPHICS, "Failed to allocate timestamp buffer");
+        LOG_ERROR_CAT(LOG_CAT_GRAPHICS, "Failed to allocate timestamp buffer");
         FREE(ctx->entries);
         FREE(ctx);
         return NULL;
@@ -112,7 +118,7 @@ GPUProfilerContext* gpu_profiler_create(u32 max_queries_per_frame, u32 frame_del
     // Create timestamp query pool
     ctx->timestamp_query_pool = gpu_create_timestamp_query_pool(max_queries_per_frame * 2);
     if (!ctx->timestamp_query_pool) {
-        LOG_ERROR(LOG_CAT_GRAPHICS, "Failed to create timestamp query pool");
+        LOG_ERROR_CAT(LOG_CAT_GRAPHICS, "Failed to create timestamp query pool");
         FREE(ctx->entries);
         FREE(ctx->timestamp_buffer);
         FREE(ctx);
@@ -122,14 +128,14 @@ GPUProfilerContext* gpu_profiler_create(u32 max_queries_per_frame, u32 frame_del
     ctx->initialized = true;
     ctx->capturing = false;
     
-    LOG_INFO(LOG_CAT_GRAPHICS, "GPU profiler created successfully");
+    LOG_INFO_CAT(LOG_CAT_GRAPHICS, "GPU profiler created successfully");
     return ctx;
 }
 
 void gpu_profiler_destroy(GPUProfilerContext* ctx) {
     if (!ctx) return;
     
-    LOG_INFO(LOG_CAT_GRAPHICS, "Destroying GPU profiler");
+    LOG_INFO_CAT(LOG_CAT_GRAPHICS, "Destroying GPU profiler");
     
     if (ctx->timestamp_query_pool) {
         gpu_destroy_timestamp_query_pool(ctx->timestamp_query_pool);
@@ -152,7 +158,7 @@ void gpu_profiler_destroy(GPUProfilerContext* ctx) {
 
 bool gpu_profiler_initialize(u32 max_queries_per_frame, u32 frame_delay) {
     if (g_gpu_profiler) {
-        LOG_WARN(LOG_CAT_GRAPHICS, "GPU profiler already initialized");
+        LOG_WARN_CAT(LOG_CAT_GRAPHICS, "GPU profiler already initialized");
         return true;
     }
     
@@ -177,7 +183,7 @@ GPUProfilerContext* gpu_profiler_get_global(void) {
 
 void gpu_profiler_begin_capture(void) {
     if (!g_gpu_profiler || !g_gpu_profiler->initialized) {
-        LOG_WARN(LOG_CAT_GRAPHICS, "GPU profiler not initialized");
+        LOG_WARN_CAT(LOG_CAT_GRAPHICS, "GPU profiler not initialized");
         return;
     }
     
@@ -189,50 +195,52 @@ void gpu_profiler_begin_capture(void) {
     memset(g_gpu_profiler->category_times_ms, 0, sizeof(g_gpu_profiler->category_times_ms));
     memset(g_gpu_profiler->category_counts, 0, sizeof(g_gpu_profiler->category_counts));
     
-    LOG_INFO(LOG_CAT_GRAPHICS, "GPU profiler capture started");
+    LOG_INFO_CAT(LOG_CAT_GRAPHICS, "GPU profiler capture started");
 }
 
 void gpu_profiler_end_capture(void) {
     if (!g_gpu_profiler || !g_gpu_profiler->initialized) {
-        LOG_WARN(LOG_CAT_GRAPHICS, "GPU profiler not initialized");
+        LOG_WARN_CAT(LOG_CAT_GRAPHICS, "GPU profiler not initialized");
         return;
     }
-    
+
     g_gpu_profiler->capturing = false;
-    
+
     // Read back timestamp results
-    if (g_gpu_profiler->current_query_index > 0) {
+    u32 query_count = g_gpu_profiler->current_query_index;
+    if (query_count > 0) {
         gpu_get_timestamp_query_results(g_gpu_profiler->timestamp_query_pool,
-                                       0, g_gpu_profiler->current_query_index,
+                                       0, query_count,
                                        g_gpu_profiler->timestamp_buffer);
-        
-        // Process timestamp pairs
-        for (u32 i = 0; i < g_gpu_profiler->current_query_index / 2; i++) {
-            u64 start = g_gpu_profiler->timestamp_buffer[i * 2];
-            u64 end = g_gpu_profiler->timestamp_buffer[i * 2 + 1];
-            
+
+        // Each marker resolves through the query indices its own begin and end were issued
+        // with. Only this frame's markers can match: the readback holds this frame's queries.
+        for (u32 i = 0; i < g_gpu_profiler->entry_count; i++) {
+            GPUProfileEntry* entry = &g_gpu_profiler->entries[i];
+            if (entry->resolved || entry->frame_index != g_gpu_profiler->current_frame ||
+                entry->end_query == GPU_PROFILE_QUERY_NONE ||
+                entry->begin_query >= query_count || entry->end_query >= query_count) {
+                continue;
+            }
+
+            u64 start = g_gpu_profiler->timestamp_buffer[entry->begin_query];
+            u64 end = g_gpu_profiler->timestamp_buffer[entry->end_query];
+
             if (start < end) {
-                // Find corresponding entry
-                for (u32 j = 0; j < g_gpu_profiler->entry_count; j++) {
-                    GPUProfileEntry* entry = &g_gpu_profiler->entries[j];
-                    if (entry->frame_index == g_gpu_profiler->current_frame - g_gpu_profiler->frame_delay &&
-                        entry->timestamp_start == 0) {
-                        entry->timestamp_start = start;
-                        entry->timestamp_end = end;
-                        entry->duration_ms = (f32)(end - start) / 1000000.0f; // Convert to ms
-                        
-                        // Update statistics
-                        g_gpu_profiler->category_times_ms[entry->category] += entry->duration_ms;
-                        g_gpu_profiler->category_counts[entry->category]++;
-                        g_gpu_profiler->total_frame_time_ms += entry->duration_ms;
-                        break;
-                    }
-                }
+                entry->timestamp_start = start;
+                entry->timestamp_end = end;
+                entry->duration_ms = (f32)(end - start) / 1000000.0f; // Convert to ms
+                entry->resolved = true;
+
+                // Update statistics
+                g_gpu_profiler->category_times_ms[entry->category] += entry->duration_ms;
+                g_gpu_profiler->category_counts[entry->category]++;
+                g_gpu_profiler->total_frame_time_ms += entry->duration_ms;
             }
         }
     }
-    
-    LOG_INFO(LOG_CAT_GRAPHICS, "GPU profiler capture ended");
+
+    LOG_INFO_CAT(LOG_CAT_GRAPHICS, "GPU profiler capture ended");
 }
 
 // ============================================================================
@@ -243,12 +251,16 @@ GPUProfileHandle gpu_profiler_begin_event(const char* name, GPUProfileCategory c
     if (!g_gpu_profiler || !g_gpu_profiler->initialized || !g_gpu_profiler->capturing) {
         return 0;
     }
-    
+
     if (g_gpu_profiler->current_query_index >= g_gpu_profiler->max_queries_per_frame * 2) {
-        LOG_WARN(LOG_CAT_GRAPHICS, "GPU profiler query limit reached");
+        LOG_WARN_CAT(LOG_CAT_GRAPHICS, "GPU profiler query limit reached");
         return 0;
     }
-    
+
+    // Issue timestamp query
+    u32 query_index = g_gpu_profiler->current_query_index++;
+    gpu_timestamp_query(g_gpu_profiler->timestamp_query_pool, query_index);
+
     // Create profile entry
     if (g_gpu_profiler->entry_count < g_gpu_profiler->entry_capacity) {
         GPUProfileEntry* entry = &g_gpu_profiler->entries[g_gpu_profiler->entry_count];
@@ -259,14 +271,13 @@ GPUProfileHandle gpu_profiler_begin_event(const char* name, GPUProfileCategory c
         entry->frame_index = g_gpu_profiler->current_frame;
         entry->category = category;
         entry->duration_ms = 0.0f;
-        
+        entry->begin_query = query_index;
+        entry->end_query = GPU_PROFILE_QUERY_NONE;
+        entry->resolved = false;
+
         g_gpu_profiler->entry_count++;
     }
-    
-    // Issue timestamp query
-    u32 query_index = g_gpu_profiler->current_query_index++;
-    gpu_timestamp_query(g_gpu_profiler->timestamp_query_pool, query_index);
-    
+
     return query_index + 1; // Return non-zero handle
 }
 
@@ -274,14 +285,26 @@ void gpu_profiler_end_event(GPUProfileHandle handle) {
     if (!g_gpu_profiler || !g_gpu_profiler->initialized || !g_gpu_profiler->capturing || handle == 0) {
         return;
     }
-    
+
     if (g_gpu_profiler->current_query_index >= g_gpu_profiler->max_queries_per_frame * 2) {
         return;
     }
-    
+
     // Issue timestamp query
     u32 query_index = g_gpu_profiler->current_query_index++;
     gpu_timestamp_query(g_gpu_profiler->timestamp_query_pool, query_index);
+
+    // Close the marker this handle came from (handle = its begin query index + 1), so
+    // nested and overlapping markers each end their own entry.
+    for (u32 i = g_gpu_profiler->entry_count; i > 0; i--) {
+        GPUProfileEntry* entry = &g_gpu_profiler->entries[i - 1];
+        if (entry->frame_index == g_gpu_profiler->current_frame &&
+            entry->begin_query == handle - 1 &&
+            entry->end_query == GPU_PROFILE_QUERY_NONE) {
+            entry->end_query = query_index;
+            break;
+        }
+    }
 }
 
 // ============================================================================
@@ -345,44 +368,44 @@ void gpu_profiler_get_statistics(GPUProfilerStats* out_stats) {
 
 void gpu_profiler_print_summary(void) {
     if (!g_gpu_profiler || !g_gpu_profiler->initialized) {
-        LOG_WARN(LOG_CAT_GRAPHICS, "GPU profiler not initialized");
+        LOG_WARN_CAT(LOG_CAT_GRAPHICS, "GPU profiler not initialized");
         return;
     }
     
-    LOG_INFO(LOG_CAT_GRAPHICS, "=== GPU Profiler Summary ===");
-    LOG_INFO(LOG_CAT_GRAPHICS, "Frame: %u, Total Time: %.2f ms", 
+    LOG_INFO_CAT(LOG_CAT_GRAPHICS, "=== GPU Profiler Summary ===");
+    LOG_INFO_CAT(LOG_CAT_GRAPHICS, "Frame: %u, Total Time: %.2f ms", 
              g_gpu_profiler->current_frame, g_gpu_profiler->total_frame_time_ms);
     
     for (int i = 0; i < GPU_PROFILE_CATEGORY_COUNT; i++) {
         if (g_gpu_profiler->category_counts[i] > 0) {
             f32 avg_time = g_gpu_profiler->category_times_ms[i] / g_gpu_profiler->category_counts[i];
-            LOG_INFO(LOG_CAT_GRAPHICS, "%s: %.2f ms total, %.2f ms avg (%u calls)",
+            LOG_INFO_CAT(LOG_CAT_GRAPHICS, "%s: %.2f ms total, %.2f ms avg (%u calls)",
                      category_names[i], g_gpu_profiler->category_times_ms[i], avg_time,
                      g_gpu_profiler->category_counts[i]);
         }
     }
     
-    LOG_INFO(LOG_CAT_GRAPHICS, "=== End Summary ===");
+    LOG_INFO_CAT(LOG_CAT_GRAPHICS, "=== End Summary ===");
 }
 
 void gpu_profiler_print_timeline(void) {
     if (!g_gpu_profiler || !g_gpu_profiler->initialized) {
-        LOG_WARN(LOG_CAT_GRAPHICS, "GPU profiler not initialized");
+        LOG_WARN_CAT(LOG_CAT_GRAPHICS, "GPU profiler not initialized");
         return;
     }
     
-    LOG_INFO(LOG_CAT_GRAPHICS, "=== GPU Timeline ===");
+    LOG_INFO_CAT(LOG_CAT_GRAPHICS, "=== GPU Timeline ===");
     
     for (u32 i = 0; i < g_gpu_profiler->entry_count; i++) {
         GPUProfileEntry* entry = &g_gpu_profiler->entries[i];
         if (entry->duration_ms > 0.0f) {
-            LOG_INFO(LOG_CAT_GRAPHICS, "[%s] %s: %.2f ms (frame %u)",
+            LOG_INFO_CAT(LOG_CAT_GRAPHICS, "[%s] %s: %.2f ms (frame %u)",
                      category_names[entry->category], entry->name, entry->duration_ms,
                      entry->frame_index);
         }
     }
     
-    LOG_INFO(LOG_CAT_GRAPHICS, "=== End Timeline ===");
+    LOG_INFO_CAT(LOG_CAT_GRAPHICS, "=== End Timeline ===");
 }
 
 // ============================================================================
@@ -395,7 +418,7 @@ void gpu_profiler_export_csv(const char* filename) {
     }
     
     // In a real implementation, would write to file
-    LOG_INFO(LOG_CAT_GRAPHICS, "Exporting GPU profiler data to CSV: %s", filename);
+    LOG_INFO_CAT(LOG_CAT_GRAPHICS, "Exporting GPU profiler data to CSV: %s", filename);
     
     // Export header
     // Frame,Category,Name,Duration_ms
@@ -404,7 +427,7 @@ void gpu_profiler_export_csv(const char* filename) {
     for (u32 i = 0; i < g_gpu_profiler->entry_count; i++) {
         GPUProfileEntry* entry = &g_gpu_profiler->entries[i];
         if (entry->duration_ms > 0.0f) {
-            // LOG_INFO(LOG_CAT_GRAPHICS, "%u,%s,%s,%.2f", 
+            // LOG_INFO_CAT(LOG_CAT_GRAPHICS, "%u,%s,%s,%.2f", 
             //          entry->frame_index, category_names[entry->category], 
             //          entry->name, entry->duration_ms);
         }
