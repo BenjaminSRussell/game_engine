@@ -5,9 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// If ImGui is enabled, include headers
 #ifdef ENABLE_IMGUI
-#include <imgui.h>
+#include "console_cimgui.h"
 #endif
 
 #define MAX_COMMANDS 256
@@ -65,30 +64,31 @@ void console_render(void) {
     if (!g_console.is_visible) return;
 
 #ifdef ENABLE_IMGUI
-    if (ImGui::Begin("Console", &g_console.is_visible)) {
-        // Output Region
-        if (ImGui::BeginChild("ScrollingRegion", ImVec2(0, -30), false, ImGuiWindowFlags_HorizontalScrollbar)) {
+    /* bool border=false is ImGuiChildFlags_None in the current cimgui signature. */
+    if (igBegin("Console", &g_console.is_visible, 0)) {
+        if (igBeginChild_Str("ScrollingRegion", (ImVec2_c){0.0f, -30.0f}, ImGuiChildFlags_None,
+                             ImGuiWindowFlags_HorizontalScrollbar)) {
             for (u32 i = 0; i < g_console.log_count; i++) {
-                // Handle ring buffer logic if fully implemented,
-                // for simplicity assume linear history up to MAX_HISTORY for display
                 if (g_console.log_history[i].text[0]) {
-                     if (g_console.log_history[i].is_error)
-                         ImGui::TextColored(ImVec4(1,0,0,1), "%s", g_console.log_history[i].text);
-                     else
-                         ImGui::Text("%s", g_console.log_history[i].text);
+                    if (g_console.log_history[i].is_error) {
+                        igTextColored((ImVec4_c){1.0f, 0.0f, 0.0f, 1.0f}, "%s",
+                                      g_console.log_history[i].text);
+                    } else {
+                        igText("%s", g_console.log_history[i].text);
+                    }
                 }
             }
         }
-        ImGui::EndChild();
+        igEndChild();
 
-        // Input Region
-        if (ImGui::InputText("Input", g_console.input_buffer, MAX_BUFFER_SIZE, ImGuiInputTextFlags_EnterReturnsTrue)) {
+        if (igInputText("Input", g_console.input_buffer, MAX_BUFFER_SIZE,
+                        ImGuiInputTextFlags_EnterReturnsTrue, NULL, NULL)) {
             console_execute(g_console.input_buffer);
             g_console.input_buffer[0] = '\0';
-            ImGui::SetKeyboardFocusHere(-1); // Auto focus back
+            igSetKeyboardFocusHere(-1);
         }
     }
-    ImGui::End();
+    igEnd();
 #endif
 }
 
