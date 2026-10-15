@@ -22,6 +22,9 @@ simple_test
 advanced_geometry_physics_test
 *_test
 *_demo
+# Registry files are CMake sources named after their test target (test_*.cmake),
+# not test executables. See tests/registry/README.md.
+!tests/registry/*.cmake
 
 # Xcode
 *.xcodeproj/

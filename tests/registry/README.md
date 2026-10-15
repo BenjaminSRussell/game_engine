@@ -9,4 +9,5 @@ Each unit test registers itself in its own file in this directory. The root `CMa
 - Paths are relative to the repo root, as they are in the root `CMakeLists.txt`.
 - Use `add_engine_test(<test_target> <source>)` only once the `Engine` target builds on `main`. Until then the macro would link `Engine`, which does not build, so compile the unit under test directly, as the `test_widget_focus` block in the root `CMakeLists.txt` does: list the unit's sources in `add_executable`, add the include directories it needs, then call `add_test(NAME <test_target> COMMAND <test_target>)`.
 - New files are picked up on the next configure or build, because the glob uses `CONFIGURE_DEPENDS`.
+- The root `.gitignore` ignores `test_*` (test executables) and then re-includes `tests/registry/*.cmake`, so `git add tests/registry/<test_target>.cmake` works without `-f`. If git reports the path as ignored, your branch predates that exception: rebase onto `main`.
 - If an older PR appended a test block to the root `CMakeLists.txt`, move that block into its own file here when you rebase it.
