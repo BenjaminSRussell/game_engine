@@ -1149,3 +1149,20 @@ target_include_directories(test_vulkan_shader_fallback PRIVATE
     ${CMAKE_SOURCE_DIR}/src
 )
 add_test(NAME test_vulkan_shader_fallback COMMAND test_vulkan_shader_fallback)
+
+# Issue #337: atmosphere LUT height/zenith and sky-view encode/decode.
+# Not add_engine_test: that macro links Engine, which does not build on
+# origin/main (missing GLFW, then gpu_profiler.c:80). Compiles the
+# parameterization unit directly.
+add_executable(test_atmosphere_lut_parameterization
+    tests/atmosphere_lut_parameterization_test.c
+    src/engine/environment/atmosphere/sky/atmosphere_lut_parameterization.c
+)
+target_include_directories(test_atmosphere_lut_parameterization PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/environment/atmosphere/sky
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+target_link_libraries(test_atmosphere_lut_parameterization PRIVATE m)
+add_test(NAME test_atmosphere_lut_parameterization COMMAND test_atmosphere_lut_parameterization)
