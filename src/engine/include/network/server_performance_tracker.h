@@ -102,6 +102,15 @@ typedef struct {
     void (*on_recovery)(const char* metric_name);
     
     void* user_data;
+
+    // When set, update() copies this sample instead of platform collectors
+    // and the hardcoded server defaults.
+    bool use_submitted_metrics;
+    ServerPerformanceMetrics submitted_metrics;
+    AlertLevel last_cpu_level;
+    AlertLevel last_memory_level;
+    AlertLevel last_latency_level;
+    AlertLevel last_tick_level;
 } ServerPerformanceTracker;
 
 // MARK: - Server Performance Tracker Management
@@ -119,6 +128,12 @@ void server_perf_collect_cpu_metrics(ServerPerformanceTracker* tracker);
 void server_perf_collect_memory_metrics(ServerPerformanceTracker* tracker);
 void server_perf_collect_network_metrics(ServerPerformanceTracker* tracker);
 void server_perf_collect_server_metrics(ServerPerformanceTracker* tracker);
+
+// Feed one sample (tick, CPU, memory, latency, connections). The next
+// server_perf_tracker_update copies it and evaluates load, health, history,
+// and alerts. Pass NULL to resume platform sampling.
+void server_perf_submit_metrics(ServerPerformanceTracker* tracker,
+                                const ServerPerformanceMetrics* metrics);
 
 // MARK: - Performance Analysis
 
