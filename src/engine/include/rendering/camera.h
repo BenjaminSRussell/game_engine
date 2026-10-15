@@ -74,7 +74,7 @@ Mat4 camera_get_view_matrix(const Camera *camera);
 Mat4 camera_get_projection_matrix(const Camera *camera, f32 aspect);
 
 // Get forward vector
-Vec3 camera_get_forward(Camera *camera);
+Vec3 camera_get_forward(const Camera *camera);
 
 // Camera shake functions
 void camera_add_shake(Camera *camera, f32 intensity, f32 duration);
