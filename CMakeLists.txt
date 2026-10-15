@@ -1120,3 +1120,29 @@ target_include_directories(test_vulkan_shader_fallback PRIVATE
     ${CMAKE_SOURCE_DIR}/src
 )
 add_test(NAME test_vulkan_shader_fallback COMMAND test_vulkan_shader_fallback)
+
+# Issue #336. Transmittance must be zero into the ground and one when the ray
+# is already outside the atmosphere, with km paths times m^-1 coefficients.
+# Not add_engine_test: that macro links Engine, which does not build on
+# origin/main (missing GLFW, then gpu_profiler.c:80).
+# portable_simd is first so <simd/simd.h> resolves without Apple's SDK; these
+# sources are not on the Engine target.
+add_executable(test_atmosphere_lut
+    tests/atmosphere_lut_test.c
+    src/engine/environment/atmosphere/sky/atmosphere_lut.c
+    src/engine/environment/atmosphere/sky/atmosphere_lut_parameterization.c
+    src/engine/environment/atmosphere/sky/atmosphere_scattering.c
+)
+target_include_directories(test_atmosphere_lut BEFORE PRIVATE
+    ${CMAKE_SOURCE_DIR}/tests/portable_simd
+)
+target_include_directories(test_atmosphere_lut PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+target_link_libraries(test_atmosphere_lut PRIVATE m)
+target_compile_options(test_atmosphere_lut PRIVATE
+    -Werror=implicit-function-declaration
+)
+add_test(NAME test_atmosphere_lut COMMAND test_atmosphere_lut)
