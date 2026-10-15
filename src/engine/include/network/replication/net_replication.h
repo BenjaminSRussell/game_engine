@@ -57,6 +57,11 @@ typedef struct {
   bool is_relevant[NET_MAX_CLIENTS]; // Per-client relevancy
   f32 priority[NET_MAX_CLIENTS];     // Replication priority
 
+  // Per-tick scratch, bit j = property j. send_mask: changed this tick.
+  // missed_mask: changed, but a relevant client was not sent it.
+  u64 send_mask;
+  u64 missed_mask;
+
   // RPC support
   void (*rpc_handlers[16])(void *object, void *data);
   u32 rpc_count;

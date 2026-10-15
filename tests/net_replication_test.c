@@ -374,6 +374,16 @@ typedef struct {
   u32 guard;
 } Named;
 
+static bool g_fail_next_buffer;
+
+static void *get_packet_buffer_fail_once(u32 size) {
+  if (g_fail_next_buffer) {
+    g_fail_next_buffer = false;
+    return NULL;
+  }
+  return get_packet_buffer(size);
+}
+
 static bool packet_has_byte(const SentPacket *pkt, u8 value) {
   for (u32 i = 0; i < pkt->size; i++) {
     if (pkt->data[i] == value)
@@ -461,11 +471,120 @@ static void test_string_property(void) {
   net_replication_destroy(net);
 }
 
+/* A client cut off by the byte budget still receives the change later. */
+static void test_throttled_delta(void) {
+  NetReplicationSystem *net;
+  f32 health = 0.0f;
+  ExpectProp prop;
+  u32 id;
+  u32 one_packet = (u32)(sizeof(u32) + 1 + sizeof(health));
+
+  net = net_replication_create(NET_AUTHORITY_SERVER, 0);
+  id = net_register_object(net, &health, 1);
+  net_add_property(net, id, "health", NET_PROP_FLOAT, 0, REPLICATE_ALWAYS);
+
+  reset_capture();
+  net_replicate_objects(net, 0.016f, get_packet_buffer, send_packet);
+  if (g_sent_count != NET_MAX_CLIENTS - 1)
+    fail("throttle initial send");
+
+  health = 5.0f;
+  prop.index = 0;
+  prop.bytes = &health;
+  prop.size = sizeof(health);
+  net->bytes_per_second_limit = one_packet;
+  net->bytes_sent_this_second = 0;
+  reset_capture();
+  net_replicate_objects(net, 0.016f, get_packet_buffer, send_packet);
+  if (g_sent_count != 1 || !find_sent(1) || find_sent(2))
+    fail("throttle cut client 2");
+
+  net->bytes_per_second_limit = 100000;
+  reset_capture();
+  net_replicate_objects(net, 0.016f, get_packet_buffer, send_packet);
+  expect_packet(find_sent(2), id, &prop, 1);
+
+  reset_capture();
+  net_replicate_objects(net, 0.016f, get_packet_buffer, send_packet);
+  if (g_sent_count != 0)
+    fail("throttle delta resent after every client got it");
+  net_replication_destroy(net);
+}
+
+/* A client whose packet buffer was unavailable gets the change on the next tick. */
+static void test_null_buffer_delta(void) {
+  NetReplicationSystem *net;
+  f32 health = 0.0f;
+  ExpectProp prop;
+  u32 id;
+
+  net = net_replication_create(NET_AUTHORITY_SERVER, 0);
+  id = net_register_object(net, &health, 1);
+  net_add_property(net, id, "health", NET_PROP_FLOAT, 0, REPLICATE_ALWAYS);
+
+  reset_capture();
+  net_replicate_objects(net, 0.016f, get_packet_buffer, send_packet);
+
+  health = 7.0f;
+  prop.index = 0;
+  prop.bytes = &health;
+  prop.size = sizeof(health);
+  g_fail_next_buffer = true;
+  reset_capture();
+  net_replicate_objects(net, 0.016f, get_packet_buffer_fail_once, send_packet);
+  if (find_sent(1) || !find_sent(2))
+    fail("null buffer client");
+
+  reset_capture();
+  net_replicate_objects(net, 0.016f, get_packet_buffer, send_packet);
+  expect_packet(find_sent(1), id, &prop, 1);
+
+  reset_capture();
+  net_replicate_objects(net, 0.016f, get_packet_buffer, send_packet);
+  if (g_sent_count != 0)
+    fail("null buffer delta resent");
+  net_replication_destroy(net);
+}
+
+/* A value that changed while a client was irrelevant reaches it once relevant. */
+static void test_relevancy_return(void) {
+  NetReplicationSystem *net;
+  f32 health = 0.0f;
+  ExpectProp prop;
+  u32 id;
+
+  net = net_replication_create(NET_AUTHORITY_SERVER, 0);
+  id = net_register_object(net, &health, 1);
+  net_add_property(net, id, "health", NET_PROP_FLOAT, 0, REPLICATE_ALWAYS);
+
+  reset_capture();
+  net_replicate_objects(net, 0.016f, get_packet_buffer, send_packet);
+
+  net_update_relevancy(net, id, 4, false);
+  health = 6.0f;
+  prop.index = 0;
+  prop.bytes = &health;
+  prop.size = sizeof(health);
+  reset_capture();
+  net_replicate_objects(net, 0.016f, get_packet_buffer, send_packet);
+  if (find_sent(4) || !find_sent(1))
+    fail("irrelevant client sent");
+
+  net_update_relevancy(net, id, 4, true);
+  reset_capture();
+  net_replicate_objects(net, 0.016f, get_packet_buffer, send_packet);
+  expect_packet(find_sent(4), id, &prop, 1);
+  net_replication_destroy(net);
+}
+
 int main(void) {
   test_registration();
   test_replication();
   test_bandwidth();
   test_string_property();
+  test_throttled_delta();
+  test_null_buffer_delta();
+  test_relevancy_return();
   printf("net_replication tests passed\n");
   return 0;
 }

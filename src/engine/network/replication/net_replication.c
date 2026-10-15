@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+_Static_assert(NET_MAX_PROPERTIES_PER_OBJECT <= 64,
+               "send_mask and missed_mask hold one bit per property");
+
 NetReplicationSystem *net_replication_create(NetAuthority authority,
                                              u32 client_id) {
   NetReplicationSystem *net =
@@ -184,10 +187,17 @@ void net_register_rpc(NetReplicationSystem *net, u32 net_id,
 
 void net_update_relevancy(NetReplicationSystem *net, u32 net_id, u32 client_id,
                           bool relevant) {
+  ReplicatedObject *obj;
   if (!net || net_id >= net->object_count || client_id >= NET_MAX_CLIENTS)
     return;
 
-  ReplicatedObject *obj = &net->objects[net_id];
+  obj = &net->objects[net_id];
+  if (relevant && !obj->is_relevant[client_id]) {
+    // The client has not seen the current values, so resend them to every
+    // relevant client on the next tick.
+    for (u32 j = 0; j < obj->property_count; j++)
+      obj->properties[j].dirty = true;
+  }
   obj->is_relevant[client_id] = relevant;
 }
 
@@ -200,12 +210,20 @@ void net_set_priority(NetReplicationSystem *net, u32 net_id, u32 client_id,
   obj->priority[client_id] = priority;
 }
 
+// A client whose packet was missing or incomplete keeps every change it was
+// owed pending, so the shared baseline does not advance past it.
+static void net_mark_client_missed(NetReplicationSystem *net, u32 client) {
+  for (u32 i = 0; i < net->object_count; i++) {
+    ReplicatedObject *obj = &net->objects[i];
+    if (obj->object_ptr && obj->is_relevant[client])
+      obj->missed_mask |= obj->send_mask;
+  }
+}
+
 void net_replicate_objects(NetReplicationSystem *net, f32 delta_time,
                            void *(*get_packet_buffer)(u32 size),
                            void (*send_packet)(u32 client_id, void *data,
                                                u32 size)) {
-  bool *changed = NULL;
-  bool any_sent = false;
   enum { kPacketCap = 8192 };
 
   if (!net || net->authority != NET_AUTHORITY_SERVER)
@@ -219,33 +237,33 @@ void net_replicate_objects(NetReplicationSystem *net, f32 delta_time,
     net->second_accumulator = 0.0f;
   }
 
-  if (net->object_count > 0) {
-    changed = (bool *)calloc(
-        (size_t)net->object_count * NET_MAX_PROPERTIES_PER_OBJECT, sizeof(bool));
-    if (!changed)
-      return;
-  }
-
+  // Phase 1: which properties differ from the shared baseline this tick.
   for (u32 i = 0; i < net->object_count; i++) {
     ReplicatedObject *obj = &net->objects[i];
+    obj->send_mask = 0;
+    obj->missed_mask = 0;
     if (!obj->object_ptr)
       continue;
     for (u32 j = 0; j < obj->property_count; j++) {
       NetProperty *prop = &obj->properties[j];
       u32 size = net_property_storage_size(prop);
-      void *current = (u8 *)obj->object_ptr + prop->offset;
+      const u8 *current = (const u8 *)obj->object_ptr + prop->offset;
       bool send = true;
       if (size == 0)
         continue;
       /* Dirty forces the first send, including values that match the zero baseline. */
       if (net->enable_delta_compression && !prop->dirty && prop->last_value)
         send = memcmp(current, prop->last_value, size) != 0;
-      changed[(size_t)i * NET_MAX_PROPERTIES_PER_OBJECT + j] = send;
+      if (send)
+        obj->send_mask |= (u64)1 << j;
     }
   }
 
+  // Phase 2: one packet per remote client, carrying the changed properties of
+  // every object that client can see.
   for (u32 client = 0; client < NET_MAX_CLIENTS; client++) {
     u32 packet_size = 0;
+    bool complete = true;
     void *packet;
     u8 *write_ptr;
 
@@ -253,8 +271,10 @@ void net_replicate_objects(NetReplicationSystem *net, f32 delta_time,
       continue;
 
     packet = get_packet_buffer(kPacketCap);
-    if (!packet)
+    if (!packet) {
+      net_mark_client_missed(net, client);
       continue;
+    }
     write_ptr = (u8 *)packet;
 
     for (u32 i = 0; i < net->object_count; i++) {
@@ -263,26 +283,30 @@ void net_replicate_objects(NetReplicationSystem *net, f32 delta_time,
       u8 *cursor;
       u32 payload = 0;
 
-      if (!obj->is_relevant[client] || !obj->object_ptr)
+      if (!obj->is_relevant[client] || !obj->object_ptr || !obj->send_mask)
         continue;
-      if (packet_size + sizeof(u32) > kPacketCap)
+      if (packet_size + sizeof(u32) > kPacketCap) {
+        complete = false;
         break;
+      }
 
       header = write_ptr;
       cursor = write_ptr + sizeof(u32);
       for (u32 j = 0; j < obj->property_count; j++) {
         const NetProperty *prop = &obj->properties[j];
         const u8 *field = (const u8 *)obj->object_ptr + prop->offset;
-        u32 size;
-        if (!changed[(size_t)i * NET_MAX_PROPERTIES_PER_OBJECT + j])
+        u32 value_size;
+        if (!(obj->send_mask & ((u64)1 << j)))
           continue;
-        size = net_property_payload_size(prop, field);
-        if (packet_size + sizeof(u32) + payload + 1u + size > kPacketCap)
+        value_size = net_property_payload_size(prop, field);
+        if (packet_size + sizeof(u32) + payload + 1u + value_size > kPacketCap) {
+          complete = false;
           break;
+        }
         *cursor++ = (u8)j;
         net_write_payload(cursor, prop, field);
-        cursor += size;
-        payload += 1u + size;
+        cursor += value_size;
+        payload += 1u + value_size;
       }
       if (payload == 0)
         continue;
@@ -295,28 +319,28 @@ void net_replicate_objects(NetReplicationSystem *net, f32 delta_time,
                                net->bytes_per_second_limit) {
       send_packet(client, packet, packet_size);
       net->bytes_sent_this_second += packet_size;
-      any_sent = true;
+    } else if (packet_size > 0) {
+      complete = false;
     }
+    if (!complete)
+      net_mark_client_missed(net, client);
   }
 
-  /* One baseline per tick. Updating it inside the client loop hid the delta from everyone else. */
-  if (any_sent) {
-    for (u32 i = 0; i < net->object_count; i++) {
-      ReplicatedObject *obj = &net->objects[i];
-      if (!obj->object_ptr)
+  // Phase 3: advance the shared baseline only for properties that every
+  // relevant client was sent this tick. Anything else stays pending.
+  for (u32 i = 0; i < net->object_count; i++) {
+    ReplicatedObject *obj = &net->objects[i];
+    if (!obj->object_ptr)
+      continue;
+    for (u32 j = 0; j < obj->property_count; j++) {
+      NetProperty *prop = &obj->properties[j];
+      u64 bit = (u64)1 << j;
+      u32 size = net_property_storage_size(prop);
+      if (!(obj->send_mask & bit) || (obj->missed_mask & bit))
         continue;
-      for (u32 j = 0; j < obj->property_count; j++) {
-        NetProperty *prop = &obj->properties[j];
-        u32 size;
-        if (!changed[(size_t)i * NET_MAX_PROPERTIES_PER_OBJECT + j])
-          continue;
-        size = net_property_storage_size(prop);
-        if (prop->last_value && size > 0)
-          memcpy(prop->last_value, (u8 *)obj->object_ptr + prop->offset, size);
-        prop->dirty = false;
-      }
+      if (prop->last_value && size > 0)
+        memcpy(prop->last_value, (u8 *)obj->object_ptr + prop->offset, size);
+      prop->dirty = false;
     }
   }
-
-  free(changed);
 }
