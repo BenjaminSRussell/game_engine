@@ -349,6 +349,30 @@ void dialog_set_corner_radius(UIDialog* dialog, float radius);
 void dialog_set_shadow(UIDialog* dialog, float offset, Vec4 color);
 
 /* ============================================================================
+ * API - Draw Backend
+ * ============================================================================ */
+
+/**
+ * Backend the dialog shell draws through. Both callbacks are required.
+ * Rects use the widget's coordinate space (see widget_get_bounds()).
+ * Text is anchored at its left edge and vertically centred on position.y.
+ */
+typedef struct DialogDrawBackend {
+    void (*fill_rect)(void* user_data, Rect rect, float corner_radius, Vec4 color);
+    void (*draw_text)(void* user_data, const char* text, Vec2 position, Vec4 color);
+    void* user_data;
+} DialogDrawBackend;
+
+/**
+ * Register the backend that dialog shells draw through. The struct is copied.
+ * Passing NULL, or a backend missing either callback, unregisters it; dialogs
+ * then draw nothing.
+ *
+ * @param backend  Backend to register, or NULL
+ */
+void dialog_set_draw_backend(const DialogDrawBackend* backend);
+
+/* ============================================================================
  * API - Helper Functions (Convenience)
  * ============================================================================ */
 

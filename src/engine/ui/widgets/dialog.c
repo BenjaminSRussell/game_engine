@@ -19,21 +19,43 @@
  * INTERNAL HELPERS
  * ============================================================================ */
 
+/* Backend the dialog shell draws through. Zeroed means none is registered. */
+static DialogDrawBackend g_dialog_draw_backend;
+static const float kDialogTitleInset = 8.0f;
+
 static void dialog_render_impl(Widget* widget) {
     if (!widget || !widget_is_visible(widget)) return;
     UIDialog* dialog = (UIDialog*)widget;
 
-    // In a real implementation, we would issue draw commands here:
-    // 1. Draw Shadow
-    // 2. Draw Background (using dialog->content_bg_color, corner_radius)
-    // 3. Draw Title Bar (using dialog->title_bg_color)
-    // 4. Draw Title Text
+    const DialogDrawBackend* backend = &g_dialog_draw_backend;
+    if (!backend->fill_rect) return;  // No backend registered: nothing to draw
 
-    // For now we assume child widgets (title_bar, content, buttons) render themselves
-    // via the widget hierarchy traversal.
+    // Child widgets (content, buttons, message label) still render themselves via the
+    // widget hierarchy traversal. This draws only the dialog shell.
+    Rect body = widget_get_bounds(widget);
 
-    // Just logging for debug
-    // LOG_DEBUG_CAT(LOG_CAT_GENERAL, "Dialog render: %s (fade=%.2f)", dialog->title ? dialog->title : "Dialog", dialog->fade_progress);
+    // 1. Shadow, offset from the body
+    if (dialog->shadow_offset != 0.0f) {
+        Rect shadow = body;
+        shadow.x += dialog->shadow_offset;
+        shadow.y += dialog->shadow_offset;
+        backend->fill_rect(backend->user_data, shadow, dialog->corner_radius, dialog->shadow_color);
+    }
+
+    // 2. Background
+    backend->fill_rect(backend->user_data, body, dialog->corner_radius, dialog->content_bg_color);
+
+    // 3. Title bar along the top edge, as tall as the title bar widget
+    float title_height = dialog->title_bar ? widget_get_size(dialog->title_bar).y : 0.0f;
+    if (title_height <= 0.0f) return;
+    Rect title_rect = {body.x, body.y, body.width, title_height};
+    backend->fill_rect(backend->user_data, title_rect, 0.0f, dialog->title_bg_color);
+
+    // 4. Title text, anchored at the left edge and vertically centred in the bar
+    if (dialog->title && dialog->title[0] != '\0') {
+        Vec2 anchor = (Vec2){title_rect.x + kDialogTitleInset, title_rect.y + title_height * 0.5f};
+        backend->draw_text(backend->user_data, dialog->title, anchor, widget->text_color);
+    }
 }
 
 static void dialog_layout_impl(Widget* widget, float available_width, float available_height) {
@@ -557,6 +579,14 @@ void dialog_set_shadow(UIDialog* dialog, float offset, Vec4 color) {
     dialog->shadow_offset = offset;
     dialog->shadow_color = color;
     widget_invalidate_redraw(&dialog->base);
+}
+
+void dialog_set_draw_backend(const DialogDrawBackend* backend) {
+    if (backend && backend->fill_rect && backend->draw_text) {
+        g_dialog_draw_backend = *backend;
+    } else {
+        memset(&g_dialog_draw_backend, 0, sizeof(g_dialog_draw_backend));
+    }
 }
 
 /* ============================================================================
