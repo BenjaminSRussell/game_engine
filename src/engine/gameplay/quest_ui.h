@@ -1,7 +1,7 @@
 #ifndef QUEST_UI_H
 #define QUEST_UI_H
 
-#include "../assets/assets/code/todo_quests.c"
+#include "../include/gameplay/quest_system.h"
 #include "engine/include/ui/ui_manager.h"
 #include "engine/include/ui/ui_system.h"
 #include <common.h>
