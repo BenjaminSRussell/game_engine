@@ -51,18 +51,75 @@ static f32 calculate_triangle_area(const Vec3 *v1, const Vec3 *v2,
 }
 
 static f32 calculate_edge_error(const vertex_info_t *v1,
-                                const vertex_info_t *v2) {
-  // Simple distance-based error metric
+                                const vertex_info_t *v2,
+                                const lod_generation_config_t *config) {
+  f32 position_weight = 1.0f;
+  f32 normal_weight = 0.1f;
+  f32 uv_weight = 0.05f;
   f32 distance = vec3_distance(v1->position, v2->position);
-
-  // Add normal difference penalty
   f32 normal_diff =
       acosf(fmaxf(-1.0f, fminf(1.0f, vec3_dot(v1->normal, v2->normal))));
-
-  // Add UV difference penalty
   f32 uv_diff = vec2_distance(v1->texcoord, v2->texcoord);
 
-  return distance + normal_diff * 0.1f + uv_diff * 0.05f;
+  if (config) {
+    position_weight = config->quality_weights[0];
+    normal_weight = config->quality_weights[1];
+    uv_weight = config->quality_weights[2];
+  }
+
+  return distance * position_weight + normal_diff * normal_weight +
+         uv_diff * uv_weight;
+}
+
+static bool push_adjacent(vertex_info_t *vertex, u32 adjacent_idx) {
+  u32 k;
+  u32 new_cap;
+  u32 *grown;
+
+  for (k = 0; k < vertex->adjacent_count; k++) {
+    if (vertex->adjacent_vertices[k] == adjacent_idx) {
+      return true;
+    }
+  }
+
+  if (vertex->adjacent_count >= vertex->adjacent_capacity) {
+    new_cap = vertex->adjacent_capacity < 8 ? 8 : vertex->adjacent_capacity * 2;
+    grown = realloc(vertex->adjacent_vertices, new_cap * sizeof(u32));
+    if (!grown) {
+      return false;
+    }
+    vertex->adjacent_vertices = grown;
+    vertex->adjacent_capacity = new_cap;
+  }
+
+  vertex->adjacent_vertices[vertex->adjacent_count++] = adjacent_idx;
+  return true;
+}
+
+static u32 resolve_collapse(u32 *parent, u32 index) {
+  u32 root = index;
+
+  while (parent[root] != root) {
+    root = parent[root];
+  }
+
+  while (parent[index] != root) {
+    u32 next = parent[index];
+    parent[index] = root;
+    index = next;
+  }
+
+  return root;
+}
+
+static bool is_sharp_feature(const vertex_info_t *v1, const vertex_info_t *v2,
+                             f32 feature_angle_deg) {
+  f32 dot = vec3_dot(v1->normal, v2->normal);
+  f32 angle_deg;
+
+  dot = fmaxf(-1.0f, fminf(1.0f, dot));
+  angle_deg = acosf(dot) * RAD_TO_DEG;
+  return angle_deg > feature_angle_deg;
 }
 
 static bool is_boundary_edge(const vertex_info_t *vertices, u32 vertex_count,
@@ -100,7 +157,12 @@ static bool is_boundary_edge(const vertex_info_t *vertices, u32 vertex_count,
 // ============================================================================
 
 static vertex_info_t *create_vertex_info(const mesh_t *mesh) {
-  vertex_info_t *vertices = calloc(mesh->vertex_count, sizeof(vertex_info_t));
+  vertex_info_t *vertices;
+
+  if (!mesh || !mesh->vertices || mesh->vertex_count == 0)
+    return NULL;
+
+  vertices = calloc(mesh->vertex_count, sizeof(vertex_info_t));
   if (!vertices)
     return NULL;
 
@@ -110,69 +172,37 @@ static vertex_info_t *create_vertex_info(const mesh_t *mesh) {
     vertices[i].texcoord = mesh->vertices[i].texcoord;
     vertices[i].collapse_count = 0;
     vertices[i].deleted = false;
-    vertices[i].adjacent_capacity = 8;
-    vertices[i].adjacent_vertices =
-        malloc(vertices[i].adjacent_capacity * sizeof(u32));
+    vertices[i].adjacent_vertices = NULL;
     vertices[i].adjacent_count = 0;
+    vertices[i].adjacent_capacity = 0;
   }
 
+  if (!mesh->indices)
+    return vertices;
+
   // Build adjacency information
-  for (u32 i = 0; i < mesh->index_count; i += 3) {
+  for (u32 i = 0; i + 2 < mesh->index_count; i += 3) {
     u32 i0 = mesh->indices[i];
     u32 i1 = mesh->indices[i + 1];
     u32 i2 = mesh->indices[i + 2];
+    u32 triangle_vertices[3];
 
-    // Add adjacency for each vertex in the triangle
-    u32 triangle_vertices[3] = {i0, i1, i2};
+    if (i0 >= mesh->vertex_count || i1 >= mesh->vertex_count ||
+        i2 >= mesh->vertex_count) {
+      continue;
+    }
+
+    triangle_vertices[0] = i0;
+    triangle_vertices[1] = i1;
+    triangle_vertices[2] = i2;
 
     for (u32 j = 0; j < 3; j++) {
       u32 vertex_idx = triangle_vertices[j];
       u32 next_idx = triangle_vertices[(j + 1) % 3];
       u32 prev_idx = triangle_vertices[(j + 2) % 3];
 
-      // Add next vertex as adjacent
-      bool already_adjacent = false;
-      for (u32 k = 0; k < vertices[vertex_idx].adjacent_count; k++) {
-        if (vertices[vertex_idx].adjacent_vertices[k] == next_idx) {
-          already_adjacent = true;
-          break;
-        }
-      }
-
-      if (!already_adjacent) {
-        if (vertices[vertex_idx].adjacent_count >=
-            vertices[vertex_idx].adjacent_capacity) {
-          vertices[vertex_idx].adjacent_capacity *= 2;
-          vertices[vertex_idx].adjacent_vertices =
-              realloc(vertices[vertex_idx].adjacent_vertices,
-                      vertices[vertex_idx].adjacent_capacity * sizeof(u32));
-        }
-        vertices[vertex_idx]
-            .adjacent_vertices[vertices[vertex_idx].adjacent_count++] =
-            next_idx;
-      }
-
-      // Add previous vertex as adjacent
-      already_adjacent = false;
-      for (u32 k = 0; k < vertices[vertex_idx].adjacent_count; k++) {
-        if (vertices[vertex_idx].adjacent_vertices[k] == prev_idx) {
-          already_adjacent = true;
-          break;
-        }
-      }
-
-      if (!already_adjacent) {
-        if (vertices[vertex_idx].adjacent_count >=
-            vertices[vertex_idx].adjacent_capacity) {
-          vertices[vertex_idx].adjacent_capacity *= 2;
-          vertices[vertex_idx].adjacent_vertices =
-              realloc(vertices[vertex_idx].adjacent_vertices,
-                      vertices[vertex_idx].adjacent_capacity * sizeof(u32));
-        }
-        vertices[vertex_idx]
-            .adjacent_vertices[vertices[vertex_idx].adjacent_count++] =
-            prev_idx;
-      }
+      push_adjacent(&vertices[vertex_idx], next_idx);
+      push_adjacent(&vertices[vertex_idx], prev_idx);
     }
   }
 
@@ -190,9 +220,10 @@ static void destroy_vertex_info(vertex_info_t *vertices, u32 count) {
   free(vertices);
 }
 
-static edge_collapse_t *create_edge_collapse_list(const vertex_info_t *vertices,
-                                                  u32 vertex_count,
-                                                  u32 *collapse_count) {
+static edge_collapse_t *
+create_edge_collapse_list(const vertex_info_t *vertices, u32 vertex_count,
+                          const lod_generation_config_t *config,
+                          u32 *collapse_count) {
   u32 max_collapses = vertex_count * 8; // Estimate
   edge_collapse_t *collapses = malloc(max_collapses * sizeof(edge_collapse_t));
   if (!collapses)
@@ -207,7 +238,8 @@ static edge_collapse_t *create_edge_collapse_list(const vertex_info_t *vertices,
     for (u32 j = 0; j < vertices[i].adjacent_count; j++) {
       u32 adjacent_idx = vertices[i].adjacent_vertices[j];
 
-      if (adjacent_idx <= i || vertices[adjacent_idx].deleted)
+      if (adjacent_idx >= vertex_count || adjacent_idx <= i ||
+          vertices[adjacent_idx].deleted)
         continue;
 
       if (*collapse_count >= max_collapses) {
@@ -225,8 +257,8 @@ static edge_collapse_t *create_edge_collapse_list(const vertex_info_t *vertices,
       edge_collapse_t *collapse = &collapses[*collapse_count];
       collapse->vertex1 = i;
       collapse->vertex2 = adjacent_idx;
-      collapse->error =
-          calculate_edge_error(&vertices[i], &vertices[adjacent_idx]);
+      collapse->error = calculate_edge_error(
+          &vertices[i], &vertices[adjacent_idx], config);
 
       // Target position is the midpoint
       collapse->target_position = vec3_lerp(
@@ -253,7 +285,10 @@ static int compare_edge_collapse(const void *a, const void *b) {
 
 static mesh_t *simplify_mesh_qem(const mesh_t *source, f32 target_ratio,
                                  const lod_generation_config_t *config) {
-  if (!source || target_ratio >= 1.0f || target_ratio <= 0.0f)
+  if (!source || !source->vertices || source->vertex_count == 0 ||
+      target_ratio >= 1.0f || target_ratio <= 0.0f)
+    return NULL;
+  if (source->index_count > 0 && !source->indices)
     return NULL;
 
   u32 target_triangles = (u32)(source->index_count / 3 * target_ratio);
@@ -278,10 +313,20 @@ static mesh_t *simplify_mesh_qem(const mesh_t *source, f32 target_ratio,
 
   u32 collapse_count;
   edge_collapse_t *collapses = create_edge_collapse_list(
-      vertices, source->vertex_count, &collapse_count);
+      vertices, source->vertex_count, config, &collapse_count);
   if (!collapses) {
     destroy_vertex_info(vertices, source->vertex_count);
     return NULL;
+  }
+
+  u32 *collapse_parent = malloc(source->vertex_count * sizeof(u32));
+  if (!collapse_parent) {
+    free(collapses);
+    destroy_vertex_info(vertices, source->vertex_count);
+    return NULL;
+  }
+  for (u32 i = 0; i < source->vertex_count; i++) {
+    collapse_parent[i] = i;
   }
 
   // Sort edge collapses by error
@@ -296,7 +341,9 @@ static mesh_t *simplify_mesh_qem(const mesh_t *source, f32 target_ratio,
        i++) {
     edge_collapse_t *collapse = &collapses[i];
 
-    if (!collapse->valid || vertices[collapse->vertex1].deleted ||
+    if (!collapse->valid || collapse->vertex1 >= source->vertex_count ||
+        collapse->vertex2 >= source->vertex_count ||
+        vertices[collapse->vertex1].deleted ||
         vertices[collapse->vertex2].deleted) {
       continue;
     }
@@ -309,43 +356,53 @@ static mesh_t *simplify_mesh_qem(const mesh_t *source, f32 target_ratio,
       }
     }
 
-    // Perform the collapse
     vertex_info_t *v1 = &vertices[collapse->vertex1];
     vertex_info_t *v2 = &vertices[collapse->vertex2];
 
-    // Move v1 to target position
+    if (config && config->preserve_features &&
+        is_sharp_feature(v1, v2, config->feature_angle)) {
+      continue;
+    }
+
+    // A UV seam is two nearly coincident corners with different texcoords.
+    if (config && config->preserve_seams) {
+      f32 weld = config->weld_distance < 0.0f ? 0.0f : config->weld_distance;
+      f32 dist = vec3_distance(v1->position, v2->position);
+      f32 uv_gap = vec2_distance(v1->texcoord, v2->texcoord);
+      if (dist <= weld && uv_gap > 1e-3f) {
+        continue;
+      }
+    }
+
+    // Perform the collapse. v2 folds onto v1; later index rebuild follows
+    // collapse_parent so triangles incident to v2 are kept, not discarded.
     v1->position = collapse->target_position;
 
-    // Update v1's normal (average)
-    v1->normal = vec3_normalize(vec3_add(v1->normal, v2->normal));
+    {
+      f32 smooth = config ? config->normal_smoothing : 1.0f;
+      Vec3 blended;
+      if (smooth < 0.0f)
+        smooth = 0.0f;
+      if (smooth > 1.0f)
+        smooth = 1.0f;
+      blended = vec3_add(v1->normal, vec3_mul(v2->normal, smooth));
+      if (vec3_length(blended) > 1e-6f) {
+        v1->normal = vec3_normalize(blended);
+      }
+    }
 
-    // Mark v2 as deleted
+    collapse_parent[collapse->vertex2] = collapse->vertex1;
     v2->deleted = true;
 
     // Update adjacency for v1
     for (u32 j = 0; j < v2->adjacent_count; j++) {
       u32 adjacent_idx = v2->adjacent_vertices[j];
 
-      if (adjacent_idx == collapse->vertex1)
+      if (adjacent_idx == collapse->vertex1 ||
+          adjacent_idx >= source->vertex_count)
         continue;
 
-      // Add adjacency to v1 if not already present
-      bool already_adjacent = false;
-      for (u32 k = 0; k < v1->adjacent_count; k++) {
-        if (v1->adjacent_vertices[k] == adjacent_idx) {
-          already_adjacent = true;
-          break;
-        }
-      }
-
-      if (!already_adjacent) {
-        if (v1->adjacent_count >= v1->adjacent_capacity) {
-          v1->adjacent_capacity *= 2;
-          v1->adjacent_vertices = realloc(v1->adjacent_vertices,
-                                          v1->adjacent_capacity * sizeof(u32));
-        }
-        v1->adjacent_vertices[v1->adjacent_count++] = adjacent_idx;
-      }
+      push_adjacent(v1, adjacent_idx);
 
       // Update adjacency of the other vertex to point to v1 instead of v2
       vertex_info_t *adjacent_vertex = &vertices[adjacent_idx];
@@ -371,15 +428,31 @@ static mesh_t *simplify_mesh_qem(const mesh_t *source, f32 target_ratio,
   // Create simplified mesh
   mesh_t *simplified = mesh_create("simplified_mesh");
   if (!simplified) {
+    free(collapse_parent);
     destroy_vertex_info(vertices, source->vertex_count);
     free(collapses);
     return NULL;
   }
 
   mesh_allocate_buffers(simplified, new_vertex_count, source->index_count);
+  if ((new_vertex_count > 0 && !simplified->vertices) ||
+      (source->index_count > 0 && !simplified->indices)) {
+    mesh_destroy(simplified);
+    free(collapse_parent);
+    destroy_vertex_info(vertices, source->vertex_count);
+    free(collapses);
+    return NULL;
+  }
 
   // Create vertex remapping
   u32 *vertex_remap = malloc(source->vertex_count * sizeof(u32));
+  if (!vertex_remap) {
+    mesh_destroy(simplified);
+    free(collapse_parent);
+    destroy_vertex_info(vertices, source->vertex_count);
+    free(collapses);
+    return NULL;
+  }
   u32 vertex_index = 0;
 
   for (u32 i = 0; i < source->vertex_count; i++) {
@@ -398,22 +471,38 @@ static mesh_t *simplify_mesh_qem(const mesh_t *source, f32 target_ratio,
     }
   }
 
-  // Rebuild index buffer
+  // Rebuild index buffer. Deleted vertices resolve through collapse_parent
+  // onto the survivor, then into the compacted vertex buffer.
   u32 new_index_count = 0;
-  for (u32 i = 0; i < source->index_count; i += 3) {
-    u32 i0 = vertex_remap[source->indices[i]];
-    u32 i1 = vertex_remap[source->indices[i + 1]];
-    u32 i2 = vertex_remap[source->indices[i + 2]];
+  for (u32 i = 0; i + 2 < source->index_count; i += 3) {
+    u32 s0 = source->indices[i];
+    u32 s1 = source->indices[i + 1];
+    u32 s2 = source->indices[i + 2];
+    u32 r0, r1, r2, i0, i1, i2;
+    f32 area;
 
-    // Skip triangles with deleted vertices
+    if (s0 >= source->vertex_count || s1 >= source->vertex_count ||
+        s2 >= source->vertex_count) {
+      continue;
+    }
+
+    r0 = resolve_collapse(collapse_parent, s0);
+    r1 = resolve_collapse(collapse_parent, s1);
+    r2 = resolve_collapse(collapse_parent, s2);
+    if (r0 == r1 || r1 == r2 || r2 == r0) {
+      continue;
+    }
+
+    i0 = vertex_remap[r0];
+    i1 = vertex_remap[r1];
+    i2 = vertex_remap[r2];
     if (i0 == UINT32_MAX || i1 == UINT32_MAX || i2 == UINT32_MAX) {
       continue;
     }
 
-    // Check for degenerate triangles
-    f32 area = calculate_triangle_area(&simplified->vertices[i0].position,
-                                       &simplified->vertices[i1].position,
-                                       &simplified->vertices[i2].position);
+    area = calculate_triangle_area(&simplified->vertices[i0].position,
+                                   &simplified->vertices[i1].position,
+                                   &simplified->vertices[i2].position);
 
     if (area < LOD_MIN_TRIANGLE_AREA) {
       continue;
@@ -428,24 +517,56 @@ static mesh_t *simplify_mesh_qem(const mesh_t *source, f32 target_ratio,
   simplified->vertex_count = new_vertex_count;
   simplified->index_count = new_index_count;
 
-  // Copy submesh information (simplified - just copy for now)
-  simplified->submesh_count = source->submesh_count;
-  if (source->submesh_count > 0) {
-    simplified->submeshes = malloc(source->submesh_count * sizeof(submesh_t));
-    memcpy(simplified->submeshes, source->submeshes,
-           source->submesh_count * sizeof(submesh_t));
+  simplified->submesh_count = 0;
+  simplified->submeshes = NULL;
+  if (source->submesh_count > 0 && source->submeshes) {
+    submesh_t *copied =
+        malloc(source->submesh_count * sizeof(submesh_t));
+    if (copied) {
+      memcpy(copied, source->submeshes,
+             source->submesh_count * sizeof(submesh_t));
+      if (source->submesh_count == 1) {
+        copied[0].index_start = 0;
+        copied[0].index_count = new_index_count;
+        copied[0].vertex_start = 0;
+        copied[0].vertex_count = new_vertex_count;
+      } else {
+        for (u32 s = 0; s < source->submesh_count; s++) {
+          if (copied[s].index_start >= new_index_count) {
+            copied[s].index_start = 0;
+            copied[s].index_count = 0;
+          } else if (copied[s].index_start + copied[s].index_count >
+                     new_index_count) {
+            copied[s].index_count = new_index_count - copied[s].index_start;
+          }
+          if (copied[s].vertex_count > new_vertex_count) {
+            copied[s].vertex_count = new_vertex_count;
+          }
+        }
+      }
+      simplified->submeshes = copied;
+      simplified->submesh_count = source->submesh_count;
+    }
   }
 
-  // Copy material information
-  simplified->material_count = source->material_count;
-  memcpy(simplified->material_ids, source->material_ids,
-         source->material_count * sizeof(u32));
+  {
+    u32 mat_count = source->material_count;
+    if (mat_count > MESH_MAX_MATERIALS) {
+      mat_count = MESH_MAX_MATERIALS;
+    }
+    simplified->material_count = mat_count;
+    if (mat_count > 0) {
+      memcpy(simplified->material_ids, source->material_ids,
+             mat_count * sizeof(u32));
+    }
+  }
 
   // Recalculate bounds
   mesh_calculate_bounds(simplified);
 
   // Cleanup
   free(vertex_remap);
+  free(collapse_parent);
   destroy_vertex_info(vertices, source->vertex_count);
   free(collapses);
 
@@ -523,7 +644,10 @@ lod_generate_chain_advanced(const mesh_t *source,
     chain->lods[chain->lod_count] = lod_mesh;
 
     // Calculate geometric error (simplified - based on vertex reduction)
-    f32 reduction_ratio = (f32)lod_mesh->vertex_count / source->vertex_count;
+    f32 reduction_ratio = 1.0f;
+    if (source->vertex_count > 0) {
+      reduction_ratio = (f32)lod_mesh->vertex_count / (f32)source->vertex_count;
+    }
     chain->geometric_errors[chain->lod_count] = 1.0f - reduction_ratio;
 
     // Set switch distance (screen size threshold)
@@ -545,12 +669,14 @@ lod_chain_t *lod_generate_chain(const mesh_t *source, const f32 *ratios,
     return NULL;
 
   lod_generation_config_t config = lod_get_default_config();
+  u32 max_ratios = (u32)(sizeof(config.reduction_ratios) /
+                         sizeof(config.reduction_ratios[0]));
+  u32 copy_count = count < max_ratios ? count : max_ratios;
 
-  // Copy provided ratios
-  u32 copy_count = fminf(count, sizeof(config.reduction_ratios) /
-                                    sizeof(config.reduction_ratios[0]));
-  for (u32 i = 0; i < copy_count; i++) {
-    config.reduction_ratios[i] = ratios[i];
+  // Only the caller's ratios are generated. Leftover defaults would append
+  // extra LOD levels the caller did not ask for.
+  for (u32 i = 0; i < max_ratios; i++) {
+    config.reduction_ratios[i] = (i < copy_count) ? ratios[i] : 0.0f;
   }
 
   return lod_generate_chain_advanced(source, &config);
@@ -580,10 +706,14 @@ mesh_t *qem_simplify_advanced(const mesh_t *source, f32 target_ratio,
                               f32 *out_error) {
   mesh_t *result = simplify_mesh_qem(source, target_ratio, config);
 
-  if (out_error && result) {
-    // Calculate error as vertex reduction ratio
-    f32 reduction_ratio = (f32)result->vertex_count / source->vertex_count;
-    *out_error = 1.0f - reduction_ratio;
+  if (out_error) {
+    if (result && source && source->vertex_count > 0) {
+      f32 reduction_ratio =
+          (f32)result->vertex_count / (f32)source->vertex_count;
+      *out_error = 1.0f - reduction_ratio;
+    } else {
+      *out_error = 0.0f;
+    }
   }
 
   return result;
