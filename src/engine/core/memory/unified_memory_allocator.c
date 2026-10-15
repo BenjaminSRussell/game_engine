@@ -813,6 +813,24 @@ MemoryStats unified_memory_get_stats(void) {
   return stats;
 }
 
+// Declared in the header and used by the legacy shim's memory_allocator_set_limit;
+// nothing defined them, so any link that pulled that shim failed.
+MemoryPolicy unified_memory_get_policy(void) {
+  pthread_mutex_lock(&g_allocator.global_mutex);
+  MemoryPolicy policy = g_allocator.policy;
+  pthread_mutex_unlock(&g_allocator.global_mutex);
+  return policy;
+}
+
+void unified_memory_set_policy(const MemoryPolicy *policy) {
+  if (!policy)
+    return;
+
+  pthread_mutex_lock(&g_allocator.global_mutex);
+  g_allocator.policy = *policy;
+  pthread_mutex_unlock(&g_allocator.global_mutex);
+}
+
 void unified_memory_print_stats(void) {
   MemoryStats stats = unified_memory_get_stats();
 
