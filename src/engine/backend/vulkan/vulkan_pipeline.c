@@ -28,17 +28,36 @@ typedef void *VkShaderModule;
 #define VK_NULL_HANDLE NULL
 #endif
 
-// Read shader file
+// Little-endian SPIR-V magic 0x07230203. GLSL text never matches.
+static bool shader_bytes_are_spirv(const void *code, u32 size) {
+  const u8 *bytes = (const u8 *)code;
+  if (!bytes || size < 20 || (size % 4) != 0) {
+    return false;
+  }
+  return bytes[0] == 0x03 && bytes[1] == 0x02 && bytes[2] == 0x23 &&
+         bytes[3] == 0x07;
+}
+
+// Read a shader file. Returns NULL unless the bytes are SPIR-V.
+// A .glsl fallback is not bytecode and must not be returned.
 static u32 *read_shader_file(VFS *vfs, const char *path, u32 *size) {
-  // Try compiled shader first
   char compiled_path[512];
+  char *ext;
+  VFSFile *file;
+  u32 *code;
+
+  if (!vfs || !path || !size) {
+    return NULL;
+  }
+
+  // Try compiled shader first
   snprintf(compiled_path, sizeof(compiled_path), "%s", path);
-  char *ext = strrchr(compiled_path, '.');
+  ext = strrchr(compiled_path, '.');
   if (ext) {
     strcpy(ext, ".spv");
   }
 
-  VFSFile *file = vfs_open(vfs, compiled_path, VFS_MODE_READ_BINARY);
+  file = vfs_open(vfs, compiled_path, VFS_MODE_READ_BINARY);
   if (!file) {
     // Try original path
     file = vfs_open(vfs, path, VFS_MODE_READ_BINARY);
@@ -49,22 +68,84 @@ static u32 *read_shader_file(VFS *vfs, const char *path, u32 *size) {
   }
 
   *size = (u32)vfs_size(file);
-  u32 *code = (u32 *)malloc(*size);
+  if (*size < 20 || (*size % 4) != 0) {
+    LOG_ERROR("Refusing to treat '%s' as SPIR-V; raw GLSL is not bytecode",
+              path);
+    vfs_close(file);
+    *size = 0;
+    return NULL;
+  }
+
+  code = (u32 *)malloc(*size);
+  if (!code) {
+    vfs_close(file);
+    *size = 0;
+    return NULL;
+  }
   if (vfs_read(file, code, *size) != *size) {
     free(code);
     vfs_close(file);
+    *size = 0;
     return NULL;
   }
   vfs_close(file);
 
+  if (!shader_bytes_are_spirv(code, *size)) {
+    LOG_ERROR("Refusing to treat '%s' as SPIR-V; raw GLSL is not bytecode",
+              path);
+    free(code);
+    *size = 0;
+    return NULL;
+  }
+
   return code;
 }
 
-// Create shader module
+u32 *vulkan_read_shader_file(VFS *vfs, const char *path, u32 *size) {
+  return read_shader_file(vfs, path, size);
+}
+
+// Compiled block shaders only. Missing SPIR-V fails; GLSL is not a substitute.
+bool vulkan_load_block_pipeline_shaders(VFS *vfs, u32 **vert_code, u32 *vert_size,
+                                        u32 **frag_code, u32 *frag_size) {
+  if (!vfs || !vert_code || !vert_size || !frag_code || !frag_size) {
+    return false;
+  }
+
+  *vert_code = NULL;
+  *frag_code = NULL;
+  *vert_size = 0;
+  *frag_size = 0;
+
+  *vert_code = read_shader_file(vfs, "assets/shaders/compiled/block_vertex.spv",
+                                vert_size);
+  *frag_code = read_shader_file(
+      vfs, "assets/shaders/compiled/block_fragment.spv", frag_size);
+  if (!*vert_code || !*frag_code) {
+    LOG_ERROR("Refusing raw GLSL shader fallback; compiled SPIR-V is required");
+    free(*vert_code);
+    free(*frag_code);
+    *vert_code = NULL;
+    *frag_code = NULL;
+    *vert_size = 0;
+    *frag_size = 0;
+    return false;
+  }
+
+  return true;
+}
+
+#ifdef VULKAN_BUILD
+// Create shader module. Non-SPIR-V bytes (including raw GLSL) are refused.
 static VkShaderModule vulkan_create_shader_module(VulkanRenderer *renderer,
                                                   const u8 *code,
                                                   size_t code_size) {
-#ifdef VULKAN_BUILD
+  if (code_size > UINT32_MAX ||
+      !shader_bytes_are_spirv(code, (u32)code_size)) {
+    LOG_ERROR("Refusing to pass non-SPIR-V bytes to vkCreateShaderModule");
+    return VK_NULL_HANDLE;
+  }
+
   VkShaderModuleCreateInfo create_info = {0};
   create_info.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
   create_info.codeSize = code_size;
@@ -79,13 +160,8 @@ static VkShaderModule vulkan_create_shader_module(VulkanRenderer *renderer,
   }
 
   return shader_module;
-#else
-  (void)renderer;
-  (void)code;
-  (void)code_size;
-  return VK_NULL_HANDLE;
-#endif
 }
+#endif
 
 // Create render pass
 bool vulkan_create_render_pass(VulkanRenderer *renderer) {
@@ -143,28 +219,13 @@ bool vulkan_create_render_pass(VulkanRenderer *renderer) {
 // Create graphics pipeline
 bool vulkan_create_graphics_pipeline(VulkanRenderer *renderer, VFS *vfs) {
 #ifdef VULKAN_BUILD
-  // Load simplified shaders (compatible with macOS MoltenVK)
-  u32 vert_size, frag_size;
-  u32 *vert_code = read_shader_file(
-      vfs, "assets/shaders/compiled/block_vertex.spv", &vert_size);
-  if (!vert_code) {
-    vert_code = read_shader_file(vfs, "assets/shaders/block_vertex_simple.glsl",
-                                 &vert_size);
-  }
-
-  u32 *frag_code = read_shader_file(
-      vfs, "assets/shaders/compiled/block_fragment.spv", &frag_size);
-  if (!frag_code) {
-    frag_code = read_shader_file(
-        vfs, "assets/shaders/block_fragment_simple.glsl", &frag_size);
-  }
-
-  if (!vert_code || !frag_code) {
-    LOG_ERROR("Failed to load shaders");
-    if (vert_code)
-      free(vert_code);
-    if (frag_code)
-      free(frag_code);
+  // Missing compiled SPIR-V fails. Do not feed raw GLSL to the pipeline.
+  u32 vert_size = 0;
+  u32 frag_size = 0;
+  u32 *vert_code = NULL;
+  u32 *frag_code = NULL;
+  if (!vulkan_load_block_pipeline_shaders(vfs, &vert_code, &vert_size,
+                                          &frag_code, &frag_size)) {
     return false;
   }
 
