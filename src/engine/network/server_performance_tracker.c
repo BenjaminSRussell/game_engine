@@ -164,24 +164,91 @@ static void create_alert(ServerPerformanceTracker *tracker, AlertLevel level,
 }
 
 static void check_threshold(ServerPerformanceTracker *tracker,
-                            const char *metric_name, float current_value,
-                            float warning_threshold, float critical_threshold) {
+                            AlertLevel *previous, const char *metric_name,
+                            float current_value, float warning_threshold,
+                            float critical_threshold) {
   AlertLevel level = ALERT_NONE;
   const char *message = NULL;
+  float threshold_value = 0.0f;
 
   if (current_value >= critical_threshold) {
     level = ALERT_CRITICAL;
     message = "Critical performance threshold exceeded";
+    threshold_value = critical_threshold;
   } else if (current_value >= warning_threshold) {
     level = ALERT_WARNING;
     message = "Performance threshold exceeded";
+    threshold_value = warning_threshold;
   }
 
   if (level != ALERT_NONE) {
+    tracker->current_metrics.performance_warnings++;
     create_alert(tracker, level, message, metric_name, current_value,
-                 level == ALERT_CRITICAL ? critical_threshold
-                                         : warning_threshold);
+                 threshold_value);
+  } else if (previous && *previous != ALERT_NONE && tracker->on_recovery) {
+    tracker->on_recovery(metric_name);
   }
+
+  if (previous) {
+    *previous = level;
+  }
+}
+
+static void append_history(ServerPerformanceTracker *tracker) {
+  if (tracker->history.capacity == 0 || !tracker->history.metrics) {
+    return;
+  }
+
+  u32 index = tracker->history.current_index;
+  tracker->history.metrics[index] = tracker->current_metrics;
+  tracker->history.current_index = (index + 1) % tracker->history.capacity;
+  if (tracker->history.count < tracker->history.capacity) {
+    tracker->history.count++;
+  }
+}
+
+// CPU and memory are already percentages. tick_time_ms/16.67 is a ratio of
+// the 60 Hz budget, so it has to be scaled by 100 before the 0.3 weight.
+static void evaluate_metrics(ServerPerformanceTracker *tracker,
+                             u64 current_time) {
+  const PerformanceThresholds *thresholds = &tracker->thresholds;
+  float tick_percent =
+      (tracker->current_metrics.tick_time_ms / 16.67f) * 100.0f;
+
+  tracker->current_metrics.timestamp_ms = current_time;
+  tracker->current_metrics.performance_warnings = 0;
+  tracker->current_metrics.server_load_percentage =
+      tracker->current_metrics.cpu_usage_percent * 0.4f +
+      tracker->current_metrics.memory_usage_percent * 0.3f +
+      tick_percent * 0.3f;
+  tracker->current_metrics.is_performance_healthy =
+      tracker->current_metrics.cpu_usage_percent <
+          thresholds->cpu_warning_threshold &&
+      tracker->current_metrics.memory_usage_percent <
+          thresholds->memory_warning_threshold &&
+      tracker->current_metrics.tick_time_ms <
+          thresholds->tick_time_warning_threshold &&
+      tracker->current_metrics.network_latency_ms <
+          thresholds->latency_warning_threshold;
+
+  check_threshold(tracker, &tracker->last_cpu_level, "CPU Usage",
+                  tracker->current_metrics.cpu_usage_percent,
+                  thresholds->cpu_warning_threshold,
+                  thresholds->cpu_critical_threshold);
+  check_threshold(tracker, &tracker->last_memory_level, "Memory Usage",
+                  tracker->current_metrics.memory_usage_percent,
+                  thresholds->memory_warning_threshold,
+                  thresholds->memory_critical_threshold);
+  check_threshold(tracker, &tracker->last_latency_level, "Network Latency",
+                  tracker->current_metrics.network_latency_ms,
+                  thresholds->latency_warning_threshold,
+                  thresholds->latency_critical_threshold);
+  check_threshold(tracker, &tracker->last_tick_level, "Tick Time",
+                  tracker->current_metrics.tick_time_ms,
+                  thresholds->tick_time_warning_threshold,
+                  thresholds->tick_time_critical_threshold);
+
+  append_history(tracker);
 }
 
 // MARK: - Server Performance Tracker Management
@@ -277,57 +344,32 @@ void server_perf_tracker_update(ServerPerformanceTracker *tracker) {
     return; // Not time to update yet
   }
 
-  // Collect all metrics
-  server_perf_collect_cpu_metrics(tracker);
-  server_perf_collect_memory_metrics(tracker);
-  server_perf_collect_network_metrics(tracker);
-  server_perf_collect_server_metrics(tracker);
-
-  // Set timestamp
-  tracker->current_metrics.timestamp_ms = current_time;
-
-  // Calculate server load percentage
-  tracker->current_metrics.server_load_percentage =
-      (tracker->current_metrics.cpu_usage_percent * 0.4f +
-       tracker->current_metrics.memory_usage_percent * 0.3f +
-       (tracker->current_metrics.tick_time_ms / 16.67f) *
-           0.3f); // 16.67ms = 60 FPS
-
-  // Check performance health
-  tracker->current_metrics.is_performance_healthy =
-      tracker->current_metrics.cpu_usage_percent < 80.0f &&
-      tracker->current_metrics.memory_usage_percent < 85.0f &&
-      tracker->current_metrics.tick_time_ms < 33.34f && // 30 FPS minimum
-      tracker->current_metrics.network_latency_ms < 100.0f;
-
-  // Add to history
-  if (tracker->history.capacity > 0) {
-    u32 index = tracker->history.current_index;
-    tracker->history.metrics[index] = tracker->current_metrics;
-    tracker->history.current_index = (index + 1) % tracker->history.capacity;
-    if (tracker->history.count < tracker->history.capacity) {
-      tracker->history.count++;
-    }
+  if (tracker->use_submitted_metrics) {
+    tracker->current_metrics = tracker->submitted_metrics;
+  } else {
+    server_perf_collect_cpu_metrics(tracker);
+    server_perf_collect_memory_metrics(tracker);
+    server_perf_collect_network_metrics(tracker);
+    server_perf_collect_server_metrics(tracker);
   }
 
-  // Check thresholds and generate alerts
-  check_threshold(tracker, "CPU Usage",
-                  tracker->current_metrics.cpu_usage_percent,
-                  tracker->thresholds.cpu_warning_threshold,
-                  tracker->thresholds.cpu_critical_threshold);
-  check_threshold(tracker, "Memory Usage",
-                  tracker->current_metrics.memory_usage_percent,
-                  tracker->thresholds.memory_warning_threshold,
-                  tracker->thresholds.memory_critical_threshold);
-  check_threshold(tracker, "Network Latency",
-                  tracker->current_metrics.network_latency_ms,
-                  tracker->thresholds.latency_warning_threshold,
-                  tracker->thresholds.latency_critical_threshold);
-  check_threshold(tracker, "Tick Time", tracker->current_metrics.tick_time_ms,
-                  tracker->thresholds.tick_time_warning_threshold,
-                  tracker->thresholds.tick_time_critical_threshold);
-
+  evaluate_metrics(tracker, current_time);
   tracker->last_update_time_ms = current_time;
+}
+
+void server_perf_submit_metrics(ServerPerformanceTracker *tracker,
+                                const ServerPerformanceMetrics *metrics) {
+  if (!tracker) {
+    return;
+  }
+
+  if (!metrics) {
+    tracker->use_submitted_metrics = false;
+    return;
+  }
+
+  tracker->submitted_metrics = *metrics;
+  tracker->use_submitted_metrics = true;
 }
 
 // MARK: - Metrics Collection
