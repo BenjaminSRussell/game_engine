@@ -57,11 +57,18 @@ static Vec3 hermite_eval(Vec3 p0, Vec3 p1, Vec3 m0, Vec3 m1, f32 t) {
   return res;
 }
 
+// Spline parameter domain is [0, 1]; values outside clamp to the ends.
+static f32 clamp_spline_t(f32 t) {
+  return t < 0.0f ? 0.0f : (t > 1.0f ? 1.0f : t);
+}
+
 Vec3 landscape_spline_eval_position(LandscapeSpline *spline, f32 t) {
   if (!spline || spline->point_count < 2)
     return (Vec3){0, 0, 0};
 
-  // Map t [0, 1] to segment indices
+  // Map t [0, 1] to segment indices. Clamp first: a negative segment_t cast
+  // to u32 is undefined behavior.
+  t = clamp_spline_t(t);
   // Simplification: linear interpolation for stub
   f32 total_segments = (f32)(spline->point_count - 1);
   f32 segment_t = t * total_segments;
@@ -87,8 +94,16 @@ Vec3 landscape_spline_eval_tangent(LandscapeSpline *spline, f32 t) {
   if (!spline || spline->point_count < 2)
     return (Vec3){0, 1, 0};
 
-  // Stub tangent
-  return (Vec3){1, 0, 0};
+  // Unit direction of the segment containing t. Evaluation is linear within
+  // each segment, so this is the exact tangent everywhere in that segment.
+  // vec3_normalize returns the zero vector for a degenerate segment.
+  u32 segments = spline->point_count - 1;
+  u32 index = (u32)(clamp_spline_t(t) * (f32)segments);
+  if (index >= segments)
+    index = segments - 1;
+  Vec3 p0 = spline->points[index].position;
+  Vec3 p1 = spline->points[index + 1].position;
+  return vec3_normalize(vec3_sub(p1, p0));
 }
 
 void landscape_spline_generate_mesh(LandscapeSpline *spline,
