@@ -88,6 +88,12 @@ VSNodeID vs_graph_add_node(VSGraph *graph, const char *title, u32 type_id) {
     node->output_count = 1;
   }
 
+  // Pins record their owner so follow_flow can reach the node a link targets.
+  for (u32 i = 0; i < node->input_count; i++)
+    node->inputs[i].node_id = id;
+  for (u32 i = 0; i < node->output_count; i++)
+    node->outputs[i].node_id = id;
+
   return id;
 }
 
@@ -143,6 +149,7 @@ void vs_graph_execute(VSGraph *graph, VSNodeID entry_node_id) {
 
   // Simple interpreter loop
   while (current) {
+    graph->current_node = current->id;
     // Execute Node Logic
     if (current->type_id == VS_NODE_PRINT) {
             // In real logic, we'd pull inputs here
