@@ -85,7 +85,15 @@ int lumen_surface_card_generate_for_mesh(
                            {0, -1, 0}, {0, 0, 1},  {0, 0, -1}};
     desc.normal = (vec3_t){normals[i][0], normals[i][1], normals[i][2]};
 
-    lumen_surface_card_create(&out_handles[i], &desc);
+    int rc = lumen_surface_card_create(&out_handles[i], &desc);
+    if (rc != 0) {
+      // All or nothing: a mesh missing a face is lit wrong, so release the
+      // cards this call already made and report the failure.
+      for (int j = 0; j < i; j++)
+        lumen_surface_card_destroy(out_handles[j]);
+      *out_count = 0;
+      return rc;
+    }
   }
 
   return 0;
