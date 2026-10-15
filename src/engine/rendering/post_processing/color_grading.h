@@ -2,6 +2,7 @@
 #define COLOR_GRADING_H
 
 #include <stdint.h>
+#include "rendering/frame_graph/frame_graph.h"
 
 /**
  * Color Grading System
@@ -56,5 +57,10 @@ ColorGradingParams color_grading_preset_warm(void);
 ColorGradingParams color_grading_preset_cool(void);
 ColorGradingParams color_grading_preset_cinematic(void);
 ColorGradingParams color_grading_preset_vibrant(void);
+
+// Render-graph LUT pass. Defined in color_grading.c.
+RGResourceHandle color_grade_add_to_graph(RenderGraph *rg,
+                                          RGResourceHandle input,
+                                          TextureID lut_texture);
 
 #endif // COLOR_GRADING_H

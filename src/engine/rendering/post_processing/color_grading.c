@@ -1,5 +1,6 @@
 // Color Grading Post-Processing Effect
 // Applies a 3D LUT (Look-Up Table) for color correction and cinematic effects
+#include "color_grading.h"
 #include "core/logging/unified_logger.h"
 #include "rendering/core/shader.h"
 #include "rendering/core/texture.h"
