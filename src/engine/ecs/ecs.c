@@ -866,18 +866,321 @@ WorldStats ecs_world_get_stats(World *world) {
     stats.entity_count = world->entity_count;
     stats.component_type_count = world->component_count;
     stats.system_count = world->system_count;
-    stats.archetype_count = 0; // Stub
+    if (world->archetypes) {
+      ArchetypeData *ad = (ArchetypeData *)world->archetypes;
+      for (SimpleArchetype *arch = ad->head; arch; arch = arch->next)
+        stats.archetype_count++;
+    }
   }
   return stats;
 }
 
+// ============================================================================
+// World save/load
+// ============================================================================
+//
+// Format version 1, native byte order. Systems hold code, so they are not
+// saved. Layout:
+//   "ECSW" magic, u32 version
+//   u32 slot_count, then per component slot 0..slot_count-1:
+//     u32 has_name; if has_name: u32 size, u32 alignment, u32 name_length,
+//     then the name bytes (no terminator)
+//   u32 id_count (next entity id), then per entity id 1..id_count-1:
+//     u32 generation, u32 active; if active: u32 component_count, then per
+//     component: u32 component id and size bytes of component data
+// Loading requires the target world to register every saved component at the
+// same id with the same name, size and alignment. A mismatch or a corrupt file
+// returns false and leaves the world unchanged. Out-of-memory while applying a
+// validated image can leave a partial load.
+
+#define ECS_SAVE_MAGIC "ECSW"
+#define ECS_SAVE_VERSION 1u
+#define ECS_SAVE_MAX_COMPONENTS 32u // matches SimpleArchetype::component_types
+
+typedef struct {
+  const u8 *data;
+  size_t size;
+  size_t pos;
+} SaveReader;
+
+static bool save_write(FILE *f, const void *src, size_t n) {
+  return n == 0 || fwrite(src, 1, n, f) == n;
+}
+
+static bool save_write_u32(FILE *f, u32 value) {
+  return save_write(f, &value, sizeof value);
+}
+
+static bool save_take(SaveReader *r, size_t n, const u8 **out) {
+  if (n > r->size - r->pos)
+    return false;
+  *out = r->data + r->pos;
+  r->pos += n;
+  return true;
+}
+
+static bool save_read_u32(SaveReader *r, u32 *out) {
+  const u8 *bytes;
+  if (!save_take(r, sizeof *out, &bytes))
+    return false;
+  memcpy(out, bytes, sizeof *out);
+  return true;
+}
+
+// Writes the component list and data of one live entity from its record.
+static bool save_entity(FILE *f, const ComponentDataInternal *cd, u32 id,
+                        const EntityRecord *rec) {
+  SimpleArchetype *arch = (SimpleArchetype *)rec->archetype_ptr;
+  // Refuse a record whose archetype slot does not point back at it.
+  if (!arch || rec->index_in_chunk >= arch->entity_count ||
+      arch->entities[rec->index_in_chunk].id != id)
+    return false;
+  if (!save_write_u32(f, arch->component_count))
+    return false;
+  for (u32 j = 0; j < arch->component_count; j++) {
+    ECSComponentID type = arch->component_types[j];
+    if (type >= cd->count)
+      return false;
+    size_t size = cd->infos[type].size;
+    const u8 *value =
+        size ? (const u8 *)arch->component_data[j] +
+                   (size_t)rec->index_in_chunk * size
+             : NULL;
+    if (!save_write_u32(f, type) || !save_write(f, value, size))
+      return false;
+  }
+  return true;
+}
+
 bool ecs_world_save(World *world, const char *path) {
-  LOG_INFO("[ECS] Saving world to %s (Stub)", path);
+  if (!world || !path || !world->entities || !world->component_info ||
+      !world->archetypes)
+    return false;
+  EntityData *ed = (EntityData *)world->entities;
+  ComponentDataInternal *cd = (ComponentDataInternal *)world->component_info;
+
+  FILE *f = fopen(path, "wb");
+  if (!f) {
+    LOG_ERROR("[ECS] Cannot open %s for writing", path);
+    return false;
+  }
+
+  bool ok = save_write(f, ECS_SAVE_MAGIC, 4) &&
+            save_write_u32(f, ECS_SAVE_VERSION) &&
+            save_write_u32(f, cd->count);
+  for (u32 slot = 0; ok && slot < cd->count; slot++) {
+    const ComponentInfo *info = &cd->infos[slot];
+    ok = save_write_u32(f, info->name != NULL);
+    if (ok && info->name) {
+      u32 name_len = (u32)strlen(info->name);
+      ok = save_write_u32(f, info->size) &&
+           save_write_u32(f, info->alignment) &&
+           save_write_u32(f, name_len) && save_write(f, info->name, name_len);
+    }
+  }
+
+  ok = ok && save_write_u32(f, ed->next_entity_id);
+  for (u32 id = 1; ok && id < ed->next_entity_id; id++) {
+    const EntityRecord *rec = &ed->records[id];
+    ok = save_write_u32(f, rec->generation) && save_write_u32(f, rec->active);
+    if (ok && rec->active)
+      ok = save_entity(f, cd, id, rec);
+  }
+
+  if (fclose(f) != 0)
+    ok = false;
+  if (!ok) {
+    LOG_ERROR("[ECS] Failed to save world to %s", path);
+    remove(path);
+    return false;
+  }
+  LOG_INFO("[ECS] Saved world to %s (%u entities)", path,
+           (unsigned)world->entity_count);
+  return true;
+}
+
+// Places a loaded entity in the empty archetype, as ecs_create_entity does,
+// but with the saved id and generation.
+static bool place_loaded_entity(World *world, u32 id, u32 generation) {
+  EntityData *ed = (EntityData *)world->entities;
+  SimpleArchetype *empty =
+      ((ArchetypeData *)world->archetypes)->empty_archetype;
+  if (empty->entity_count >= empty->entity_capacity) {
+    u32 new_cap = empty->entity_capacity * 2;
+    Entity *grown = realloc(empty->entities, new_cap * sizeof(Entity));
+    if (!grown)
+      return false;
+    empty->entities = grown;
+    empty->entity_capacity = new_cap;
+  }
+  EntityRecord *rec = &ed->records[id];
+  rec->active = true;
+  rec->generation = (u8)generation;
+  rec->archetype_ptr = empty;
+  rec->index_in_chunk = empty->entity_count;
+  empty->entities[empty->entity_count++] = (Entity){id, generation};
+  world->entity_count++;
+  return true;
+}
+
+// Drops every entity and archetype. The component registry and systems stay.
+static bool reset_entity_state(World *world) {
+  EntityData *ed = (EntityData *)world->entities;
+  ArchetypeData *ad = (ArchetypeData *)world->archetypes;
+
+  // Allocate the replacement first so failure leaves the world untouched.
+  SimpleArchetype *empty = calloc(1, sizeof(SimpleArchetype));
+  Entity *empty_entities = calloc(16, sizeof(Entity));
+  if (!empty || !empty_entities) {
+    free(empty);
+    free(empty_entities);
+    return false;
+  }
+  empty->entity_capacity = 16;
+  empty->entities = empty_entities;
+
+  for (SimpleArchetype *curr = ad->head; curr;) {
+    SimpleArchetype *next = curr->next;
+    free(curr->entities);
+    if (curr->component_data) {
+      for (u32 i = 0; i < curr->component_count; i++)
+        free(curr->component_data[i]);
+      free(curr->component_data);
+    }
+    free(curr);
+    curr = next;
+  }
+  ad->head = empty;
+  ad->empty_archetype = empty;
+  ad->count = 1;
+
+  memset(ed->records, 0, (size_t)ed->capacity * sizeof(EntityRecord));
+  ed->next_entity_id = 1;
+  ed->free_count = 0;
+  world->entity_count = 0;
+  return true;
+}
+
+// Walks a save image. With apply false it only validates. With apply true it
+// rebuilds the entities, so the caller must reset the entity state first.
+static bool parse_world_image(World *world, const u8 *image, size_t size,
+                              bool apply) {
+  ComponentDataInternal *cd = (ComponentDataInternal *)world->component_info;
+  EntityData *ed = (EntityData *)world->entities;
+  SaveReader r = {image, size, 0};
+  const u8 *magic;
+  u32 version, slot_count, id_count;
+  if (!save_take(&r, 4, &magic) || memcmp(magic, ECS_SAVE_MAGIC, 4) != 0 ||
+      !save_read_u32(&r, &version) || version != ECS_SAVE_VERSION ||
+      !save_read_u32(&r, &slot_count))
+    return false;
+
+  for (u32 slot = 0; slot < slot_count; slot++) {
+    u32 has_name;
+    if (!save_read_u32(&r, &has_name) || has_name > 1)
+      return false;
+    if (!has_name)
+      continue;
+    u32 comp_size, alignment, name_len;
+    const u8 *name;
+    if (!save_read_u32(&r, &comp_size) || !save_read_u32(&r, &alignment) ||
+        !save_read_u32(&r, &name_len) || !save_take(&r, name_len, &name))
+      return false;
+    const ComponentInfo *want = slot < cd->count ? &cd->infos[slot] : NULL;
+    if (!want || !want->name || strlen(want->name) != name_len ||
+        memcmp(want->name, name, name_len) != 0 || want->size != comp_size ||
+        want->alignment != alignment) {
+      LOG_ERROR("[ECS] Load: component slot %u does not match this world",
+                (unsigned)slot);
+      return false;
+    }
+  }
+
+  if (!save_read_u32(&r, &id_count) || id_count < 1 ||
+      id_count > ed->capacity)
+    return false;
+  if (apply)
+    ed->next_entity_id = id_count;
+
+  for (u32 id = 1; id < id_count; id++) {
+    u32 generation, active;
+    if (!save_read_u32(&r, &generation) || !save_read_u32(&r, &active) ||
+        generation > 0xFFu || active > 1)
+      return false;
+    if (!active) {
+      if (apply)
+        ed->records[id].generation = (u8)generation;
+      continue;
+    }
+
+    u32 component_count;
+    if (!save_read_u32(&r, &component_count) ||
+        component_count > ECS_SAVE_MAX_COMPONENTS)
+      return false;
+    if (apply && !place_loaded_entity(world, id, generation))
+      return false;
+    Entity entity = {id, generation};
+    u32 seen[ECS_SAVE_MAX_COMPONENTS];
+    for (u32 c = 0; c < component_count; c++) {
+      u32 type;
+      if (!save_read_u32(&r, &type) || type >= cd->count ||
+          !cd->infos[type].name)
+        return false;
+      for (u32 k = 0; k < c; k++) {
+        if (seen[k] == type)
+          return false;
+      }
+      seen[c] = type;
+      const u8 *value;
+      if (!save_take(&r, cd->infos[type].size, &value))
+        return false;
+      if (apply && !ecs_add_component(world, entity, type, value))
+        return false;
+    }
+  }
+
+  if (r.pos != r.size)
+    return false;
+  if (apply) {
+    for (u32 id = 1; id < id_count; id++) {
+      if (!ed->records[id].active)
+        ed->free_entity_ids[ed->free_count++] = id;
+    }
+  }
   return true;
 }
 
 bool ecs_world_load(World *world, const char *path) {
-  LOG_INFO("[ECS] Loading world from %s (Stub)", path);
+  if (!world || !path || !world->entities || !world->component_info ||
+      !world->archetypes)
+    return false;
+
+  FILE *f = fopen(path, "rb");
+  if (!f) {
+    LOG_ERROR("[ECS] Cannot open %s for reading", path);
+    return false;
+  }
+  long length = -1;
+  if (fseek(f, 0, SEEK_END) == 0)
+    length = ftell(f);
+  u8 *image = NULL;
+  bool read_ok = length > 0 && fseek(f, 0, SEEK_SET) == 0 &&
+                 (image = malloc((size_t)length)) != NULL &&
+                 fread(image, 1, (size_t)length, f) == (size_t)length;
+  fclose(f);
+
+  // Validate the whole image before the world is touched.
+  bool ok = read_ok &&
+            parse_world_image(world, image, (size_t)length, false) &&
+            reset_entity_state(world) &&
+            parse_world_image(world, image, (size_t)length, true);
+  free(image);
+  if (!ok) {
+    LOG_ERROR("[ECS] Failed to load world from %s", path);
+    return false;
+  }
+  LOG_INFO("[ECS] Loaded world from %s (%u entities)", path,
+           (unsigned)world->entity_count);
   return true;
 }
 
@@ -906,11 +1209,18 @@ System *ecs_system_create(World *world, const char *name, SystemFunc execute,
   }
 
   SystemDataInternal *sd = (SystemDataInternal *)world->systems;
-  if (sd->count >= 128)
+  // Reuse a slot freed by ecs_system_destroy (execute == NULL), else append.
+  u32 slot = 0;
+  while (slot < sd->count && sd->systems[slot].execute)
+    slot++;
+  if (slot >= 128)
     return NULL;
+  if (slot == sd->count)
+    sd->count++;
 
-  System *sys = &sd->systems[sd->count++];
-  sys->name = name ? strdup(name) : "Unnamed System";
+  System *sys = &sd->systems[slot];
+  *sys = (System){0};
+  sys->name = strdup(name ? name : "Unnamed System"); // freed on destroy
   sys->execute = execute;
   sys->priority = 0;
   sys->enabled = true;
@@ -946,7 +1256,7 @@ void ecs_world_update(World *world, f32 delta_time) {
   // Simple serial execution for now
   for (u32 i = 0; i < sd->count; i++) {
     System *sys = &sd->systems[i];
-    if (!sys->enabled)
+    if (!sys->enabled || !sys->execute) // execute == NULL: destroyed slot
       continue;
 
     Query *query = NULL;
@@ -972,7 +1282,24 @@ void ecs_world_update(World *world, f32 delta_time) {
 }
 
 void ecs_system_destroy(World *world, System *system) {
-  // Stub - requires removing from array or marking invalid
+  if (!world || !world->systems || !system)
+    return;
+  SystemDataInternal *sd = (SystemDataInternal *)world->systems;
+
+  // Accept only a slot inside this world's system table.
+  uintptr_t base = (uintptr_t)sd->systems;
+  uintptr_t addr = (uintptr_t)system;
+  if (addr < base || addr >= base + sd->count * sizeof(System) ||
+      (addr - base) % sizeof(System) != 0)
+    return;
+  if (!system->execute)
+    return; // already destroyed
+
+  free((void *)system->name);
+  // The slot stays in place so other System pointers remain valid. A NULL
+  // execute marks it free for ecs_system_create to reuse.
+  *system = (System){0};
+  world->system_count--;
 }
 
 void ecs_system_set_priority(World *world, System *system, u32 priority) {
