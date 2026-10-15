@@ -34,38 +34,12 @@
 // DLSS/FSR Complete Nanite rendering pipeline
 #include "include/core/logger.h"
 #include "include/geometry/nanite/nanite_cluster.h"
+#include "include/geometry/nanite/nanite_render_cpu.h"
 #import <Metal/Metal.h>
 #include <simd/simd.h>
 #include <stdlib.h>
 #include <string.h>
 
-// Robust cluster hierarchy builder (offline tool extension)
-typedef struct {
-  u32 cluster_id;
-  u32 parent_id;
-  u32 *child_ids;
-  u32 child_count;
-  Vec3 bounds_center;
-  f32 bounds_radius;
-  u32 lod_level;
-  f32 error_metric;
-  bool is_leaf;
-} ClusterHierarchyNode;
-
-typedef struct {
-  ClusterHierarchyNode *nodes;
-  u32 node_count;
-  u32 max_nodes;
-  u32 root_node_id;
-  u32 *leaf_nodes;
-  u32 leaf_count;
-
-  // Building statistics
-  u32 total_clusters_processed;
-  f32 build_time_seconds;
-  f32 average_error;
-  f32 max_error;
-} ClusterHierarchyBuilder;
 
 // Visibility buffer rendering for GPU-driven material pass
 typedef struct {
@@ -123,191 +97,6 @@ void nanite_gpu_cull(NaniteRenderer *renderer, id<MTLCommandBuffer> cmd,
                      NaniteMesh *mesh, const Mat4 *view_proj,
                      const Vec3 *camera_pos);
 
-ClusterHierarchyBuilder *cluster_hierarchy_builder_create(u32 max_nodes) {
-  ClusterHierarchyBuilder *builder =
-      (ClusterHierarchyBuilder *)calloc(1, sizeof(ClusterHierarchyBuilder));
-  builder->max_nodes = max_nodes;
-  builder->nodes =
-      (ClusterHierarchyNode *)calloc(max_nodes, sizeof(ClusterHierarchyNode));
-  builder->leaf_nodes = (u32 *)calloc(max_nodes, sizeof(u32));
-
-  LOG_INFO("Cluster hierarchy builder created for %u nodes", max_nodes);
-  return builder;
-}
-
-u32 cluster_hierarchy_add_node(ClusterHierarchyBuilder *builder, u32 parent_id,
-                               const Vec3 *center, f32 radius, u32 lod_level,
-                               f32 error) {
-  if (!builder || builder->node_count >= builder->max_nodes)
-    return UINT32_MAX;
-
-  u32 node_id = builder->node_count++;
-  ClusterHierarchyNode *node = &builder->nodes[node_id];
-
-  node->cluster_id = node_id;
-  node->parent_id = parent_id;
-  node->child_ids = NULL;
-  node->child_count = 0;
-  node->bounds_center = *center;
-  node->bounds_radius = radius;
-  node->lod_level = lod_level;
-  node->error_metric = error;
-  node->is_leaf = true;
-
-  // Add to parent's children if not root
-  if (parent_id != UINT32_MAX && parent_id < builder->node_count) {
-    ClusterHierarchyNode *parent = &builder->nodes[parent_id];
-    parent->child_count++;
-    parent->child_ids =
-        (u32 *)realloc(parent->child_ids, parent->child_count * sizeof(u32));
-    parent->child_ids[parent->child_count - 1] = node_id;
-    parent->is_leaf = false;
-  } else {
-    builder->root_node_id = node_id;
-  }
-
-  // Track leaf nodes
-  if (node->is_leaf) {
-    builder->leaf_nodes[builder->leaf_count++] = node_id;
-  }
-
-  // Update statistics
-  builder->total_clusters_processed++;
-  builder->average_error =
-      (builder->average_error * (builder->total_clusters_processed - 1) +
-       error) /
-      builder->total_clusters_processed;
-  if (error > builder->max_error) {
-    builder->max_error = error;
-  }
-
-  return node_id;
-}
-
-void cluster_hierarchy_build(ClusterHierarchyBuilder *builder,
-                             NaniteMesh *mesh) {
-  if (!builder || !mesh)
-    return;
-
-  f64 start_time = 0.0; // Would use high-resolution timer
-
-  LOG_INFO("Building cluster hierarchy for %u clusters", mesh->cluster_count);
-
-  // Phase 1: Create leaf nodes from mesh clusters
-  for (u32 i = 0; i < mesh->cluster_count; i++) {
-    NaniteCluster *cluster = &mesh->clusters[i];
-
-    // Calculate cluster bounds
-    Vec3 center = vec3_zero();
-    f32 max_dist = 0.0f;
-
-    // Simple bounds calculation (would be more sophisticated in production)
-    for (u32 v = 0; v < cluster->vertex_count; v++) {
-      // Assume vertex data is accessible - this is simplified
-      // Vec3 vertex = mesh->vertices[cluster->vertex_offset + v];
-      // center = vec3_add(center, vertex);
-    }
-
-    if (cluster->vertex_count > 0) {
-      // center = vec3_mul(center, 1.0f / cluster->vertex_count);
-    }
-
-    // Add leaf node
-    cluster_hierarchy_add_node(builder, UINT32_MAX, &center, max_dist, 0,
-                               0.01f);
-  }
-
-  // Phase 2: Build internal hierarchy levels
-  u32 current_level_start = 0;
-  u32 current_level_count = builder->leaf_count;
-  u32 level = 1;
-
-  while (current_level_count > 1 && builder->node_count < builder->max_nodes) {
-    u32 next_level_start = builder->node_count;
-    u32 groups_to_process =
-        (current_level_count + 3) / 4; // Group 4 nodes per parent
-
-    for (u32 group = 0;
-         group < groups_to_process && builder->node_count < builder->max_nodes;
-         group++) {
-      Vec3 group_center = vec3_zero();
-      f32 group_radius = 0.0f;
-      f32 group_error = 0.0f;
-      u32 nodes_in_group = 0;
-
-      // Calculate group bounds
-      for (u32 i = 0;
-           i < 4 && (group * 4 + i + current_level_start) < builder->node_count;
-           i++) {
-        u32 child_id = group * 4 + i + current_level_start;
-        if (child_id < builder->node_count) {
-          ClusterHierarchyNode *child = &builder->nodes[child_id];
-          group_center = vec3_add(group_center, child->bounds_center);
-          group_radius = fmaxf(group_radius, child->bounds_radius);
-          group_error = fmaxf(group_error, child->error_metric);
-          nodes_in_group++;
-        }
-      }
-
-      if (nodes_in_group > 0) {
-        group_center = vec3_mul(group_center, 1.0f / nodes_in_group);
-        group_radius *= 1.5f; // Expand radius to cover children
-        group_error *= 1.2f;  // Increase error for higher LODs
-
-        // Add internal node
-        u32 parent_id =
-            cluster_hierarchy_add_node(builder, UINT32_MAX, &group_center,
-                                       group_radius, level, group_error);
-
-        // Link children to parent
-        for (u32 i = 0; i < 4 && (group * 4 + i + current_level_start) <
-                                     builder->node_count;
-             i++) {
-          u32 child_id = group * 4 + i + current_level_start;
-          if (child_id < builder->node_count && child_id != parent_id) {
-            ClusterHierarchyNode *child = &builder->nodes[child_id];
-            child->parent_id = parent_id;
-
-            ClusterHierarchyNode *parent = &builder->nodes[parent_id];
-            parent->child_count++;
-            parent->child_ids = (u32 *)realloc(
-                parent->child_ids, parent->child_count * sizeof(u32));
-            parent->child_ids[parent->child_count - 1] = child_id;
-            parent->is_leaf = false;
-          }
-        }
-      }
-    }
-
-    current_level_start = next_level_start;
-    current_level_count = builder->node_count - next_level_start;
-    level++;
-
-    LOG_DEBUG("Hierarchy level %u: %u nodes", level, current_level_count);
-  }
-
-  f64 end_time = 0.0; // Would use high-resolution timer
-  builder->build_time_seconds = (f32)(end_time - start_time);
-
-  LOG_INFO("Cluster hierarchy built: %u total nodes, %u levels, %.3fs",
-           builder->node_count, level, builder->build_time_seconds);
-}
-
-void cluster_hierarchy_destroy(ClusterHierarchyBuilder *builder) {
-  if (!builder)
-    return;
-
-  // Clean up child arrays
-  for (u32 i = 0; i < builder->node_count; i++) {
-    if (builder->nodes[i].child_ids) {
-      free(builder->nodes[i].child_ids);
-    }
-  }
-
-  free(builder->nodes);
-  free(builder->leaf_nodes);
-  free(builder);
-}
 
 // Cluster-based light-linking and shadow-masking system
 typedef struct {
@@ -704,7 +493,9 @@ void nanite_render_mesh(NaniteRenderer *renderer,
       return;
     }
 
-    // Fallback to traditional rendering
+    // Cull once, then draw the single LOD selected for this camera.
+    nanite_gpu_cull(renderer, cmd, mesh, view_proj, camera_pos);
+
     [encoder setRenderPipelineState:renderer->render_pipeline];
 
     // Bind mesh buffers
@@ -715,29 +506,24 @@ void nanite_render_mesh(NaniteRenderer *renderer,
                       offset:0
                      atIndex:1];
 
-    // Bind view-projection matrix
-    [encoder setVertexBytes:view_proj length:sizeof(Mat4) atIndex:2];
+    if (view_proj) {
+      [encoder setVertexBytes:view_proj length:sizeof(Mat4) atIndex:2];
+    }
 
-    // Draw visible clusters
-    for (u32 lod = 0; lod < mesh->lod_count; lod++) {
-      u32 cluster_start = mesh->lod_offsets[lod];
-      u32 cluster_count = (lod < mesh->lod_count - 1)
-                              ? (mesh->lod_offsets[lod + 1] - cluster_start)
-                              : (mesh->cluster_count - cluster_start);
+    u32 lod = nanite_select_lod(mesh, camera_pos, 1.0f, 1080.0f);
+    u32 cluster_start = 0;
+    u32 cluster_count = 0;
+    nanite_lod_cluster_range(mesh, lod, &cluster_start, &cluster_count);
 
-      for (u32 i = 0; i < cluster_count; i++) {
-        NaniteCluster *cluster = &mesh->clusters[cluster_start + i];
+    for (u32 i = 0; i < cluster_count; i++) {
+      NaniteCluster *cluster = &mesh->clusters[cluster_start + i];
 
-        // GPU culling compute shader would be better
-        nanite_gpu_cull(renderer, cmd, mesh, view_proj, camera_pos);
-
-        [encoder setVertexBytes:&cluster->vertex_offset
-                         length:sizeof(u32)
-                        atIndex:3];
-        [encoder drawPrimitives:MTLPrimitiveTypeTriangle
-                    vertexStart:0
-                    vertexCount:cluster->triangle_count * 3];
-      }
+      [encoder setVertexBytes:&cluster->vertex_offset
+                       length:sizeof(u32)
+                      atIndex:3];
+      [encoder drawPrimitives:MTLPrimitiveTypeTriangle
+                  vertexStart:0
+                  vertexCount:cluster->triangle_count * 3];
     }
   }
 }
@@ -745,7 +531,8 @@ void nanite_render_mesh(NaniteRenderer *renderer,
 void nanite_gpu_cull(NaniteRenderer *renderer, id<MTLCommandBuffer> cmd,
                      NaniteMesh *mesh, const Mat4 *view_proj,
                      const Vec3 *camera_pos) {
-  if (!renderer || !cmd || !mesh || !renderer->culling_pipeline)
+  if (!renderer || !cmd || !mesh || !view_proj || !camera_pos ||
+      !renderer->culling_pipeline)
     return;
 
   @autoreleasepool {
