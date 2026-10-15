@@ -199,6 +199,7 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # Nanite-like Geometry System (Unreal Engine quality)
     "src/engine/geometry/nanite/nanite_cluster.c"
     "src/engine/geometry/nanite/nanite_render.m"
+    "src/engine/geometry/nanite/nanite_render_cpu.c"
     "src/engine/geometry/nanite/cluster_builder.m"
     
     # Virtual Texturing and Temporal Upscaling (Unreal Engine quality)
