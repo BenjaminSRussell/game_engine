@@ -306,6 +306,7 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # Network subdirectory
     "src/engine/network/*.c"
     "src/engine/networking/*.c"
+    "src/engine/network/transport/reliable_channel.c"
     
     # Physics subdirectory - including experimental and legacy systems
     "src/engine/physics/*.c"
