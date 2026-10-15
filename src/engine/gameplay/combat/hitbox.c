@@ -102,7 +102,7 @@ typedef struct {
   Vec3 last_position;
   bool is_active;
   f64 creation_time;
-  f64 destruction_time;
+  TimerComponent lifetime; // Temporary hitboxes are destroyed when this expires
 } HitboxInstance;
 
 // Forward declaration for hitbox_handle_collision
@@ -430,8 +430,9 @@ void hitbox_system_update(World *world, f32 delta_time) {
     // Update world position
     hitbox_update_world_position_instance(instance);
 
-    // Check for temporary hitbox destruction
-    if (instance->destruction_time > 0.0 && g_hitbox_system.current_time >= instance->destruction_time) {
+    // Temporary hitboxes are destroyed once their lifetime timer expires
+    timer_update(&instance->lifetime, delta_time);
+    if (timer_is_expired(&instance->lifetime)) {
       // Clear hit tracking for this hitbox
       hitbox_clear_hits(instance->entity);
       // Destroy the entity
@@ -538,11 +539,17 @@ Entity hitbox_create_temporary(World *world, Vec3 position, Vec3 direction, f32 
   instance->last_position = position;
   instance->is_active = true;
   instance->creation_time = g_hitbox_system.current_time;
-  instance->destruction_time = g_hitbox_system.current_time + duration;
-  
-  // Add timer component for automatic destruction
-  // TODO: Implement TimerComponent
-  
+
+  // Lifetime timer: hitbox_system_update ticks it and destroys the hitbox on
+  // expiry. A zero duration expires on the first update.
+  instance->lifetime = (TimerComponent){
+      .duration = duration,
+      .time_remaining = duration,
+      .is_active = true,
+      .loops = false,
+      .elapsed_time = 0.0f,
+  };
+
   LOGD("Created temporary hitbox entity %u (range: %.2f, duration: %.2f)",
            entity.id, range, duration);
   
