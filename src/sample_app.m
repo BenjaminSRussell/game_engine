@@ -12,20 +12,35 @@
 #include <simd/simd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stddef.h>
 #include <math.h>
+#include "sample_vertex_layout.h"
 
 // Include our new geometry system
 // #include "engine/geometry/mesh.h"
 // #include "engine/geometry/mesh_primitives.h"
 // #include "engine/geometry/mesh_gpu.h"
 
-// Simple vertex structure for testing
+/* GPU vertex. SimpleVertex is this type so the uploaded stride matches the descriptor. */
 typedef struct {
-    float position[3];
-    float color[3];
-    float normal[3];
-    float uv[2];
-} SimpleVertex;
+    vector_float3 position;
+    vector_float3 color;
+    vector_float3 normal;
+    vector_float2 uv;
+    vector_float4 tangent;
+} Vertex;
+
+typedef Vertex SimpleVertex;
+
+_Static_assert(sizeof(Vertex) == SAMPLE_VERTEX_STRIDE, "descriptor stride must match Vertex");
+_Static_assert(sizeof(SimpleVertex) == SAMPLE_VERTEX_STRIDE, "buffer stride must match the vertex descriptor");
+_Static_assert(offsetof(Vertex, position) == SAMPLE_VERTEX_POSITION_OFFSET, "position offset");
+_Static_assert(offsetof(Vertex, color) == SAMPLE_VERTEX_COLOR_OFFSET, "color offset");
+_Static_assert(offsetof(Vertex, normal) == SAMPLE_VERTEX_NORMAL_OFFSET, "normal offset");
+_Static_assert(offsetof(Vertex, uv) == SAMPLE_VERTEX_UV_OFFSET, "uv offset");
+_Static_assert(offsetof(Vertex, tangent) == SAMPLE_VERTEX_TANGENT_OFFSET, "tangent offset");
+_Static_assert(SAMPLE_VERTEX_TANGENT_OFFSET + SAMPLE_VERTEX_TANGENT_SIZE <= SAMPLE_VERTEX_STRIDE,
+               "tangent read must stay inside the vertex stride");
 
 // Simple mesh structure
 typedef struct {
@@ -34,14 +49,6 @@ typedef struct {
     unsigned int* indices;
     int index_count;
 } SimpleMesh;
-
-typedef struct {
-    vector_float3 position;
-    vector_float3 color;
-    vector_float3 normal;
-    vector_float2 uv;
-    vector_float4 tangent;
-} Vertex;
 
 @interface MetalView : MTKView <MTKViewDelegate>
 @property (nonatomic, strong) id<MTLRenderPipelineState> pipelineState;
@@ -101,31 +108,31 @@ typedef struct {
     
     // Position
     vertexDescriptor.attributes[0].format = MTLVertexFormatFloat3;
-    vertexDescriptor.attributes[0].offset = 0;
+    vertexDescriptor.attributes[0].offset = SAMPLE_VERTEX_POSITION_OFFSET;
     vertexDescriptor.attributes[0].bufferIndex = 0;
     
     // Color
     vertexDescriptor.attributes[1].format = MTLVertexFormatFloat3;
-    vertexDescriptor.attributes[1].offset = sizeof(vector_float3);
+    vertexDescriptor.attributes[1].offset = SAMPLE_VERTEX_COLOR_OFFSET;
     vertexDescriptor.attributes[1].bufferIndex = 0;
     
     // Normal
     vertexDescriptor.attributes[2].format = MTLVertexFormatFloat3;
-    vertexDescriptor.attributes[2].offset = sizeof(vector_float3) * 2;
+    vertexDescriptor.attributes[2].offset = SAMPLE_VERTEX_NORMAL_OFFSET;
     vertexDescriptor.attributes[2].bufferIndex = 0;
     
     // UV
     vertexDescriptor.attributes[3].format = MTLVertexFormatFloat2;
-    vertexDescriptor.attributes[3].offset = sizeof(vector_float3) * 3;
+    vertexDescriptor.attributes[3].offset = SAMPLE_VERTEX_UV_OFFSET;
     vertexDescriptor.attributes[3].bufferIndex = 0;
     
     // Tangent
     vertexDescriptor.attributes[4].format = MTLVertexFormatFloat4;
-    vertexDescriptor.attributes[4].offset = sizeof(vector_float3) * 3 + sizeof(vector_float2);
+    vertexDescriptor.attributes[4].offset = SAMPLE_VERTEX_TANGENT_OFFSET;
     vertexDescriptor.attributes[4].bufferIndex = 0;
     
-    // Layout
-    vertexDescriptor.layouts[0].stride = sizeof(Vertex);
+    // Layout. Same stride as each SimpleVertex stored in the vertex buffer.
+    vertexDescriptor.layouts[0].stride = SAMPLE_VERTEX_STRIDE;
     vertexDescriptor.layouts[0].stepRate = 1;
     vertexDescriptor.layouts[0].stepFunction = MTLVertexStepFunctionPerVertex;
     
@@ -211,13 +218,13 @@ typedef struct {
     self.simpleMesh->vertex_count = 3;
     self.simpleMesh->index_count = 3;
     
-    self.simpleMesh->vertices = malloc(sizeof(SimpleVertex) * 3);
+    self.simpleMesh->vertices = malloc(sample_vertex_buffer_length((size_t)self.simpleMesh->vertex_count));
     self.simpleMesh->indices = malloc(sizeof(unsigned int) * 3);
     
-    // Triangle vertices
-    self.simpleMesh->vertices[0] = (SimpleVertex){{0.0f, 0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.5f, 0.0f}};
-    self.simpleMesh->vertices[1] = (SimpleVertex){{-0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}};
-    self.simpleMesh->vertices[2] = (SimpleVertex){{0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}};
+    // Triangle vertices. Tangent lies in the triangle plane (+X, handedness 1).
+    self.simpleMesh->vertices[0] = (SimpleVertex){{0.0f, 0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.5f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}};
+    self.simpleMesh->vertices[1] = (SimpleVertex){{-0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}, {1.0f, 0.0f, 0.0f, 1.0f}};
+    self.simpleMesh->vertices[2] = (SimpleVertex){{0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, 0.0f, 0.0f, 1.0f}};
     
     // Triangle indices
     self.simpleMesh->indices[0] = 0;
@@ -230,8 +237,8 @@ typedef struct {
     NSLog(@"Created simple triangle with %d vertices and %d indices", self.vertexCount, self.indexCount);
     
     // Create vertex buffer
-    self.vertexBuffer = [self.device newBufferWithBytes:self.simpleMesh->vertices 
-                                               length:self.vertexCount * sizeof(SimpleVertex) 
+    self.vertexBuffer = [self.device newBufferWithBytes:self.simpleMesh->vertices
+                                               length:sample_vertex_buffer_length((size_t)self.vertexCount)
                                               options:MTLResourceStorageModeShared];
     
     // Create index buffer
