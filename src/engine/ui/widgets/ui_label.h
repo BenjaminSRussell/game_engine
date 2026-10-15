@@ -223,6 +223,30 @@ void ui_label_set_shadow(UILabel* label, float offset_x, float offset_y, Vec4 co
 void ui_label_disable_shadow(UILabel* label);
 
 /* ============================================================================
+ * API - Text Rendering Backend
+ * ============================================================================ */
+
+/**
+ * Draws one run of label text. Supplied by the graphics backend.
+ *
+ * `text` is not NUL-terminated: it holds `length` bytes. `position` is the
+ * top-left of the run, in the same space as widget_get_position(). Labels
+ * draw every shadow run first when shadows are on, then the text runs. An
+ * ellipsis suffix is drawn as its own run.
+ */
+typedef void (*UILabelDrawTextFn)(void* context, const char* text, uint32_t length,
+                                  Vec2 position, float font_size, Vec4 color,
+                                  LabelTextFormat format);
+
+/**
+ * Install the graphics backend that label text is drawn through
+ *
+ * @param draw     Draw callback, or NULL to remove the backend (labels then draw nothing)
+ * @param context  Passed to draw as its first argument
+ */
+void ui_label_set_text_backend(UILabelDrawTextFn draw, void* context);
+
+/* ============================================================================
  * API - Utility
  * ============================================================================ */
 
