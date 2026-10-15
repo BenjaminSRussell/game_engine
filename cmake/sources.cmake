@@ -30,7 +30,7 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # Assets subdirectory (importers, loaders) - excluding Linux-specific inotify code
     # "src/engine/assets/*.c"  # Disabled: inotify.h not available on macOS
     # Re-enable specific asset files that work
-    "src/engine/assets/asset_loader.c"
+    "src/engine/assets/system/asset_system/loading/asset_loader.c"
     
     # Audio subdirectory - including legacy implementations
     "src/engine/audio/audio_core.c"
@@ -505,9 +505,6 @@ list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/scripting/script_system\\.c$")
 # Voxel renderer has issues - disable for now
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/rendering/voxel_renderer\\.c$")
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/rendering/renderer_factory\\.c$")
-
-# Exclude broken asset_loader (contains syntax errors)
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/asset_loader\\.c$")
 
 # Cinematic subsystems (currently broken)
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/cinematic/.*\\.c$")
