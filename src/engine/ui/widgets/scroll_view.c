@@ -115,13 +115,14 @@ static bool scroll_view_handle_event(Widget *widget, UIEvent *event) {
   if (event->type == UI_EVENT_MOUSE_WHEEL) {
     float delta = event->mouse.wheel_delta * SCROLL_SENSITIVITY;
 
-    // Vertical scroll by default
-    // TODO: Handle horizontal with Shift
-
     Vec2 old_offset = data->scroll_offset;
 
-    // Scroll up/down
-    data->scroll_offset.y -= delta;
+    // Holding Shift turns the wheel into a horizontal scroll. Otherwise it
+    // scrolls vertically.
+    if (event->modifiers & UI_MODIFIER_SHIFT)
+      data->scroll_offset.x -= delta;
+    else
+      data->scroll_offset.y -= delta;
 
     // Re-clamp in layout or here?
     // Layout will clamp, but we want immediate feedback.
@@ -129,7 +130,8 @@ static bool scroll_view_handle_event(Widget *widget, UIEvent *event) {
     // consume event only if we actually scrolled? For now, always consume wheel
     // if we have scrollbars.
 
-    if (old_offset.y != data->scroll_offset.y) {
+    if (old_offset.x != data->scroll_offset.x ||
+        old_offset.y != data->scroll_offset.y) {
       widget_invalidate_layout(widget);
       return true;
     }
