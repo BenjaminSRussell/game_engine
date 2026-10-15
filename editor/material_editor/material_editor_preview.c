@@ -7,6 +7,16 @@
 #include <stdio.h>
 #include <math.h>
 
+// Opaque handles for the preview state below. The Vulkan SDK is not included by this
+// file, and rendering/vulkan.h only declares some handles, so declare the rest here in
+// the same pointer-handle form.
+typedef struct VkPipeline_T* VkPipeline;
+typedef struct VkPipelineLayout_T* VkPipelineLayout;
+typedef struct VkDescriptorSetLayout_T* VkDescriptorSetLayout;
+typedef struct VkDescriptorSet_T* VkDescriptorSet;
+typedef struct VkBuffer_T* VkBuffer;
+typedef struct VkDeviceMemory_T* VkDeviceMemory;
+
 #ifndef PI
 #define PI 3.14159265359f
 #endif

@@ -355,6 +355,30 @@ if(NOT IOS)
     target_link_libraries(BlockGameApp PRIVATE Game Engine ZLIB::ZLIB Threads::Threads "-framework Metal" "-framework MetalKit" "-framework Cocoa" "-framework IOKit" "-framework QuartzCore")
 endif()
 
+# Editor sources under editor/ (issue #433). The registry test in
+# tests/registry/test_editor_sources_compile.cmake compiles the same list.
+# node_graph.c #includes material_compiler.c, material_editor_ui.c,
+# material_editor_preview.c and material_serialization.c, and sculpting.c
+# #includes terrain_io.c, so those four and terrain_io.c are not listed.
+set(EDITOR_APP_SOURCES
+    editor/editor_main.c
+    editor/editor_context.c
+    editor/material_editor/node_graph.c
+    editor/terrain_editor/sculpting.c
+    editor/terrain_editor/terrain_editor_ui.c
+    editor/terrain_editor/terrain_editor_viewport.c
+)
+
+# EditorApp links Engine like BlockGameApp, so it cannot link until Engine builds. On
+# origin/main no compiled Engine object defines unified_logger_log, which the editor
+# calls: the sources.cmake entry for the logger is a path that does not exist, and the
+# real logger source does not compile.
+if(BUILD_EDITOR AND NOT BUILD_RUNTIME_ONLY)
+    add_executable(EditorApp ${EDITOR_APP_SOURCES})
+    target_include_directories(EditorApp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/editor)
+    target_link_libraries(EditorApp PRIVATE Engine ZLIB::ZLIB Threads::Threads m)
+endif()
+
 # ===========================================
 # Demo Applications (Added 2026-01-04)
 # ===========================================

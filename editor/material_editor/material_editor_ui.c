@@ -444,7 +444,7 @@ static void draw_rect(Vec2 pos, Vec2 size, Vec4 color) {
     
     // For debugging purposes, log the drawing command
     LOG_DEBUG("DRAW_RECT: pos=(%.1f,%.1f) size=(%.1f,%.1f) color=(%.2f,%.2f,%.2f,%.2f)", 
-             pos.x, pos.y, size.x, size.y, color.r, color.g, color.b, color.a);
+             pos.x, pos.y, size.x, size.y, color.x, color.y, color.z, color.w);
 }
 
 static void draw_text(Vec2 pos, const char* text, Vec4 color) {
@@ -478,7 +478,7 @@ static void draw_text(Vec2 pos, const char* text, Vec4 color) {
     
     // For debugging, just log the text
     LOG_DEBUG("DRAW_TEXT: pos=(%.1f,%.1f) text='%s' color=(%.2f,%.2f,%.2f,%.2f)", 
-             pos.x, pos.y, text, color.r, color.g, color.b, color.a);
+             pos.x, pos.y, text, color.x, color.y, color.z, color.w);
 }
 
 static void draw_bezier(Vec2 start, Vec2 end, Vec4 color, f32 thickness) {
@@ -532,7 +532,7 @@ static void draw_bezier(Vec2 start, Vec2 end, Vec4 color, f32 thickness) {
     */
     
     LOG_DEBUG("DRAW_BEZIER: start=(%.1f,%.1f) end=(%.1f,%.1f) thickness=%.1f color=(%.2f,%.2f,%.2f,%.2f)", 
-             start.x, start.y, end.x, end.y, thickness, color.r, color.g, color.b, color.a);
+             start.x, start.y, end.x, end.y, thickness, color.x, color.y, color.z, color.w);
 }
 
 static void draw_circle(Vec2 center, f32 radius, Vec4 color) {
@@ -586,5 +586,5 @@ static void draw_circle(Vec2 center, f32 radius, Vec4 color) {
     */
     
     LOG_DEBUG("DRAW_CIRCLE: center=(%.1f,%.1f) radius=%.1f color=(%.2f,%.2f,%.2f,%.2f)", 
-             center.x, center.y, radius, color.r, color.g, color.b, color.a);
+             center.x, center.y, radius, color.x, color.y, color.z, color.w);
 }
