@@ -19,11 +19,14 @@
 #include "../../math/linear_algebra/vectors/vec3/vec3_ops.h"
 #include "../../math/linear_algebra/vectors/vec3/vec3_types.h"
 
-// Forward declarations for non-inline functions (implemented in
-// vec3_geometric.c etc)
+// Non-inline helpers implemented in vec3_geometry.c.
 f32 vec3_angle_between(Vec3 a, Vec3 b);
 Vec3 vec3_reflect(Vec3 v, Vec3 normal);
 Vec3 vec3_slerp(Vec3 a, Vec3 b, f32 t);
-// ... add others as needed from original header ...
+Vec3 vec3_project(Vec3 v, Vec3 onto);
+Vec3 vec3_project_plane(Vec3 v, Vec3 normal);
+bool vec3_is_equal(Vec3 a, Vec3 b, f32 tolerance);
+Vec3 vec3_face_forward(Vec3 n, Vec3 i, Vec3 n_ref);
+Vec3 vec3_orthogonal(Vec3 v, Vec3 reference);
 
 #endif // VEC3_H
