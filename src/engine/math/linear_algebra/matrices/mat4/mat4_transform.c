@@ -1,4 +1,4 @@
-#include "../../include/math/mat4.h"
+#include "include/math/math_all.h"
 #include <math.h>
 
 Mat4 mat4_translate(Vec3 v) {
