@@ -1,6 +1,7 @@
 // projectile.c - Projectile System Implementation
 #include <include/core/logger.h>
 #include <include/ecs/component_ids.h>
+#include <include/ecs/components/transform.h>
 #include <include/ecs/ecs.h>
 #include <include/gameplay/combat/damage.h>
 #include <include/gameplay/combat/projectile.h>
@@ -52,6 +53,29 @@ static Vec3 calculate_homing_direction(const Vec3 *current_pos,
       vec3_lerp(current_direction, desired_direction, homing_strength);
 
   return vec3_normalize(homing_direction);
+}
+
+/* Position of the homing target the projectile already stores. Missing
+   transform is not the origin: steering at (0,0,0) was the placeholder. */
+static bool projectile_resolve_target_position(World *world, Entity target,
+                                               Vec3 *out_position) {
+  TransformComponent *transform;
+
+  if (!out_position) {
+    return false;
+  }
+  if (!world || target.id == 0) {
+    return false;
+  }
+
+  transform = (TransformComponent *)ecs_get_component(world, target,
+                                                      TRANSFORM_COMPONENT_ID);
+  if (!transform) {
+    return false;
+  }
+
+  *out_position = transform->position;
+  return true;
 }
 
 static bool projectile_raycast(const Vec3 *start, const Vec3 *end,
@@ -192,7 +216,8 @@ static void projectile_handle_collision(ProjectileInstance *instance,
   }
 }
 
-static void projectile_update_physics(ProjectileInstance *instance,
+static void projectile_update_physics(World *world,
+                                      ProjectileInstance *instance,
                                       f32 delta_time) {
   if (!instance)
     return;
@@ -235,17 +260,18 @@ static void projectile_update_physics(ProjectileInstance *instance,
       proj->last_position,
       vec3_scale(proj->velocity, vec3(delta_time, delta_time, delta_time)));
 
-  // Handle homing
+  // Handle homing. The target entity is already on the projectile.
   if (proj->is_homing && proj->homing_target.id != 0 &&
       proj->age >= proj->homing_delay) {
-    // Get target position (simplified - would use transform component)
-    Vec3 target_position = {0.0f, 0.0f, 0.0f}; // Placeholder
-
-    Vec3 homing_dir =
-        calculate_homing_direction(&proj->last_position, &target_position,
-                                   &proj->velocity, proj->homing_strength);
-    proj->velocity = vec3_scale(
-        homing_dir, vec3(current_speed, current_speed, current_speed));
+    Vec3 target_position;
+    if (projectile_resolve_target_position(world, proj->homing_target,
+                                           &target_position)) {
+      Vec3 homing_dir =
+          calculate_homing_direction(&proj->last_position, &target_position,
+                                     &proj->velocity, proj->homing_strength);
+      proj->velocity = vec3_scale(
+          homing_dir, vec3(current_speed, current_speed, current_speed));
+    }
   }
 
   // Perform raycast collision detection
@@ -345,7 +371,20 @@ void projectile_system_update(World *world, f32 delta_time) {
       continue;
     }
 
-    projectile_update_physics(instance, delta_time);
+    /* Spawn copies the component once. Homing edits land on the ECS copy
+       via projectile_set_homing; that copy is the target this update has. */
+    if (world) {
+      ProjectileComponent *authored = (ProjectileComponent *)ecs_get_component(
+          world, instance->entity, PROJECTILE_COMPONENT_ID);
+      if (authored) {
+        instance->projectile.is_homing = authored->is_homing;
+        instance->projectile.homing_target = authored->homing_target;
+        instance->projectile.homing_strength = authored->homing_strength;
+        instance->projectile.homing_delay = authored->homing_delay;
+      }
+    }
+
+    projectile_update_physics(world, instance, delta_time);
   }
 }
 
