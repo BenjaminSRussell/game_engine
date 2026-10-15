@@ -1,4 +1,5 @@
 #include "geometry/mesh_primitives.h"
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -23,6 +24,35 @@ static mesh_t *mesh_allocate(u32 vertex_count, u32 index_count) {
   mesh->submeshes[0].vertex_count = vertex_count;
 
   return mesh;
+}
+
+// Tangent for one triangle, from its positions and UVs (Lengyel's method),
+// made orthogonal to the vertex normal. w is the handedness: the bitangent is
+// cross(normal, tangent.xyz) * w, which points along +V. Degenerate UVs fall
+// back to an arbitrary unit tangent perpendicular to the normal.
+static Vec4 triangle_tangent(Vec3 p0, Vec3 p1, Vec3 p2, Vec2 uv0, Vec2 uv1,
+                             Vec2 uv2, Vec3 normal) {
+  Vec3 e1 = vec3_sub(p1, p0);
+  Vec3 e2 = vec3_sub(p2, p0);
+  f32 du1 = uv1.x - uv0.x, dv1 = uv1.y - uv0.y;
+  f32 du2 = uv2.x - uv0.x, dv2 = uv2.y - uv0.y;
+  f32 det = du1 * dv2 - du2 * dv1;
+
+  if (fabsf(det) > EPSILON) {
+    f32 r = 1.0f / det;
+    Vec3 t = vec3_mul(vec3_sub(vec3_mul(e1, dv2), vec3_mul(e2, dv1)), r); // dP/du
+    Vec3 b = vec3_mul(vec3_sub(vec3_mul(e2, du1), vec3_mul(e1, du2)), r); // dP/dv
+    Vec3 ortho = vec3_sub(t, vec3_mul(normal, vec3_dot(normal, t)));
+    if (vec3_length(ortho) > EPSILON) {
+      ortho = vec3_normalize(ortho);
+      f32 w = vec3_dot(vec3_cross(normal, ortho), b) < 0.0f ? -1.0f : 1.0f;
+      return vec4_create(ortho.x, ortho.y, ortho.z, w);
+    }
+  }
+
+  Vec3 axis = fabsf(normal.x) < 0.9f ? vec3_create(1, 0, 0) : vec3_create(0, 1, 0);
+  Vec3 t = vec3_normalize(vec3_cross(normal, axis));
+  return vec4_create(t.x, t.y, t.z, 1.0f);
 }
 
 mesh_t *mesh_create_cube(f32 size) {
@@ -64,33 +94,38 @@ mesh_t *mesh_create_cube(f32 size) {
       {5, {4, 0, 3, 7}}  // Left
   };
 
+  // Corner UVs in the BL, BR, TR, TL order each face lists its vertices in
+  Vec2 uv[4] = {{0, 0}, {1, 0}, {1, 1}, {0, 1}};
+
   u32 v_ptr = 0;
   u32 i_ptr = 0;
 
   for (int i = 0; i < 6; i++) {
     struct Face *f = &faces[i];
     Vec3 normal = n[f->n_idx];
-    Vec4 tangent = {0, 0, 0, 1}; // Placeholder
+    // Derived from this face's own positions and UVs (BL, BR, TR corners)
+    Vec4 tangent = triangle_tangent(p[f->v_idx[0]], p[f->v_idx[1]],
+                                    p[f->v_idx[2]], uv[0], uv[1], uv[2], normal);
 
     // Vertices
     mesh->vertices[v_ptr + 0].position = p[f->v_idx[0]];
     mesh->vertices[v_ptr + 0].normal = normal;
-    mesh->vertices[v_ptr + 0].texcoord = (Vec2){0, 0};
+    mesh->vertices[v_ptr + 0].texcoord = uv[0];
     mesh->vertices[v_ptr + 0].tangent = tangent;
 
     mesh->vertices[v_ptr + 1].position = p[f->v_idx[1]];
     mesh->vertices[v_ptr + 1].normal = normal;
-    mesh->vertices[v_ptr + 1].texcoord = (Vec2){1, 0};
+    mesh->vertices[v_ptr + 1].texcoord = uv[1];
     mesh->vertices[v_ptr + 1].tangent = tangent;
 
     mesh->vertices[v_ptr + 2].position = p[f->v_idx[2]];
     mesh->vertices[v_ptr + 2].normal = normal;
-    mesh->vertices[v_ptr + 2].texcoord = (Vec2){1, 1};
+    mesh->vertices[v_ptr + 2].texcoord = uv[2];
     mesh->vertices[v_ptr + 2].tangent = tangent;
 
     mesh->vertices[v_ptr + 3].position = p[f->v_idx[3]];
     mesh->vertices[v_ptr + 3].normal = normal;
-    mesh->vertices[v_ptr + 3].texcoord = (Vec2){0, 1};
+    mesh->vertices[v_ptr + 3].texcoord = uv[3];
     mesh->vertices[v_ptr + 3].tangent = tangent;
 
     // Indices (Two triangles)
