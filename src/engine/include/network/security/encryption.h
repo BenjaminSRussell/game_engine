@@ -3,6 +3,12 @@
 
 #include "../core/core.h"
 
+// DEMO-GRADE, NOT A SECURITY CONTROL. The XOR cipher, the 8-bit additive
+// "hash", the time-seeded LCG behind keys and salts, and the strcmp()
+// password check are placeholders. Do not use them to protect player data
+// or credentials. The tests in tests/encryption_test.c check round trips
+// and API contracts only; passing them says nothing about security.
+
 // Encryption algorithms
 typedef enum {
     CRYPTO_ALGORITHM_AES_256_GCM = 0,

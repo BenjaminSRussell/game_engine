@@ -17,6 +17,9 @@
 #define HASH_SIZE 32
 #define MAX_ENCRYPTED_DATA_SIZE 4096
 
+// NOT SECURE. Demo-grade, see the warning in encryption.h. The XOR cipher,
+// additive hash, time-seeded LCG and strcmp() check must not protect real
+// data. Use a vetted crypto library for anything real.
 // Simple XOR-based encryption for demonstration (in production, use proper
 // crypto libraries)
 typedef struct EncryptionKey {
@@ -144,6 +147,7 @@ bool encryption_init(uint64_t key_rotation_interval_ms) {
   g_secure_storage.key_rotation_interval_ms = key_rotation_interval_ms;
   g_secure_storage.last_rotation_time = get_current_time_ms();
 
+  LOG_WARN("Encryption is demo-grade (XOR, additive hash, LCG keys): not a security control");
   LOG_INFO("Encryption system initialized with key rotation interval %llu ms",
            key_rotation_interval_ms);
   return true;

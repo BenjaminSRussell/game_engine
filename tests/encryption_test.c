@@ -2,6 +2,8 @@
  * encryption_test.c
  * Player-data encrypt/decrypt, password hashing, and key rotation.
  * Compiles encryption.c directly and does not link Engine.
+ * Demo-grade crypto: these checks cover round trips and API contracts.
+ * Passing them is not evidence that the encryption is secure.
  */
 
 #include "network/security/encryption.h"
@@ -112,7 +114,8 @@ int main(void) {
 
     expect_true(encryption_encrypt_player_data(player_id, plain, encrypted_again, sizeof(encrypted_again)),
                 "encrypt again");
-    expect_true(strcmp(encrypted, encrypted_again) == 0, "same key is deterministic");
+    /* Not asserted: the demo XOR cipher gives the same bytes for the same key.
+     * That is a weakness of the demo, not a property to rely on. */
 
     expect_true(encryption_decrypt_player_data(player_id, encrypted, decrypted, sizeof(decrypted)),
                 "decrypt");
