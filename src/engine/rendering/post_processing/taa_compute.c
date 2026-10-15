@@ -7,6 +7,7 @@
 #include "core/logging/unified_logger.h"
 #include "core/memory/unified_allocator.h"
 #include "rendering/core/texture.h"
+#include "rendering/post_processing/taa_compute_backend.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -17,11 +18,13 @@
 typedef struct TAAComputeContext {
   TAAComputeSettings settings;
 
-  // GPU resources
-  TextureID history_buffer;
+  // GPU resources. history_buffer and output_buffer are owned here and swap
+  // every frame. last_output is the ID of the newest result.
+  Texture *history_buffer;
+  Texture *output_buffer;
   TextureID velocity_buffer;
   TextureID depth_buffer;
-  TextureID output_buffer;
+  TextureID last_output;
 
   // Compute shader
   u32 compute_shader;
@@ -65,12 +68,12 @@ static void generate_halton_sequence(f32 sequence[8][2]) {
 // ============================================================================
 
 TAAComputeContext *taa_compute_create(u32 width, u32 height) {
-  LOG_INFO(LOG_CAT_RENDERER, "Creating TAA compute context (%ux%u)", width,
-           height);
+  LOG_INFO_CAT(LOG_CAT_RENDERER, "Creating TAA compute context (%ux%u)", width,
+               height);
 
   TAAComputeContext *ctx = MALLOC_PERSISTENT(sizeof(TAAComputeContext));
   if (!ctx) {
-    LOG_ERROR(LOG_CAT_RENDERER, "Failed to allocate TAA compute context");
+    LOG_ERROR_CAT(LOG_CAT_RENDERER, "Failed to allocate TAA compute context");
     return NULL;
   }
 
@@ -87,19 +90,24 @@ TAAComputeContext *taa_compute_create(u32 width, u32 height) {
   // Generate Halton sequence
   generate_halton_sequence(ctx->halton_sequence);
 
-  // Create textures
-  TextureDesc desc = {.width = width,
-                      .height = height,
-                      .format = TEXTURE_FORMAT_RGBA16F,
-                      .usage = TEXTURE_USAGE_STORAGE | TEXTURE_USAGE_SAMPLED,
-                      .min_filter = FILTER_LINEAR,
-                      .mag_filter = FILTER_LINEAR};
+  // Create textures. TextureCreateInfo has no filter fields, so the former
+  // FILTER_LINEAR settings are not carried over.
+  TextureCreateInfo desc = {
+      .width = width,
+      .height = height,
+      .depth = 1,
+      .format = TEXFMT_RGBA16F,
+      .usage = TEXTURE_USAGE_STORAGE | TEXTURE_USAGE_SAMPLED,
+      .mip_levels = 1,
+      .sample_count = 1,
+      .name = "taa_buffer",
+  };
 
   ctx->history_buffer = texture_create(&desc);
   ctx->output_buffer = texture_create(&desc);
 
   if (!ctx->history_buffer || !ctx->output_buffer) {
-    LOG_ERROR(LOG_CAT_RENDERER, "Failed to create TAA textures");
+    LOG_ERROR_CAT(LOG_CAT_RENDERER, "Failed to create TAA textures");
     taa_compute_destroy(ctx);
     return NULL;
   }
@@ -108,7 +116,7 @@ TAAComputeContext *taa_compute_create(u32 width, u32 height) {
   ctx->compute_shader =
       shader_load_compute("shaders/post_processing/taa_compute.comp");
   if (!ctx->compute_shader) {
-    LOG_ERROR(LOG_CAT_RENDERER, "Failed to load TAA compute shader");
+    LOG_ERROR_CAT(LOG_CAT_RENDERER, "Failed to load TAA compute shader");
     taa_compute_destroy(ctx);
     return NULL;
   }
@@ -121,7 +129,7 @@ TAAComputeContext *taa_compute_create(u32 width, u32 height) {
 
   ctx->initialized = true;
 
-  LOG_INFO(LOG_CAT_RENDERER, "TAA compute context created successfully");
+  LOG_INFO_CAT(LOG_CAT_RENDERER, "TAA compute context created successfully");
   return ctx;
 }
 
@@ -129,7 +137,7 @@ void taa_compute_destroy(TAAComputeContext *ctx) {
   if (!ctx)
     return;
 
-  LOG_INFO(LOG_CAT_RENDERER, "Destroying TAA compute context");
+  LOG_INFO_CAT(LOG_CAT_RENDERER, "Destroying TAA compute context");
 
   if (ctx->history_buffer) {
     texture_destroy(ctx->history_buffer);
@@ -140,7 +148,7 @@ void taa_compute_destroy(TAAComputeContext *ctx) {
   }
 
   if (ctx->compute_shader) {
-    shader_destroy(ctx->compute_shader);
+    shader_destroy_compute(ctx->compute_shader);
   }
 
   FREE(ctx);
@@ -153,7 +161,7 @@ void taa_compute_destroy(TAAComputeContext *ctx) {
 void taa_compute_process(TAAComputeContext *ctx, TextureID current_frame,
                          TextureID velocity_buffer, TextureID depth_buffer) {
   if (!ctx || !ctx->initialized) {
-    LOG_WARN(LOG_CAT_RENDERER, "TAA compute context not initialized");
+    LOG_WARN_CAT(LOG_CAT_RENDERER, "TAA compute context not initialized");
     return;
   }
 
@@ -179,12 +187,12 @@ void taa_compute_process(TAAComputeContext *ctx, TextureID current_frame,
 
   // Bind textures
   texture_bind_compute(current_frame, 0);
-  texture_bind_compute(ctx->history_buffer, 1);
+  texture_bind_compute(texture_get_id(ctx->history_buffer), 1);
   texture_bind_compute(velocity_buffer, 2);
   texture_bind_compute(depth_buffer, 3);
 
   // Bind output image
-  texture_bind_image_compute(ctx->output_buffer, 0);
+  texture_bind_image_compute(texture_get_id(ctx->output_buffer), 0);
 
   // Set uniforms
   shader_set_uniform_compute(ctx->compute_shader, "params", &ctx->uniforms,
@@ -199,8 +207,10 @@ void taa_compute_process(TAAComputeContext *ctx, TextureID current_frame,
   // Memory barrier to ensure writes are complete
   shader_memory_barrier_compute();
 
-  // Swap history buffer (ping-pong)
-  TextureID temp = ctx->history_buffer;
+  // The texture just written holds the newest result. Record it for
+  // taa_compute_get_output(), then swap so it becomes next frame's history.
+  ctx->last_output = texture_get_id(ctx->output_buffer);
+  Texture *temp = ctx->history_buffer;
   ctx->history_buffer = ctx->output_buffer;
   ctx->output_buffer = temp;
 
@@ -241,11 +251,13 @@ void taa_compute_update_settings(TAAComputeContext *ctx,
 }
 
 TextureID taa_compute_get_output(TAAComputeContext *ctx) {
-  return ctx ? ctx->output_buffer : 0;
+  return ctx ? ctx->last_output : 0;
 }
 
 TextureID taa_compute_get_history(TAAComputeContext *ctx) {
-  return ctx ? ctx->history_buffer : 0;
+  if (!ctx || !ctx->history_buffer)
+    return 0;
+  return texture_get_id(ctx->history_buffer);
 }
 
 void taa_compute_reset(TAAComputeContext *ctx) {
@@ -256,8 +268,9 @@ void taa_compute_reset(TAAComputeContext *ctx) {
 
   // Clear history buffer
   if (ctx->history_buffer) {
-    texture_clear(ctx->history_buffer, (vec4){0.0f, 0.0f, 0.0f, 0.0f});
+    texture_clear(texture_get_id(ctx->history_buffer),
+                  (vec4){0.0f, 0.0f, 0.0f, 0.0f});
   }
 
-  LOG_INFO(LOG_CAT_RENDERER, "TAA compute context reset");
+  LOG_INFO_CAT(LOG_CAT_RENDERER, "TAA compute context reset");
 }
