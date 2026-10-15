@@ -1149,3 +1149,11 @@ target_include_directories(test_vulkan_shader_fallback PRIVATE
     ${CMAKE_SOURCE_DIR}/src
 )
 add_test(NAME test_vulkan_shader_fallback COMMAND test_vulkan_shader_fallback)
+
+# Per-test registrations. Each test owns tests/registry/<test_target>.cmake with its
+# add_executable/add_test (or add_engine_test) calls, so test PRs never edit this file.
+file(GLOB ENGINE_TEST_REGISTRATIONS CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/tests/registry/*.cmake")
+list(SORT ENGINE_TEST_REGISTRATIONS)
+foreach(_engine_test_registration IN LISTS ENGINE_TEST_REGISTRATIONS)
+    include("${_engine_test_registration}")
+endforeach()
