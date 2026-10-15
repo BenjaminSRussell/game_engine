@@ -76,18 +76,32 @@ void damage_system_process_events(World *world, f64 delta_time) {
   for (u32 i = 0; i < g_event_count; i++) {
     DamageEvent *event = &g_damage_queue[i];
 
+    // Status effects know only the target's id, so their events carry
+    // generation 0. Resolve those to the entity's live handle.
+    Entity target = event->target;
+    if (target.generation == 0)
+      target = ecs_get_entity_by_id(world, target.id);
+
     // 1. Get health component for target entity
     HealthComponent *health = (HealthComponent *)ecs_get_component(
-        world, event->target, HEALTH_COMPONENT_ID);
+        world, target, HEALTH_COMPONENT_ID);
 
     if (!health) {
       LOGW("Target entity %u has no health component", event->target.id);
       continue;
     }
 
+    // Healing restores health, capped at max, instead of removing it
+    if (event->flags & DAMAGE_FLAG_HEAL) {
+      health->health += event->base_amount;
+      if (health->health > health->max_health)
+        health->health = health->max_health;
+      continue;
+    }
+
     // 2. Get resistance component (optional) for damage reduction
     ResistanceComponent *resistance = (ResistanceComponent *)ecs_get_component(
-        world, event->target, RESISTANCE_COMPONENT_ID);
+        world, target, RESISTANCE_COMPONENT_ID);
 
     // 3. Calculate final damage using resistance
     f32 blocked_amount = 0.0f;
@@ -108,7 +122,7 @@ void damage_system_process_events(World *world, f64 delta_time) {
 
       // Get transform for death position/logging
       TransformComponent *transform = (TransformComponent *)ecs_get_component(
-          world, event->target, TRANSFORM_COMPONENT_ID);
+          world, target, TRANSFORM_COMPONENT_ID);
 
       Vec3 death_pos = transform ? transform->position : vec3(0, 0, 0);
 
@@ -117,7 +131,7 @@ void damage_system_process_events(World *world, f64 delta_time) {
                event->type, event->source.id);
 
       // Destroy the entity from the world
-      ecs_destroy_entity(world, event->target);
+      ecs_destroy_entity(world, target);
     }
   }
 

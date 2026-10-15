@@ -52,6 +52,7 @@ typedef enum {
   DAMAGE_FLAG_KNOCKBACK = 1 << 5,     // Apply knockback
   DAMAGE_FLAG_STUN = 1 << 6,          // Stun target
   DAMAGE_FLAG_DOT = 1 << 7,           // Damage over time
+  DAMAGE_FLAG_HEAL = 1 << 8,          // Restores base_amount health (status effects)
 } DamageFlag;
 
 // Damage event - created when damage is dealt

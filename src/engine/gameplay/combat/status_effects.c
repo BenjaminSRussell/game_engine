@@ -124,12 +124,12 @@ static void apply_effect_logic(StatusEffectInstance *effect, u64 entity_id, floa
         // Heal entity over time by magnitude per tick
         // Get health component and apply healing
         {
-          // Note: Would need World context to get component
-          // For now, healing is queued as a negative damage event with DAMAGE_TYPE_TRUE
           Entity source = {.id = effect->source_entity_id};
           Entity target = {.id = entity_id};
-          // Negative damage = healing, TRUE damage type bypasses resistances
-          damage_event_create(source, target, -effect->magnitude, DAMAGE_TYPE_TRUE);
+          // Queued as a heal event: damage_system adds base_amount to health
+          DamageEvent *heal = damage_event_create(source, target, effect->magnitude, DAMAGE_TYPE_TRUE);
+          if (heal)
+            heal->flags |= DAMAGE_FLAG_HEAL;
           LOGD("Healing: Healed entity %llu for %.1f HP", entity_id, effect->magnitude);
         }
         break;
@@ -188,7 +188,7 @@ static StatusEffectInstance* add_effect(EntityStatusEffects *entity_effects, Sta
   
   // Check if we can stack with existing effects
   for (u32 i = 0; i < entity_effects->effect_count; i++) {
-    if (entity_effects->effects[i].type == type && entity_effects->effects[i].is_active) {
+    if (entity_effects->effects[i].is_active) {
       if (!can_stack_with(type, entity_effects->effects[i].type)) {
         return NULL; // Can't stack with this effect
       }
