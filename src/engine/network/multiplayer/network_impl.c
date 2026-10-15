@@ -4,7 +4,6 @@
  */
 
 #include "engine/include/core/logger.h"
-#include "engine/include/core/memory.h"
 #include "network/network_manager.h"
 #include "network/network_types.h"
 #include <arpa/inet.h>
@@ -20,8 +19,6 @@
 
 // Network constants
 #define MAX_PACKET_SIZE 4096
-#define MAX_CLIENTS 64
-#define SERVER_TICK_RATE 60
 #define CLIENT_TIMEOUT_MS 5000
 #define CONNECTION_RETRY_DELAY_MS 1000
 #define MAX_RETRIES 5
@@ -94,6 +91,9 @@ static void update_client(float delta_time);
 static void cleanup_disconnected_clients(void);
 static bool authenticate_client(ClientConnection *client, const char *username,
                                 const char *password);
+static void close_client_fd(ClientConnection *client);
+static int find_client_by_address(const struct sockaddr_in *addr);
+static int add_udp_client(const struct sockaddr_in *addr, float current_time);
 
 // Server implementation
 int network_server_start(const char *server_name, uint16_t port,
@@ -116,17 +116,11 @@ int network_server_start(const char *server_name, uint16_t port,
     strncpy(g_server.password, password, sizeof(g_server.password) - 1);
   }
 
-  // Create server socket
+  /* UDP: bind in create_socket is the listen step. listen() is not valid
+   * on SOCK_DGRAM and used to make every start fail. */
   g_server.server_socket = create_socket(port, true);
   if (g_server.server_socket < 0) {
     LOG_ERROR("Failed to create server socket");
-    return -1;
-  }
-
-  // Start listening for connections
-  if (listen(g_server.server_socket, SOMAXCONN) < 0) {
-    LOG_ERROR("Failed to listen on server socket: %s", strerror(errno));
-    close(g_server.server_socket);
     return -1;
   }
 
@@ -147,12 +141,12 @@ int network_server_stop(void) {
 
   g_server.running = false;
 
-  // Disconnect all clients
+  // Disconnect all clients. UDP clients share the server socket.
   for (int i = 0; i < MAX_CLIENTS; i++) {
     if (g_server.clients[i].connected) {
       send_packet(g_server.clients[i].socket_fd, &g_server.clients[i].address,
                   PACKET_TYPE_DISCONNECT, NULL, 0);
-      close(g_server.clients[i].socket_fd);
+      close_client_fd(&g_server.clients[i]);
       g_server.clients[i].connected = false;
     }
   }
@@ -212,6 +206,7 @@ uint32_t network_server_get_client_count(void) {
 // Client implementation
 int network_client_connect(const char *server_address, uint16_t port,
                            const char *username, const char *password) {
+  (void)password;
   if (g_network_initialized) {
     LOG_WARN("Network client already connected");
     return -1;
@@ -263,17 +258,17 @@ int network_client_connect(const char *server_address, uint16_t port,
 }
 
 int network_client_disconnect(void) {
-  if (!g_network_initialized || !g_client.connected) {
+  if (!g_network_initialized) {
     return 0;
   }
 
   LOG_INFO("Disconnecting from server");
 
-  // Send disconnect packet
-  send_packet(g_client.client_socket, &g_client.server_addr,
-              PACKET_TYPE_DISCONNECT, NULL, 0);
+  if (g_client.connected && g_client.client_socket >= 0) {
+    send_packet(g_client.client_socket, &g_client.server_addr,
+                PACKET_TYPE_DISCONNECT, NULL, 0);
+  }
 
-  // Close socket
   if (g_client.client_socket >= 0) {
     close(g_client.client_socket);
     g_client.client_socket = -1;
@@ -425,9 +420,9 @@ static int receive_packet(int socket_fd, struct sockaddr_in *addr,
     return -1;
   }
 
-  if (received < sizeof(PacketHeader)) {
+  if ((size_t)received < sizeof(PacketHeader)) {
     LOG_WARN("Received packet too small: %zd bytes", received);
-    return -1;
+    return -2;
   }
 
   // Parse header
@@ -443,60 +438,93 @@ static int receive_packet(int socket_fd, struct sockaddr_in *addr,
   return data_size;
 }
 
-static void update_server(float delta_time) {
-  float current_time = (float)clock() / CLOCKS_PER_SEC;
+static void close_client_fd(ClientConnection *client) {
+  if (!client) {
+    return;
+  }
+  if (client->socket_fd >= 0 && client->socket_fd != g_server.server_socket) {
+    close(client->socket_fd);
+  }
+  client->socket_fd = -1;
+}
 
-  // Accept new connections
-  if (current_time - g_server.last_tick >= 1.0f / SERVER_TICK_RATE) {
-    struct sockaddr_in client_addr;
-    socklen_t addr_len = sizeof(client_addr);
-    int client_socket = accept(g_server.server_socket,
-                               (struct sockaddr *)&client_addr, &addr_len);
-
-    if (client_socket >= 0) {
-      // Find empty client slot
-      for (int i = 0; i < MAX_CLIENTS; i++) {
-        if (!g_server.clients[i].connected) {
-          g_server.clients[i].socket_fd = client_socket;
-          g_server.clients[i].address = client_addr;
-          g_server.clients[i].client_id = g_server.next_client_id++;
-          g_server.clients[i].connected = true;
-          g_server.clients[i].connection_time = current_time;
-          g_server.clients[i].last_heartbeat = current_time;
-          g_server.connected_clients++;
-
-          LOG_INFO("New client connected: ID=%d",
-                   g_server.clients[i].client_id);
-          break;
-        }
-      }
+static int find_client_by_address(const struct sockaddr_in *addr) {
+  for (int i = 0; i < MAX_CLIENTS; i++) {
+    if (!g_server.clients[i].connected) {
+      continue;
     }
+    if (g_server.clients[i].address.sin_addr.s_addr == addr->sin_addr.s_addr &&
+        g_server.clients[i].address.sin_port == addr->sin_port) {
+      return i;
+    }
+  }
+  return -1;
+}
 
-    g_server.last_tick = current_time;
+static int add_udp_client(const struct sockaddr_in *addr, float current_time) {
+  if (g_server.max_players > 0 &&
+      g_server.connected_clients >= g_server.max_players) {
+    return -1;
   }
 
-  // Process packets from all clients
   for (int i = 0; i < MAX_CLIENTS; i++) {
     if (g_server.clients[i].connected) {
-      PacketHeader header;
-      uint8_t data[MAX_PACKET_SIZE];
+      continue;
+    }
+    memset(&g_server.clients[i], 0, sizeof(g_server.clients[i]));
+    g_server.clients[i].socket_fd = g_server.server_socket;
+    g_server.clients[i].address = *addr;
+    g_server.clients[i].client_id = g_server.next_client_id++;
+    g_server.clients[i].connected = true;
+    g_server.clients[i].connection_time = current_time;
+    g_server.clients[i].last_heartbeat = current_time;
+    g_server.connected_clients++;
+    LOG_INFO("New client connected: ID=%d", g_server.clients[i].client_id);
+    return i;
+  }
+  return -1;
+}
 
-      int received = receive_packet(g_server.clients[i].socket_fd,
-                                    &g_server.clients[i].address, &header, data,
-                                    sizeof(data));
+static void update_server(float delta_time) {
+  float current_time = (float)clock() / CLOCKS_PER_SEC;
+  (void)delta_time;
 
-      if (received >= 0) {
-        g_server.clients[i].last_heartbeat = current_time;
-        g_server.clients[i].packets_received++;
-        handle_client_packet(i, header.type, data, received);
+  /* Datagrams arrive on the bound server socket, keyed by source address. */
+  for (int n = 0; n < MAX_CLIENTS * 4; n++) {
+    struct sockaddr_in client_addr;
+    PacketHeader header;
+    uint8_t data[MAX_PACKET_SIZE];
+    int client_index;
+    int received;
+
+    memset(&client_addr, 0, sizeof(client_addr));
+    received = receive_packet(g_server.server_socket, &client_addr, &header,
+                              data, sizeof(data));
+    if (received == -1) {
+      break;
+    }
+    if (received < 0) {
+      continue;
+    }
+
+    client_index = find_client_by_address(&client_addr);
+    if (client_index < 0) {
+      if (header.type != PACKET_TYPE_CONNECT) {
+        continue;
+      }
+      client_index = add_udp_client(&client_addr, current_time);
+      if (client_index < 0) {
+        continue;
       }
     }
+
+    g_server.clients[client_index].last_heartbeat = current_time;
+    g_server.clients[client_index].packets_received++;
+    handle_client_packet(client_index, header.type, data, (size_t)received);
   }
 
-  // Cleanup disconnected clients
   cleanup_disconnected_clients();
 
-  // Send heartbeats
   if (current_time - g_server.last_tick >= 1.0f) {
     for (int i = 0; i < MAX_CLIENTS; i++) {
       if (g_server.clients[i].connected && g_server.clients[i].authenticated) {
@@ -504,11 +532,13 @@ static void update_server(float delta_time) {
                     PACKET_TYPE_HEARTBEAT, NULL, 0);
       }
     }
+    g_server.last_tick = current_time;
   }
 }
 
 static void update_client(float delta_time) {
   float current_time = (float)clock() / CLOCKS_PER_SEC;
+  (void)delta_time;
 
   // Process packets from server
   PacketHeader header;
@@ -631,8 +661,11 @@ static void handle_client_packet(int client_index, PacketType type,
   case PACKET_TYPE_DISCONNECT:
     LOG_INFO("Client disconnected: %s (ID: %d)", client->username,
              client->client_id);
+    if (client->connected && g_server.connected_clients > 0) {
+      g_server.connected_clients--;
+    }
     client->connected = false;
-    g_server.connected_clients--;
+    close_client_fd(client);
     break;
 
   case PACKET_TYPE_HEARTBEAT:
@@ -663,9 +696,11 @@ static void cleanup_disconnected_clients(void) {
           CLIENT_TIMEOUT_MS / 1000.0f) {
         LOG_INFO("Client timed out: %s (ID: %d)", g_server.clients[i].username,
                  g_server.clients[i].client_id);
-        close(g_server.clients[i].socket_fd);
+        close_client_fd(&g_server.clients[i]);
         g_server.clients[i].connected = false;
-        g_server.connected_clients--;
+        if (g_server.connected_clients > 0) {
+          g_server.connected_clients--;
+        }
       }
     }
   }
