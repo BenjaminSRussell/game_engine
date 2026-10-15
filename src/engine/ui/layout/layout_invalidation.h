@@ -251,8 +251,8 @@ void layout_invalidation_cache_layout(LayoutInvalidationSystem* system,
                                      float x, float y,
                                      float width, float height);
 
-/* Retrieve cached layout */
-bool layout_invalidation_get_cached_layout(const LayoutInvalidationSystem* system,
+/* Retrieve cached layout. Records a hit or miss, so the system is not const. */
+bool layout_invalidation_get_cached_layout(LayoutInvalidationSystem* system,
                                           uint32_t element_id,
                                           float* out_x, float* out_y,
                                           float* out_width, float* out_height);

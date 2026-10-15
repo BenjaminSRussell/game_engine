@@ -23,7 +23,8 @@ static uint32_t get_current_timestamp(void) {
     return counter++;
 }
 
-static LayoutCacheEntry* find_cache_entry(LayoutCacheLevel* cache, uint32_t element_id) {
+/* Reads the level only. Entries live behind a pointer, so the match is writable. */
+static LayoutCacheEntry* find_cache_entry(const LayoutCacheLevel* cache, uint32_t element_id) {
     for (uint32_t i = 0; i < cache->entry_count; i++) {
         if (cache->entries[i].element_id == element_id) {
             return &cache->entries[i];
@@ -392,12 +393,13 @@ void layout_invalidation_cache_layout(LayoutInvalidationSystem* system,
     entry->element_generation = layout_invalidation_get_element_generation(system, element_id);
 }
 
-bool layout_invalidation_get_cached_layout(const LayoutInvalidationSystem* system,
+bool layout_invalidation_get_cached_layout(LayoutInvalidationSystem* system,
                                           uint32_t element_id,
                                           float* out_x, float* out_y,
                                           float* out_width, float* out_height) {
     assert(system && out_x && out_y && out_width && out_height);
 
+    /* Records a hit or miss below, so the system must be mutable here. */
     LayoutCacheLevel* cache = &system->cache_levels[CACHE_LEVEL_ELEMENT];
     LayoutCacheEntry* entry = find_cache_entry(cache, element_id);
 
@@ -419,7 +421,7 @@ bool layout_invalidation_get_cached_layout(const LayoutInvalidationSystem* syste
 bool layout_invalidation_is_cached(const LayoutInvalidationSystem* system, uint32_t element_id) {
     assert(system);
 
-    LayoutCacheLevel* cache = &system->cache_levels[CACHE_LEVEL_ELEMENT];
+    const LayoutCacheLevel* cache = &system->cache_levels[CACHE_LEVEL_ELEMENT];
     LayoutCacheEntry* entry = find_cache_entry(cache, element_id);
     return entry && entry->is_valid;
 }
