@@ -212,12 +212,20 @@ int state_sync_unregister_entity(
     pthread_mutex_lock(&sync->lock);
 
     SynchronizedEntity* entity = find_entity(sync, entity_id);
-    if (!entity) {
+    if (!entity || !entity->registered) {
         pthread_mutex_unlock(&sync->lock);
         return -2;
     }
 
-    entity->registered = false;
+    /* Drop the slot so snapshots and later updates no longer see it. */
+    {
+        uint32_t index = (uint32_t)(entity - sync->entities);
+        sync->entity_count--;
+        if (index < sync->entity_count) {
+            sync->entities[index] = sync->entities[sync->entity_count];
+        }
+        memset(&sync->entities[sync->entity_count], 0, sizeof(SynchronizedEntity));
+    }
     pthread_mutex_unlock(&sync->lock);
 
     return 0;
@@ -440,6 +448,9 @@ int state_sync_apply_state(
     }
     if (state->change_flags & STATE_CHANGE_ROTATION) {
         entity->rotation = state->rotation;
+    }
+    if (state->change_flags & STATE_CHANGE_SCALE) {
+        entity->scale = state->scale;
     }
     if (state->change_flags & STATE_CHANGE_VELOCITY) {
         entity->velocity = state->velocity;
