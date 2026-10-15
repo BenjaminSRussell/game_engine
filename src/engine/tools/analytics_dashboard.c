@@ -28,6 +28,32 @@ static Vec4 get_chart_color(u32 index) {
     return colors[index % (sizeof(colors) / sizeof(colors[0]))];
 }
 
+// MARK: - Draw Backend
+
+// Chart primitives are forwarded here. Empty until a backend is set, so
+// rendering without one only logs.
+static AnalyticsDrawBackend g_draw_backend;
+
+static void analytics_draw_line(float x0, float y0, float x1, float y1, Vec4 color) {
+    if (g_draw_backend.draw_line) {
+        g_draw_backend.draw_line(g_draw_backend.user_data, x0, y0, x1, y1, color);
+    }
+}
+
+static void analytics_draw_rect(float x, float y, float width, float height, Vec4 color) {
+    if (g_draw_backend.draw_rect) {
+        g_draw_backend.draw_rect(g_draw_backend.user_data, x, y, width, height, color);
+    }
+}
+
+void analytics_dashboard_set_draw_backend(const AnalyticsDrawBackend* backend) {
+    if (backend) {
+        g_draw_backend = *backend;
+    } else {
+        memset(&g_draw_backend, 0, sizeof(g_draw_backend));
+    }
+}
+
 static void render_line_chart(const ChartData* chart) {
     if (!chart || chart->point_count < 2) {
         return;
@@ -80,7 +106,7 @@ static void render_line_chart(const ChartData* chart) {
         float screen_y2 = 250.0f - ((p2->y - min_y) / y_range) * 200.0f;
         
         LOG_DEBUG("Line %u: (%.2f,%.2f) -> (%.2f,%.2f)", i, screen_x1, screen_y1, screen_x2, screen_y2);
-        // TODO: Draw actual line using graphics API
+        analytics_draw_line(screen_x1, screen_y1, screen_x2, screen_y2, p1->color);
     }
     
     // Render data points
@@ -109,8 +135,8 @@ static void render_bar_chart(const ChartData* chart) {
     LOG_DEBUG("Rendering bar chart: %s (%u bars)", chart->title, chart->point_count);
     
     // Calculate chart bounds
-    float max_y = chart->points[0].y;
-    for (u32 i = 1; i < chart->point_count; i++) {
+    float max_y = 0.0f; // bars grow from zero, so the scale starts there
+    for (u32 i = 0; i < chart->point_count; i++) {
         if (chart->points[i].y > max_y) max_y = chart->points[i].y;
     }
     if (max_y == 0) max_y = 1.0f;
@@ -148,7 +174,10 @@ static void render_bar_chart(const ChartData* chart) {
         LOG_DEBUG("Bar %u: (%.2f,%.2f) size=(%.2fx%.2f) - %s", 
                   i, bar_x, bar_y, bar_width, bar_height, point->label);
         
-        // TODO: Draw actual rectangle using graphics API with point->color
+        // Zero or negative values have no visible height, so they get no rectangle.
+        if (bar_height > 0.0f) {
+            analytics_draw_rect(bar_x, bar_y, bar_width, bar_height, point->color);
+        }
         // TODO: Add hover effects and click detection
     }
     

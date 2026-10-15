@@ -207,6 +207,22 @@ void analytics_dashboard_set_layout(AnalyticsDashboard* dashboard, u32 columns, 
                                      float spacing, float padding, Vec4 bg_color);
 void analytics_dashboard_auto_refresh(AnalyticsDashboard* dashboard, bool enabled, u32 interval_ms);
 
+// MARK: - Draw Backend
+
+// Receives the primitives chart rendering emits, in dashboard pixels with the
+// origin at the top left and y increasing downward. Line segments take the color
+// of their starting point; bars take the color of their data point. A NULL
+// callback is skipped. Rendering emits nothing until a backend is set. There is
+// one backend per process, shared by all dashboards.
+typedef struct {
+    void* user_data;
+    void (*draw_line)(void* user_data, float x0, float y0, float x1, float y1, Vec4 color);
+    void (*draw_rect)(void* user_data, float x, float y, float width, float height, Vec4 color);
+} AnalyticsDrawBackend;
+
+// Copies *backend. Passing NULL detaches the current backend.
+void analytics_dashboard_set_draw_backend(const AnalyticsDrawBackend* backend);
+
 // MARK: - Rendering
 
 void analytics_dashboard_render(AnalyticsDashboard* dashboard);
