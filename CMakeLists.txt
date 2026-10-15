@@ -1149,3 +1149,23 @@ target_include_directories(test_vulkan_shader_fallback PRIVATE
     ${CMAKE_SOURCE_DIR}/src
 )
 add_test(NAME test_vulkan_shader_fallback COMMAND test_vulkan_shader_fallback)
+
+# Rayleigh/Mie coefficients, phase functions, optical depth, and transmittance.
+# Not add_engine_test: that macro links Engine, which does not build on
+# origin/main (missing GLFW, then gpu_profiler.c:80). Compiles
+# atmosphere_scattering.c directly.
+add_executable(test_atmosphere_scattering
+    tests/atmosphere_scattering_test.c
+    src/engine/environment/atmosphere/sky/atmosphere_scattering.c
+)
+target_include_directories(test_atmosphere_scattering PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine/include/core
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+target_link_libraries(test_atmosphere_scattering PRIVATE m)
+target_compile_options(test_atmosphere_scattering PRIVATE
+    -Werror=implicit-function-declaration
+)
+add_test(NAME test_atmosphere_scattering COMMAND test_atmosphere_scattering)

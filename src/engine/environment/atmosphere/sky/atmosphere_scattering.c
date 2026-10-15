@@ -2,6 +2,25 @@
 #include <math.h>
 #include <string.h>
 
+/* Component-wise so this builds with clang ext_vectors and the vec3 simd shim. */
+static simd_float3 atm_v3(float x, float y, float z) {
+  simd_float3 v;
+  memset(&v, 0, sizeof(v));
+  v.x = x;
+  v.y = y;
+  v.z = z;
+  return v;
+}
+
+static simd_float3 atm_vmad(simd_float3 origin, simd_float3 direction, float t) {
+  return atm_v3(origin.x + direction.x * t, origin.y + direction.y * t,
+                origin.z + direction.z * t);
+}
+
+static simd_float3 atm_vsub(simd_float3 a, simd_float3 b) {
+  return atm_v3(a.x - b.x, a.y - b.y, a.z - b.z);
+}
+
 // =============================================================================
 // Rayleigh Scattering
 // =============================================================================
@@ -197,7 +216,7 @@ simd_float3 atm_optical_depth(simd_float3 origin, simd_float3 direction,
   float dt = max_distance / (float)num_samples;
 
   for (int i = 0; i < num_samples; ++i) {
-    simd_float3 p = origin + direction * (t + 0.5f * dt);
+    simd_float3 p = atm_vmad(origin, direction, t + 0.5f * dt);
     float r = simd_length(p);
     float alt = r - planet_radius;
 
@@ -261,7 +280,7 @@ simd_float3 atm_combined_scattering(simd_float3 view_origin,
   float phase_m = atm_mie_phase_hg(cos_theta, 0.8f); // Default g=0.8
 
   for (int i = 0; i < num_samples; ++i) {
-    simd_float3 p = view_origin + view_dir * (t + 0.5f * dt);
+    simd_float3 p = atm_vmad(view_origin, view_dir, t + 0.5f * dt);
     float r = simd_length(p);
     float alt = r - planet_radius;
 
@@ -334,7 +353,7 @@ simd_float3 atm_combined_scattering(simd_float3 view_origin,
 bool atm_ray_sphere_intersect(simd_float3 origin, simd_float3 direction,
                               simd_float3 sphere_center, float sphere_radius,
                               float *out_t1, float *out_t2) {
-  simd_float3 L = origin - sphere_center;
+  simd_float3 L = atm_vsub(origin, sphere_center);
   float a = simd_dot(direction, direction);
   float b = 2.0f * simd_dot(direction, L);
   float c = simd_dot(L, L) - (sphere_radius * sphere_radius);

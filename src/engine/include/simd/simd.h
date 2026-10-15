@@ -5,7 +5,7 @@
 #include_next <simd/simd.h>
 #else
 #include "../math/mat4.h"
-#include "../math/types.h"
+#include "../core/math/types.h"
 #include "../math/vec3.h"
 #include "../math/vec4.h"
 
