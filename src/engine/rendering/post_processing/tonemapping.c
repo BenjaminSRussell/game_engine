@@ -28,8 +28,8 @@ static void tonemap_execute_pass(RGPassContext *ctx, void *user_data) {
   // setting uniforms for operator/exposure, and dispatching.
   // The actual hardware-specific calls depend on the backend.
 
-  LOG_DEBUG(LOG_CAT_RENDERER, "Executed tonemapping pass (OP=%u, EXP=%.2f)",
-            data->operator, data->exposure);
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER, "Executed tonemapping pass (OP=%u, EXP=%.2f)",
+                data->operator, data->exposure);
 }
 
 // Tone mapping operators
@@ -88,8 +88,8 @@ RGResourceHandle tonemap_add_to_graph(RenderGraph *rg,
   }
 
   if (operator>= TONEMAP_COUNT) {
-    LOG_WARN(LOG_CAT_RENDERER,
-             "Invalid tone mapping operator %u, using ACES", operator);
+    LOG_WARN_CAT(LOG_CAT_RENDERER,
+                 "Invalid tone mapping operator %u, using ACES", operator);
     operator= TONEMAP_ACES;
   }
 
@@ -102,7 +102,7 @@ RGResourceHandle tonemap_add_to_graph(RenderGraph *rg,
   RGTextureDesc output_desc = {
       .width = 0, // Inherit from context/input if supported by RG
       .height = 0,
-      .format = TEXTURE_FORMAT_RGBA8,
+      .format = TEXFMT_RGBA8,
       .usage = TEXTURE_USAGE_STORAGE | TEXTURE_USAGE_SAMPLED,
       .name = "Tonemapped Output"};
   RGResourceHandle output = rg_create_texture(rg, &output_desc);
@@ -131,7 +131,8 @@ RGResourceHandle tonemap_add_to_graph(RenderGraph *rg,
   rg_pass_read(rg, pass, hdr_color);
   rg_pass_write(rg, pass, output);
 
-  LOG_DEBUG(LOG_CAT_RENDERER, "Tonemapping pass integrated into render graph");
+  LOG_DEBUG_CAT(LOG_CAT_RENDERER,
+                "Tonemapping pass integrated into render graph");
 
   return output;
 }
