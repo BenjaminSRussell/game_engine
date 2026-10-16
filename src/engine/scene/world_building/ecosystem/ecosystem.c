@@ -77,7 +77,7 @@ bool vegetation_spawn(VegetationInstance *instance, uint32_t type_id,
 
 bool vegetation_harvest(VegetationInstance *instance, ItemID *harvested_item, 
                        float *harvest_amount) {
-    if (!instance || !instance->is_harvestable || instance->is_harvested) {
+    if (!instance || instance->is_harvested) {
         return false;
     }
     
@@ -91,6 +91,9 @@ bool vegetation_harvest(VegetationInstance *instance, ItemID *harvested_item,
     }
     if (!type) return false;
     
+    // Harvestability is a property of the vegetation type, not the instance
+    if (!type->is_harvestable) return false;
+
     // Harvest
     instance->is_harvested = true;
     instance->regrow_timer = type->regrow_time;

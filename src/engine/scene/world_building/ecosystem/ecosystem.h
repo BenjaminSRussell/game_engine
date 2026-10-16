@@ -301,4 +301,47 @@ typedef struct EcosystemManager {
 // TODO(AGENT_WORLD_2): Implement ecosystem_deserialize [Difficulty: 6]
 // TODO(AGENT_WORLD_2): Implement ecosystem_statistics [Difficulty: 4]
 
+/* =================================================================================================
+ *                                    IMPLEMENTED FUNCTIONS
+ * =================================================================================================
+ * Defined in ecosystem.c. Declared here so each definition is checked against one signature, and
+ * so ecosystem.c can call functions that it defines further down (the manager calls the balance,
+ * chunk-update and extinction helpers before their definitions).
+ */
+
+/* Vegetation */
+bool vegetation_type_register(const VegetationType *type);
+bool vegetation_spawn(VegetationInstance *instance, uint32_t type_id, const float position[3], float scale);
+bool vegetation_harvest(VegetationInstance *instance, ItemID *harvested_item, float *harvest_amount);
+bool vegetation_grow(VegetationInstance *instance, float delta_time);
+bool vegetation_spread(EcosystemManager *manager, const VegetationInstance *parent, float delta_time);
+bool vegetation_die(VegetationInstance *instance);
+bool vegetation_seasonal_change(VegetationInstance *instance, float season);
+bool vegetation_fire_spread(EcosystemManager *manager, float fire_pos[3], float fire_radius, float delta_time);
+bool vegetation_density_map(EcosystemManager *manager, float center[3], float radius, float *density_map,
+                            uint32_t map_width, uint32_t map_height);
+
+/* Ecosystem manager */
+bool ecosystem_manager_init(EcosystemManager *manager, uint32_t max_chunks);
+void ecosystem_manager_shutdown(EcosystemManager *manager);
+bool ecosystem_manager_update(EcosystemManager *manager, float delta_time);
+bool ecosystem_update_chunk(EcosystemManager *manager, EcosystemChunk *chunk, float delta_time);
+bool ecosystem_spawn_initial(EcosystemManager *manager);
+bool ecosystem_balance_populations(EcosystemManager *manager);
+bool ecosystem_handle_extinction(EcosystemManager *manager);
+bool ecosystem_seasonal_migration(EcosystemManager *manager);
+bool ecosystem_serialize(EcosystemManager *manager, void *buffer, uint32_t buffer_size, uint32_t *bytes_written);
+bool ecosystem_deserialize(EcosystemManager *manager, const void *buffer, uint32_t buffer_size,
+                           uint32_t *bytes_read);
+bool ecosystem_statistics(EcosystemManager *manager, uint32_t *total_creatures, uint32_t *total_vegetation,
+                          uint32_t *total_chunks);
+
+/* Creatures */
+bool creature_spawn(WildlifeCreature *creature, uint32_t species_id, const float position[3]);
+bool creature_despawn(uint32_t creature_id);
+bool creature_update_needs(WildlifeCreature *creature, float delta_time);
+bool creature_find_water(const WildlifeCreature *creature, float water_position[3]);
+bool creature_find_shelter(const WildlifeCreature *creature, float shelter_position[3]);
+bool creature_flee_from(WildlifeCreature *creature, const float threat_position[3]);
+
 #endif // ECOSYSTEM_H
