@@ -204,3 +204,56 @@ Quat quat_nlerp(Quat a, Quat b, f32 t) {
   r.z = a.z + (b.z - a.z) * t;
   return quat_normalize(r);
 }
+
+// Rotation whose forward axis (vec3_forward(), +Z) points along `direction`.
+// `up` fixes the roll. A `direction` parallel to `up` takes its roll from
+// another axis, and a zero `direction` gives identity.
+Quat quat_look_rotation(Vec3 direction, Vec3 up) {
+  Vec3 forward = vec3_normalize(direction);
+  if (vec3_length_sq(forward) < EPSILON)
+    return quat_identity();
+
+  Vec3 right = vec3_cross(up, forward);
+  if (vec3_length_sq(right) < EPSILON) {
+    // `up` is parallel to `forward`: use the principal axis that is not.
+    right = vec3_cross(fabsf(forward.x) < 0.9f ? vec3_right() : vec3_up(),
+                       forward);
+  }
+  right = vec3_normalize(right);
+  Vec3 new_up = vec3_cross(forward, right);
+
+  // Rotation matrix with columns right, new_up, forward (m<row><col>).
+  f32 m00 = right.x, m01 = new_up.x, m02 = forward.x;
+  f32 m10 = right.y, m11 = new_up.y, m12 = forward.y;
+  f32 m20 = right.z, m21 = new_up.z, m22 = forward.z;
+
+  // Matrix to quaternion, dividing by the largest term for stability.
+  Quat q;
+  f32 trace = m00 + m11 + m22;
+  if (trace > 0.0f) {
+    f32 s = 2.0f * sqrtf(trace + 1.0f); // s = 4w
+    q.w = 0.25f * s;
+    q.x = (m21 - m12) / s;
+    q.y = (m02 - m20) / s;
+    q.z = (m10 - m01) / s;
+  } else if (m00 > m11 && m00 > m22) {
+    f32 s = 2.0f * sqrtf(1.0f + m00 - m11 - m22); // s = 4x
+    q.w = (m21 - m12) / s;
+    q.x = 0.25f * s;
+    q.y = (m01 + m10) / s;
+    q.z = (m02 + m20) / s;
+  } else if (m11 > m22) {
+    f32 s = 2.0f * sqrtf(1.0f + m11 - m00 - m22); // s = 4y
+    q.w = (m02 - m20) / s;
+    q.x = (m01 + m10) / s;
+    q.y = 0.25f * s;
+    q.z = (m12 + m21) / s;
+  } else {
+    f32 s = 2.0f * sqrtf(1.0f + m22 - m00 - m11); // s = 4z
+    q.w = (m10 - m01) / s;
+    q.x = (m02 + m20) / s;
+    q.y = (m12 + m21) / s;
+    q.z = 0.25f * s;
+  }
+  return quat_normalize(q);
+}

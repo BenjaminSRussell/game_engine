@@ -40,6 +40,10 @@ void mass_system_shutdown(void) {
     free(g_mass_context.movements);
   if (g_mass_context.active_flags)
     free(g_mass_context.active_flags);
+  // Clear the pointers so a second shutdown does not free them again.
+  g_mass_context.transforms = NULL;
+  g_mass_context.movements = NULL;
+  g_mass_context.active_flags = NULL;
   g_mass_context.capacity = 0;
   g_mass_context.count = 0;
 }
@@ -56,6 +60,7 @@ MassEntity mass_entity_spawn(Vec3 position, Vec3 velocity) {
   g_mass_context.transforms[id].position = position;
   g_mass_context.transforms[id].velocity = velocity;
   g_mass_context.transforms[id].scale = 1.0f;
+  g_mass_context.transforms[id].rotation = quat_identity();
 
   // Defaults
   g_mass_context.movements[id].move_speed = 1.0f; // m/s
@@ -102,10 +107,16 @@ void mass_system_update(float dt) {
     // ... (Skipping O(N^2) loop to avoid freezing implementation)
 
     // 3. Integrate
-    // Blend current velocity towards desired
+    // Blend current velocity towards desired. The blend factor is clamped to
+    // [0, 1]: above 1 the blend extrapolates past desired and diverges on long
+    // frames (dt > 0.2 s at this steering speed).
     float steering_speed = 5.0f;
-    tf->velocity =
-        vec3_lerp(tf->velocity, desired_velocity, dt * steering_speed);
+    float blend = dt * steering_speed;
+    if (blend > 1.0f)
+      blend = 1.0f;
+    if (blend < 0.0f)
+      blend = 0.0f;
+    tf->velocity = vec3_lerp(tf->velocity, desired_velocity, blend);
 
     // euler integration
     tf->position = vec3_add(tf->position, vec3_mul(tf->velocity, dt));
