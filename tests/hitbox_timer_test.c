@@ -1,9 +1,11 @@
 // tests/hitbox_timer_test.c
 //
 // Issue #119: a temporary hitbox is destroyed when its lifetime TimerComponent
-// expires, and not before. hitbox.c is compiled directly. The ECS, logger and
-// damage calls it makes are stubbed below, because the Engine library does not
-// link on this host (see tests/registry/test_hitbox_timer.cmake).
+// expires, and not before. Issue #160: a temporary hitbox is queryable as soon
+// as it is created, and creation fails without a world. hitbox.c is compiled
+// directly. The ECS, logger and damage calls it makes are stubbed below,
+// because the Engine library does not link on this host (see
+// tests/registry/test_hitbox_timer.cmake).
 
 #include <include/core/logger.h>
 #include <include/gameplay/combat/damage.h>
@@ -103,6 +105,25 @@ static u32 hitboxes_at(Vec3 point) {
   return hitbox_system_query_sphere(&point, 0.01f, INVALID_ENTITY, found, 8);
 }
 
+// Creation: the hitbox is registered at its position before any update runs.
+static void test_creation_is_queryable_at_position_before_any_update(void) {
+  hitbox_system_init(&g_world);
+  Entity hb = hitbox_create_temporary(&g_world, kOrigin, kForward, 1.0f, 0.5f);
+  CHECK(ecs_is_valid(&g_world, hb));
+  CHECK(hitboxes_at(kOrigin) == 1);
+  CHECK(hitboxes_at(kFar) == 0);
+  hitbox_system_shutdown();
+}
+
+// Creation with no world fails: no entity is returned and nothing is registered.
+static void test_creation_with_null_world_returns_invalid_entity(void) {
+  hitbox_system_init(&g_world);
+  Entity hb = hitbox_create_temporary(NULL, kOrigin, kForward, 1.0f, 0.5f);
+  CHECK(hb.id == INVALID_ENTITY.id);
+  CHECK(hitboxes_at(kOrigin) == 0);
+  hitbox_system_shutdown();
+}
+
 // Alive until the duration has elapsed, then destroyed and no longer queryable.
 static void test_expires_when_duration_elapses(void) {
   hitbox_system_init(&g_world);
@@ -150,6 +171,8 @@ static void test_short_hitbox_expires_while_long_one_survives(void) {
 }
 
 int main(void) {
+  test_creation_is_queryable_at_position_before_any_update();
+  test_creation_with_null_world_returns_invalid_entity();
   test_expires_when_duration_elapses();
   test_zero_duration_expires_on_first_update();
   test_short_hitbox_expires_while_long_one_survives();

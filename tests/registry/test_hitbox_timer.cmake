@@ -1,4 +1,5 @@
-# Issue #119. Temporary hitboxes are destroyed when their lifetime TimerComponent expires.
+# Issues #119 and #160. Temporary hitboxes are queryable from creation and destroyed when
+# their lifetime TimerComponent expires.
 # Not add_engine_test: that macro links Engine, which does not build on origin/main
 # (missing GLFW, then gpu_profiler.c). Compiles hitbox.c directly; the ECS, logger and
 # damage calls it makes are stubbed in the test source.
