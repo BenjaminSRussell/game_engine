@@ -22,6 +22,8 @@ struct BloomContext {
     RGResourceHandle mip_chain[BLOOM_MAX_MIP_LEVELS];
     u32 mip_count;
     bool initialized;
+    u32 width;   // render-target resolution the bloom textures are sized from
+    u32 height;
 };
 
 // Create bloom context
@@ -33,6 +35,8 @@ BloomContext* bloom_create(u32 width, u32 height) {
     }
 
     memset(ctx, 0, sizeof(BloomContext));
+    ctx->width = width;
+    ctx->height = height;
 
     // Initialize default settings
     ctx->settings.threshold = 1.0f;
@@ -181,8 +185,8 @@ RGResourceHandle bloom_add_to_graph(RenderGraph *rg,
 
     // Step 1: Threshold pass - extract bright pixels
     RGTextureDesc threshold_desc = {
-        .width = 1920,  // TODO: Get actual resolution
-        .height = 1080,
+        .width = ctx->width,
+        .height = ctx->height,
         .depth = 1,
         .format = TEXFMT_RGBA16F,
         .usage = TEXTURE_USAGE_STORAGE | TEXTURE_USAGE_SAMPLED,
@@ -208,8 +212,8 @@ RGResourceHandle bloom_add_to_graph(RenderGraph *rg,
 
     // Step 2: Downsample pass - create mip pyramid
     RGTextureDesc mip_desc = {
-        .width = 960,   // Half resolution for mip 0
-        .height = 540,
+        .width = MAX(1, ctx->width / 2),   // Half resolution for mip 0
+        .height = MAX(1, ctx->height / 2),
         .depth = 1,
         .format = TEXFMT_RGBA16F,
         .usage = TEXTURE_USAGE_STORAGE | TEXTURE_USAGE_SAMPLED,
@@ -250,8 +254,8 @@ RGResourceHandle bloom_add_to_graph(RenderGraph *rg,
 
     // Step 3: Upsample pass - combine mip pyramid
     RGTextureDesc final_desc = {
-        .width = 1920,
-        .height = 1080,
+        .width = ctx->width,
+        .height = ctx->height,
         .depth = 1,
         .format = TEXFMT_RGBA16F,
         .usage = TEXTURE_USAGE_STORAGE | TEXTURE_USAGE_SAMPLED,

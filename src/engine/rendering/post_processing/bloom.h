@@ -42,7 +42,8 @@ typedef struct {
 // Opaque bloom context
 typedef struct BloomContext BloomContext;
 
-// Create bloom context
+// Create bloom context. width/height is the render-target resolution that
+// bloom_add_to_graph sizes its textures from.
 BloomContext* bloom_create(u32 width, u32 height);
 
 // Destroy bloom context
