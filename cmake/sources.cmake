@@ -438,6 +438,8 @@ if(NOT APPLE)
 else()
     # On macOS, exclude Vulkan (use Metal instead)
     list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/backend/vulkan/.*\\.c$")
+    # vulkan_backend.c sits at the backend root, outside vulkan/, so the rule above misses it (#256)
+    list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/backend/vulkan_backend\\.c$")
     message(STATUS "Vulkan backend disabled on macOS, using Metal backend")
 endif()
 
