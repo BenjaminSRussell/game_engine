@@ -42,12 +42,15 @@ static int g_var_count = 0;
 // BUILT-IN COMMANDS
 // =============================================================================
 
-static void cmd_print(const char *args) {}
+static void cmd_print(const char *args) {
+  printf("%s\n", args ? args : "");
+}
 
 static void cmd_help(const char *args) {
   (void)args;
   printf("=== Available Commands ===\n");
   for (int i = 0; i < g_command_count; i++) {
+    printf("  %s - %s\n", g_commands[i].name, g_commands[i].description);
   }
 }
 
@@ -77,14 +80,19 @@ static void cmd_set(const char *args) {
 }
 
 static void cmd_get(const char *args) {
-  if (!args)
+  char name[64];
+  if (!args || sscanf(args, "%63s", name) != 1) {
+    printf("usage: get <name>\n");
     return;
+  }
 
   for (int i = 0; i < g_var_count; i++) {
-    if (strcmp(g_vars[i].name, args) == 0) {
+    if (strcmp(g_vars[i].name, name) == 0) {
+      printf("%s = %g\n", name, g_vars[i].value);
       return;
     }
   }
+  printf("%s is not set\n", name);
 }
 
 static void cmd_spawn(const char *args) {

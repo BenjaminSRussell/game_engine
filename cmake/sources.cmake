@@ -98,9 +98,6 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # Add camera implementation file
     "src/engine/rendering/camera_impl.c"
     
-    # Scripting - DISABLED due to compilation errors
-    # "src/engine/scripting/script_system.c"
-    
     # Backend subdirectory - Handled separately below to avoid Vulkan inclusion
     # "src/engine/backend/*.c"
 
@@ -498,9 +495,6 @@ list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/physics/vehicle_physics\\.c$")
 
 # Particle system has function signature mismatches - disable
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/rendering/particles/.*\\.c$")
-
-# Scripting system.c has syntax error - disable
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/scripting/script_system\\.c$")
 
 # Voxel renderer has issues - disable for now
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/rendering/voxel_renderer\\.c$")
